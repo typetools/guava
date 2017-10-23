@@ -18,7 +18,7 @@
   <properties>
     <checkerframework.version>LOCAL</checkerframework.version>
     <!-- Use -Dcheckerframework.checkers=checker to switch which checkers are run."-->
-    <checkerframework.checkers>org.checkerframework.checker.nullness.NullnessChecker</checkerframework.checkers>
+    <checkerframework.checkers>org.checkerframework.checker.index.IndexChecker</checkerframework.checkers>
     <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
   </properties>
   <dependencies>
