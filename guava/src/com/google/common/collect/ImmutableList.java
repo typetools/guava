@@ -16,6 +16,8 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -414,13 +416,13 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
   }
 
   @Override
-  public int indexOf(@Nullable Object object) {
+  public @GTENegativeOne int indexOf(@Nullable Object object) {
     return (object == null) ? -1 : Lists.indexOfImpl(this, object);
   }
 
   @Pure
   @Override
-  public int lastIndexOf(@Nullable Object object) {
+  public @GTENegativeOne int lastIndexOf(@Nullable Object object) {
     return (object == null) ? -1 : Lists.lastIndexOfImpl(this, object);
   }
 
@@ -471,7 +473,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return length;
     }
 
@@ -631,13 +633,13 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
     }
 
     @Override
-    public int indexOf(@Nullable Object object) {
+    public @GTENegativeOne int indexOf(@Nullable Object object) {
       int index = forwardList.lastIndexOf(object);
       return (index >= 0) ? reverseIndex(index) : -1;
     }
 
     @Override
-    public int lastIndexOf(@Nullable Object object) {
+    public @GTENegativeOne int lastIndexOf(@Nullable Object object) {
       int index = forwardList.indexOf(object);
       return (index >= 0) ? reverseIndex(index) : -1;
     }
@@ -655,7 +657,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return forwardList.size();
     }
 

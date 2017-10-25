@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -579,7 +580,7 @@ public final class Multisets {
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return IntMath.saturatedAdd(multiset1.size(), multiset2.size());
       }
 
@@ -1023,7 +1024,7 @@ public final class Multisets {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multiset().entrySet().size();
     }
   }

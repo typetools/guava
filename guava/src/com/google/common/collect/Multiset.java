@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -107,7 +108,7 @@ public interface Multiset<E extends @org.checkerframework.checker.nullness.qual.
    * multiset, which is given by {@code entrySet().size()}.
    */
   @Override
-  int size();
+  @NonNegative int size();
 
   /**
    * Returns the number of occurrences of an element in this multiset (the <i>count</i> of the
