@@ -107,7 +107,6 @@
             <compilerArgs>
               <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
               <arg>-AuseSafeDefaultsForUnannotatedSourceCode</arg>
-              <arg>-AignoreRangeOverflow</arg>
               <arg>-Awarns</arg>
               <arg>${addtionalargs}</arg>
               <arg>-AprintErrorStack</arg>
