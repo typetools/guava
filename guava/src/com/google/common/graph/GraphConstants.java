@@ -16,6 +16,8 @@
 
 package com.google.common.graph;
 
+import org.checkerframework.checker.index.qual.Positive;
+
 /** A utility class to hold various constants used by the Guava Graph library. */
 final class GraphConstants {
 
@@ -28,7 +30,7 @@ final class GraphConstants {
 
   // Load factor and capacity for "inner" (i.e. per node/edge element) hash sets or maps
   static final float INNER_LOAD_FACTOR = 1.0f;
-  static final int INNER_CAPACITY = 2; // ceiling(EXPECTED_DEGREE / INNER_LOAD_FACTOR)
+  static final @Positive int INNER_CAPACITY = 2; // ceiling(EXPECTED_DEGREE / INNER_LOAD_FACTOR)
 
   // Error messages
   static final String NODE_NOT_IN_GRAPH = "Node %s is not an element of this graph.";

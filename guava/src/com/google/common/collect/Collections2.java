@@ -477,7 +477,7 @@ public final class Collections2 {
   private static final class OrderedPermutationCollection<E> extends AbstractCollection<List<E>> {
     final ImmutableList<E> inputList;
     final Comparator<? super E> comparator;
-    final int size;
+    final @NonNegative int size;
 
     OrderedPermutationCollection(Iterable<E> input, Comparator<? super E> comparator) {
       this.inputList = ImmutableList.sortedCopyOf(comparator, input);

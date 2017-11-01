@@ -33,6 +33,9 @@ import com.google.common.primitives.Ints;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
+
 /**
  * A class for arithmetic on values of type {@code int}. Where possible, methods are defined and
  * named analogously to their {@code BigInteger} counterparts.
@@ -618,7 +621,7 @@ public final class IntMath {
    *
    * @throws IllegalArgumentException if {@code n < 0}
    */
-  public static int factorial(int n) {
+  public static @Positive int factorial(@NonNegative int n) {
     checkNonNegative("n", n);
     return (n < factorials.length) ? factorials[n] : Integer.MAX_VALUE;
   }

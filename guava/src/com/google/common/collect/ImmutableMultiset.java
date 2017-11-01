@@ -17,6 +17,7 @@
 package com.google.common.collect;
 
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -334,7 +335,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
 
   @GwtIncompatible // not present in emulated superclass
   @Override
-  int copyIntoArray(Object[] dst, int offset) {
+  int copyIntoArray(Object[] dst, @NonNegative int offset) {
     for (Multiset.Entry<E> entry : entrySet()) {
       Arrays.fill(dst, offset, offset + entry.getCount(), entry.getElement());
       offset += entry.getCount();
@@ -442,7 +443,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
 
   private static class SerializedForm implements Serializable {
     final Object[] elements;
-    final int[] counts;
+    final @SameLen("elements") int[] counts;
 
     SerializedForm(Multiset<?> multiset) {
       int distinct = multiset.entrySet().size();

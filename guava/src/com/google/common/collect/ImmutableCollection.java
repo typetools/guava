@@ -16,6 +16,8 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -336,7 +338,7 @@ public abstract class ImmutableCollection<E> extends AbstractCollection<E> imple
    * offset.  Returns {@code offset + size()}.
    */
   @CanIgnoreReturnValue
-  int copyIntoArray(Object[] dst, int offset) {
+  int copyIntoArray(Object[] dst, @NonNegative int offset) {
     for (E e : this) {
       dst[offset++] = e;
     }
@@ -459,10 +461,10 @@ public abstract class ImmutableCollection<E> extends AbstractCollection<E> imple
 
   abstract static class ArrayBasedBuilder<E> extends ImmutableCollection.Builder<E> {
     Object[] contents;
-    int size;
+    @IndexOrHigh("contents") int size;
     boolean forceCopy;
 
-    ArrayBasedBuilder(int initialCapacity) {
+    ArrayBasedBuilder(@NonNegative int initialCapacity) {
       checkNonnegative(initialCapacity, "initialCapacity");
       this.contents = new Object[initialCapacity];
       this.size = 0;

@@ -187,7 +187,7 @@ abstract class AbstractMultiset<E extends @org.checkerframework.checker.nullness
 
   abstract Iterator<Entry<E>> entryIterator();
 
-  abstract int distinctElements();
+  abstract @NonNegative int distinctElements();
 
   private transient Set<Entry<E>> entrySet;
 

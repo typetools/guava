@@ -1444,7 +1444,7 @@ public final class Sets {
       ImmutableList<List<E>> listAxes =
           new ImmutableList<List<E>>() {
             @Override
-            public int size() {
+            public @NonNegative int size() {
               return axes.size();
             }
 
@@ -1671,8 +1671,8 @@ public final class Sets {
    * @since 23.0
    */
   @Beta
-  public static <E> Set<Set<E>> combinations(Set<E> set, final int size) {
-    final ImmutableMap<E, Integer> index = Maps.indexMap(set);
+  public static <E> Set<Set<E>> combinations(Set<E> set, final @NonNegative int size) {
+    final ImmutableMap<E, @NonNegative Integer> index = Maps.indexMap(set);
     checkNonnegative(size, "size");
     checkArgument(size <= index.size(), "size (%s) must be <= set.size() (%s)", size, index.size());
     if (size == 0) {
@@ -1700,7 +1700,7 @@ public final class Sets {
             if (bits.isEmpty()) {
               bits.set(0, size);
             } else {
-              int firstSetBit = bits.nextSetBit(0);
+              @NonNegative int firstSetBit = bits.nextSetBit(0);
               int bitToFlip = bits.nextClearBit(firstSetBit);
 
               if (bitToFlip == index.size()) {

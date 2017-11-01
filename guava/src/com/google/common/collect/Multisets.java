@@ -1144,7 +1144,7 @@ public final class Multisets {
   /**
    * An implementation of {@link Multiset#size}.
    */
-  static int sizeImpl(Multiset<?> multiset) {
+  static @NonNegative int sizeImpl(Multiset<?> multiset) {
     long size = 0;
     for (Entry<?> entry : multiset.entrySet()) {
       size += entry.getCount();

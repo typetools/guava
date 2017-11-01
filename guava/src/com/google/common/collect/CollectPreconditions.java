@@ -18,6 +18,9 @@ package com.google.common.collect;
 
 import static com.google.common.base.Preconditions.checkState;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.EnsuresQualifier;
+
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
@@ -36,7 +39,8 @@ final class CollectPreconditions {
   }
 
   @CanIgnoreReturnValue
-  static int checkNonnegative(int value, String name) {
+  @EnsuresQualifier(expression="#1", qualifier=NonNegative.class)
+  static @NonNegative int checkNonnegative(int value, String name) {
     if (value < 0) {
       throw new IllegalArgumentException(name + " cannot be negative but was: " + value);
     }

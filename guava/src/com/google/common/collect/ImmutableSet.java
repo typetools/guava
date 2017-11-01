@@ -16,6 +16,8 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -160,7 +162,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * @throws NullPointerException if any of the first {@code n} elements of {@code elements} is
    *          null
    */
-  private static <E> ImmutableSet<E> construct(int n, Object... elements) {
+  private static <E> ImmutableSet<E> construct(@IndexOrHigh("#2") int n, Object... elements) {
     switch (n) {
       case 0:
         return of();
@@ -225,7 +227,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * can hold setSize elements with the desired load factor.  Always returns at least setSize + 2.
    */
   @VisibleForTesting
-  static int chooseTableSize(int setSize) {
+  static @NonNegative int chooseTableSize(@NonNegative int setSize) {
     setSize = Math.max(setSize, 2);
     // Correct the size for open addressing to match desired load factor.
     if (setSize < CUTOFF) {

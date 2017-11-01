@@ -123,7 +123,7 @@ public interface Multiset<E extends @org.checkerframework.checker.nullness.qual.
    * @return the number of occurrences of the element in this multiset; possibly zero but never
    *     negative
    */
-  int count(@Nullable @CompatibleWith("E") Object element);
+  @NonNegative int count(@Nullable @CompatibleWith("E") Object element);
 
   // Bulk Operations
 
@@ -275,7 +275,7 @@ public interface Multiset<E extends @org.checkerframework.checker.nullness.qual.
      *
      * @return the count of the element; never negative
      */
-    int getCount();
+    @NonNegative int getCount();
 
     /**
      * {@inheritDoc}

@@ -17,7 +17,9 @@
 package com.google.common.collect;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.UpperBoundBottom;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -367,7 +369,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * Views the array as an immutable list. Copies if the specified range does not cover the complete
    * array. Does not check for nulls.
    */
-  static <E> ImmutableList<E> asImmutableList(Object[] elements, int length) {
+  static <E> ImmutableList<E> asImmutableList(Object[] elements, @IndexOrHigh("#1") int length) {
     switch (length) {
       case 0:
         return of();
@@ -465,7 +467,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
 
   class SubList extends ImmutableList<E> {
     final transient int offset;
-    final transient int length;
+    final transient @NonNegative int length;
 
     SubList(int offset, int length) {
       this.offset = offset;
@@ -586,7 +588,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
   }
 
   @Override
-  int copyIntoArray(Object[] dst, int offset) {
+  int copyIntoArray(Object[] dst, @NonNegative int offset) {
     // this loop is faster for RandomAccess instances, which ImmutableLists are
     int size = size();
     for (int i = 0; i < size; i++) {
@@ -614,7 +616,9 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
       this.forwardList = backingList;
     }
 
-    private int reverseIndex(int index) {
+    // IndexFor cannot refer to custom collections
+    // https://github.com/kelloggm/checker-framework/issues/154
+    private @GTENegativeOne int reverseIndex(@UpperBoundBottom /*!IndexFor("this")*/ int index) {
       return (size() - 1) - index;
     }
 

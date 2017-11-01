@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -1062,7 +1063,7 @@ public final class Lists {
   /**
    * An implementation of {@link List#indexOf(Object)}.
    */
-  static int indexOfImpl(List<?> list, @Nullable Object element) {
+  static @GTENegativeOne int indexOfImpl(List<?> list, @Nullable Object element) {
     if (list instanceof RandomAccess) {
       return indexOfRandomAccess(list, element);
     } else {
@@ -1076,7 +1077,7 @@ public final class Lists {
     }
   }
 
-  private static int indexOfRandomAccess(List<?> list, @Nullable Object element) {
+  private static @GTENegativeOne int indexOfRandomAccess(List<?> list, @Nullable Object element) {
     int size = list.size();
     if (element == null) {
       for (int i = 0; i < size; i++) {
@@ -1097,7 +1098,7 @@ public final class Lists {
   /**
    * An implementation of {@link List#lastIndexOf(Object)}.
    */
-  static int lastIndexOfImpl(List<?> list, @Nullable Object element) {
+  static @GTENegativeOne int lastIndexOfImpl(List<?> list, @Nullable Object element) {
     if (list instanceof RandomAccess) {
       return lastIndexOfRandomAccess(list, element);
     } else {
@@ -1111,7 +1112,7 @@ public final class Lists {
     }
   }
 
-  private static int lastIndexOfRandomAccess(List<?> list, @Nullable Object element) {
+  private static @GTENegativeOne int lastIndexOfRandomAccess(List<?> list, @Nullable Object element) {
     if (element == null) {
       for (int i = list.size() - 1; i >= 0; i--) {
         if (list.get(i) == null) {
