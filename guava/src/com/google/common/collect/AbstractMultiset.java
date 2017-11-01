@@ -77,7 +77,7 @@ abstract class AbstractMultiset<E extends @org.checkerframework.checker.nullness
   }
 
   @Override
-  public int count(@Nullable Object element) {
+  public @NonNegative int count(@Nullable Object element) {
     for (Entry<E> entry : entrySet()) {
       if (Objects.equal(entry.getElement(), element)) {
         return entry.getCount();

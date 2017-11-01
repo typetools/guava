@@ -254,7 +254,7 @@ public final class Sets {
    *     without resizing
    * @throws IllegalArgumentException if {@code expectedSize} is negative
    */
-  public static <E extends @org.checkerframework.checker.nullness.qual.Nullable Object> HashSet<E> newHashSetWithExpectedSize(int expectedSize) {
+  public static <E extends @org.checkerframework.checker.nullness.qual.Nullable Object> HashSet<E> newHashSetWithExpectedSize(@NonNegative int expectedSize) {
     return new HashSet<E>(Maps.capacity(expectedSize));
   }
 
@@ -1584,7 +1584,7 @@ public final class Sets {
   }
 
   private static final class PowerSet<E> extends AbstractSet<Set<E>> {
-    final ImmutableMap<E, Integer> inputSet;
+    final ImmutableMap<E, @NonNegative Integer> inputSet;
 
     PowerSet(Set<E> input) {
       this.inputSet = Maps.indexMap(input);

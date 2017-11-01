@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -66,7 +67,7 @@ public abstract class ForwardingMultiset<E extends @org.checkerframework.checker
   protected abstract Multiset<E> delegate();
 
   @Override
-  public int count(@org.checkerframework.checker.nullness.qual.Nullable Object element) {
+  public @NonNegative int count(@org.checkerframework.checker.nullness.qual.Nullable Object element) {
     return delegate().count(element);
   }
 

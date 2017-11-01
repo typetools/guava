@@ -261,9 +261,9 @@ public final class Multisets {
 
   static class ImmutableEntry<E> extends AbstractEntry<E> implements Serializable {
     @Nullable private final E element;
-    private final int count;
+    private final @NonNegative int count;
 
-    ImmutableEntry(@Nullable E element, int count) {
+    ImmutableEntry(@Nullable E element, @NonNegative int count) {
       this.element = element;
       this.count = count;
       checkNonnegative(count, "count");
@@ -276,7 +276,7 @@ public final class Multisets {
     }
 
     @Override
-    public final int getCount() {
+    public final @NonNegative int getCount() {
       return count;
     }
 
@@ -362,12 +362,12 @@ public final class Multisets {
     }
 
     @Override
-    int distinctElements() {
+    @NonNegative int distinctElements() {
       return elementSet().size();
     }
 
     @Override
-    public int count(@Nullable Object element) {
+    public @NonNegative int count(@Nullable Object element) {
       int count = unfiltered.count(element);
       if (count > 0) {
         @SuppressWarnings("unchecked") // element is equal to an E
@@ -446,7 +446,7 @@ public final class Multisets {
       }
 
       @Override
-      public int count(Object element) {
+      public @NonNegative int count(Object element) {
         return Math.max(multiset1.count(element), multiset2.count(element));
       }
 
@@ -482,7 +482,7 @@ public final class Multisets {
       }
 
       @Override
-      int distinctElements() {
+      @NonNegative int distinctElements() {
         return elementSet().size();
       }
     };
@@ -509,7 +509,7 @@ public final class Multisets {
 
     return new AbstractMultiset<E>() {
       @Override
-      public int count(Object element) {
+      public @NonNegative int count(Object element) {
         int count1 = multiset1.count(element);
         return (count1 == 0) ? 0 : Math.min(count1, multiset2.count(element));
       }
@@ -540,7 +540,7 @@ public final class Multisets {
       }
 
       @Override
-      int distinctElements() {
+      @NonNegative int distinctElements() {
         return elementSet().size();
       }
     };
@@ -585,7 +585,7 @@ public final class Multisets {
       }
 
       @Override
-      public int count(Object element) {
+      public @NonNegative int count(Object element) {
         return multiset1.count(element) + multiset2.count(element);
       }
 
@@ -620,7 +620,7 @@ public final class Multisets {
       }
 
       @Override
-      int distinctElements() {
+      @NonNegative int distinctElements() {
         return elementSet().size();
       }
     };
@@ -650,7 +650,7 @@ public final class Multisets {
     // TODO(lowasser): consider making the entries live views
     return new AbstractMultiset<E>() {
       @Override
-      public int count(@Nullable Object element) {
+      public @NonNegative int count(@Nullable Object element) {
         int count1 = multiset1.count(element);
         return (count1 == 0) ? 0 : Math.max(0, count1 - multiset2.count(element));
       }
@@ -675,7 +675,7 @@ public final class Multisets {
       }
 
       @Override
-      int distinctElements() {
+      @NonNegative int distinctElements() {
         return Iterators.size(entryIterator());
       }
     };
