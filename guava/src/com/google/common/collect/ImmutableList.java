@@ -469,7 +469,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
     final transient int offset;
     final transient @NonNegative int length;
 
-    SubList(int offset, int length) {
+    SubList(int offset, @NonNegative int length) {
       this.offset = offset;
       this.length = length;
     }

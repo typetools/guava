@@ -364,7 +364,7 @@ public final class Sets {
    * @throws IllegalArgumentException if {@code expectedSize} is negative
    * @since 11.0
    */
-  public static <E> LinkedHashSet<E> newLinkedHashSetWithExpectedSize(int expectedSize) {
+  public static <E> LinkedHashSet<E> newLinkedHashSetWithExpectedSize(@NonNegative int expectedSize) {
     return new LinkedHashSet<E>(Maps.capacity(expectedSize));
   }
 

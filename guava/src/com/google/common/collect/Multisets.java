@@ -255,7 +255,7 @@ public final class Multisets {
    * @param n the count to be associated with the returned entry
    * @throws IllegalArgumentException if {@code n} is negative
    */
-  public static <E extends @org.checkerframework.checker.nullness.qual.Nullable Object> Multiset.Entry<E> immutableEntry(@Nullable E e, int n) {
+  public static <E extends @org.checkerframework.checker.nullness.qual.Nullable Object> Multiset.Entry<E> immutableEntry(@Nullable E e, @NonNegative int n) {
     return new ImmutableEntry<E>(e, n);
   }
 

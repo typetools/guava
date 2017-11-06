@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -167,7 +168,7 @@ public final class Iterators {
    * will be left exhausted: its {@code hasNext()} method will return
    * {@code false}.
    */
-  public static int size(Iterator<?> iterator) {
+  public static @NonNegative int size(Iterator<?> iterator) {
     long count = 0L;
     while (iterator.hasNext()) {
       iterator.next();

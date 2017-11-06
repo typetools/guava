@@ -494,7 +494,7 @@ public final class Collections2 {
      * permutations is increased by a factor of (n choose r).</li>
      * </ul>
      */
-    private static <E> int calculateSize(
+    private static <E> @NonNegative int calculateSize(
         List<E> sortedInputList, Comparator<? super E> comparator) {
       int permutations = 1;
       int n = 1;
