@@ -58,6 +58,7 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Collections2.java:[515,39] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
+  [tags] suppress-saturated
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Collections2.java:[700,19] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
   found   : @LowerBoundUnknown int
   required: an integer >= 0 (@NonNegative or @Positive)
