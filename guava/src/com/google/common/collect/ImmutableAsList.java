@@ -22,6 +22,8 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * List returned by {@link ImmutableCollection#asList} that delegates {@code contains} checks
  * to the backing collection.
@@ -42,7 +44,7 @@ abstract class ImmutableAsList<E> extends ImmutableList<E> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return delegateCollection().size();
   }
 
