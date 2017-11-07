@@ -580,6 +580,7 @@ public final class Multisets {
       }
 
       @Override
+      @SuppressWarnings("lowerbound:return.type.incompatible") // TODO link
       public @NonNegative int size() {
         return IntMath.saturatedAdd(multiset1.size(), multiset2.size());
       }
@@ -1144,6 +1145,7 @@ public final class Multisets {
   /**
    * An implementation of {@link Multiset#size}.
    */
+  @SuppressWarnings("lowerbound:return.type.incompatible") // TODO link
   static @NonNegative int sizeImpl(Multiset<?> multiset) {
     long size = 0;
     for (Entry<?> entry : multiset.entrySet()) {

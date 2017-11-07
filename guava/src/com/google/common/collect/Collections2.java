@@ -494,6 +494,8 @@ public final class Collections2 {
      * permutations is increased by a factor of (n choose r).</li>
      * </ul>
      */
+    // Both arguments to saturatedMultiply are NonNegative
+    @SuppressWarnings("lowerbound:return.type.incompatible") // TODO link
     private static <E> @NonNegative int calculateSize(
         List<E> sortedInputList, Comparator<? super E> comparator) {
       int permutations = 1;

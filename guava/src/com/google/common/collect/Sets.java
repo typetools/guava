@@ -1593,6 +1593,8 @@ public final class Sets {
     }
 
     @Override
+    // inputSet has at most 30 elements
+    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
     public @NonNegative int size() {
       return 1 << inputSet.size();
     }
@@ -1693,6 +1695,8 @@ public final class Sets {
       @Override
       public Iterator<Set<E>> iterator() {
         return new AbstractIterator<Set<E>>() {
+          // index.size() is NonNegative
+          @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/184
           final BitSet bits = new BitSet(index.size());
 
           @Override

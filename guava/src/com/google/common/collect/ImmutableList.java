@@ -204,6 +204,8 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * @since 3.0 (source-compatible since 2.0)
    */
   @SafeVarargs // For Eclipse. For internal javac we have disabled this pointless type of warning.
+  // array has at least 12 elements
+  @SuppressWarnings("array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/182
   public static <E> ImmutableList<E> of(
       E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9, E e10, E e11, E e12, E... others) {
     Object[] array = new Object[12 + others.length];
@@ -369,6 +371,8 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * Views the array as an immutable list. Copies if the specified range does not cover the complete
    * array. Does not check for nulls.
    */
+  // elements has at least one element
+  @SuppressWarnings("array.access.unsafe.high.constant") // TODO link
   static <E> ImmutableList<E> asImmutableList(Object[] elements, @IndexOrHigh("#1") int length) {
     switch (length) {
       case 0:

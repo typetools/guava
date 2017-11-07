@@ -95,6 +95,8 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * first specified. That is, if multiple elements are {@linkplain Object#equals equal}, all except
    * the first are ignored.
    */
+  // 2 is IndexOrHigh for varargs
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/typetools/checker-framework/issues/1635
   public static <E> ImmutableSet<E> of(E e1, E e2) {
     return construct(2, e1, e2);
   }
@@ -104,6 +106,8 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * first specified. That is, if multiple elements are {@linkplain Object#equals equal}, all except
    * the first are ignored.
    */
+  // 3 is IndexOrHigh for varargs
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/typetools/checker-framework/issues/1635
   public static <E> ImmutableSet<E> of(E e1, E e2, E e3) {
     return construct(3, e1, e2, e3);
   }
@@ -113,6 +117,8 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * first specified. That is, if multiple elements are {@linkplain Object#equals equal}, all except
    * the first are ignored.
    */
+  // 4 is IndexOrHigh for varargs
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/typetools/checker-framework/issues/1635
   public static <E> ImmutableSet<E> of(E e1, E e2, E e3, E e4) {
     return construct(4, e1, e2, e3, e4);
   }
@@ -122,6 +128,8 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * first specified. That is, if multiple elements are {@linkplain Object#equals equal}, all except
    * the first are ignored.
    */
+  // 5 is IndexOrHigh for varargs
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/typetools/checker-framework/issues/1635
   public static <E> ImmutableSet<E> of(E e1, E e2, E e3, E e4, E e5) {
     return construct(5, e1, e2, e3, e4, e5);
   }
@@ -134,6 +142,8 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * @since 3.0 (source-compatible since 2.0)
    */
   @SafeVarargs // For Eclipse. For internal javac we have disabled this pointless type of warning.
+  // elements has at least 6 elements
+  @SuppressWarnings("array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/182
   public static <E> ImmutableSet<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E... others) {
     final int paramCount = 6;
     Object[] elements = new Object[paramCount + others.length];
@@ -162,6 +172,9 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * @throws NullPointerException if any of the first {@code n} elements of {@code elements} is
    *          null
    */
+  // elements has at least one element
+  @SuppressWarnings("array.access.unsafe.high.constant") // TODO link
+  // https://github.com/kelloggm/checker-framework/issues/181
   private static <E> ImmutableSet<E> construct(@IndexOrHigh("#2") int n, Object... elements) {
     switch (n) {
       case 0:
@@ -219,6 +232,8 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
   private static final double DESIRED_LOAD_FACTOR = 0.7;
 
   // If the set has this many elements, it will "max out" the table size
+  // pointless warning
+  @SuppressWarnings("cast.unsafe") // https://github.com/kelloggm/checker-framework/issues/149
   private static final int CUTOFF = (int) (MAX_TABLE_SIZE * DESIRED_LOAD_FACTOR);
 
   /**
@@ -529,6 +544,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
       }
     }
     
+    // https://github.com/kelloggm/checker-framework/issues/181
     private void addDeduping(E element) {
       int mask = hashTable.length - 1;
       int hash = element.hashCode();
