@@ -495,7 +495,7 @@ public final class Collections2 {
      * </ul>
      */
     // Both arguments to saturatedMultiply are NonNegative
-    @SuppressWarnings("lowerbound:return.type.incompatible") // TODO link
+    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/187
     private static <E> @NonNegative int calculateSize(
         List<E> sortedInputList, Comparator<? super E> comparator) {
       int permutations = 1;

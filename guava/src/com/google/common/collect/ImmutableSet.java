@@ -173,7 +173,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    *          null
    */
   // elements has at least one element
-  @SuppressWarnings("array.access.unsafe.high.constant") // TODO link
+  @SuppressWarnings("array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/188
   // https://github.com/kelloggm/checker-framework/issues/181
   private static <E> ImmutableSet<E> construct(@IndexOrHigh("#2") int n, Object... elements) {
     switch (n) {

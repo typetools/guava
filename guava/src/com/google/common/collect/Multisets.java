@@ -580,7 +580,7 @@ public final class Multisets {
       }
 
       @Override
-      @SuppressWarnings("lowerbound:return.type.incompatible") // TODO link
+      @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/187
       public @NonNegative int size() {
         return IntMath.saturatedAdd(multiset1.size(), multiset2.size());
       }
@@ -1145,7 +1145,6 @@ public final class Multisets {
   /**
    * An implementation of {@link Multiset#size}.
    */
-  @SuppressWarnings("lowerbound:return.type.incompatible") // TODO link
   static @NonNegative int sizeImpl(Multiset<?> multiset) {
     long size = 0;
     for (Entry<?> entry : multiset.entrySet()) {

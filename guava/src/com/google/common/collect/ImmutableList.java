@@ -372,7 +372,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * array. Does not check for nulls.
    */
   // elements has at least one element
-  @SuppressWarnings("array.access.unsafe.high.constant") // TODO link
+  @SuppressWarnings("array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/188
   static <E> ImmutableList<E> asImmutableList(Object[] elements, @IndexOrHigh("#1") int length) {
     switch (length) {
       case 0:
