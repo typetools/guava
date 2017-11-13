@@ -40,7 +40,13 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.IndexOrLow;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.SubstringIndexFor;
+import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code double} primitives, that are not already found in
@@ -53,6 +59,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
  * @since 1.0
  */
 @GwtCompatible(emulated = true)
+@AnnotatedFor("index")
 public final class Doubles {
   private Doubles() {}
 
@@ -138,12 +145,12 @@ public final class Doubles {
    * @return the least index {@code i} for which {@code array[i] == target}, or {@code -1} if no
    *     such index exists.
    */
-  public static int indexOf(double[] array, double target) {
+  public static @IndexOrLow("#1") int indexOf(double[] array, double target) {
     return indexOf(array, target, 0, array.length);
   }
 
   // TODO(kevinb): consider making this public
-  private static int indexOf(double[] array, double target, int start, int end) {
+  private static @IndexOrLow("#1") int indexOf(double[] array, double target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = start; i < end; i++) {
       if (array[i] == target) {
         return i;
@@ -165,7 +172,7 @@ public final class Doubles {
    * @param array the array to search for the sequence {@code target}
    * @param target the array to search for as a sub-sequence of {@code array}
    */
-  public static int indexOf(double[] array, double[] target) {
+  public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset="#2.length - 1") int indexOf(double[] array, double[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
     if (target.length == 0) {
@@ -193,12 +200,12 @@ public final class Doubles {
    * @return the greatest index {@code i} for which {@code array[i] == target}, or {@code -1} if no
    *     such index exists.
    */
-  public static int lastIndexOf(double[] array, double target) {
+  public static @IndexOrLow("#1") int lastIndexOf(double[] array, double target) {
     return lastIndexOf(array, target, 0, array.length);
   }
 
   // TODO(kevinb): consider making this public
-  private static int lastIndexOf(double[] array, double target, int start, int end) {
+  private static @IndexOrLow("#1") int lastIndexOf(double[] array, double target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = end - 1; i >= start; i--) {
       if (array[i] == target) {
         return i;
@@ -216,7 +223,7 @@ public final class Doubles {
    *     the array
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static double min(double... array) {
+  public static double min(double @MinLen(1)... array) {
     checkArgument(array.length > 0);
     double min = array[0];
     for (int i = 1; i < array.length; i++) {
@@ -234,7 +241,7 @@ public final class Doubles {
    *     in the array
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static double max(double... array) {
+  public static double max(double @MinLen(1)... array) {
     checkArgument(array.length > 0);
     double max = array[0];
     for (int i = 1; i < array.length; i++) {
@@ -334,7 +341,7 @@ public final class Doubles {
    * @return an array containing the values of {@code array}, with guaranteed minimum length
    *     {@code minLength}
    */
-  public static double[] ensureCapacity(double[] array, int minLength, int padding) {
+  public static double[] ensureCapacity(double[] array, @NonNegative int minLength, @NonNegative int padding) {
     checkArgument(minLength >= 0, "Invalid minLength: %s", minLength);
     checkArgument(padding >= 0, "Invalid padding: %s", padding);
     return (array.length < minLength) ? Arrays.copyOf(array, minLength + padding) : array;
@@ -427,7 +434,7 @@ public final class Doubles {
    *
    * @since 23.1
    */
-  public static void sortDescending(double[] array, int fromIndex, int toIndex) {
+  public static void sortDescending(double[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     Arrays.sort(array, fromIndex, toIndex);
@@ -455,7 +462,7 @@ public final class Doubles {
    *     {@code toIndex > fromIndex}
    * @since 23.1
    */
-  public static void reverse(double[] array, int fromIndex, int toIndex) {
+  public static void reverse(double[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     for (int i = fromIndex, j = toIndex - 1; i < j; i++, j--) {
@@ -522,14 +529,14 @@ public final class Doubles {
   private static class DoubleArrayAsList extends AbstractList<Double>
       implements RandomAccess, Serializable {
     final double[] array;
-    final int start;
-    final int end;
+    final @IndexOrHigh("array") int start;
+    final @IndexOrHigh("array") int end;
 
     DoubleArrayAsList(double[] array) {
       this(array, 0, array.length);
     }
 
-    DoubleArrayAsList(double[] array, int start, int end) {
+    DoubleArrayAsList(double[] array, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
       this.end = end;
@@ -546,7 +553,7 @@ public final class Doubles {
     }
 
     @Override
-    public Double get(int index) {
+    public Double get(@NonNegative int index) {
       checkElementIndex(index, size());
       return array[start + index];
     }
@@ -588,7 +595,7 @@ public final class Doubles {
     }
 
     @Override
-    public Double set(int index, Double element) {
+    public Double set(@NonNegative int index, Double element) {
       checkElementIndex(index, size());
       double oldValue = array[start + index];
       // checkNotNull for GWT (do not optimize)
@@ -597,7 +604,7 @@ public final class Doubles {
     }
 
     @Override
-    public List<Double> subList(int fromIndex, int toIndex) {
+    public List<Double> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);
       if (fromIndex == toIndex) {

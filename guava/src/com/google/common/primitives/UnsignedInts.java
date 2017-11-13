@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
@@ -83,7 +84,7 @@ public final class UnsignedInts {
    *
    * <p><b>Java 8 users:</b> use {@link Integer#toUnsignedLong(int)} instead.
    */
-  public static long toLong(int value) {
+  public static @NonNegative long toLong(int value) {
     return value & INT_MASK;
   }
 

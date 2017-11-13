@@ -14,17 +14,21 @@
 
 package com.google.common.primitives;
 
+import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 import com.google.common.annotations.GwtCompatible;
 
 /**
  * A string to be parsed as a number and the radix to interpret it in.
  */
 @GwtCompatible
+@AnnotatedFor("index")
 final class ParseRequest {
   final String rawValue;
-  final int radix;
+  final @Positive int radix;
 
-  private ParseRequest(String rawValue, int radix) {
+  private ParseRequest(String rawValue, @Positive int radix) {
     this.rawValue = rawValue;
     this.radix = radix;
   }
@@ -36,7 +40,7 @@ final class ParseRequest {
 
     // Handle radix specifier if present
     String rawValue;
-    int radix;
+    @Positive int radix;
     char firstChar = stringValue.charAt(0);
     if (stringValue.startsWith("0x") || stringValue.startsWith("0X")) {
       rawValue = stringValue.substring(2);

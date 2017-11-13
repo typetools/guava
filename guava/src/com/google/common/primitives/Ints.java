@@ -36,7 +36,15 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.IndexOrLow;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.index.qual.SubstringIndexFor;
+import org.checkerframework.common.value.qual.IntRange;
+import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code int} primitives, that are not already found in either
@@ -49,6 +57,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
  * @since 1.0
  */
 @GwtCompatible
+@AnnotatedFor("index")
 public final class Ints {
   private Ints() {}
 
@@ -87,7 +96,7 @@ public final class Ints {
    * @throws IllegalArgumentException if {@code value} is greater than {@link Integer#MAX_VALUE} or
    *     less than {@link Integer#MIN_VALUE}
    */
-  public static int checkedCast(long value) {
+  public static int checkedCast(@IntRange(from = Integer.MIN_VALUE, to = Integer.MAX_VALUE) long value) {
     int result = (int) value;
     checkArgument(result == value, "Out of range: %s", value);
     return result;
@@ -152,12 +161,12 @@ public final class Ints {
    * @return the least index {@code i} for which {@code array[i] == target}, or {@code -1} if no
    *     such index exists.
    */
-  public static int indexOf(int[] array, int target) {
+  public static @IndexOrLow("#1") int indexOf(int[] array, int target) {
     return indexOf(array, target, 0, array.length);
   }
 
   // TODO(kevinb): consider making this public
-  private static int indexOf(int[] array, int target, int start, int end) {
+  private static @IndexOrLow("#1") int indexOf(int[] array, int target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = start; i < end; i++) {
       if (array[i] == target) {
         return i;
@@ -177,7 +186,7 @@ public final class Ints {
    * @param array the array to search for the sequence {@code target}
    * @param target the array to search for as a sub-sequence of {@code array}
    */
-  public static int indexOf(int[] array, int[] target) {
+  public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset="#2.length - 1") int indexOf(int[] array, int[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
     if (target.length == 0) {
@@ -204,12 +213,12 @@ public final class Ints {
    * @return the greatest index {@code i} for which {@code array[i] == target}, or {@code -1} if no
    *     such index exists.
    */
-  public static int lastIndexOf(int[] array, int target) {
+  public static @IndexOrLow("#1") int lastIndexOf(int[] array, int target) {
     return lastIndexOf(array, target, 0, array.length);
   }
 
   // TODO(kevinb): consider making this public
-  private static int lastIndexOf(int[] array, int target, int start, int end) {
+  private static @IndexOrLow("#1") int lastIndexOf(int[] array, int target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = end - 1; i >= start; i--) {
       if (array[i] == target) {
         return i;
@@ -226,7 +235,7 @@ public final class Ints {
    *     the array
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static int min(int... array) {
+  public static int min(int @MinLen(1)... array) {
     checkArgument(array.length > 0);
     int min = array[0];
     for (int i = 1; i < array.length; i++) {
@@ -245,7 +254,7 @@ public final class Ints {
    *     in the array
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static int max(int... array) {
+  public static int max(int @MinLen(1)... array) {
     checkArgument(array.length > 0);
     int max = array[0];
     for (int i = 1; i < array.length; i++) {
@@ -393,7 +402,7 @@ public final class Ints {
    * @return an array containing the values of {@code array}, with guaranteed minimum length
    *     {@code minLength}
    */
-  public static int[] ensureCapacity(int[] array, int minLength, int padding) {
+  public static int[] ensureCapacity(int[] array, @NonNegative int minLength, @NonNegative int padding) {
     checkArgument(minLength >= 0, "Invalid minLength: %s", minLength);
     checkArgument(padding >= 0, "Invalid padding: %s", padding);
     return (array.length < minLength) ? Arrays.copyOf(array, minLength + padding) : array;
@@ -475,7 +484,7 @@ public final class Ints {
    *
    * @since 23.1
    */
-  public static void sortDescending(int[] array, int fromIndex, int toIndex) {
+  public static void sortDescending(int[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     Arrays.sort(array, fromIndex, toIndex);
@@ -503,7 +512,7 @@ public final class Ints {
    *     {@code toIndex > fromIndex}
    * @since 23.1
    */
-  public static void reverse(int[] array, int fromIndex, int toIndex) {
+  public static void reverse(int[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     for (int i = fromIndex, j = toIndex - 1; i < j; i++, j--) {
@@ -567,14 +576,14 @@ public final class Ints {
   private static class IntArrayAsList extends AbstractList<Integer>
       implements RandomAccess, Serializable {
     final int[] array;
-    final int start;
-    final int end;
+    final @IndexOrHigh("array") int start;
+    final @IndexOrHigh("array") int end;
 
     IntArrayAsList(int[] array) {
       this(array, 0, array.length);
     }
 
-    IntArrayAsList(int[] array, int start, int end) {
+    IntArrayAsList(int[] array, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
       this.end = end;
@@ -591,7 +600,7 @@ public final class Ints {
     }
 
     @Override
-    public Integer get(int index) {
+    public Integer get(@NonNegative int index) {
       checkElementIndex(index, size());
       return array[start + index];
     }
@@ -632,7 +641,7 @@ public final class Ints {
     }
 
     @Override
-    public Integer set(int index, Integer element) {
+    public Integer set(@NonNegative int index, Integer element) {
       checkElementIndex(index, size());
       int oldValue = array[start + index];
       // checkNotNull for GWT (do not optimize)
@@ -641,7 +650,7 @@ public final class Ints {
     }
 
     @Override
-    public List<Integer> subList(int fromIndex, int toIndex) {
+    public List<Integer> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);
       if (fromIndex == toIndex) {
@@ -742,7 +751,7 @@ public final class Ints {
   @Beta
   @Nullable
   @CheckForNull
-  public static Integer tryParse(String string, int radix) {
+  public static Integer tryParse(String string, @Positive int radix) {
     Long result = Longs.tryParse(string, radix);
     if (result == null || result.longValue() != result.intValue()) {
       return null;
