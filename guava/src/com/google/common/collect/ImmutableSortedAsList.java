@@ -20,6 +20,8 @@ import java.util.Comparator;
 import java.util.Spliterator;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+
 /**
  * List returned by {@code ImmutableSortedSet.asList()} when the set isn't empty.
  *
