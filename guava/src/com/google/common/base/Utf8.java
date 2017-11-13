@@ -137,6 +137,7 @@ public final class Utf8 {
     return true;
   }
 
+  @SuppressWarnings("cast.unsafe") // https://github.com/kelloggm/checker-framework/issues/149
   private static boolean isWellFormedSlowPath(byte[] bytes, int off, int end) {
     int index = off;
     while (true) {
