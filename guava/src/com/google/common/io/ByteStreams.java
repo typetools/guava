@@ -38,6 +38,9 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.Arrays;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Provides utility methods for working with byte arrays and I/O streams.
  *
@@ -320,7 +323,7 @@ public final class ByteStreams {
     }
 
     @Override
-    public int readUnsignedByte() {
+    public @NonNegative int readUnsignedByte() {
       try {
         return input.readUnsignedByte();
       } catch (IOException e) {
@@ -338,7 +341,7 @@ public final class ByteStreams {
     }
 
     @Override
-    public int readUnsignedShort() {
+    public @NonNegative int readUnsignedShort() {
       try {
         return input.readUnsignedShort();
       } catch (IOException e) {
@@ -649,7 +652,7 @@ public final class ByteStreams {
     }
 
     @Override
-    public int available() throws IOException {
+    public @NonNegative int available() throws IOException {
       return (int) Math.min(in.available(), left);
     }
 
@@ -661,7 +664,7 @@ public final class ByteStreams {
     }
 
     @Override
-    public int read() throws IOException {
+    public @GTENegativeOne int read() throws IOException {
       if (left == 0) {
         return -1;
       }
@@ -674,7 +677,7 @@ public final class ByteStreams {
     }
 
     @Override
-    public int read(byte[] b, int off, int len) throws IOException {
+    public @GTENegativeOne int read(byte[] b, int off, int len) throws IOException {
       if (left == 0) {
         return -1;
       }

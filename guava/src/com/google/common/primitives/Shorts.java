@@ -32,6 +32,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.RandomAccess;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+
 /**
  * Static utility methods pertaining to {@code short} primitives, that are not already found in
  * either {@link Short} or {@link Arrays}.
@@ -595,7 +597,7 @@ public final class Shorts {
     }
 
     @Override
-    public int indexOf(Object target) {
+    public @GTENegativeOne int indexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Short) {
         int i = Shorts.indexOf(array, (Short) target, start, end);
@@ -607,7 +609,7 @@ public final class Shorts {
     }
 
     @Override
-    public int lastIndexOf(Object target) {
+    public @GTENegativeOne int lastIndexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Short) {
         int i = Shorts.lastIndexOf(array, (Short) target, start, end);

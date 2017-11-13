@@ -19,6 +19,8 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.io.DataInput;
 import java.io.IOException;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * An extension of {@code DataInput} for reading from in-memory byte arrays; its methods offer
  * identical functionality but do not throw {@link IOException}.
@@ -54,7 +56,7 @@ public interface ByteArrayDataInput extends DataInput {
 
   @CanIgnoreReturnValue // to skip a byte
   @Override
-  int readUnsignedByte();
+  @NonNegative int readUnsignedByte();
 
   @CanIgnoreReturnValue // to skip some bytes
   @Override
@@ -62,7 +64,7 @@ public interface ByteArrayDataInput extends DataInput {
 
   @CanIgnoreReturnValue // to skip some bytes
   @Override
-  int readUnsignedShort();
+  @NonNegative int readUnsignedShort();
 
   @CanIgnoreReturnValue // to skip some bytes
   @Override

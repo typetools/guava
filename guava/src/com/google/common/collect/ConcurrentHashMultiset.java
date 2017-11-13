@@ -31,6 +31,7 @@ import com.google.common.annotations.GwtIncompatible;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Serialization.FieldSetter;
 import com.google.common.math.IntMath;
+import com.google.common.primitives.GTENegativeOne;
 import com.google.common.primitives.Ints;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.j2objc.annotations.WeakOuter;
@@ -143,7 +144,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    * @return the nonnegative number of occurrences of the element
    */
   @Override
-  public int count(@Nullable Object element) {
+  public @NonNegative int count(@Nullable Object element) {
     AtomicInteger existingCounter = Maps.safeGet(countMap, element);
     return (existingCounter == null) ? 0 : existingCounter.get();
   }
@@ -207,7 +208,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    */
   @CanIgnoreReturnValue
   @Override
-  public int add(E element, int occurrences) {
+  public @NonNegative int add(E element, @NonNegative int occurrences) {
     checkNotNull(element);
     if (occurrences == 0) {
       return count(element);
@@ -274,7 +275,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    */
   @CanIgnoreReturnValue
   @Override
-  public int remove(@Nullable Object element, int occurrences) {
+  public @NonNegative int remove(@Nullable Object element, @NonNegative int occurrences) {
     if (occurrences == 0) {
       return count(element);
     }
@@ -351,7 +352,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    */
   @CanIgnoreReturnValue
   @Override
-  public int setCount(E element, int count) {
+  public @NonNegative int setCount(E element, @NonNegative int count) {
     checkNotNull(element);
     checkNonnegative(count, "count");
     while (true) {
@@ -408,7 +409,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    */
   @CanIgnoreReturnValue
   @Override
-  public boolean setCount(E element, int expectedOldCount, int newCount) {
+  public boolean setCount(E element, @NonNegative int expectedOldCount, @NonNegative int newCount) {
     checkNotNull(element);
     checkNonnegative(expectedOldCount, "oldCount");
     checkNonnegative(newCount, "newCount");

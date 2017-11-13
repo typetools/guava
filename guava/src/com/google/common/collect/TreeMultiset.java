@@ -228,7 +228,7 @@ public final class TreeMultiset<E extends @org.checkerframework.checker.nullness
   }
 
   @Override
-  int distinctElements() {
+  @NonNegative int distinctElements() {
     return Ints.saturatedCast(aggregateForEntries(Aggregate.DISTINCT));
   }
 
@@ -347,7 +347,7 @@ public final class TreeMultiset<E extends @org.checkerframework.checker.nullness
       }
 
       @Override
-      public int getCount() {
+      public @NonNegative int getCount() {
         int result = baseEntry.getCount();
         if (result == 0) {
           return count(getElement());
@@ -937,7 +937,7 @@ public final class TreeMultiset<E extends @org.checkerframework.checker.nullness
     }
 
     @Override
-    public int getCount() {
+    public @NonNegative int getCount() {
       return elemCount;
     }
 

@@ -348,7 +348,7 @@ class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V> implements Filt
     }
 
     @Override
-    public int remove(@Nullable Object key, int occurrences) {
+    public @NonNegative int remove(@Nullable Object key, int occurrences) {
       checkNonnegative(occurrences, "occurrences");
       if (occurrences == 0) {
         return count(key);

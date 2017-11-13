@@ -27,6 +27,8 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * An implementation of {@link DataInput} that uses little-endian byte ordering for reading
  * {@code short}, {@code int}, {@code float}, {@code double}, and {@code long} values.
@@ -77,7 +79,7 @@ public final class LittleEndianDataInputStream extends FilterInputStream impleme
 
   @CanIgnoreReturnValue // to skip a byte
   @Override
-  public int readUnsignedByte() throws IOException {
+  public @NonNegative int readUnsignedByte() throws IOException {
     int b1 = in.read();
     if (0 > b1) {
       throw new EOFException();
@@ -96,7 +98,7 @@ public final class LittleEndianDataInputStream extends FilterInputStream impleme
    */
   @CanIgnoreReturnValue // to skip some bytes
   @Override
-  public int readUnsignedShort() throws IOException {
+  public @NonNegative int readUnsignedShort() throws IOException {
     byte b1 = readAndCheckByte();
     byte b2 = readAndCheckByte();
 

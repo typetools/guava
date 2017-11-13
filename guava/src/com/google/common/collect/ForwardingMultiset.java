@@ -73,13 +73,13 @@ public abstract class ForwardingMultiset<E extends @org.checkerframework.checker
 
   @CanIgnoreReturnValue
   @Override
-  public int add(E element, int occurrences) {
+  public @NonNegative int add(E element, @NonNegative int occurrences) {
     return delegate().add(element, occurrences);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public int remove(@org.checkerframework.checker.nullness.qual.Nullable Object element, int occurrences) {
+  public @NonNegative int remove(@org.checkerframework.checker.nullness.qual.Nullable Object element, @NonNegative int occurrences) {
     return delegate().remove(element, occurrences);
   }
 
@@ -109,13 +109,13 @@ public abstract class ForwardingMultiset<E extends @org.checkerframework.checker
 
   @CanIgnoreReturnValue
   @Override
-  public int setCount(E element, int count) {
+  public @NonNegative int setCount(E element, @NonNegative int count) {
     return delegate().setCount(element, count);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public boolean setCount(E element, int oldCount, int newCount) {
+  public boolean setCount(E element, @NonNegative int oldCount, @NonNegative int newCount) {
     return delegate().setCount(element, oldCount, newCount);
   }
 

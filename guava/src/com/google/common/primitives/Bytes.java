@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.RandomAccess;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
@@ -281,7 +282,7 @@ public final class Bytes {
     }
 
     @Override
-    public int indexOf(Object target) {
+    public @GTENegativeOne int indexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Byte) {
         int i = Bytes.indexOf(array, (Byte) target, start, end);
@@ -293,7 +294,7 @@ public final class Bytes {
     }
 
     @Override
-    public int lastIndexOf(Object target) {
+    public @GTENegativeOne int lastIndexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Byte) {
         int i = Bytes.lastIndexOf(array, (Byte) target, start, end);

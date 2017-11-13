@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -401,7 +402,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public int indexOf(@org.checkerframework.checker.nullness.qual.Nullable Object o) {
+    public @GTENegativeOne int indexOf(@org.checkerframework.checker.nullness.qual.Nullable Object o) {
       synchronized (mutex) {
         return delegate().indexOf(o);
       }
@@ -409,7 +410,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public int lastIndexOf(@org.checkerframework.checker.nullness.qual.Nullable Object o) {
+    public @GTENegativeOne int lastIndexOf(@org.checkerframework.checker.nullness.qual.Nullable Object o) {
       synchronized (mutex) {
         return delegate().lastIndexOf(o);
       }
@@ -515,35 +516,35 @@ final class Synchronized {
     }
 
     @Override
-    public int count(@org.checkerframework.checker.nullness.qual.Nullable Object o) {
+    public @NonNegative int count(@org.checkerframework.checker.nullness.qual.Nullable Object o) {
       synchronized (mutex) {
         return delegate().count(o);
       }
     }
 
     @Override
-    public int add(E e, int n) {
+    public @NonNegative int add(E e, @NonNegative int n) {
       synchronized (mutex) {
         return delegate().add(e, n);
       }
     }
 
     @Override
-    public int remove(@org.checkerframework.checker.nullness.qual.Nullable Object o, int n) {
+    public @NonNegative int remove(@org.checkerframework.checker.nullness.qual.Nullable Object o, @NonNegative int n) {
       synchronized (mutex) {
         return delegate().remove(o, n);
       }
     }
 
     @Override
-    public int setCount(E element, int count) {
+    public @NonNegative int setCount(E element, @NonNegative int count) {
       synchronized (mutex) {
         return delegate().setCount(element, count);
       }
     }
 
     @Override
-    public boolean setCount(E element, int oldCount, int newCount) {
+    public boolean setCount(E element, @NonNegative int oldCount, @NonNegative int newCount) {
       synchronized (mutex) {
         return delegate().setCount(element, oldCount, newCount);
       }

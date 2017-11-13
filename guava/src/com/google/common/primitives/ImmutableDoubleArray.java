@@ -35,6 +35,7 @@ import java.util.stream.DoubleStream;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**

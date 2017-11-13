@@ -35,6 +35,7 @@ import java.util.stream.LongStream;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
@@ -483,12 +484,12 @@ public final class ImmutableLongArray implements Serializable {
     }
 
     @Override
-    public int indexOf(Object target) {
+    public @GTENegativeOne int indexOf(Object target) {
       return target instanceof Long ? parent.indexOf((Long) target) : -1;
     }
 
     @Override
-    public int lastIndexOf(Object target) {
+    public @GTENegativeOne int lastIndexOf(Object target) {
       return target instanceof Long ? parent.lastIndexOf((Long) target) : -1;
     }
 

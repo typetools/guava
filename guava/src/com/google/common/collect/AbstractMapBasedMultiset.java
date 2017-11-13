@@ -110,7 +110,7 @@ abstract class AbstractMapBasedMultiset<E extends @org.checkerframework.checker.
           }
 
           @Override
-          public int getCount() {
+          public @NonNegative int getCount() {
             Count count = mapEntry.getValue();
             if (count == null || count.get() == 0) {
               Count frequency = backingMap.get(getElement());
@@ -148,7 +148,7 @@ abstract class AbstractMapBasedMultiset<E extends @org.checkerframework.checker.
   }
 
   @Override
-  int distinctElements() {
+  @NonNegative int distinctElements() {
     return backingMap.size();
   }
 
@@ -212,7 +212,7 @@ abstract class AbstractMapBasedMultiset<E extends @org.checkerframework.checker.
   }
 
   @Override
-  public int count(@Nullable Object element) {
+  public @NonNegative int count(@Nullable Object element) {
     Count frequency = Maps.safeGet(backingMap, element);
     return (frequency == null) ? 0 : frequency.get();
   }
@@ -228,7 +228,7 @@ abstract class AbstractMapBasedMultiset<E extends @org.checkerframework.checker.
    */
   @CanIgnoreReturnValue
   @Override
-  public int add(@Nullable E element, int occurrences) {
+  public @NonNegative int add(@Nullable E element, @NonNegative int occurrences) {
     if (occurrences == 0) {
       return count(element);
     }
@@ -250,7 +250,7 @@ abstract class AbstractMapBasedMultiset<E extends @org.checkerframework.checker.
 
   @CanIgnoreReturnValue
   @Override
-  public int remove(@Nullable Object element, int occurrences) {
+  public @NonNegative int remove(@Nullable Object element, @NonNegative int occurrences) {
     if (occurrences == 0) {
       return count(element);
     }
@@ -278,7 +278,7 @@ abstract class AbstractMapBasedMultiset<E extends @org.checkerframework.checker.
   // Roughly a 33% performance improvement over AbstractMultiset.setCount().
   @CanIgnoreReturnValue
   @Override
-  public int setCount(@Nullable E element, int count) {
+  public @NonNegative int setCount(@Nullable E element, @NonNegative int count) {
     checkNonnegative(count, "count");
 
     Count existingCounter;
@@ -299,7 +299,7 @@ abstract class AbstractMapBasedMultiset<E extends @org.checkerframework.checker.
     return oldCount;
   }
 
-  private static int getAndSet(@Nullable Count i, int count) {
+  private static @NonNegative int getAndSet(@Nullable Count i, int count) {
     if (i == null) {
       return 0;
     }

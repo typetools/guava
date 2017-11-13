@@ -22,6 +22,8 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+
 /**
  * An {@link InputStream} that maintains a hash of the data read from it.
  *
@@ -49,7 +51,7 @@ public final class HashingInputStream extends FilterInputStream {
    */
   @Override
   @CanIgnoreReturnValue
-  public int read() throws IOException {
+  public @GTENegativeOne int read() throws IOException {
     int b = in.read();
     if (b != -1) {
       hasher.putByte((byte) b);

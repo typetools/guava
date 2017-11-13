@@ -290,7 +290,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
   @CanIgnoreReturnValue
   @Deprecated
   @Override
-  public final int add(E element, int occurrences) {
+  public final @NonNegative int add(E element, @NonNegative int occurrences) {
     throw new UnsupportedOperationException();
   }
 
@@ -303,7 +303,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
   @CanIgnoreReturnValue
   @Deprecated
   @Override
-  public final int remove(@org.checkerframework.checker.nullness.qual.Nullable Object element, int occurrences) {
+  public final @NonNegative int remove(@org.checkerframework.checker.nullness.qual.Nullable Object element, @NonNegative int occurrences) {
     throw new UnsupportedOperationException();
   }
 
@@ -316,7 +316,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
   @CanIgnoreReturnValue
   @Deprecated
   @Override
-  public final int setCount(E element, int count) {
+  public final @NonNegative int setCount(E element, @NonNegative int count) {
     throw new UnsupportedOperationException();
   }
 
@@ -329,7 +329,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
   @CanIgnoreReturnValue
   @Deprecated
   @Override
-  public final boolean setCount(E element, int oldCount, int newCount) {
+  public final boolean setCount(E element, @NonNegative int oldCount, @NonNegative int newCount) {
     throw new UnsupportedOperationException();
   }
 

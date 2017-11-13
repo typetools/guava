@@ -39,6 +39,7 @@ import java.util.regex.Pattern;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
@@ -563,7 +564,7 @@ public final class Doubles {
     }
 
     @Override
-    public int indexOf(Object target) {
+    public @GTENegativeOne int indexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Double) {
         int i = Doubles.indexOf(array, (Double) target, start, end);
@@ -575,7 +576,7 @@ public final class Doubles {
     }
 
     @Override
-    public int lastIndexOf(Object target) {
+    public @GTENegativeOne int lastIndexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Double) {
         int i = Doubles.lastIndexOf(array, (Double) target, start, end);

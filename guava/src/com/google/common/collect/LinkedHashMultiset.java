@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -115,7 +116,7 @@ public final class LinkedHashMultiset<E extends @org.checkerframework.checker.nu
 public boolean contains(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.contains(arg0); }
 
 @Override
-public int count(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.count(arg0); }
+public @NonNegative int count(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.count(arg0); }
 
 @Pure
 @Override
@@ -125,7 +126,7 @@ public boolean equals(@org.checkerframework.checker.nullness.qual.Nullable Objec
 public boolean remove(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.remove(arg0); }
 
 @Override
-public int remove(@org.checkerframework.checker.nullness.qual.Nullable Object arg0, int arg1) { return super.remove(arg0, arg1); }
+public @NonNegative int remove(@org.checkerframework.checker.nullness.qual.Nullable Object arg0, @NonNegative int arg1) { return super.remove(arg0, arg1); }
 
 @Pure
 @Override

@@ -88,13 +88,13 @@ public abstract class ForwardingList<E extends @org.checkerframework.checker.nul
 
   @Pure
   @Override
-  public int indexOf(@org.checkerframework.checker.nullness.qual.Nullable Object element) {
+  public @GTENegativeOne int indexOf(@org.checkerframework.checker.nullness.qual.Nullable Object element) {
     return delegate().indexOf(element);
   }
 
   @Pure
   @Override
-  public int lastIndexOf(@org.checkerframework.checker.nullness.qual.Nullable Object element) {
+  public @GTENegativeOne int lastIndexOf(@org.checkerframework.checker.nullness.qual.Nullable Object element) {
     return delegate().lastIndexOf(element);
   }
 

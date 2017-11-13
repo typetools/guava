@@ -35,6 +35,7 @@ import java.util.Spliterators;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
@@ -607,7 +608,7 @@ public final class Ints {
     }
 
     @Override
-    public int indexOf(Object target) {
+    public @GTENegativeOne int indexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Integer) {
         int i = Ints.indexOf(array, (Integer) target, start, end);
@@ -619,7 +620,7 @@ public final class Ints {
     }
 
     @Override
-    public int lastIndexOf(Object target) {
+    public @GTENegativeOne int lastIndexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Integer) {
         int i = Ints.lastIndexOf(array, (Integer) target, start, end);

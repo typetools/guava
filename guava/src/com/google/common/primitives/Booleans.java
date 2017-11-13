@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkPositionIndexes;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
+
 import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.Arrays;
@@ -32,6 +33,7 @@ import java.util.RandomAccess;
 import javax.annotation.Nullable;
 
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 
 /**
  * Static utility methods pertaining to {@code boolean} primitives, that are not already found in
@@ -421,7 +423,7 @@ public final class Booleans {
     }
 
     @Override
-    public int indexOf(Object target) {
+    public @GTENegativeOne int indexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Boolean) {
         int i = Booleans.indexOf(array, (Boolean) target, start, end);
@@ -433,7 +435,7 @@ public final class Booleans {
     }
 
     @Override
-    public int lastIndexOf(Object target) {
+    public @GTENegativeOne int lastIndexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Boolean) {
         int i = Booleans.lastIndexOf(array, (Boolean) target, start, end);
