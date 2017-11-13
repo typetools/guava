@@ -24,6 +24,12 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.common.value.qual.IntRange;
+import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * Static utility methods pertaining to {@code int} primitives that interpret values as
  * <i>unsigned</i> (that is, any negative value {@code x} is treated as the positive value
@@ -47,6 +53,7 @@ import java.util.Comparator;
  */
 @Beta
 @GwtCompatible
+@AnnotatedFor("index")
 public final class UnsignedInts {
   static final long INT_MASK = 0xffffffffL;
 
@@ -90,7 +97,7 @@ public final class UnsignedInts {
    *     2<sup>32</sup>
    * @since 21.0
    */
-  public static int checkedCast(long value) {
+  public static int checkedCast(@IntRange(from = 0, to = (2l << 32) - 1) long value) {
     checkArgument((value >> Integer.SIZE) == 0, "out of range: %s", value);
     return (int) value;
   }
@@ -122,7 +129,7 @@ public final class UnsignedInts {
    *     the array according to {@link #compare}
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static int min(int... array) {
+  public static int min(int @MinLen(1)... array) {
     checkArgument(array.length > 0);
     int min = flip(array[0]);
     for (int i = 1; i < array.length; i++) {
@@ -142,7 +149,7 @@ public final class UnsignedInts {
    *     in the array according to {@link #compare}
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static int max(int... array) {
+  public static int max(int @MinLen(1)... array) {
     checkArgument(array.length > 0);
     int max = flip(array[0]);
     for (int i = 1; i < array.length; i++) {
@@ -226,7 +233,7 @@ public final class UnsignedInts {
    *
    * @since 23.1
    */
-  public static void sort(int[] array, int fromIndex, int toIndex) {
+  public static void sort(int[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     for (int i = fromIndex; i < toIndex; i++) {
@@ -255,7 +262,7 @@ public final class UnsignedInts {
    *
    * @since 23.1
    */
-  public static void sortDescending(int[] array, int fromIndex, int toIndex) {
+  public static void sortDescending(int[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     for (int i = fromIndex; i < toIndex; i++) {
@@ -352,7 +359,7 @@ public final class UnsignedInts {
    *     {@link Integer#parseInt(String)})
    */
   @CanIgnoreReturnValue
-  public static int parseUnsignedInt(String string, int radix) {
+  public static int parseUnsignedInt(String string, @NonNegative int radix) {
     checkNotNull(string);
     long result = Long.parseLong(string, radix);
     if ((result & INT_MASK) != result) {
@@ -382,7 +389,7 @@ public final class UnsignedInts {
    * @throws IllegalArgumentException if {@code radix} is not between {@link Character#MIN_RADIX}
    *     and {@link Character#MAX_RADIX}.
    */
-  public static String toString(int x, int radix) {
+  public static String toString(int x, @NonNegative int radix) {
     long asLong = x & INT_MASK;
     return Long.toString(asLong, radix);
   }

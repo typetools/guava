@@ -22,7 +22,7 @@ import com.google.common.annotations.GwtCompatible;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -216,7 +216,7 @@ public final class SignedBytes {
    *
    * @since 23.1
    */
-  public static void sortDescending(byte[] array, @NonNegative int fromIndex, @NonNegative int toIndex) {
+  public static void sortDescending(byte[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     Arrays.sort(array, fromIndex, toIndex);
