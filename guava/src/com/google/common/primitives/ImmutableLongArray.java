@@ -36,7 +36,9 @@ import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * An immutable array of {@code long} values, with an API resembling {@link List}.
@@ -91,6 +93,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 @Beta
 @GwtCompatible
 @Immutable
+@AnnotatedFor("index")
 public final class ImmutableLongArray implements Serializable {
   private static final ImmutableLongArray EMPTY = new ImmutableLongArray(new long[0]);
 
@@ -184,7 +187,7 @@ public final class ImmutableLongArray implements Serializable {
    * ImmutableLongArray} that is built will very likely occupy more memory than strictly necessary;
    * to trim memory usage, build using {@code builder.build().trimmed()}.
    */
-  public static Builder builder(int initialCapacity) {
+  public static Builder builder(@NonNegative int initialCapacity) {
     checkArgument(initialCapacity >= 0, "Invalid initialCapacity: %s", initialCapacity);
     return new Builder(initialCapacity);
   }
@@ -208,9 +211,9 @@ public final class ImmutableLongArray implements Serializable {
   @CanIgnoreReturnValue
   public static final class Builder {
     private long[] array;
-    private int count = 0; // <= array.length
+    private @IndexOrHigh("array") int count = 0; // <= array.length
 
-    Builder(int initialCapacity) {
+    Builder(@NonNegative int initialCapacity) {
       array = new long[initialCapacity];
     }
 
@@ -287,7 +290,7 @@ public final class ImmutableLongArray implements Serializable {
       return this;
     }
 
-    private void ensureRoomFor(int numberToAdd) {
+    private void ensureRoomFor(@NonNegative int numberToAdd) {
       int newCount = count + numberToAdd; // TODO(kevinb): check overflow now?
       if (newCount > array.length) {
         long[] newArray = new long[expandedCapacity(array.length, newCount)];
@@ -297,7 +300,7 @@ public final class ImmutableLongArray implements Serializable {
     }
 
     // Unfortunately this is pasted from ImmutableCollection.Builder.
-    private static int expandedCapacity(int oldCapacity, int minCapacity) {
+    private static @NonNegative int expandedCapacity(@NonNegative int oldCapacity, @NonNegative int minCapacity) {
       if (minCapacity < 0) {
         throw new AssertionError("cannot store more than MAX_VALUE elements");
       }
@@ -339,21 +342,21 @@ public final class ImmutableLongArray implements Serializable {
    * optimizing, because the rest have the option of calling `trimmed`.
    */
 
-  private final transient int start; // it happens that we only serialize instances where this is 0
-  private final int end; // exclusive
+  private final transient @IndexOrHigh("array") int start; // it happens that we only serialize instances where this is 0
+  private final @IndexOrHigh("array") int end; // exclusive
 
   private ImmutableLongArray(long[] array) {
     this(array, 0, array.length);
   }
 
-  private ImmutableLongArray(long[] array, int start, int end) {
+  private ImmutableLongArray(long[] array, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     this.array = array;
     this.start = start;
     this.end = end;
   }
 
   /** Returns the number of values in this array. */
-  public int length() {
+  public @NonNegative int length() {
     return end - start;
   }
 
@@ -368,7 +371,7 @@ public final class ImmutableLongArray implements Serializable {
    * @throws IndexOutOfBoundsException if {@code index} is negative, or greater than or equal to
    *     {@link #length}
    */
-  public long get(int index) {
+  public long get(@NonNegative int index) {
     Preconditions.checkElementIndex(index, length());
     return array[start + index];
   }
@@ -377,7 +380,7 @@ public final class ImmutableLongArray implements Serializable {
    * Returns the smallest index for which {@link #get} returns {@code target}, or {@code -1} if no
    * such index exists. Equivalent to {@code asList().indexOf(target)}.
    */
-  public int indexOf(long target) {
+  public @GTENegativeOne int indexOf(long target) {
     for (int i = start; i < end; i++) {
       if (array[i] == target) {
         return i - start;
@@ -390,7 +393,7 @@ public final class ImmutableLongArray implements Serializable {
    * Returns the largest index for which {@link #get} returns {@code target}, or {@code -1} if no
    * such index exists. Equivalent to {@code asList().lastIndexOf(target)}.
    */
-  public int lastIndexOf(long target) {
+  public @GTENegativeOne int lastIndexOf(long target) {
     for (int i = end - 1; i >= start; i--) {
       if (array[i] == target) {
         return i - start;
@@ -432,7 +435,7 @@ public final class ImmutableLongArray implements Serializable {
    * does (no actual copying is performed). To reduce memory usage, use {@code subArray(start,
    * end).trimmed()}.
    */
-  public ImmutableLongArray subArray(int startIndex, int endIndex) {
+  public ImmutableLongArray subArray(@NonNegative int startIndex, @NonNegative int endIndex) {
     Preconditions.checkPositionIndexes(startIndex, endIndex, length());
     return startIndex == endIndex
         ? EMPTY
@@ -474,7 +477,7 @@ public final class ImmutableLongArray implements Serializable {
     }
 
     @Override
-    public Long get(int index) {
+    public Long get(@NonNegative int index) {
       return parent.get(index);
     }
 
@@ -494,7 +497,7 @@ public final class ImmutableLongArray implements Serializable {
     }
 
     @Override
-    public List<Long> subList(int fromIndex, int toIndex) {
+    public List<Long> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       return parent.subArray(fromIndex, toIndex).asList();
     }
 
