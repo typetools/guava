@@ -111,6 +111,9 @@
               <arg>${addtionalargs}</arg>
               <arg>-AprintErrorStack</arg>
             </compilerArgs>
+            <compilerArguments>
+            	<Xmaxwarns>10000</Xmaxwarns>
+            </compilerArguments>
         </configuration>
       </plugin>
       <plugin>
