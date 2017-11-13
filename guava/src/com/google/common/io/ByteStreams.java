@@ -39,6 +39,7 @@ import java.nio.channels.WritableByteChannel;
 import java.util.Arrays;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
@@ -677,7 +678,8 @@ public final class ByteStreams {
     }
 
     @Override
-    public @GTENegativeOne int read(byte[] b, int off, int len) throws IOException {
+    // https://github.com/panacekcz/checker-framework/issues/5
+    public @GTENegativeOne int read(byte[] b, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int len) throws IOException {
       if (left == 0) {
         return -1;
       }
