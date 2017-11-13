@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -359,7 +359,7 @@ public final class UnsignedInts {
    *     {@link Integer#parseInt(String)})
    */
   @CanIgnoreReturnValue
-  public static int parseUnsignedInt(String string, @NonNegative int radix) {
+  public static int parseUnsignedInt(String string, @Positive int radix) {
     checkNotNull(string);
     long result = Long.parseLong(string, radix);
     if ((result & INT_MASK) != result) {
@@ -389,7 +389,7 @@ public final class UnsignedInts {
    * @throws IllegalArgumentException if {@code radix} is not between {@link Character#MIN_RADIX}
    *     and {@link Character#MAX_RADIX}.
    */
-  public static String toString(int x, @NonNegative int radix) {
+  public static String toString(int x, @Positive int radix) {
     long asLong = x & INT_MASK;
     return Long.toString(asLong, radix);
   }
