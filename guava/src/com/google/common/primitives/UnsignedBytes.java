@@ -29,6 +29,7 @@ import java.util.Comparator;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -92,7 +93,7 @@ public final class UnsignedBytes {
    * @throws IllegalArgumentException if {@code value} is negative or greater than 255
    */
   @CanIgnoreReturnValue
-  public static byte checkedCast(long value) {
+  public static byte checkedCast(@IntRange(from=0, to=255) long value) {
     checkArgument(value >> Byte.SIZE == 0, "out of range: %s", value);
     return (byte) value;
   }
