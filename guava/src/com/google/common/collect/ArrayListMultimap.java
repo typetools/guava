@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -207,5 +208,5 @@ public List<V> removeAll(@org.checkerframework.checker.nullness.qual.Nullable Ob
 
 @Pure
 @Override
-public int size() { return super.size(); }
+public @NonNegative int size() { return super.size(); }
 }

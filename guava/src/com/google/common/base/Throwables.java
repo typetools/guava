@@ -34,6 +34,8 @@ import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Static utility methods pertaining to instances of {@link Throwable}.
  *
@@ -419,7 +421,7 @@ public final class Throwables {
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return (Integer) invokeAccessibleNonThrowingMethod(getStackTraceDepthMethod, jla, t);
       }
     };

@@ -36,6 +36,15 @@ import java.util.RandomAccess;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.IndexOrLow;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.SubstringIndexFor;
+import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * Static utility methods pertaining to {@code float} primitives, that are not already found in
  * either {@link Float} or {@link Arrays}.
@@ -47,6 +56,7 @@ import javax.annotation.Nullable;
  * @since 1.0
  */
 @GwtCompatible(emulated = true)
+@AnnotatedFor("index")
 public final class Floats {
   private Floats() {}
 
@@ -130,12 +140,12 @@ public final class Floats {
    * @return the least index {@code i} for which {@code array[i] == target}, or {@code -1} if no
    *     such index exists.
    */
-  public static int indexOf(float[] array, float target) {
+  public static @IndexOrLow("#1") int indexOf(float[] array, float target) {
     return indexOf(array, target, 0, array.length);
   }
 
   // TODO(kevinb): consider making this public
-  private static int indexOf(float[] array, float target, int start, int end) {
+  private static @IndexOrLow("#1") int indexOf(float[] array, float target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = start; i < end; i++) {
       if (array[i] == target) {
         return i;
@@ -157,7 +167,7 @@ public final class Floats {
    * @param array the array to search for the sequence {@code target}
    * @param target the array to search for as a sub-sequence of {@code array}
    */
-  public static int indexOf(float[] array, float[] target) {
+  public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset="#2.length - 1") int indexOf(float[] array, float[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
     if (target.length == 0) {
@@ -185,12 +195,12 @@ public final class Floats {
    * @return the greatest index {@code i} for which {@code array[i] == target}, or {@code -1} if no
    *     such index exists.
    */
-  public static int lastIndexOf(float[] array, float target) {
+  public static @IndexOrLow("#1") int lastIndexOf(float[] array, float target) {
     return lastIndexOf(array, target, 0, array.length);
   }
 
   // TODO(kevinb): consider making this public
-  private static int lastIndexOf(float[] array, float target, int start, int end) {
+  private static @IndexOrLow("#1") int lastIndexOf(float[] array, float target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = end - 1; i >= start; i--) {
       if (array[i] == target) {
         return i;
@@ -208,7 +218,7 @@ public final class Floats {
    *     the array
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static float min(float... array) {
+  public static float min(float @MinLen(1)... array) {
     checkArgument(array.length > 0);
     float min = array[0];
     for (int i = 1; i < array.length; i++) {
@@ -226,7 +236,7 @@ public final class Floats {
    *     in the array
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static float max(float... array) {
+  public static float max(float @MinLen(1)... array) {
     checkArgument(array.length > 0);
     float max = array[0];
     for (int i = 1; i < array.length; i++) {
@@ -326,7 +336,7 @@ public final class Floats {
    * @return an array containing the values of {@code array}, with guaranteed minimum length
    *     {@code minLength}
    */
-  public static float[] ensureCapacity(float[] array, int minLength, int padding) {
+  public static float[] ensureCapacity(float[] array, @NonNegative int minLength, @NonNegative int padding) {
     checkArgument(minLength >= 0, "Invalid minLength: %s", minLength);
     checkArgument(padding >= 0, "Invalid padding: %s", padding);
     return (array.length < minLength) ? Arrays.copyOf(array, minLength + padding) : array;
@@ -420,7 +430,7 @@ public final class Floats {
    *
    * @since 23.1
    */
-  public static void sortDescending(float[] array, int fromIndex, int toIndex) {
+  public static void sortDescending(float[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     Arrays.sort(array, fromIndex, toIndex);
@@ -448,7 +458,7 @@ public final class Floats {
    *     {@code toIndex > fromIndex}
    * @since 23.1
    */
-  public static void reverse(float[] array, int fromIndex, int toIndex) {
+  public static void reverse(float[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     for (int i = fromIndex, j = toIndex - 1; i < j; i++, j--) {
@@ -512,21 +522,21 @@ public final class Floats {
   private static class FloatArrayAsList extends AbstractList<Float>
       implements RandomAccess, Serializable {
     final float[] array;
-    final int start;
-    final int end;
+    final @IndexOrHigh("array") int start;
+    final @IndexOrHigh("array") int end;
 
     FloatArrayAsList(float[] array) {
       this(array, 0, array.length);
     }
 
-    FloatArrayAsList(float[] array, int start, int end) {
+    FloatArrayAsList(float[] array, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
       this.end = end;
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return end - start;
     }
 
@@ -536,7 +546,7 @@ public final class Floats {
     }
 
     @Override
-    public Float get(int index) {
+    public Float get(@NonNegative int index) {
       checkElementIndex(index, size());
       return array[start + index];
     }
@@ -548,7 +558,7 @@ public final class Floats {
     }
 
     @Override
-    public int indexOf(Object target) {
+    public @GTENegativeOne int indexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Float) {
         int i = Floats.indexOf(array, (Float) target, start, end);
@@ -560,7 +570,7 @@ public final class Floats {
     }
 
     @Override
-    public int lastIndexOf(Object target) {
+    public @GTENegativeOne int lastIndexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Float) {
         int i = Floats.lastIndexOf(array, (Float) target, start, end);
@@ -572,7 +582,7 @@ public final class Floats {
     }
 
     @Override
-    public Float set(int index, Float element) {
+    public Float set(@NonNegative int index, Float element) {
       checkElementIndex(index, size());
       float oldValue = array[start + index];
       // checkNotNull for GWT (do not optimize)
@@ -581,7 +591,7 @@ public final class Floats {
     }
 
     @Override
-    public List<Float> subList(int fromIndex, int toIndex) {
+    public List<Float> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);
       if (fromIndex == toIndex) {

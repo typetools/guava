@@ -22,6 +22,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * A table which forwards all its method calls to another table. Subclasses
  * should override one or more methods to modify the behavior of the backing
@@ -127,7 +129,7 @@ public abstract class ForwardingTable<R, C, V> extends ForwardingObject implemen
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return delegate().size();
   }
 

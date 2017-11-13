@@ -446,7 +446,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * returned.)
    */
   @Override
-  public ImmutableList<E> subList(int fromIndex, int toIndex) {
+  public ImmutableList<E> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
     checkPositionIndexes(fromIndex, toIndex, size());
     int length = toIndex - fromIndex;
     if (length == size()) {
@@ -465,15 +465,15 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * toIndex - fromIndex > 1}, after index validation has already been
    * performed.
    */
-  ImmutableList<E> subListUnchecked(int fromIndex, int toIndex) {
+  ImmutableList<E> subListUnchecked(@NonNegative int fromIndex, @NonNegative int toIndex) {
     return new SubList(fromIndex, toIndex - fromIndex);
   }
 
   class SubList extends ImmutableList<E> {
-    final transient int offset;
+    final transient @NonNegative int offset;
     final transient @NonNegative int length;
 
-    SubList(int offset, @NonNegative int length) {
+    SubList(@NonNegative int offset, @NonNegative int length) {
       this.offset = offset;
       this.length = length;
     }
@@ -484,13 +484,13 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
     }
 
     @Override
-    public E get(int index) {
+    public E get(@NonNegative int index) {
       checkElementIndex(index, length);
       return ImmutableList.this.get(index + offset);
     }
 
     @Override
-    public ImmutableList<E> subList(int fromIndex, int toIndex) {
+    public ImmutableList<E> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       checkPositionIndexes(fromIndex, toIndex, length);
       return ImmutableList.this.subList(fromIndex + offset, toIndex + offset);
     }

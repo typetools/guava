@@ -19,6 +19,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.annotation.concurrent.Immutable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * A {@code RegularImmutableTable} optimized for sparse data.
  */
@@ -101,7 +103,7 @@ final class SparseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V>
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return cellRowIndices.length;
   }
 

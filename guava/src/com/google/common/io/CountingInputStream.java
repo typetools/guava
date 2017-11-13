@@ -22,6 +22,10 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * An {@link InputStream} that counts the number of bytes read.
  *
@@ -50,7 +54,7 @@ public final class CountingInputStream extends FilterInputStream {
   }
 
   @Override
-  public int read() throws IOException {
+  public @GTENegativeOne int read() throws IOException {
     int result = in.read();
     if (result != -1) {
       count++;
@@ -59,7 +63,7 @@ public final class CountingInputStream extends FilterInputStream {
   }
 
   @Override
-  public int read(byte[] b, int off, int len) throws IOException {
+  public @GTENegativeOne int read(byte[] b, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int len) throws IOException {
     int result = in.read(b, off, len);
     if (result != -1) {
       count += result;

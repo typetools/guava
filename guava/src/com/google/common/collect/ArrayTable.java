@@ -37,6 +37,8 @@ import java.util.Set;
 import java.util.Spliterator;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Fixed-size {@link Table} implementation backed by a two-dimensional array.
  *
@@ -208,7 +210,7 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements
     abstract V setValue(int index, V newValue);
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return keyIndex.size();
     }
 
@@ -526,7 +528,7 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements
   // TODO(jlevy): Add eraseRow and eraseColumn methods?
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return rowList.size() * columnList.size();
   }
 

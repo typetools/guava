@@ -23,6 +23,10 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * A wrapper class for unsigned {@code long} values, supporting arithmetic operations.
  *
@@ -38,6 +42,7 @@ import javax.annotation.Nullable;
  * @since 11.0
  */
 @GwtCompatible(serializable = true)
+@AnnotatedFor("index")
 public final class UnsignedLong extends Number implements Comparable<UnsignedLong>, Serializable {
 
   private static final long UNSIGNED_MASK = 0x7fffffffffffffffL;
@@ -77,7 +82,7 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
    * @since 14.0
    */
   @CanIgnoreReturnValue
-  public static UnsignedLong valueOf(long value) {
+  public static UnsignedLong valueOf(@NonNegative long value) {
     checkArgument(value >= 0, "value (%s) is outside the range for an unsigned long value", value);
     return fromLongBits(value);
   }
@@ -119,7 +124,7 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
    *     {@link Character#MAX_RADIX}
    */
   @CanIgnoreReturnValue
-  public static UnsignedLong valueOf(String string, int radix) {
+  public static UnsignedLong valueOf(String string, @Positive int radix) {
     return fromLongBits(UnsignedLongs.parseUnsignedLong(string, radix));
   }
 
@@ -263,7 +268,7 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
    * {@code radix < Character.MIN_RADIX} or {@code radix > Character.MAX_RADIX}, the radix
    * {@code 10} is used.
    */
-  public String toString(int radix) {
+  public String toString(@Positive int radix) {
     return UnsignedLongs.toString(value, radix);
   }
 }

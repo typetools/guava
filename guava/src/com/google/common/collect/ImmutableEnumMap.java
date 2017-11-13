@@ -25,6 +25,8 @@ import java.util.Spliterator;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Implementation of {@link ImmutableMap} backed by a non-empty {@link
  * java.util.EnumMap}.
@@ -64,7 +66,7 @@ final class ImmutableEnumMap<K extends Enum<K>, V> extends IteratorBasedImmutabl
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return delegate.size();
   }
 

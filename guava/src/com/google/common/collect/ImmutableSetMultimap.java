@@ -17,6 +17,7 @@
 package com.google.common.collect;
 
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -566,7 +567,7 @@ public class ImmutableSetMultimap<K, V> extends ImmutableMultimap<K, V>
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multimap.size();
     }
 

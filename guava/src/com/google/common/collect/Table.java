@@ -25,6 +25,8 @@ import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * A collection that associates an ordered pair of keys, called a row key and a
  * column key, with a single value. A table may be sparse, with only a small
@@ -108,7 +110,7 @@ public interface Table<R, C, V> {
   /**
    * Returns the number of row key / column key / value mappings in the table.
    */
-  int size();
+  @NonNegative int size();
 
   /**
    * Compares the specified object with this table for equality. Two tables are

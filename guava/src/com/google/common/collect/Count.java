@@ -18,6 +18,8 @@ import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * A mutable value of type {@code int}, for multisets to use in tracking counts of values.
  *
@@ -25,13 +27,13 @@ import javax.annotation.Nullable;
  */
 @GwtCompatible
 final class Count implements Serializable {
-  private int value;
+  private @NonNegative int value;
 
-  Count(int value) {
+  Count(@NonNegative int value) {
     this.value = value;
   }
 
-  public int get() {
+  public @NonNegative int get() {
     return value;
   }
 
@@ -39,15 +41,15 @@ final class Count implements Serializable {
     value += delta;
   }
 
-  public int addAndGet(int delta) {
+  public @NonNegative int addAndGet(int delta) {
     return value += delta;
   }
 
-  public void set(int newValue) {
+  public void set(@NonNegative int newValue) {
     value = newValue;
   }
 
-  public int getAndSet(int newValue) {
+  public @NonNegative int getAndSet(@NonNegative int newValue) {
     int result = value;
     value = newValue;
     return result;

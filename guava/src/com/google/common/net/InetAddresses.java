@@ -33,6 +33,9 @@ import java.util.Arrays;
 import java.util.Locale;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.IndexOrLow;
+
 /**
  * Static utility methods pertaining to {@link InetAddress} instances.
  *
@@ -217,7 +220,7 @@ public final class InetAddresses {
 
     // Disregarding the endpoints, find "::" with nothing in between.
     // This indicates that a run of zeroes has been skipped.
-    int skipIndex = -1;
+    @IndexOrLow("parts") int skipIndex = -1;
     for (int i = 1; i < parts.length - 1; i++) {
       if (parts[i].length() == 0) {
         if (skipIndex >= 0) {
@@ -227,8 +230,8 @@ public final class InetAddresses {
       }
     }
 
-    int partsHi; // Number of parts to copy from above/before the "::"
-    int partsLo; // Number of parts to copy from below/after the "::"
+    @IndexOrHigh("parts") int partsHi; // Number of parts to copy from above/before the "::"
+    @IndexOrHigh("parts") int partsLo; // Number of parts to copy from below/after the "::"
     if (skipIndex >= 0) {
       // If we found a "::", then check if it also covers the endpoints.
       partsHi = skipIndex;

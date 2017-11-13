@@ -180,7 +180,7 @@ public final class Multisets {
     }
 
     @Override
-    public int add(E element, int occurences) {
+    public @NonNegative int add(E element, @NonNegative int occurences) {
       throw new UnsupportedOperationException();
     }
 
@@ -195,7 +195,7 @@ public final class Multisets {
     }
 
     @Override
-    public int remove(@org.checkerframework.checker.nullness.qual.Nullable Object element, int occurrences) {
+    public @NonNegative int remove(@org.checkerframework.checker.nullness.qual.Nullable Object element, @NonNegative int occurrences) {
       throw new UnsupportedOperationException();
     }
 
@@ -215,12 +215,12 @@ public final class Multisets {
     }
 
     @Override
-    public int setCount(E element, int count) {
+    public @NonNegative int setCount(E element, @NonNegative int count) {
       throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean setCount(E element, int oldCount, int newCount) {
+    public boolean setCount(E element, @NonNegative int oldCount, @NonNegative int newCount) {
       throw new UnsupportedOperationException();
     }
 
@@ -378,14 +378,14 @@ public final class Multisets {
     }
 
     @Override
-    public int add(@Nullable E element, int occurrences) {
+    public @NonNegative int add(@Nullable E element, @NonNegative int occurrences) {
       checkArgument(
           predicate.apply(element), "Element %s does not match predicate %s", element, predicate);
       return unfiltered.add(element, occurrences);
     }
 
     @Override
-    public int remove(@Nullable Object element, int occurrences) {
+    public @NonNegative int remove(@Nullable Object element, @NonNegative int occurrences) {
       checkNonnegative(occurrences, "occurrences");
       if (occurrences == 0) {
         return count(element);

@@ -16,6 +16,8 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -45,7 +47,7 @@ class RegularImmutableList<E> extends ImmutableList<E> {
 
   @Pure
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return array.length;
   }
 
@@ -90,10 +92,10 @@ public boolean contains(@org.checkerframework.checker.nullness.qual.Nullable Obj
 public boolean equals(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.equals(arg0); }
 
 @Override
-public int indexOf(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.indexOf(arg0); }
+public @GTENegativeOne int indexOf(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.indexOf(arg0); }
 
 @Override
-public int lastIndexOf(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.lastIndexOf(arg0); }
+public @GTENegativeOne int lastIndexOf(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.lastIndexOf(arg0); }
 
 @SideEffectFree
 @Override

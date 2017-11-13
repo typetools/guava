@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -1071,7 +1072,7 @@ public final class Multimaps {
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return map.size();
     }
 
@@ -1126,7 +1127,7 @@ public final class Multimaps {
 
         @Pure
         @Override
-        public int size() {
+        public @NonNegative int size() {
           return map.containsKey(key) ? 1 : 0;
         }
       };
@@ -1421,7 +1422,7 @@ public final class Multimaps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return fromMultimap.size();
     }
 
@@ -1677,7 +1678,7 @@ public final class Multimaps {
             }
 
             @Override
-            public int getCount() {
+            public @NonNegative int getCount() {
               return backingEntry.getValue().size();
             }
           };
@@ -1697,7 +1698,7 @@ public final class Multimaps {
     }
 
     @Override
-    int distinctElements() {
+    @NonNegative int distinctElements() {
       return multimap.asMap().size();
     }
 
@@ -1719,7 +1720,7 @@ public final class Multimaps {
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return distinctElements();
       }
 
@@ -1763,13 +1764,13 @@ public final class Multimaps {
     }
 
     @Override
-    public int count(@Nullable Object element) {
+    public @NonNegative int count(@Nullable Object element) {
       Collection<V> values = Maps.safeGet(multimap.asMap(), element);
       return (values == null) ? 0 : values.size();
     }
 
     @Override
-    public int remove(@Nullable Object element, int occurrences) {
+    public @NonNegative int remove(@Nullable Object element, @NonNegative int occurrences) {
       checkNonnegative(occurrences, "occurrences");
       if (occurrences == 0) {
         return count(element);
@@ -1812,7 +1813,7 @@ public final class Multimaps {
     abstract Multimap<K, V> multimap();
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multimap().size();
     }
 
@@ -1851,7 +1852,7 @@ public final class Multimaps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multimap.keySet().size();
     }
 

@@ -49,6 +49,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * The concurrent hash map implementation built by {@link MapMaker}.
  *
@@ -2338,7 +2340,7 @@ class MapMakerInternalMap<
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     Segment<K, V, E, S>[] segments = this.segments;
     long sum = 0;
     for (int i = 0; i < segments.length; ++i) {
@@ -2706,7 +2708,7 @@ class MapMakerInternalMap<
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return MapMakerInternalMap.this.size();
     }
 
@@ -2740,7 +2742,7 @@ class MapMakerInternalMap<
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return MapMakerInternalMap.this.size();
     }
 
@@ -2807,7 +2809,7 @@ class MapMakerInternalMap<
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return MapMakerInternalMap.this.size();
     }
 

@@ -25,6 +25,8 @@ import com.google.j2objc.annotations.WeakOuter;
 import java.util.Collection;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Implementation of {@link ImmutableMultiset} with zero or more elements.
  *
@@ -113,7 +115,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
   }
 
   @Override
-  public int count(@Nullable Object element) {
+  public @NonNegative int count(@Nullable Object element) {
     Multisets.ImmutableEntry<E>[] hashTable = this.hashTable;
     if (element == null || hashTable == null) {
       return 0;
@@ -131,7 +133,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return size;
   }
 
@@ -160,7 +162,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return entries.length;
     }
   }

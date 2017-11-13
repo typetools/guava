@@ -44,6 +44,8 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * {@link Table} implementation backed by a map that associates row keys with
  * column key / value secondary maps. This class provides rapid access to
@@ -117,7 +119,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     int size = 0;
     for (Map<C, V> map : backingMap.values()) {
       size += map.size();
@@ -354,7 +356,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       Map<C, V> map = backingRowMap();
       return (map == null) ? 0 : map.size();
     }
@@ -489,7 +491,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         int size = 0;
         for (Map<C, V> map : backingMap.values()) {
           if (map.containsKey(columnKey)) {
@@ -650,7 +652,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return Iterators.size(iterator());
     }
 
@@ -810,7 +812,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return backingMap.size();
       }
 
@@ -896,7 +898,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return columnKeySet().size();
       }
 

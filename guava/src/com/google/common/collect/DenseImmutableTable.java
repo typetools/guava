@@ -24,6 +24,8 @@ import java.util.Map.Entry;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * A {@code RegularImmutableTable} optimized for dense data.
  */
@@ -105,7 +107,7 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return size;
     }
 
@@ -245,7 +247,7 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return cellRowIndices.length;
   }
 

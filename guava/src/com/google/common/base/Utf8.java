@@ -18,6 +18,8 @@ import static com.google.common.base.Preconditions.checkPositionIndexes;
 import static java.lang.Character.MAX_SURROGATE;
 import static java.lang.Character.MIN_SURROGATE;
 
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 
@@ -122,7 +124,8 @@ public final class Utf8 {
    * @param off the offset in the buffer of the first byte to read
    * @param len the number of bytes to read from the buffer
    */
-  public static boolean isWellFormed(byte[] bytes, int off, int len) {
+  //https://github.com/panacekcz/checker-framework/issues/5
+  public static boolean isWellFormed(byte[] bytes, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int len) {
     int end = off + len;
     checkPositionIndexes(off, end, bytes.length);
     // Look for the first non-ASCII character.

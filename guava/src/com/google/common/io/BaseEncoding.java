@@ -36,6 +36,8 @@ import java.io.Writer;
 import java.util.Arrays;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+
 /**
  * A binary encoding scheme for reversibly translating between byte sequences and printable ASCII
  * strings. This class includes several constants for encoding schemes specified by
@@ -734,7 +736,7 @@ public abstract class BaseEncoding {
         boolean hitPadding = false;
 
         @Override
-        public int read() throws IOException {
+        public @GTENegativeOne int read() throws IOException {
           while (true) {
             int readChar = reader.read();
             if (readChar == -1) {
@@ -975,7 +977,7 @@ public abstract class BaseEncoding {
     checkNotNull(toIgnore);
     return new Reader() {
       @Override
-      public int read() throws IOException {
+      public @GTENegativeOne int read() throws IOException {
         int readChar;
         do {
           readChar = delegate.read();

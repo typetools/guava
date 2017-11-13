@@ -32,6 +32,8 @@ import java.nio.charset.CoderResult;
 import java.nio.charset.CodingErrorAction;
 import java.util.Arrays;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+
 /**
  * An {@link InputStream} that converts characters from a {@link Reader} into bytes using an
  * arbitrary Charset.
@@ -115,7 +117,7 @@ final class ReaderInputStream extends InputStream {
   }
 
   @Override
-  public int read() throws IOException {
+  public @GTENegativeOne int read() throws IOException {
     return (read(singleByte) == 1) ? UnsignedBytes.toInt(singleByte[0]) : -1;
   }
 

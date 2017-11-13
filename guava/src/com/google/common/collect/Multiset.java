@@ -147,7 +147,7 @@ public interface Multiset<E extends @org.checkerframework.checker.nullness.qual.
    *     occurrences} is zero, the implementation may opt to return normally.
    */
   @CanIgnoreReturnValue
-  int add(@Nullable E element, int occurrences);
+  @NonNegative int add(@Nullable E element, @NonNegative int occurrences);
 
   /**
    * Removes a number of occurrences of the specified element from this multiset. If the multiset
@@ -162,7 +162,7 @@ public interface Multiset<E extends @org.checkerframework.checker.nullness.qual.
    * @throws IllegalArgumentException if {@code occurrences} is negative
    */
   @CanIgnoreReturnValue
-  int remove(@Nullable @CompatibleWith("E") Object element, int occurrences);
+  @NonNegative int remove(@Nullable @CompatibleWith("E") Object element, @NonNegative int occurrences);
 
   /**
    * Adds or removes the necessary occurrences of an element such that the
@@ -178,7 +178,7 @@ public interface Multiset<E extends @org.checkerframework.checker.nullness.qual.
    *     count} is zero, the implementor may optionally return zero instead.
    */
   @CanIgnoreReturnValue
-  int setCount(E element, int count);
+  @NonNegative int setCount(E element, @NonNegative int count);
 
   /**
    * Conditionally sets the count of an element to a new value, as described in
@@ -201,7 +201,7 @@ public interface Multiset<E extends @org.checkerframework.checker.nullness.qual.
    *     optionally return {@code true} instead.
    */
   @CanIgnoreReturnValue
-  boolean setCount(E element, int oldCount, int newCount);
+  boolean setCount(E element, @NonNegative int oldCount, @NonNegative int newCount);
 
   // Views
 

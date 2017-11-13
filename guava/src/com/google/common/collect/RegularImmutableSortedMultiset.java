@@ -25,6 +25,8 @@ import java.util.Comparator;
 import java.util.function.ObjIntConsumer;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * An immutable sorted multiset with one or more distinct elements.
  *
@@ -87,13 +89,13 @@ final class RegularImmutableSortedMultiset<E> extends ImmutableSortedMultiset<E>
   }
 
   @Override
-  public int count(@Nullable Object element) {
+  public @NonNegative int count(@Nullable Object element) {
     int index = elementSet.indexOf(element);
     return (index >= 0) ? getCount(index) : 0;
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     long size = cumulativeCounts[offset + length] - cumulativeCounts[offset];
     return Ints.saturatedCast(size);
   }

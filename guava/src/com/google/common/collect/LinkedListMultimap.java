@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -583,7 +584,7 @@ public class LinkedListMultimap<K extends @org.checkerframework.checker.nullness
 
   @Pure
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return size;
   }
 
@@ -703,7 +704,7 @@ public class LinkedListMultimap<K extends @org.checkerframework.checker.nullness
     return new AbstractSequentialList<V>() {
       @Pure
       @Override
-      public int size() {
+      public @NonNegative int size() {
         KeyList<K, V> keyList = keyToKeyList.get(key);
         return (keyList == null) ? 0 : keyList.count;
       }
@@ -720,7 +721,7 @@ public class LinkedListMultimap<K extends @org.checkerframework.checker.nullness
     @WeakOuter
     class KeySetImpl extends Sets.ImprovedAbstractSet<K> {
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return keyToKeyList.size();
       }
 
@@ -763,7 +764,7 @@ public class LinkedListMultimap<K extends @org.checkerframework.checker.nullness
     @WeakOuter
     class ValuesImpl extends AbstractSequentialList<V> {
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return size;
       }
 
@@ -815,7 +816,7 @@ public class LinkedListMultimap<K extends @org.checkerframework.checker.nullness
     @WeakOuter
     class EntriesImpl extends AbstractSequentialList<Entry<K, V>> {
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return size;
       }
 

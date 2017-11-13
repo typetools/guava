@@ -14,6 +14,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -126,12 +127,12 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return Ints.saturatedCast(size);
   }
 
   @Override
-  public int count(@Nullable Object element) {
+  public @NonNegative int count(@Nullable Object element) {
     if (element == null || !isActuallyE(element)) {
       return 0;
     }
@@ -142,7 +143,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   // Modification Operations
   @CanIgnoreReturnValue
   @Override
-  public int add(E element, int occurrences) {
+  public @NonNegative int add(E element, @NonNegative int occurrences) {
     checkIsE(element);
     checkNonnegative(occurrences, "occurrences");
     if (occurrences == 0) {
@@ -163,7 +164,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   // Modification Operations
   @CanIgnoreReturnValue
   @Override
-  public int remove(@Nullable Object element, int occurrences) {
+  public @NonNegative int remove(@Nullable Object element, @NonNegative int occurrences) {
     if (element == null || !isActuallyE(element)) {
       return 0;
     }
@@ -190,7 +191,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   // Modification Operations
   @CanIgnoreReturnValue
   @Override
-  public int setCount(E element, int count) {
+  public @NonNegative int setCount(E element, @NonNegative int count) {
     checkIsE(element);
     checkNonnegative(count, "count");
     int index = element.ordinal();

@@ -25,6 +25,11 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * Static utility methods pertaining to {@code long} primitives that interpret values as
  * <i>unsigned</i> (that is, any negative value {@code x} is treated as the positive value
@@ -50,6 +55,7 @@ import java.util.Comparator;
  */
 @Beta
 @GwtCompatible
+@AnnotatedFor("index")
 public final class UnsignedLongs {
   private UnsignedLongs() {}
 
@@ -87,7 +93,7 @@ public final class UnsignedLongs {
    *     the array according to {@link #compare}
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static long min(long... array) {
+  public static long min(long @MinLen(1)... array) {
     checkArgument(array.length > 0);
     long min = flip(array[0]);
     for (int i = 1; i < array.length; i++) {
@@ -107,7 +113,7 @@ public final class UnsignedLongs {
    *     in the array according to {@link #compare}
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static long max(long... array) {
+  public static long max(long @MinLen(1)... array) {
     checkArgument(array.length > 0);
     long max = flip(array[0]);
     for (int i = 1; i < array.length; i++) {
@@ -192,7 +198,7 @@ public final class UnsignedLongs {
    *
    * @since 23.1
    */
-  public static void sort(long[] array, int fromIndex, int toIndex) {
+  public static void sort(long[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     for (int i = fromIndex; i < toIndex; i++) {
@@ -221,7 +227,7 @@ public final class UnsignedLongs {
    *
    * @since 23.1
    */
-  public static void sortDescending(long[] array, int fromIndex, int toIndex) {
+  public static void sortDescending(long[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     for (int i = fromIndex; i < toIndex; i++) {
@@ -363,7 +369,7 @@ public final class UnsignedLongs {
    *     {@link Long#parseLong(String)})
    */
   @CanIgnoreReturnValue
-  public static long parseUnsignedLong(String string, int radix) {
+  public static long parseUnsignedLong(String string, @Positive int radix) {
     checkNotNull(string);
     if (string.length() == 0) {
       throw new NumberFormatException("empty string");
@@ -415,7 +421,7 @@ public final class UnsignedLongs {
      * a number. Does not verify whether supplied radix is valid, passing an invalid radix will give
      * undefined results or an ArrayIndexOutOfBoundsException.
      */
-    static boolean overflowInParse(long current, int digit, int radix) {
+    static boolean overflowInParse(long current, int digit, @Positive int radix) {
       if (current >= 0) {
         if (current < maxValueDivs[radix]) {
           return false;
@@ -452,7 +458,7 @@ public final class UnsignedLongs {
    * @throws IllegalArgumentException if {@code radix} is not between {@link Character#MIN_RADIX}
    *     and {@link Character#MAX_RADIX}.
    */
-  public static String toString(long x, int radix) {
+  public static String toString(long x, @Positive int radix) {
     checkArgument(
         radix >= Character.MIN_RADIX && radix <= Character.MAX_RADIX,
         "radix (%s) must be between Character.MIN_RADIX and Character.MAX_RADIX",

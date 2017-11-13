@@ -18,6 +18,8 @@ package com.google.common.collect;
 
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -63,7 +65,7 @@ final class SingletonImmutableList<E> extends ImmutableList<E> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return 1;
   }
 
@@ -96,8 +98,8 @@ public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
 public boolean equals(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.equals(arg0); }
 
 @Pure
-public int indexOf(@Nullable Object arg0) { return super.indexOf(arg0); }
+public @GTENegativeOne int indexOf(@Nullable Object arg0) { return super.indexOf(arg0); }
 
 @Pure
-public int lastIndexOf(@Nullable Object arg0) { return super.lastIndexOf(arg0); }
+public @GTENegativeOne int lastIndexOf(@Nullable Object arg0) { return super.lastIndexOf(arg0); }
 }

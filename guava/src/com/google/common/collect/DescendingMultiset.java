@@ -23,6 +23,8 @@ import java.util.Iterator;
 import java.util.NavigableSet;
 import java.util.Set;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * A skeleton implementation of a descending multiset.  Only needs
  * {@code forwardMultiset()} and {@code entryIterator()}.
@@ -127,7 +129,7 @@ abstract class DescendingMultiset<E> extends ForwardingMultiset<E> implements So
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return forwardMultiset().entrySet().size();
       }
     }

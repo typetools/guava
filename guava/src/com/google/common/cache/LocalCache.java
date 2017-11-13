@@ -87,6 +87,8 @@ import java.util.logging.Logger;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * The concurrent hash map implementation built by {@link CacheBuilder}.
  *
@@ -1049,7 +1051,7 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
         }
 
         @Override
-        public int size() {
+        public @NonNegative int size() {
           return 0;
         }
 
@@ -3882,7 +3884,7 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       int size = 0;
       for (ReferenceEntry<K, V> e = head.getNextInWriteQueue();
           e != head;
@@ -4021,7 +4023,7 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       int size = 0;
       for (ReferenceEntry<K, V> e = head.getNextInAccessQueue();
           e != head;
@@ -4108,7 +4110,7 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return Ints.saturatedCast(longSize());
   }
 
@@ -4682,7 +4684,7 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return map.size();
     }
 
@@ -4766,7 +4768,7 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return map.size();
     }
 

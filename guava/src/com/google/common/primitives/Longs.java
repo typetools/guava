@@ -35,6 +35,17 @@ import java.util.Spliterators;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.IndexOrLow;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.index.qual.SubstringIndexFor;
+import org.checkerframework.common.value.qual.IntRange;
+import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * Static utility methods pertaining to {@code long} primitives, that are not already found in
  * either {@link Long} or {@link Arrays}.
@@ -46,6 +57,7 @@ import javax.annotation.Nullable;
  * @since 1.0
  */
 @GwtCompatible
+@AnnotatedFor("index")
 public final class Longs {
   private Longs() {}
 
@@ -121,12 +133,12 @@ public final class Longs {
    * @return the least index {@code i} for which {@code array[i] == target}, or {@code -1} if no
    *     such index exists.
    */
-  public static int indexOf(long[] array, long target) {
+  public static @IndexOrLow("#1") int indexOf(long[] array, long target) {
     return indexOf(array, target, 0, array.length);
   }
 
   // TODO(kevinb): consider making this public
-  private static int indexOf(long[] array, long target, int start, int end) {
+  private static @IndexOrLow("#1") int indexOf(long[] array, long target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = start; i < end; i++) {
       if (array[i] == target) {
         return i;
@@ -146,7 +158,7 @@ public final class Longs {
    * @param array the array to search for the sequence {@code target}
    * @param target the array to search for as a sub-sequence of {@code array}
    */
-  public static int indexOf(long[] array, long[] target) {
+  public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset="#2.length - 1") int indexOf(long[] array, long[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
     if (target.length == 0) {
@@ -173,12 +185,12 @@ public final class Longs {
    * @return the greatest index {@code i} for which {@code array[i] == target}, or {@code -1} if no
    *     such index exists.
    */
-  public static int lastIndexOf(long[] array, long target) {
+  public static @IndexOrLow("#1") int lastIndexOf(long[] array, long target) {
     return lastIndexOf(array, target, 0, array.length);
   }
 
   // TODO(kevinb): consider making this public
-  private static int lastIndexOf(long[] array, long target, int start, int end) {
+  private static @IndexOrLow("#1") int lastIndexOf(long[] array, long target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = end - 1; i >= start; i--) {
       if (array[i] == target) {
         return i;
@@ -195,7 +207,7 @@ public final class Longs {
    *     the array
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static long min(long... array) {
+  public static long min(long @MinLen(1)... array) {
     checkArgument(array.length > 0);
     long min = array[0];
     for (int i = 1; i < array.length; i++) {
@@ -214,7 +226,7 @@ public final class Longs {
    *     in the array
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static long max(long... array) {
+  public static long max(long @MinLen(1)... array) {
     checkArgument(array.length > 0);
     long max = array[0];
     for (int i = 1; i < array.length; i++) {
@@ -329,7 +341,7 @@ public final class Longs {
   static final class AsciiDigits {
     private AsciiDigits() {}
 
-    private static final byte[] asciiDigits;
+    private static final @IntRange(from = -1, to = 15) byte[] asciiDigits;
 
     static {
       byte[] result = new byte[128];
@@ -344,7 +356,7 @@ public final class Longs {
       asciiDigits = result;
     }
 
-    static int digit(char c) {
+    static @IntRange(from = -1, to = 15) int digit(char c) {
       return (c < 128) ? asciiDigits[c] : -1;
     }
   }
@@ -394,7 +406,7 @@ public final class Longs {
   @Beta
   @Nullable
   @CheckForNull
-  public static Long tryParse(String string, int radix) {
+  public static Long tryParse(String string, @Positive int radix) {
     if (checkNotNull(string).isEmpty()) {
       return null;
     }
@@ -490,7 +502,7 @@ public final class Longs {
    * @return an array containing the values of {@code array}, with guaranteed minimum length
    *     {@code minLength}
    */
-  public static long[] ensureCapacity(long[] array, int minLength, int padding) {
+  public static long[] ensureCapacity(long[] array, @NonNegative int minLength, @NonNegative int padding) {
     checkArgument(minLength >= 0, "Invalid minLength: %s", minLength);
     checkArgument(padding >= 0, "Invalid padding: %s", padding);
     return (array.length < minLength) ? Arrays.copyOf(array, minLength + padding) : array;
@@ -573,7 +585,7 @@ public final class Longs {
    *
    * @since 23.1
    */
-  public static void sortDescending(long[] array, int fromIndex, int toIndex) {
+  public static void sortDescending(long[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     Arrays.sort(array, fromIndex, toIndex);
@@ -601,7 +613,7 @@ public final class Longs {
    *     {@code toIndex > fromIndex}
    * @since 23.1
    */
-  public static void reverse(long[] array, int fromIndex, int toIndex) {
+  public static void reverse(long[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     for (int i = fromIndex, j = toIndex - 1; i < j; i++, j--) {
@@ -665,21 +677,21 @@ public final class Longs {
   private static class LongArrayAsList extends AbstractList<Long>
       implements RandomAccess, Serializable {
     final long[] array;
-    final int start;
-    final int end;
+    final @IndexOrHigh("array") int start;
+    final @IndexOrHigh("array") int end;
 
     LongArrayAsList(long[] array) {
       this(array, 0, array.length);
     }
 
-    LongArrayAsList(long[] array, int start, int end) {
+    LongArrayAsList(long[] array, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
       this.end = end;
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return end - start;
     }
 
@@ -689,7 +701,7 @@ public final class Longs {
     }
 
     @Override
-    public Long get(int index) {
+    public Long get(@NonNegative int index) {
       checkElementIndex(index, size());
       return array[start + index];
     }
@@ -706,7 +718,7 @@ public final class Longs {
     }
 
     @Override
-    public int indexOf(Object target) {
+    public @GTENegativeOne int indexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Long) {
         int i = Longs.indexOf(array, (Long) target, start, end);
@@ -718,7 +730,7 @@ public final class Longs {
     }
 
     @Override
-    public int lastIndexOf(Object target) {
+    public @GTENegativeOne int lastIndexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Long) {
         int i = Longs.lastIndexOf(array, (Long) target, start, end);
@@ -730,7 +742,7 @@ public final class Longs {
     }
 
     @Override
-    public Long set(int index, Long element) {
+    public Long set(@NonNegative int index, Long element) {
       checkElementIndex(index, size());
       long oldValue = array[start + index];
       // checkNotNull for GWT (do not optimize)
@@ -739,7 +751,7 @@ public final class Longs {
     }
 
     @Override
-    public List<Long> subList(int fromIndex, int toIndex) {
+    public List<Long> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);
       if (fromIndex == toIndex) {

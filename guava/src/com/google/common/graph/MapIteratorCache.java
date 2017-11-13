@@ -27,6 +27,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * A map-like data structure that wraps a backing map and caches values while iterating through
  * {@link #unmodifiableKeySet()}. By design, the cache is cleared when this structure is mutated. If
@@ -105,7 +107,7 @@ class MapIteratorCache<K, V> {
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return backingMap.size();
       }
 

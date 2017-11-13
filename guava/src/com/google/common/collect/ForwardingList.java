@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -88,13 +89,13 @@ public abstract class ForwardingList<E extends @org.checkerframework.checker.nul
 
   @Pure
   @Override
-  public int indexOf(@org.checkerframework.checker.nullness.qual.Nullable Object element) {
+  public @GTENegativeOne int indexOf(@org.checkerframework.checker.nullness.qual.Nullable Object element) {
     return delegate().indexOf(element);
   }
 
   @Pure
   @Override
-  public int lastIndexOf(@org.checkerframework.checker.nullness.qual.Nullable Object element) {
+  public @GTENegativeOne int lastIndexOf(@org.checkerframework.checker.nullness.qual.Nullable Object element) {
     return delegate().lastIndexOf(element);
   }
 

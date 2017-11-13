@@ -42,6 +42,8 @@ import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * A double-ended priority queue, which provides constant-time access to both
  * its least element and its greatest element, as determined by the queue's
@@ -252,7 +254,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return size;
   }
 

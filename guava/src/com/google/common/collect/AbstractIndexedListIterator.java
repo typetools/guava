@@ -22,6 +22,10 @@ import com.google.common.annotations.GwtCompatible;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * This class provides a skeletal implementation of the {@link ListIterator}
  * interface across a fixed number of elements that may be retrieved by
@@ -30,15 +34,16 @@ import java.util.NoSuchElementException;
  * @author Jared Levy
  */
 @GwtCompatible
+@AnnotatedFor("lowerbound")
 abstract class AbstractIndexedListIterator<E> extends UnmodifiableListIterator<E> {
-  private final int size;
-  private int position;
+  private final @NonNegative int size;
+  private @NonNegative int position;
 
   /**
    * Returns the element with the specified index. This method is called by
    * {@link #next()}.
    */
-  protected abstract E get(int index);
+  protected abstract E get(@NonNegative int index);
 
   /**
    * Constructs an iterator across a sequence of the given size whose initial
@@ -48,7 +53,7 @@ abstract class AbstractIndexedListIterator<E> extends UnmodifiableListIterator<E
    *
    * @throws IllegalArgumentException if {@code size} is negative
    */
-  protected AbstractIndexedListIterator(int size) {
+  protected AbstractIndexedListIterator(@NonNegative int size) {
     this(size, 0);
   }
 
@@ -63,7 +68,7 @@ abstract class AbstractIndexedListIterator<E> extends UnmodifiableListIterator<E
    *         greater than {@code size}
    * @throws IllegalArgumentException if {@code size} is negative
    */
-  protected AbstractIndexedListIterator(int size, int position) {
+  protected AbstractIndexedListIterator(@NonNegative int size, @NonNegative int position) {
     checkPositionIndex(position, size);
     this.size = size;
     this.position = position;
@@ -83,7 +88,7 @@ abstract class AbstractIndexedListIterator<E> extends UnmodifiableListIterator<E
   }
 
   @Override
-  public final int nextIndex() {
+  public final @NonNegative int nextIndex() {
     return position;
   }
 
@@ -101,7 +106,7 @@ abstract class AbstractIndexedListIterator<E> extends UnmodifiableListIterator<E
   }
 
   @Override
-  public final int previousIndex() {
+  public final @GTENegativeOne int previousIndex() {
     return position - 1;
   }
 }

@@ -22,6 +22,10 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * An {@link InputStream} that maintains a hash of the data read from it.
  *
@@ -29,6 +33,7 @@ import java.io.InputStream;
  * @since 16.0
  */
 @Beta
+@AnnotatedFor("index")
 public final class HashingInputStream extends FilterInputStream {
   private final Hasher hasher;
 
@@ -49,7 +54,7 @@ public final class HashingInputStream extends FilterInputStream {
    */
   @Override
   @CanIgnoreReturnValue
-  public int read() throws IOException {
+  public @GTENegativeOne int read() throws IOException {
     int b = in.read();
     if (b != -1) {
       hasher.putByte((byte) b);
@@ -63,7 +68,7 @@ public final class HashingInputStream extends FilterInputStream {
    */
   @Override
   @CanIgnoreReturnValue
-  public int read(byte[] bytes, int off, int len) throws IOException {
+  public @GTENegativeOne int read(byte[] bytes, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int len) throws IOException {
     int numOfBytesRead = in.read(bytes, off, len);
     if (numOfBytesRead != -1) {
       hasher.putBytes(bytes, off, numOfBytesRead);

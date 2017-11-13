@@ -35,6 +35,8 @@ import java.math.RoundingMode;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.common.value.qual.IntRange;
+import org.checkerframework.common.value.qual.IntVal;
 
 /**
  * A class for arithmetic on values of type {@code int}. Where possible, methods are defined and
@@ -66,7 +68,7 @@ public final class IntMath {
    * @since 20.0
    */
   @Beta
-  public static int ceilingPowerOfTwo(int x) {
+  public static @Positive int ceilingPowerOfTwo(@Positive int x) {
     checkPositive("x", x);
     if (x > MAX_SIGNED_POWER_OF_TWO) {
       throw new ArithmeticException("ceilingPowerOfTwo(" + x + ") not representable as an int");
@@ -82,7 +84,7 @@ public final class IntMath {
    * @since 20.0
    */
   @Beta
-  public static int floorPowerOfTwo(int x) {
+  public static @Positive int floorPowerOfTwo(@Positive int x) {
     checkPositive("x", x);
     return Integer.highestOneBit(x);
   }
@@ -104,7 +106,7 @@ public final class IntMath {
    * narrowly) faster than the straightforward ternary expression.
    */
   @VisibleForTesting
-  static int lessThanBranchFree(int x, int y) {
+  static @IntVal(value= {0,1}) int lessThanBranchFree(int x, int y) {
     // The double negation is optimized away by normal Java, but is necessary for GWT
     // to make sure bit twiddling works as expected.
     return ~~(x - y) >>> (Integer.SIZE - 1);
@@ -119,7 +121,7 @@ public final class IntMath {
    */
   @SuppressWarnings("fallthrough")
   // TODO(kevinb): remove after this warning is disabled globally
-  public static int log2(int x, RoundingMode mode) {
+  public static @NonNegative int log2(@Positive int x, RoundingMode mode) {
     checkPositive("x", x);
     switch (mode) {
       case UNNECESSARY:
@@ -160,7 +162,7 @@ public final class IntMath {
    */
   @GwtIncompatible // need BigIntegerMath to adequately test
   @SuppressWarnings("fallthrough")
-  public static int log10(int x, RoundingMode mode) {
+  public static int log10(@Positive int x, RoundingMode mode) {
     checkPositive("x", x);
     int logFloor = log10Floor(x);
     int floorPow = powersOf10[logFloor];
@@ -184,7 +186,7 @@ public final class IntMath {
     }
   }
 
-  private static int log10Floor(int x) {
+  private static int log10Floor(@Positive int x) {
     /*
      * Based on Hacker's Delight Fig. 11-5, the two-table-lookup, branch-free implementation.
      *
@@ -202,19 +204,19 @@ public final class IntMath {
 
   // maxLog10ForLeadingZeros[i] == floor(log10(2^(Long.SIZE - i)))
   @VisibleForTesting
-  static final byte[] maxLog10ForLeadingZeros = {
+  static final @IntRange(from = 0, to = 9) byte[] maxLog10ForLeadingZeros = {
     9, 9, 9, 8, 8, 8, 7, 7, 7, 6, 6, 6, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0,
     0
   };
 
   @VisibleForTesting
-  static final int[] powersOf10 = {
+  static final @Positive int[] powersOf10 = {
     1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000
   };
 
   // halfPowersOf10[i] = largest int less than 10^(i + 0.5)
   @VisibleForTesting
-  static final int[] halfPowersOf10 = {
+  static final @Positive int[] halfPowersOf10 = {
     3, 31, 316, 3162, 31622, 316227, 3162277, 31622776, 316227766, Integer.MAX_VALUE
   };
 
@@ -228,7 +230,7 @@ public final class IntMath {
    * @throws IllegalArgumentException if {@code k < 0}
    */
   @GwtIncompatible // failing tests
-  public static int pow(int b, int k) {
+  public static int pow(int b, @NonNegative int k) {
     checkNonNegative("exponent", k);
     switch (b) {
       case 0:
@@ -270,7 +272,7 @@ public final class IntMath {
    */
   @GwtIncompatible // need BigIntegerMath to adequately test
   @SuppressWarnings("fallthrough")
-  public static int sqrt(int x, RoundingMode mode) {
+  public static @NonNegative int sqrt(@NonNegative int x, RoundingMode mode) {
     checkNonNegative("x", x);
     int sqrtFloor = sqrtFloor(x);
     switch (mode) {
@@ -303,7 +305,7 @@ public final class IntMath {
     }
   }
 
-  private static int sqrtFloor(int x) {
+  private static @NonNegative int sqrtFloor(@NonNegative int x) {
     // There is no loss of precision in converting an int to a double, according to
     // http://java.sun.com/docs/books/jls/third_edition/html/conversions.html#5.1.2
     return (int) Math.sqrt(x);
@@ -389,7 +391,7 @@ public final class IntMath {
    * @see <a href="http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.17.3">
    *     Remainder Operator</a>
    */
-  public static int mod(int x, int m) {
+  public static int mod(int x, @Positive int m) {
     if (m <= 0) {
       throw new ArithmeticException("Modulus " + m + " must be > 0");
     }
@@ -403,7 +405,7 @@ public final class IntMath {
    *
    * @throws IllegalArgumentException if {@code a < 0} or {@code b < 0}
    */
-  public static int gcd(int a, int b) {
+  public static @NonNegative int gcd(@NonNegative int a, @NonNegative int b) {
     /*
      * The reason we require both arguments to be >= 0 is because otherwise, what do you return on
      * gcd(0, Integer.MIN_VALUE)? BigInteger.gcd would return positive 2^31, but positive 2^31 isn't
@@ -489,7 +491,7 @@ public final class IntMath {
    * @throws ArithmeticException if {@code b} to the {@code k}th power overflows in signed
    *     {@code int} arithmetic
    */
-  public static int checkedPow(int b, int k) {
+  public static int checkedPow(int b, @NonNegative int k) {
     checkNonNegative("exponent", k);
     switch (b) {
       case 0:
@@ -626,7 +628,7 @@ public final class IntMath {
     return (n < factorials.length) ? factorials[n] : Integer.MAX_VALUE;
   }
 
-  private static final int[] factorials = {
+  private static final @Positive int[] factorials = {
     1,
     1,
     1 * 2,
@@ -648,7 +650,7 @@ public final class IntMath {
    *
    * @throws IllegalArgumentException if {@code n < 0}, {@code k < 0} or {@code k > n}
    */
-  public static int binomial(int n, int k) {
+  public static @NonNegative int binomial(@NonNegative int n, @NonNegative int k) {
     checkNonNegative("n", n);
     checkNonNegative("k", k);
     checkArgument(k <= n, "k (%s) > n (%s)", k, n);
@@ -675,7 +677,7 @@ public final class IntMath {
 
   // binomial(biggestBinomials[k], k) fits in an int, but not binomial(biggestBinomials[k]+1,k).
   @VisibleForTesting
-  static int[] biggestBinomials = {
+  static @Positive int[] biggestBinomials = {
     Integer.MAX_VALUE,
     Integer.MAX_VALUE,
     65536,
@@ -722,7 +724,7 @@ public final class IntMath {
    */
   @GwtIncompatible // TODO
   @Beta
-  public static boolean isPrime(int n) {
+  public static boolean isPrime(@NonNegative int n) {
     return LongMath.isPrime(n);
   }
 
