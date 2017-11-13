@@ -36,6 +36,9 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.framework.qual.AnnotatedFor;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.IndexOrLow;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
+import org.checkerframework.checker.index.qual.SubstringIndexFor;
 
 /**
  * Static utility methods pertaining to {@code boolean} primitives, that are not already found in
@@ -168,12 +171,12 @@ public final class Booleans {
    * @return the least index {@code i} for which {@code array[i] == target}, or {@code -1} if no
    *     such index exists.
    */
-  public static @GTENegativeOne int indexOf(boolean[] array, boolean target) {
+  public static @IndexOrLow("#1") int indexOf(boolean[] array, boolean target) {
     return indexOf(array, target, 0, array.length);
   }
 
   // TODO(kevinb): consider making this public
-  private static @GTENegativeOne int indexOf(boolean[] array, boolean target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
+  private static @IndexOrLow("#1") int indexOf(boolean[] array, boolean target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = start; i < end; i++) {
       if (array[i] == target) {
         return i;
@@ -193,7 +196,7 @@ public final class Booleans {
    * @param array the array to search for the sequence {@code target}
    * @param target the array to search for as a sub-sequence of {@code array}
    */
-  public static @GTENegativeOne int indexOf(boolean[] array, boolean[] target) {
+  public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset="#2.length - 1") int indexOf(boolean[] array, boolean[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
     if (target.length == 0) {
@@ -220,12 +223,12 @@ public final class Booleans {
    * @return the greatest index {@code i} for which {@code array[i] == target}, or {@code -1} if no
    *     such index exists.
    */
-  public static @GTENegativeOne int lastIndexOf(boolean[] array, boolean target) {
+  public static @IndexOrLow("#1") int lastIndexOf(boolean[] array, boolean target) {
     return lastIndexOf(array, target, 0, array.length);
   }
 
   // TODO(kevinb): consider making this public
-  private static @GTENegativeOne int lastIndexOf(boolean[] array, boolean target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
+  private static @IndexOrLow("#1") int lastIndexOf(boolean[] array, boolean target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = end - 1; i >= start; i--) {
       if (array[i] == target) {
         return i;

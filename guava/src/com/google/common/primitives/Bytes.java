@@ -30,7 +30,12 @@ import java.util.RandomAccess;
 import javax.annotation.Nullable;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.IndexOrLow;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.SubstringIndexFor;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code byte} primitives, that are not already found in
@@ -47,6 +52,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 // TODO(kevinb): how to prevent warning on UnsignedBytes when building GWT
 // javadoc?
 @GwtCompatible
+@AnnotatedFor("index")
 public final class Bytes {
   private Bytes() {}
 
@@ -88,12 +94,12 @@ public final class Bytes {
    * @return the least index {@code i} for which {@code array[i] == target}, or {@code -1} if no
    *     such index exists.
    */
-  public static int indexOf(byte[] array, byte target) {
+  public static @IndexOrLow("#1") int indexOf(byte[] array, byte target) {
     return indexOf(array, target, 0, array.length);
   }
 
   // TODO(kevinb): consider making this public
-  private static int indexOf(byte[] array, byte target, int start, int end) {
+  private static @IndexOrLow("#1") int indexOf(byte[] array, byte target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = start; i < end; i++) {
       if (array[i] == target) {
         return i;
@@ -113,7 +119,7 @@ public final class Bytes {
    * @param array the array to search for the sequence {@code target}
    * @param target the array to search for as a sub-sequence of {@code array}
    */
-  public static int indexOf(byte[] array, byte[] target) {
+  public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset="#2.length - 1") int indexOf(byte[] array, byte[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
     if (target.length == 0) {
@@ -140,12 +146,12 @@ public final class Bytes {
    * @return the greatest index {@code i} for which {@code array[i] == target}, or {@code -1} if no
    *     such index exists.
    */
-  public static int lastIndexOf(byte[] array, byte target) {
+  public static @IndexOrLow("#1") int lastIndexOf(byte[] array, byte target) {
     return lastIndexOf(array, target, 0, array.length);
   }
 
   // TODO(kevinb): consider making this public
-  private static int lastIndexOf(byte[] array, byte target, int start, int end) {
+  private static @IndexOrLow("#1") int lastIndexOf(byte[] array, byte target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = end - 1; i >= start; i--) {
       if (array[i] == target) {
         return i;
@@ -189,7 +195,7 @@ public final class Bytes {
    * @return an array containing the values of {@code array}, with guaranteed minimum length
    *     {@code minLength}
    */
-  public static byte[] ensureCapacity(byte[] array, int minLength, int padding) {
+  public static byte[] ensureCapacity(byte[] array, @NonNegative int minLength, @NonNegative int padding) {
     checkArgument(minLength >= 0, "Invalid minLength: %s", minLength);
     checkArgument(padding >= 0, "Invalid padding: %s", padding);
     return (array.length < minLength) ? Arrays.copyOf(array, minLength + padding) : array;
@@ -246,14 +252,14 @@ public final class Bytes {
   private static class ByteArrayAsList extends AbstractList<Byte>
       implements RandomAccess, Serializable {
     final byte[] array;
-    final int start;
-    final int end;
+    final @IndexOrHigh("array") int start;
+    final @IndexOrHigh("array") int end;
 
     ByteArrayAsList(byte[] array) {
       this(array, 0, array.length);
     }
 
-    ByteArrayAsList(byte[] array, int start, int end) {
+    ByteArrayAsList(byte[] array, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
       this.end = end;
@@ -270,7 +276,7 @@ public final class Bytes {
     }
 
     @Override
-    public Byte get(int index) {
+    public Byte get(@NonNegative int index) {
       checkElementIndex(index, size());
       return array[start + index];
     }
@@ -306,7 +312,7 @@ public final class Bytes {
     }
 
     @Override
-    public Byte set(int index, Byte element) {
+    public Byte set(@NonNegative int index, Byte element) {
       checkElementIndex(index, size());
       byte oldValue = array[start + index];
       // checkNotNull for GWT (do not optimize)
@@ -315,7 +321,7 @@ public final class Bytes {
     }
 
     @Override
-    public List<Byte> subList(int fromIndex, int toIndex) {
+    public List<Byte> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);
       if (fromIndex == toIndex) {
@@ -392,7 +398,7 @@ public final class Bytes {
    *     {@code toIndex > fromIndex}
    * @since 23.1
    */
-  public static void reverse(byte[] array, int fromIndex, int toIndex) {
+  public static void reverse(byte[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     for (int i = fromIndex, j = toIndex - 1; i < j; i++, j--) {
