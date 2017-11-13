@@ -933,7 +933,7 @@ public final class Maps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return backingSet().size();
     }
 
@@ -1141,7 +1141,7 @@ public final class Maps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return set.size();
     }
 
@@ -2119,7 +2119,7 @@ public final class Maps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return fromMap.size();
     }
 
@@ -3259,7 +3259,7 @@ public final class Maps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return filteredDelegate.size();
     }
 
@@ -3681,7 +3681,7 @@ public final class Maps {
 
   abstract static class IteratorBasedAbstractMap<K, V> extends AbstractMap<K, V> {
     @Override
-    public abstract int size();
+    public abstract @NonNegative int size();
 
     abstract Iterator<Entry<K, V>> entryIterator();
 
@@ -3881,7 +3881,7 @@ public final class Maps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return map().size();
     }
 
@@ -4113,7 +4113,7 @@ public final class Maps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return map().size();
     }
 
@@ -4137,7 +4137,7 @@ public final class Maps {
     abstract Map<K, V> map();
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return map().size();
     }
 

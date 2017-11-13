@@ -28,6 +28,8 @@ import java.util.Spliterators;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * {@code entrySet()} implementation for {@link ImmutableMap}.
  *
@@ -79,7 +81,7 @@ abstract class ImmutableMapEntrySet<K, V> extends ImmutableSet<Entry<K, V>> {
   abstract ImmutableMap<K, V> map();
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return map().size();
   }
 

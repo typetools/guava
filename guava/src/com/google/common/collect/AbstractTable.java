@@ -27,6 +27,8 @@ import java.util.Set;
 import java.util.Spliterator;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Skeletal, implementation-agnostic implementation of the {@link Table} interface.
  *
@@ -165,7 +167,7 @@ abstract class AbstractTable<R, C, V> implements Table<R, C, V> {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return AbstractTable.this.size();
     }
   }
@@ -218,7 +220,7 @@ abstract class AbstractTable<R, C, V> implements Table<R, C, V> {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return AbstractTable.this.size();
     }
   }

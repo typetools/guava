@@ -35,6 +35,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * An implementation of {@link GraphConnections} for directed graphs.
  *
@@ -121,7 +123,7 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return predecessorCount;
       }
 
@@ -153,7 +155,7 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return successorCount;
       }
 

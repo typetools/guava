@@ -30,6 +30,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Implementation of {@link Multimaps#filterKeys(Multimap, Predicate)}.
  *
@@ -56,7 +58,7 @@ class FilteredKeyMultimap<K, V> extends AbstractMultimap<K, V> implements Filter
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     int size = 0;
     for (Collection<V> collection : asMap().values()) {
       size += collection.size();

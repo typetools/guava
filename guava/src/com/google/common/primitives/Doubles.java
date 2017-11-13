@@ -39,6 +39,8 @@ import java.util.regex.Pattern;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Static utility methods pertaining to {@code double} primitives, that are not already found in
  * either {@link Double} or {@link Arrays}.
@@ -533,7 +535,7 @@ public final class Doubles {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return end - start;
     }
 

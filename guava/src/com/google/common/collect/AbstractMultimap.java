@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -225,7 +226,7 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V> {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return AbstractMultimap.this.size();
     }
 

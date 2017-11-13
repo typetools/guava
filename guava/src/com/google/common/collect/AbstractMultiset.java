@@ -96,7 +96,7 @@ abstract class AbstractMultiset<E extends @org.checkerframework.checker.nullness
 
   @CanIgnoreReturnValue
   @Override
-  public int add(@Nullable E element, int occurrences) {
+  public @NonNegative int add(@Nullable E element, @NonNegative int occurrences) {
     throw new UnsupportedOperationException();
   }
 
@@ -108,19 +108,19 @@ abstract class AbstractMultiset<E extends @org.checkerframework.checker.nullness
 
   @CanIgnoreReturnValue
   @Override
-  public int remove(@Nullable Object element, int occurrences) {
+  public @NonNegative int remove(@Nullable Object element, @NonNegative int occurrences) {
     throw new UnsupportedOperationException();
   }
 
   @CanIgnoreReturnValue
   @Override
-  public int setCount(@Nullable E element, int count) {
+  public @NonNegative int setCount(@Nullable E element, @NonNegative int count) {
     return setCountImpl(this, element, count);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public boolean setCount(@Nullable E element, int oldCount, int newCount) {
+  public boolean setCount(@Nullable E element, @NonNegative int oldCount, @NonNegative int newCount) {
     return setCountImpl(this, element, oldCount, newCount);
   }
 

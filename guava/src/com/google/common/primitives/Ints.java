@@ -35,6 +35,8 @@ import java.util.Spliterators;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Static utility methods pertaining to {@code int} primitives, that are not already found in either
  * {@link Integer} or {@link Arrays}.
@@ -578,7 +580,7 @@ public final class Ints {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return end - start;
     }
 

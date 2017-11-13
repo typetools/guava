@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -178,7 +179,7 @@ class RegularImmutableBiMap<K, V> extends ImmutableBiMap<K, V> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return entries.length;
   }
 
@@ -198,7 +199,7 @@ class RegularImmutableBiMap<K, V> extends ImmutableBiMap<K, V> {
   private final class Inverse extends ImmutableBiMap<V, K> {
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return inverse().size();
     }
 

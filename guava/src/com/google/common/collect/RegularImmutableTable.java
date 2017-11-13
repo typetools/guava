@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * An implementation of {@link ImmutableTable} holding an arbitrary number of
  * cells.
@@ -45,7 +47,7 @@ abstract class RegularImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
   @WeakOuter
   private final class CellSet extends ImmutableSet.Indexed<Cell<R, C, V>> {
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return RegularImmutableTable.this.size();
     }
 
@@ -80,7 +82,7 @@ abstract class RegularImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
   @WeakOuter
   private final class Values extends ImmutableList<V> {
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return RegularImmutableTable.this.size();
     }
 

@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -155,7 +156,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    */
   @Pure
   @Override
-  public int size() {
+  public @NonNegative int size() {
     long sum = 0L;
     for (AtomicInteger value : countMap.values()) {
       sum += value.get();
@@ -582,7 +583,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
 
   @Pure
   @Override
-  public int size() { return super.size(); }
+  public @NonNegative int size() { return super.size(); }
 
   @Pure
   @Override

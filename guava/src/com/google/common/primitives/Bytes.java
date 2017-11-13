@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.RandomAccess;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Static utility methods pertaining to {@code byte} primitives, that are not already found in
  * either {@link Byte} or {@link Arrays}, <i>and interpret bytes as neither signed nor unsigned</i>.
@@ -257,7 +259,7 @@ public final class Bytes {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return end - start;
     }
 

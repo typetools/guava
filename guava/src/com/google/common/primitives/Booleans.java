@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.RandomAccess;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Static utility methods pertaining to {@code boolean} primitives, that are not already found in
  * either {@link Boolean} or {@link Arrays}.
@@ -396,7 +398,7 @@ public final class Booleans {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return end - start;
     }
 

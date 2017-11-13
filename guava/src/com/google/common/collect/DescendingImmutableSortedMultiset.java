@@ -17,6 +17,8 @@ package com.google.common.collect;
 import com.google.common.annotations.GwtIncompatible;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * A descending wrapper around an {@code ImmutableSortedMultiset}
  *
@@ -47,7 +49,7 @@ final class DescendingImmutableSortedMultiset<E> extends ImmutableSortedMultiset
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return forward.size();
   }
 

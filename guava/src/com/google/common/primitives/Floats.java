@@ -36,6 +36,8 @@ import java.util.RandomAccess;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Static utility methods pertaining to {@code float} primitives, that are not already found in
  * either {@link Float} or {@link Arrays}.
@@ -526,7 +528,7 @@ public final class Floats {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return end - start;
     }
 

@@ -35,6 +35,8 @@ import java.util.stream.LongStream;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * An immutable array of {@code long} values, with an API resembling {@link List}.
  *
@@ -466,7 +468,7 @@ public final class ImmutableLongArray implements Serializable {
     // inherit: isEmpty, containsAll, toArray x2, iterator, listIterator, stream, forEach, mutations
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return parent.length();
     }
 

@@ -14,6 +14,7 @@
 
 package com.google.common.base;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -465,7 +466,7 @@ public class Joiner {
     return new AbstractList<@org.checkerframework.checker.nullness.qual.Nullable Object>() {
       @Pure
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return rest.length + 2;
       }
 

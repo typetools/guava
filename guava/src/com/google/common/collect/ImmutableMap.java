@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -798,7 +799,7 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
       extends IteratorBasedImmutableMap<K, ImmutableSet<V>> {
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return ImmutableMap.this.size();
     }
 

@@ -35,6 +35,9 @@ import java.util.stream.IntStream;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * An immutable array of {@code int} values, with an API resembling {@link List}.
  *
@@ -464,7 +467,7 @@ public final class ImmutableIntArray implements Serializable {
     // inherit: isEmpty, containsAll, toArray x2, iterator, listIterator, stream, forEach, mutations
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return parent.length();
     }
 
@@ -479,12 +482,12 @@ public final class ImmutableIntArray implements Serializable {
     }
 
     @Override
-    public int indexOf(Object target) {
+    public @GTENegativeOne int indexOf(Object target) {
       return target instanceof Integer ? parent.indexOf((Integer) target) : -1;
     }
 
     @Override
-    public int lastIndexOf(Object target) {
+    public @GTENegativeOne int lastIndexOf(Object target) {
       return target instanceof Integer ? parent.lastIndexOf((Integer) target) : -1;
     }
 

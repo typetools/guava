@@ -25,6 +25,8 @@ import com.google.j2objc.annotations.RetainedWith;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Implementation of {@link ImmutableMap} with exactly one entry.
  *
@@ -56,7 +58,7 @@ final class SingletonImmutableBiMap<K, V> extends ImmutableBiMap<K, V> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return 1;
   }
 

@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -497,7 +498,7 @@ public abstract class ImmutableMultimap<K, V> extends AbstractMultimap<K, V>
 
   @Pure
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return size;
   }
 
@@ -562,7 +563,7 @@ public abstract class ImmutableMultimap<K, V> extends AbstractMultimap<K, V>
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multimap.size();
     }
 
@@ -658,7 +659,7 @@ public abstract class ImmutableMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
-    public int count(@Nullable Object element) {
+    public @NonNegative int count(@Nullable Object element) {
       Collection<V> values = map.get(element);
       return (values == null) ? 0 : values.size();
     }
@@ -669,7 +670,7 @@ public abstract class ImmutableMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return ImmutableMultimap.this.size();
     }
 
@@ -739,7 +740,7 @@ public abstract class ImmutableMultimap<K, V> extends AbstractMultimap<K, V>
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multimap.size();
     }
 

@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -222,7 +223,7 @@ public final class TreeMultiset<E extends @org.checkerframework.checker.nullness
 
   @Pure
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return Ints.saturatedCast(aggregateForEntries(Aggregate.SIZE));
   }
 
@@ -232,7 +233,7 @@ public final class TreeMultiset<E extends @org.checkerframework.checker.nullness
   }
 
   @Override
-  public int count(@Nullable Object element) {
+  public @NonNegative int count(@Nullable Object element) {
     try {
       @SuppressWarnings("unchecked")
       E e = (E) element;
@@ -248,7 +249,7 @@ public final class TreeMultiset<E extends @org.checkerframework.checker.nullness
 
   @CanIgnoreReturnValue
   @Override
-  public int add(@Nullable E element, int occurrences) {
+  public @NonNegative int add(@Nullable E element, @NonNegative int occurrences) {
     checkNonnegative(occurrences, "occurrences");
     if (occurrences == 0) {
       return count(element);
@@ -270,7 +271,7 @@ public final class TreeMultiset<E extends @org.checkerframework.checker.nullness
 
   @CanIgnoreReturnValue
   @Override
-  public int remove(@Nullable Object element, int occurrences) {
+  public @NonNegative int remove(@Nullable Object element, @NonNegative int occurrences) {
     checkNonnegative(occurrences, "occurrences");
     if (occurrences == 0) {
       return count(element);
@@ -294,7 +295,7 @@ public final class TreeMultiset<E extends @org.checkerframework.checker.nullness
 
   @CanIgnoreReturnValue
   @Override
-  public int setCount(@Nullable E element, int count) {
+  public @NonNegative int setCount(@Nullable E element, @NonNegative int count) {
     checkNonnegative(count, "count");
     if (!range.contains(element)) {
       checkArgument(count == 0);
@@ -316,7 +317,7 @@ public final class TreeMultiset<E extends @org.checkerframework.checker.nullness
 
   @CanIgnoreReturnValue
   @Override
-  public boolean setCount(@Nullable E element, int oldCount, int newCount) {
+  public boolean setCount(@Nullable E element, @NonNegative int oldCount, @NonNegative int newCount) {
     checkNonnegative(newCount, "newCount");
     checkNonnegative(oldCount, "oldCount");
     checkArgument(range.contains(element));

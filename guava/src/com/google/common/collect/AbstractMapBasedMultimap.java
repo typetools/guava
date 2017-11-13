@@ -44,6 +44,9 @@ import java.util.Spliterator;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Basic implementation of the {@link Multimap} interface. This class represents
  * a multimap as a map that associates each key with a collection of values. All
@@ -176,7 +179,7 @@ abstract class AbstractMapBasedMultimap<K, V> extends AbstractMultimap<K, V>
   // Query Operations
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return totalSize;
   }
 
@@ -418,7 +421,7 @@ abstract class AbstractMapBasedMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       refreshIfEmpty();
       return delegate.size();
     }
@@ -835,13 +838,13 @@ abstract class AbstractMapBasedMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
-    public int indexOf(Object o) {
+    public @GTENegativeOne int indexOf(Object o) {
       refreshIfEmpty();
       return getListDelegate().indexOf(o);
     }
 
     @Override
-    public int lastIndexOf(Object o) {
+    public @GTENegativeOne int lastIndexOf(Object o) {
       refreshIfEmpty();
       return getListDelegate().lastIndexOf(o);
     }
@@ -1331,7 +1334,7 @@ abstract class AbstractMapBasedMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return submap.size();
     }
 
