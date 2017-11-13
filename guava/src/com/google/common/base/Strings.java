@@ -21,6 +21,9 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.VisibleForTesting;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * Static utility methods pertaining to {@code String} or {@code CharSequence} instances.
  *
@@ -28,6 +31,7 @@ import javax.annotation.Nullable;
  * @since 3.0
  */
 @GwtCompatible
+@AnnotatedFor("index")
 public final class Strings {
   private Strings() {}
 
@@ -139,7 +143,7 @@ public final class Strings {
    *     {@code count} is zero)
    * @throws IllegalArgumentException if {@code count} is negative
    */
-  public static String repeat(String string, int count) {
+  public static String repeat(String string, @NonNegative int count) {
     checkNotNull(string); // eager for GWT.
 
     if (count <= 1) {
