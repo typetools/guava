@@ -33,7 +33,9 @@ import java.util.RandomAccess;
 import javax.annotation.Nullable;
 
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 
 /**
  * Static utility methods pertaining to {@code boolean} primitives, that are not already found in
@@ -46,6 +48,7 @@ import org.checkerframework.checker.index.qual.GTENegativeOne;
  * @since 1.0
  */
 @GwtCompatible
+@AnnotatedFor("index")
 public final class Booleans {
   private Booleans() {}
 
@@ -165,12 +168,12 @@ public final class Booleans {
    * @return the least index {@code i} for which {@code array[i] == target}, or {@code -1} if no
    *     such index exists.
    */
-  public static int indexOf(boolean[] array, boolean target) {
+  public static @GTENegativeOne int indexOf(boolean[] array, boolean target) {
     return indexOf(array, target, 0, array.length);
   }
 
   // TODO(kevinb): consider making this public
-  private static int indexOf(boolean[] array, boolean target, int start, int end) {
+  private static @GTENegativeOne int indexOf(boolean[] array, boolean target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = start; i < end; i++) {
       if (array[i] == target) {
         return i;
@@ -190,7 +193,7 @@ public final class Booleans {
    * @param array the array to search for the sequence {@code target}
    * @param target the array to search for as a sub-sequence of {@code array}
    */
-  public static int indexOf(boolean[] array, boolean[] target) {
+  public static @GTENegativeOne int indexOf(boolean[] array, boolean[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
     if (target.length == 0) {
@@ -217,12 +220,12 @@ public final class Booleans {
    * @return the greatest index {@code i} for which {@code array[i] == target}, or {@code -1} if no
    *     such index exists.
    */
-  public static int lastIndexOf(boolean[] array, boolean target) {
+  public static @GTENegativeOne int lastIndexOf(boolean[] array, boolean target) {
     return lastIndexOf(array, target, 0, array.length);
   }
 
   // TODO(kevinb): consider making this public
-  private static int lastIndexOf(boolean[] array, boolean target, int start, int end) {
+  private static @GTENegativeOne int lastIndexOf(boolean[] array, boolean target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = end - 1; i >= start; i--) {
       if (array[i] == target) {
         return i;
@@ -266,7 +269,7 @@ public final class Booleans {
    * @return an array containing the values of {@code array}, with guaranteed minimum length
    *     {@code minLength}
    */
-  public static boolean[] ensureCapacity(boolean[] array, int minLength, int padding) {
+  public static boolean[] ensureCapacity(boolean[] array, @NonNegative int minLength, @NonNegative int padding) {
     checkArgument(minLength >= 0, "Invalid minLength: %s", minLength);
     checkArgument(padding >= 0, "Invalid padding: %s", padding);
     return (array.length < minLength) ? Arrays.copyOf(array, minLength + padding) : array;
@@ -386,14 +389,14 @@ public final class Booleans {
   private static class BooleanArrayAsList extends AbstractList<Boolean>
       implements RandomAccess, Serializable {
     final boolean[] array;
-    final int start;
-    final int end;
+    final @IndexOrHigh("array") int start;
+    final @IndexOrHigh("array") int end;
 
     BooleanArrayAsList(boolean[] array) {
       this(array, 0, array.length);
     }
 
-    BooleanArrayAsList(boolean[] array, int start, int end) {
+    BooleanArrayAsList(boolean[] array, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
       this.end = end;
@@ -410,7 +413,7 @@ public final class Booleans {
     }
 
     @Override
-    public Boolean get(int index) {
+    public Boolean get(@NonNegative int index) {
       checkElementIndex(index, size());
       return array[start + index];
     }
@@ -447,7 +450,7 @@ public final class Booleans {
     }
 
     @Override
-    public Boolean set(int index, Boolean element) {
+    public Boolean set(@NonNegative int index, Boolean element) {
       checkElementIndex(index, size());
       boolean oldValue = array[start + index];
       // checkNotNull for GWT (do not optimize)
@@ -456,7 +459,7 @@ public final class Booleans {
     }
 
     @Override
-    public List<Boolean> subList(int fromIndex, int toIndex) {
+    public List<Boolean> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);
       if (fromIndex == toIndex) {
@@ -518,7 +521,7 @@ public final class Booleans {
    * @since 16.0
    */
   @Beta
-  public static int countTrue(boolean... values) {
+  public static @NonNegative int countTrue(boolean... values) {
     int count = 0;
     for (boolean value : values) {
       if (value) {
@@ -549,7 +552,7 @@ public final class Booleans {
    *     {@code toIndex > fromIndex}
    * @since 23.1
    */
-  public static void reverse(boolean[] array, int fromIndex, int toIndex) {
+  public static void reverse(boolean[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     for (int i = fromIndex, j = toIndex - 1; i < j; i++, j--) {
