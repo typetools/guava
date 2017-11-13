@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -250,7 +251,7 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
   public static class Builder<K, V> {
     Comparator<? super V> valueComparator;
     Entry<K, V>[] entries;
-    int size;
+    @IndexOrHigh("entries") int size;
     boolean entriesUsed;
 
     /**

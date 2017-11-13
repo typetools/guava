@@ -22,11 +22,14 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import javax.annotation.Nullable;
 
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 /**
  * Note this class is a copy of {@link com.google.common.collect.AbstractIterator} (for dependency
  * reasons).
  */
 @GwtCompatible
+@AnnotatedFor("index")
 abstract class AbstractIterator<T> implements Iterator<T> {
   private State state = State.NOT_READY;
 
