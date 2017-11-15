@@ -546,6 +546,7 @@ public final class Floats {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public Float get(@NonNegative int index) {
       checkElementIndex(index, size());
       return array[start + index];
@@ -582,6 +583,7 @@ public final class Floats {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public Float set(@NonNegative int index, Float element) {
       checkElementIndex(index, size());
       float oldValue = array[start + index];
@@ -591,6 +593,7 @@ public final class Floats {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public List<Float> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);

@@ -276,6 +276,7 @@ public final class Bytes {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public Byte get(@NonNegative int index) {
       checkElementIndex(index, size());
       return array[start + index];
@@ -312,6 +313,7 @@ public final class Bytes {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public Byte set(@NonNegative int index, Byte element) {
       checkElementIndex(index, size());
       byte oldValue = array[start + index];
@@ -321,6 +323,7 @@ public final class Bytes {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public List<Byte> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);

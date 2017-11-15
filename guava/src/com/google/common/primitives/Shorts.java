@@ -594,6 +594,7 @@ public final class Shorts {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public Short get(@NonNegative int index) {
       checkElementIndex(index, size());
       return array[start + index];
@@ -630,6 +631,7 @@ public final class Shorts {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public Short set(@NonNegative int index, Short element) {
       checkElementIndex(index, size());
       short oldValue = array[start + index];
@@ -639,6 +641,7 @@ public final class Shorts {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public List<Short> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);

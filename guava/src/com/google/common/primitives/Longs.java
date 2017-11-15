@@ -701,6 +701,7 @@ public final class Longs {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public Long get(@NonNegative int index) {
       checkElementIndex(index, size());
       return array[start + index];
@@ -742,6 +743,7 @@ public final class Longs {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public Long set(@NonNegative int index, Long element) {
       checkElementIndex(index, size());
       long oldValue = array[start + index];
@@ -751,6 +753,7 @@ public final class Longs {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public List<Long> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);

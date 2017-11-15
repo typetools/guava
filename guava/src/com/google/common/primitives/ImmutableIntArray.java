@@ -476,6 +476,7 @@ public final class ImmutableIntArray implements Serializable {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public Integer get(@NonNegative int index) {
       return parent.get(index);
     }
@@ -496,6 +497,7 @@ public final class ImmutableIntArray implements Serializable {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public List<Integer> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       return parent.subArray(fromIndex, toIndex).asList();
     }

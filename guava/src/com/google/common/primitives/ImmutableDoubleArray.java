@@ -481,6 +481,7 @@ public final class ImmutableDoubleArray implements Serializable {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public Double get(@NonNegative int index) {
       return parent.get(index);
     }
@@ -501,6 +502,7 @@ public final class ImmutableDoubleArray implements Serializable {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public List<Double> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       return parent.subArray(fromIndex, toIndex).asList();
     }

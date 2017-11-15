@@ -600,6 +600,7 @@ public final class Ints {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public Integer get(@NonNegative int index) {
       checkElementIndex(index, size());
       return array[start + index];
@@ -641,6 +642,7 @@ public final class Ints {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public Integer set(@NonNegative int index, Integer element) {
       checkElementIndex(index, size());
       int oldValue = array[start + index];
@@ -650,6 +652,7 @@ public final class Ints {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
     public List<Integer> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);
