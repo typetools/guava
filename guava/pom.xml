@@ -110,6 +110,7 @@
               <arg>-Awarns</arg>
               <arg>${addtionalargs}</arg>
               <arg>-AprintErrorStack</arg>
+              <arg>-AonlyDefs=^com\.google\.common\.primitives\.</arg>
             </compilerArgs>
             <compilerArguments>
             	<Xmaxwarns>10000</Xmaxwarns>
