@@ -491,12 +491,12 @@ public final class ImmutableDoubleArray implements Serializable {
     }
 
     @Override
-    public int indexOf(Object target) {
+    public @GTENegativeOne int indexOf(Object target) {
       return target instanceof Double ? parent.indexOf((Double) target) : -1;
     }
 
     @Override
-    public int lastIndexOf(Object target) {
+    public @GTENegativeOne int lastIndexOf(Object target) {
       return target instanceof Double ? parent.lastIndexOf((Double) target) : -1;
     }
 
