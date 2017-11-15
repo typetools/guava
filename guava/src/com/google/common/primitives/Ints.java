@@ -40,6 +40,7 @@ import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.PolyLowerBound;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
 import org.checkerframework.common.value.qual.IntRange;
@@ -110,7 +111,7 @@ public final class Ints {
    *     {@link Integer#MAX_VALUE} if it is too large, or {@link Integer#MIN_VALUE} if it is too
    *     small
    */
-  public static int saturatedCast(long value) {
+  public static @PolyLowerBound int saturatedCast(@PolyLowerBound long value) {
     if (value > Integer.MAX_VALUE) {
       return Integer.MAX_VALUE;
     }
