@@ -310,7 +310,7 @@ public final class Longs {
    *
    * @throws IllegalArgumentException if {@code bytes} has fewer than 8 elements
    */
-  public static long fromByteArray(byte[] bytes) {
+  public static long fromByteArray(byte @MinLen(Longs.BYTES)[] bytes) {
     checkArgument(bytes.length >= BYTES, "array too small: %s < %s", bytes.length, BYTES);
     return fromBytes(
         bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], bytes[6], bytes[7]);

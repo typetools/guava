@@ -332,7 +332,7 @@ public final class Ints {
    *
    * @throws IllegalArgumentException if {@code bytes} has fewer than 4 elements
    */
-  public static int fromByteArray(byte[] bytes) {
+  public static int fromByteArray(byte @MinLen(Ints.BYTES)[] bytes) {
     checkArgument(bytes.length >= BYTES, "array too small: %s < %s", bytes.length, BYTES);
     return fromBytes(bytes[0], bytes[1], bytes[2], bytes[3]);
   }

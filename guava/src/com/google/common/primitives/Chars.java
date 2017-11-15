@@ -323,7 +323,7 @@ public final class Chars {
    * @throws IllegalArgumentException if {@code bytes} has fewer than 2 elements
    */
   @GwtIncompatible // doesn't work
-  public static char fromByteArray(byte[] bytes) {
+  public static char fromByteArray(byte @MinLen(Chars.BYTES)[] bytes) {
     checkArgument(bytes.length >= BYTES, "array too small: %s < %s", bytes.length, BYTES);
     return fromBytes(bytes[0], bytes[1]);
   }

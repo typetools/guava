@@ -326,7 +326,7 @@ public final class Shorts {
    * @throws IllegalArgumentException if {@code bytes} has fewer than 2 elements
    */
   @GwtIncompatible // doesn't work
-  public static short fromByteArray(byte[] bytes) {
+  public static short fromByteArray(byte @MinLen(Shorts.BYTES)[] bytes) {
     checkArgument(bytes.length >= BYTES, "array too small: %s < %s", bytes.length, BYTES);
     return fromBytes(bytes[0], bytes[1]);
   }
