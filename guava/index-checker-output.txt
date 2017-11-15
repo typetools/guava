@@ -19,86 +19,62 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/LittleEndianByteArray.java:[24,16] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[36,16] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/LittleEndianByteArray.java:[24,16] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[142,11] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[224,13] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[225,13] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[225,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[226,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @LTLengthOf(value="this.array", offset="-2") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[235,55] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[236,55] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("values") int
   required: @LTLengthOf(value={"values", "this.array"}, offset={"0 - 1", "this.count - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[236,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[237,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @LTLengthOf(value={"this.array", "values"}, offset={"-values.length - 1", "-this.count - 1"}) int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[261,20] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[262,20] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[261,20] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[262,20] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @LTLengthOf(value="this.array", offset="-2") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[274,41] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[275,41] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[286,79] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[287,79] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value={"values.array", "this.array"}, offset={"values.start - 1", "this.count - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[287,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[288,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[295,49] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[296,49] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("this.array") int
   required: @LTLengthOf(value={"this.array", "newArray"}, offset={"0 - 1", "0 - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[358,16] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[359,16] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[374,24] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[375,24] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[384,18] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[385,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[397,18] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[398,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[426,38] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[427,38] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("this.array") int
   required: @LTLengthOf(value="this.array", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[440,46] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[441,46] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-startIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[440,66] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[441,66] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-endIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[478,41] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Integer get(@LowerBoundUnknown AsList this, @NonNegative int p0) in com.google.common.primitives.ImmutableIntArray.AsList
-  cannot override
-    @LowerBoundUnknown Integer get(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Integer> this, @LowerBoundUnknown int p0) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[498,51] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Integer> subList(@LowerBoundUnknown AsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.ImmutableIntArray.AsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Integer> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Integer> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[498,79] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Integer> subList(@LowerBoundUnknown AsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.ImmutableIntArray.AsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Integer> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Integer> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[525,60] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[528,60] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=2147483647) int
   array type found: @UnknownVal int @UnknownVal []
   required        : index of type @IndexFor("this.parent.array") or @LTLengthOf("this.parent.array"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[589,38] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[592,38] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[327,20] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -124,100 +100,62 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/util/concurrent/AbstractFuture.java:[1069,36] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/util/concurrent/AbstractFuture.java:[1070,37] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/util/concurrent/AbstractFuture.java:[1070,58] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[143,11] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal double []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[227,13] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[228,13] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[228,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[229,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @LTLengthOf(value="this.array", offset="-2") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[238,55] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[239,55] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("values") int
   required: @LTLengthOf(value={"values", "this.array"}, offset={"0 - 1", "this.count - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[239,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[240,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @LTLengthOf(value={"this.array", "values"}, offset={"-values.length - 1", "-this.count - 1"}) int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[264,20] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[265,20] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[264,20] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[265,20] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @LTLengthOf(value="this.array", offset="-2") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[277,41] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[278,41] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[289,79] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[290,79] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value={"values.array", "this.array"}, offset={"values.start - 1", "this.count - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[290,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[291,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[298,49] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[299,49] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("this.array") int
   required: @LTLengthOf(value={"this.array", "newArray"}, offset={"0 - 1", "0 - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[361,16] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[362,16] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[377,24] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[378,24] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[388,18] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[389,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[402,18] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[403,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[431,38] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[432,38] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("this.array") int
   required: @LTLengthOf(value="this.array", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[445,49] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[446,49] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-startIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[445,69] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[446,69] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-endIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[483,40] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Double get(@LowerBoundUnknown AsList this, @NonNegative int p0) in com.google.common.primitives.ImmutableDoubleArray.AsList
-  cannot override
-    @LowerBoundUnknown Double get(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Double> this, @LowerBoundUnknown int p0) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[493,12] [override.return.invalid] Incompatible return type.
-  Method
-    @LowerBoundUnknown int indexOf(@LowerBoundUnknown AsList this, @LowerBoundUnknown Object p0) in com.google.common.primitives.ImmutableDoubleArray.AsList
-  cannot override
-    @GTENegativeOne int indexOf(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Double> this, @LowerBoundUnknown Object p0) in java.util.AbstractList
-  found   : @LowerBoundUnknown int
-  required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[498,12] [override.return.invalid] Incompatible return type.
-  Method
-    @LowerBoundUnknown int lastIndexOf(@LowerBoundUnknown AsList this, @LowerBoundUnknown Object p0) in com.google.common.primitives.ImmutableDoubleArray.AsList
-  cannot override
-    @GTENegativeOne int lastIndexOf(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Double> this, @LowerBoundUnknown Object p0) in java.util.AbstractList
-  found   : @LowerBoundUnknown int
-  required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[503,50] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Double> subList(@LowerBoundUnknown AsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.ImmutableDoubleArray.AsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Double> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Double> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[503,78] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Double> subList(@LowerBoundUnknown AsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.ImmutableDoubleArray.AsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Double> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Double> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[530,69] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[533,69] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=2147483647) int
   array type found: @UnknownVal double @UnknownVal []
   required        : index of type @IndexFor("this.parent.array") or @LTLengthOf("this.parent.array"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[599,38] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[602,38] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[109,38] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -240,12 +178,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[295,52] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
   required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[328,28] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal byte @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[328,38] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 1 could be larger than the array's bound
-  found   : @UnknownVal byte @UnknownVal []
-  required: @MinLen("2") -- an array guaranteed to have at least 2 elements
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[377,26] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal char @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
@@ -255,65 +187,37 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[541,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[550,43] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Character get(@LowerBoundUnknown CharArrayAsList this, @NonNegative int p0) in com.google.common.primitives.Chars.CharArrayAsList
-  cannot override
-    @LowerBoundUnknown Character get(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Character> this, @LowerBoundUnknown int p0) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[552,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[553,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[568,20] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[569,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[580,20] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[581,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[587,43] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Character set(@LowerBoundUnknown CharArrayAsList this, @NonNegative int p0, @LowerBoundUnknown Character p1) in com.google.common.primitives.Chars.CharArrayAsList
-  cannot override
-    @LowerBoundUnknown Character set(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Character> this, @LowerBoundUnknown int p0, @LowerBoundUnknown Character p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[589,35] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[591,35] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[591,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[593,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[596,53] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Character> subList(@LowerBoundUnknown CharArrayAsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.Chars.CharArrayAsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Character> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Character> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[596,81] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Character> subList(@LowerBoundUnknown CharArrayAsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.Chars.CharArrayAsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Character> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Character> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[602,47] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[605,47] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-fromIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[602,66] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[605,66] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-toIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[617,27] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[620,27] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-i - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[617,57] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[620,57] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="that.array", offset="-i - 1") int
   required: @IndexFor("that.array") or @LTLengthOf("that.array") -- an integer less than that.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[638,40] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[641,40] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[646,40] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[649,40] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("this.array") int
   required: @LTLengthOf(value="this.array", offset={}) int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedInts.java:[243,24] [argument.type.incompatible] incompatible types in argument.
@@ -334,77 +238,43 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[298,52] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
   required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[331,28] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal byte @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[331,38] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 1 could be larger than the array's bound
-  found   : @UnknownVal byte @UnknownVal []
-  required: @MinLen("2") -- an array guaranteed to have at least 2 elements
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[487,24] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("array") int
   required: @LTLengthOf(value="array", offset={}) int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[588,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[597,39] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Short get(@LowerBoundUnknown ShortArrayAsList this, @NonNegative int p0) in com.google.common.primitives.Shorts.ShortArrayAsList
-  cannot override
-    @LowerBoundUnknown Short get(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Short> this, @LowerBoundUnknown int p0) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[599,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[600,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[614,20] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[615,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[626,20] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[627,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[633,39] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Short set(@LowerBoundUnknown ShortArrayAsList this, @NonNegative int p0, @LowerBoundUnknown Short p1) in com.google.common.primitives.Shorts.ShortArrayAsList
-  cannot override
-    @LowerBoundUnknown Short set(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Short> this, @LowerBoundUnknown int p0, @LowerBoundUnknown Short p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[635,36] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[637,36] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[637,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[639,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[642,49] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Short> subList(@LowerBoundUnknown ShortArrayAsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.Shorts.ShortArrayAsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Short> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Short> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[642,77] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Short> subList(@LowerBoundUnknown ShortArrayAsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.Shorts.ShortArrayAsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Short> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Short> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[648,48] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[651,48] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-fromIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[648,67] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[651,67] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-toIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[663,27] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[666,27] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-i - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[663,57] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[666,57] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="that.array", offset="-i - 1") int
   required: @IndexFor("that.array") or @LTLengthOf("that.array") -- an integer less than that.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[684,40] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[687,40] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[692,40] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[695,40] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("this.array") int
   required: @LTLengthOf(value="this.array", offset={}) int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[179,14] [return.type.incompatible] incompatible types in return.
@@ -425,65 +295,37 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[547,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[556,40] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Double get(@LowerBoundUnknown DoubleArrayAsList this, @NonNegative int p0) in com.google.common.primitives.Doubles.DoubleArrayAsList
-  cannot override
-    @LowerBoundUnknown Double get(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Double> this, @LowerBoundUnknown int p0) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[558,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[559,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[579,20] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[580,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[591,20] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[592,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[598,40] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Double set(@LowerBoundUnknown DoubleArrayAsList this, @NonNegative int p0, @LowerBoundUnknown Double p1) in com.google.common.primitives.Doubles.DoubleArrayAsList
-  cannot override
-    @LowerBoundUnknown Double set(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Double> this, @LowerBoundUnknown int p0, @LowerBoundUnknown Double p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[600,37] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[602,37] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[602,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[604,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[607,50] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Double> subList(@LowerBoundUnknown DoubleArrayAsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.Doubles.DoubleArrayAsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Double> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Double> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[607,78] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Double> subList(@LowerBoundUnknown DoubleArrayAsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.Doubles.DoubleArrayAsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Double> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Double> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[613,49] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[616,49] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-fromIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[613,68] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[616,68] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-toIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[628,27] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[631,27] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-i - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[628,57] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[631,57] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="that.array", offset="-i - 1") int
   required: @IndexFor("that.array") or @LTLengthOf("that.array") -- an integer less than that.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[649,40] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[652,40] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[657,40] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[660,40] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("this.array") int
   required: @LTLengthOf(value="this.array", offset={}) int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/SignedBytes.java:[222,24] [argument.type.incompatible] incompatible types in argument.
@@ -523,86 +365,62 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedLongs.java:[502,44] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="buf", offset="i - 1") int
   required: @LTEqLengthOf("buf") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[142,11] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal long []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[226,13] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[227,13] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[227,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[228,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @LTLengthOf(value="this.array", offset="-2") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[237,55] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[238,55] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("values") int
   required: @LTLengthOf(value={"values", "this.array"}, offset={"0 - 1", "this.count - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[238,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[239,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @LTLengthOf(value={"this.array", "values"}, offset={"-values.length - 1", "-this.count - 1"}) int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[263,20] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[264,20] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[263,20] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[264,20] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @LTLengthOf(value="this.array", offset="-2") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[276,41] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[277,41] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[288,79] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[289,79] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value={"values.array", "this.array"}, offset={"values.start - 1", "this.count - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[289,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[290,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[297,49] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[298,49] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("this.array") int
   required: @LTLengthOf(value={"this.array", "newArray"}, offset={"0 - 1", "0 - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[360,16] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[361,16] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[376,24] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[377,24] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[386,18] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[387,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[399,18] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[400,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[428,38] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[429,38] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("this.array") int
   required: @LTLengthOf(value="this.array", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[442,47] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[443,47] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-startIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[442,67] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[443,67] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-endIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[480,38] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Long get(@LowerBoundUnknown AsList this, @NonNegative int p0) in com.google.common.primitives.ImmutableLongArray.AsList
-  cannot override
-    @LowerBoundUnknown Long get(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Long> this, @LowerBoundUnknown int p0) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[500,48] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Long> subList(@LowerBoundUnknown AsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.ImmutableLongArray.AsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Long> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Long> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[500,76] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Long> subList(@LowerBoundUnknown AsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.ImmutableLongArray.AsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Long> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Long> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[527,57] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[530,57] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=2147483647) int
   array type found: @UnknownVal long @UnknownVal []
   required        : index of type @IndexFor("this.parent.array") or @LTLengthOf("this.parent.array"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[591,38] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[594,38] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/cache/Striped64.java:[106,38] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -625,30 +443,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[275,52] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
   required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[316,15] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal byte @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[316,25] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 1 could be larger than the array's bound
-  found   : @UnknownVal byte @UnknownVal []
-  required: @MinLen("2") -- an array guaranteed to have at least 2 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[316,35] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 2 could be larger than the array's bound
-  found   : @UnknownVal byte @UnknownVal []
-  required: @MinLen("3") -- an array guaranteed to have at least 3 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[316,45] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 3 could be larger than the array's bound
-  found   : @UnknownVal byte @UnknownVal []
-  required: @MinLen("4") -- an array guaranteed to have at least 4 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[316,55] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 4 could be larger than the array's bound
-  found   : @UnknownVal byte @UnknownVal []
-  required: @MinLen("5") -- an array guaranteed to have at least 5 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[316,65] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 5 could be larger than the array's bound
-  found   : @UnknownVal byte @UnknownVal []
-  required: @MinLen("6") -- an array guaranteed to have at least 6 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[316,75] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 6 could be larger than the array's bound
-  found   : @UnknownVal byte @UnknownVal []
-  required: @MinLen("7") -- an array guaranteed to have at least 7 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[316,85] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 7 could be larger than the array's bound
-  found   : @UnknownVal byte @UnknownVal []
-  required: @MinLen("8") -- an array guaranteed to have at least 8 elements
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[353,20] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483583, to=192) int
   array type found: @UnknownVal byte @ArrayLen(128) []
@@ -679,65 +473,37 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[695,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[704,38] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Long get(@LowerBoundUnknown LongArrayAsList this, @NonNegative int p0) in com.google.common.primitives.Longs.LongArrayAsList
-  cannot override
-    @LowerBoundUnknown Long get(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Long> this, @LowerBoundUnknown int p0) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[706,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[707,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[726,20] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[727,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[738,20] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[739,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[745,38] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Long set(@LowerBoundUnknown LongArrayAsList this, @NonNegative int p0, @LowerBoundUnknown Long p1) in com.google.common.primitives.Longs.LongArrayAsList
-  cannot override
-    @LowerBoundUnknown Long set(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Long> this, @LowerBoundUnknown int p0, @LowerBoundUnknown Long p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[747,35] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[749,35] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[749,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[751,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[754,48] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Long> subList(@LowerBoundUnknown LongArrayAsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.Longs.LongArrayAsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Long> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Long> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[754,76] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Long> subList(@LowerBoundUnknown LongArrayAsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.Longs.LongArrayAsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Long> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Long> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[760,47] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[763,47] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-fromIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[760,66] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[763,66] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-toIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[775,27] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[778,27] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-i - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[775,57] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[778,57] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="that.array", offset="-i - 1") int
   required: @IndexFor("that.array") or @LTLengthOf("that.array") -- an integer less than that.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[796,40] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[799,40] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[804,40] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[807,40] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("this.array") int
   required: @LTLengthOf(value="this.array", offset={}) int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[174,14] [return.type.incompatible] incompatible types in return.
@@ -758,65 +524,37 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[540,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[549,39] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Float get(@LowerBoundUnknown FloatArrayAsList this, @NonNegative int p0) in com.google.common.primitives.Floats.FloatArrayAsList
-  cannot override
-    @LowerBoundUnknown Float get(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Float> this, @LowerBoundUnknown int p0) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[551,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[552,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[566,20] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[567,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[578,20] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[579,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[585,39] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Float set(@LowerBoundUnknown FloatArrayAsList this, @NonNegative int p0, @LowerBoundUnknown Float p1) in com.google.common.primitives.Floats.FloatArrayAsList
-  cannot override
-    @LowerBoundUnknown Float set(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Float> this, @LowerBoundUnknown int p0, @LowerBoundUnknown Float p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[587,36] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[589,36] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[589,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[591,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[594,49] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Float> subList(@LowerBoundUnknown FloatArrayAsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.Floats.FloatArrayAsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Float> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Float> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[594,77] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Float> subList(@LowerBoundUnknown FloatArrayAsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.Floats.FloatArrayAsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Float> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Float> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[600,48] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[603,48] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-fromIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[600,67] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[603,67] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-toIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[615,27] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[618,27] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-i - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[615,57] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[618,57] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="that.array", offset="-i - 1") int
   required: @IndexFor("that.array") or @LTLengthOf("that.array") -- an integer less than that.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[636,40] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[639,40] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[644,40] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[647,40] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("this.array") int
   required: @LTLengthOf(value="this.array", offset={}) int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[203,14] [return.type.incompatible] incompatible types in return.
@@ -834,65 +572,37 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[410,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[419,41] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Boolean get(@LowerBoundUnknown BooleanArrayAsList this, @NonNegative int p0) in com.google.common.primitives.Booleans.BooleanArrayAsList
-  cannot override
-    @LowerBoundUnknown Boolean get(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Boolean> this, @LowerBoundUnknown int p0) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[421,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[422,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[437,20] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[438,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[449,20] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[450,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[456,41] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Boolean set(@LowerBoundUnknown BooleanArrayAsList this, @NonNegative int p0, @LowerBoundUnknown Boolean p1) in com.google.common.primitives.Booleans.BooleanArrayAsList
-  cannot override
-    @LowerBoundUnknown Boolean set(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Boolean> this, @LowerBoundUnknown int p0, @LowerBoundUnknown Boolean p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[458,38] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[460,38] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[460,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[462,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[465,51] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Boolean> subList(@LowerBoundUnknown BooleanArrayAsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.Booleans.BooleanArrayAsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Boolean> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Boolean> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[465,79] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Boolean> subList(@LowerBoundUnknown BooleanArrayAsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.Booleans.BooleanArrayAsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Boolean> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Boolean> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[471,50] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[474,50] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-fromIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[471,69] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[474,69] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-toIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[486,27] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[489,27] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-i - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[486,57] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[489,57] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="that.array", offset="-i - 1") int
   required: @IndexFor("that.array") or @LTLengthOf("that.array") -- an integer less than that.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[507,28] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[510,28] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[515,40] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[518,40] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("this.array") int
   required: @LTLengthOf(value="this.array", offset={}) int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[126,14] [return.type.incompatible] incompatible types in return.
@@ -910,65 +620,37 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[270,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[279,38] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Byte get(@LowerBoundUnknown ByteArrayAsList this, @NonNegative int p0) in com.google.common.primitives.Bytes.ByteArrayAsList
-  cannot override
-    @LowerBoundUnknown Byte get(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Byte> this, @LowerBoundUnknown int p0) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[281,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[282,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[296,20] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[297,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[308,20] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[309,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[315,38] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Byte set(@LowerBoundUnknown ByteArrayAsList this, @NonNegative int p0, @LowerBoundUnknown Byte p1) in com.google.common.primitives.Bytes.ByteArrayAsList
-  cannot override
-    @LowerBoundUnknown Byte set(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Byte> this, @LowerBoundUnknown int p0, @LowerBoundUnknown Byte p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[317,35] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[319,35] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[319,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[321,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[324,48] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Byte> subList(@LowerBoundUnknown ByteArrayAsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.Bytes.ByteArrayAsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Byte> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Byte> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[324,76] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Byte> subList(@LowerBoundUnknown ByteArrayAsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.Bytes.ByteArrayAsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Byte> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Byte> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[330,47] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[333,47] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-fromIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[330,66] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[333,66] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-toIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[345,27] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[348,27] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-i - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[345,57] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[348,57] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="that.array", offset="-i - 1") int
   required: @IndexFor("that.array") or @LTLengthOf("that.array") -- an integer less than that.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[366,40] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[369,40] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[374,40] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[377,40] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("this.array") int
   required: @LTLengthOf(value="this.array", offset={}) int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[193,14] [return.type.incompatible] incompatible types in return.
@@ -983,83 +665,43 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[303,52] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
   required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[337,28] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal byte @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[337,38] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 1 could be larger than the array's bound
-  found   : @UnknownVal byte @UnknownVal []
-  required: @MinLen("2") -- an array guaranteed to have at least 2 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[337,48] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 2 could be larger than the array's bound
-  found   : @UnknownVal byte @UnknownVal []
-  required: @MinLen("3") -- an array guaranteed to have at least 3 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[337,58] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 3 could be larger than the array's bound
-  found   : @UnknownVal byte @UnknownVal []
-  required: @MinLen("4") -- an array guaranteed to have at least 4 elements
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[490,24] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("array") int
   required: @LTLengthOf(value="array", offset={}) int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[594,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[603,41] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Integer get(@LowerBoundUnknown IntArrayAsList this, @NonNegative int p0) in com.google.common.primitives.Ints.IntArrayAsList
-  cannot override
-    @LowerBoundUnknown Integer get(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Integer> this, @LowerBoundUnknown int p0) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[605,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[606,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[625,20] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[626,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[637,20] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[638,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[644,41] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown Integer set(@LowerBoundUnknown IntArrayAsList this, @NonNegative int p0, @LowerBoundUnknown Integer p1) in com.google.common.primitives.Ints.IntArrayAsList
-  cannot override
-    @LowerBoundUnknown Integer set(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Integer> this, @LowerBoundUnknown int p0, @LowerBoundUnknown Integer p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[646,34] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[648,34] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[648,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[650,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-index - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[653,51] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Integer> subList(@LowerBoundUnknown IntArrayAsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.Ints.IntArrayAsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Integer> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Integer> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[653,79] [override.param.invalid] Incompatible parameter type.
-  Method
-    @LowerBoundUnknown List<@LowerBoundUnknown Integer> subList(@LowerBoundUnknown IntArrayAsList this, @NonNegative int p0, @NonNegative int p1) in com.google.common.primitives.Ints.IntArrayAsList
-  cannot override
-    @LowerBoundUnknown List<@LowerBoundUnknown Integer> subList(@LowerBoundUnknown AbstractList<@LowerBoundUnknown Integer> this, @LowerBoundUnknown int p0, @LowerBoundUnknown int p1) in java.util.AbstractList
-  found   : @NonNegative int
-  required: @LowerBoundUnknown int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[659,46] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[662,46] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-fromIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[659,65] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[662,65] [argument.type.incompatible] incompatible types in argument.
   found   : @LTLengthOf(value="this.array", offset="-toIndex - 1") int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[674,27] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[677,27] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.array", offset="-i - 1") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[674,57] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[677,57] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="that.array", offset="-i - 1") int
   required: @IndexFor("that.array") or @LTLengthOf("that.array") -- an integer less than that.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[695,40] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[698,40] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[703,40] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[706,40] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("this.array") int
   required: @LTLengthOf(value="this.array", offset={}) int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/LittleEndianByteArray.java:[161,26] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -1076,7 +718,7 @@
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time: 01:17 min
-[INFO] Finished at: 2017-11-15T08:32:46+01:00
-[INFO] Final Memory: 26M/427M
+[INFO] Total time: 01:10 min
+[INFO] Finished at: 2017-11-15T09:01:35+01:00
+[INFO] Final Memory: 26M/463M
 [INFO] ------------------------------------------------------------------------
