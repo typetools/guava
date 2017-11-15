@@ -137,6 +137,7 @@ public final class ImmutableLongArray implements Serializable {
   /** Returns an immutable array containing the given values, in order. */
   // Use (first, rest) so that `of(someLongArray)` won't compile (they should use copyOf), which is
   // okay since we have to copy the just-created array anyway.
+  @SuppressWarnings("array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/182
   public static ImmutableLongArray of(long first, long... rest) {
     long[] array = new long[rest.length + 1];
     array[0] = first;
