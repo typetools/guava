@@ -407,6 +407,7 @@ public final class Booleans {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
     public @NonNegative int size() {
       return end - start;
     }
