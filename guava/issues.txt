@@ -1,0 +1,35 @@
+Unreported issues
+
+ISSUE 1: Ensures for LTLengthOf
+
+class Builder{
+	int[] array;
+	@IndexOrHigh("array") int count;
+	@EnsuresLTLengthOf(expression="count", value="array", offset="#1 - 1")
+	void ensureRoomFor(@NonNegative int numberToAdd){
+		// implementation
+	} 
+	void add(int value){
+		ensureRoomFor(1);
+    	array[count] = value;
+    	count += 1;
+	}
+}
+
+also needs https://github.com/kelloggm/checker-framework/issues/176
+
+ISSUE 2:
+
+int array;
+void m(Collection c, @LTLengthOf(value="array", offset="c.size() - 1")){
+	@LTLengthOf(value="array", offset="-1") int i;
+	for(Object o: c){
+		++i;
+	}
+}
+
+also needs https://github.com/kelloggm/checker-framework/issues/154
+
+ISSUE 3:
+private annotation for a public method
+
