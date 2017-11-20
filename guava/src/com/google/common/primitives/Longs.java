@@ -348,7 +348,7 @@ public final class Longs {
 
     
     static {
-      byte @IntRange(from = -1, to = 15)[] result = new byte[128];
+      byte [] result = new byte[128];
       Arrays.fill(result, (byte) -1);
       for (int i = 0; i <= 9; i++) {
         result['0' + i] = (byte) i;
@@ -360,6 +360,7 @@ public final class Longs {
       asciiDigits = result;
     }
 
+    @SuppressWarnings("lowerbound:array.access.unsafe.low") // https://github.com/kelloggm/checker-framework/issues/192
     static @IntRange(from = -1, to = 15) int digit(char c) {
       return (c < 128) ? asciiDigits[c] : -1;
     }
