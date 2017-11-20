@@ -151,10 +151,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/SignedBytes.java:[222,24] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("array") int
   required: @LTLengthOf(value="array", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedLongs.java:[383,59] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=2, to=36) int
-  array type found: @UnknownVal int @UnknownVal []
-  required        : index of type @IndexFor("com.google.common.primitives.UnsignedLongs.ParseOverflowDetection.maxSafeDigits") or @LTLengthOf("com.google.common.primitives.UnsignedLongs.ParseOverflowDetection.maxSafeDigits"), or array of type @MinLen("37")
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedLongs.java:[428,36] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @UpperBoundUnknown int
   required: @IndexFor("com.google.common.primitives.UnsignedLongs.ParseOverflowDetection.maxValueDivs") or @LTLengthOf("com.google.common.primitives.UnsignedLongs.ParseOverflowDetection.maxValueDivs") -- an integer less than com.google.common.primitives.UnsignedLongs.ParseOverflowDetection.maxValueDivs's length
@@ -236,26 +232,12 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[278,52] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
   required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[357,20] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483583, to=192) int
-  array type found: @IntRange(from=-1, to=15) byte @ArrayLen(128) []
-  required        : index of type @IndexFor("result") or @LTLengthOf("result"), or array of type @MinLen("193")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[357,27] [assignment.type.incompatible] incompatible types in assignment.
-  found   : @IntRange(from=-128, to=127) byte
-  required: @IntRange(from=-1, to=15) byte
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[358,20] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @IntRange(from=-1, to=15) byte @ArrayLen(128) []
-  required        : index of type @IndexFor("result") or @LTLengthOf("result"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[358,27] [assignment.type.incompatible] incompatible types in assignment.
-  found   : @IntRange(from=-128, to=127) byte
-  required: @IntRange(from=-1, to=15) byte
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[422,38] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[432,38] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="string", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[427,54] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[433,49] [assignment.type.incompatible] incompatible types in assignment.
   found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value="string", offset={}) int
+  required: @LTEqLengthOf("string") int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[287,52] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
   required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
@@ -282,7 +264,7 @@
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time: 01:16 min
-[INFO] Finished at: 2017-11-20T17:33:19+01:00
-[INFO] Final Memory: 26M/457M
+[INFO] Total time: 01:14 min
+[INFO] Finished at: 2017-11-20T18:00:25+01:00
+[INFO] Final Memory: 26M/454M
 [INFO] ------------------------------------------------------------------------
