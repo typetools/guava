@@ -344,11 +344,11 @@ public final class Longs {
   static final class AsciiDigits {
     private AsciiDigits() {}
 
-    private static final @IntRange(from = -1, to = 15) byte @MinLen(128)[] asciiDigits;
+    private static final @IntRange(from = -1, to = 36) byte @MinLen(128)[] asciiDigits;
 
     
     static {
-      @IntRange(from = -1, to = 15) byte [] result = new byte[128];
+      @IntRange(from = -1, to = 36) byte [] result = new byte[128];
       Arrays.fill(result, (byte) -1);
       for (int i = 0; i <= 9; i++) {
         result['0' + i] = (byte) i;
@@ -361,7 +361,7 @@ public final class Longs {
     }
 
     @SuppressWarnings("lowerbound:array.access.unsafe.low") // https://github.com/kelloggm/checker-framework/issues/192
-    static @IntRange(from = -1, to = 15) int digit(char c) {
+    static @IntRange(from = -1, to = 36) int digit(char c) {
       return (c < 128) ? asciiDigits[c] : -1;
     }
   }
