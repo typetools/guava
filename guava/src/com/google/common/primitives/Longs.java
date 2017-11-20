@@ -344,10 +344,11 @@ public final class Longs {
   static final class AsciiDigits {
     private AsciiDigits() {}
 
-    private static final @IntRange(from = -1, to = 15) byte[] asciiDigits;
+    private static final @IntRange(from = -1, to = 15) byte @MinLen(128)[] asciiDigits;
 
+    
     static {
-      byte[] result = new byte[128];
+      byte @IntRange(from = -1, to = 15)[] result = new byte[128];
       Arrays.fill(result, (byte) -1);
       for (int i = 0; i <= 9; i++) {
         result['0' + i] = (byte) i;
