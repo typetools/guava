@@ -33,12 +33,16 @@ import java.util.RandomAccess;
 import javax.annotation.Nullable;
 
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.framework.qual.AnnotatedFor;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
+import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * Static utility methods pertaining to {@code boolean} primitives, that are not already found in
@@ -392,15 +396,15 @@ public final class Booleans {
   @GwtCompatible
   private static class BooleanArrayAsList extends AbstractList<Boolean>
       implements RandomAccess, Serializable {
-    final boolean[] array;
-    final @IndexOrHigh("array") int start;
+    final boolean @MinLen(1)[] array;
+    final @IndexFor("array") int start;
     final @IndexOrHigh("array") int end;
 
-    BooleanArrayAsList(boolean[] array) {
+    BooleanArrayAsList(boolean @MinLen(1)[] array) {
       this(array, 0, array.length);
     }
 
-    BooleanArrayAsList(boolean[] array, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
+    BooleanArrayAsList(boolean @MinLen(1)[] array, @IndexFor("#1") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
       this.end = end;
@@ -408,7 +412,7 @@ public final class Booleans {
 
     @Override
     @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
-    public @NonNegative int size() {
+    public @Positive @LTLengthOf(value = "array", offset="start - 1") int size() { // TODO: ISSUE 3
       return end - start;
     }
 
@@ -418,7 +422,10 @@ public final class Booleans {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
+    @SuppressWarnings({
+    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
+    	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
+    })
     public Boolean get(@NonNegative int index) {
       checkElementIndex(index, size());
       return array[start + index];
@@ -458,7 +465,10 @@ public final class Booleans {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
+    @SuppressWarnings({
+    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
+    	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
+    })
     public Boolean set(@NonNegative int index, Boolean element) {
       checkElementIndex(index, size());
       boolean oldValue = array[start + index];
@@ -468,7 +478,10 @@ public final class Booleans {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
+    @SuppressWarnings({
+    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
+    	"upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
+    })
     public List<Boolean> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);

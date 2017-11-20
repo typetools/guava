@@ -40,10 +40,13 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
+import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
 import org.checkerframework.common.value.qual.MinLen;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -435,6 +438,7 @@ public final class Doubles {
    *
    * @since 23.1
    */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/191
   public static void sortDescending(double[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
@@ -529,15 +533,15 @@ public final class Doubles {
   @GwtCompatible
   private static class DoubleArrayAsList extends AbstractList<Double>
       implements RandomAccess, Serializable {
-    final double[] array;
-    final @IndexOrHigh("array") int start;
+    final double @MinLen(1)[] array;
+    final @IndexFor("array") int start;
     final @IndexOrHigh("array") int end;
 
-    DoubleArrayAsList(double[] array) {
+    DoubleArrayAsList(double @MinLen(1)[] array) {
       this(array, 0, array.length);
     }
 
-    DoubleArrayAsList(double[] array, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
+    DoubleArrayAsList(double @MinLen(1)[] array, @IndexFor("#1") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
       this.end = end;
@@ -545,7 +549,7 @@ public final class Doubles {
 
     @Override
     @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
-    public @NonNegative int size() {
+    public @Positive @LTLengthOf(value = "array", offset="start - 1") int size() { // TODO: ISSUE 3
       return end - start;
     }
 
@@ -555,7 +559,10 @@ public final class Doubles {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
+    @SuppressWarnings({
+    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
+    	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
+    })
     public Double get(@NonNegative int index) {
       checkElementIndex(index, size());
       return array[start + index];
@@ -600,7 +607,10 @@ public final class Doubles {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
+    @SuppressWarnings({
+    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
+    	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
+    })
     public Double set(@NonNegative int index, Double element) {
       checkElementIndex(index, size());
       double oldValue = array[start + index];
@@ -610,7 +620,10 @@ public final class Doubles {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
+    @SuppressWarnings({
+    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
+    	"upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
+    })
     public List<Double> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);

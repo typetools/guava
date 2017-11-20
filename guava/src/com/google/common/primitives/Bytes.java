@@ -30,11 +30,15 @@ import java.util.RandomAccess;
 import javax.annotation.Nullable;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
+import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
+import org.checkerframework.common.value.qual.MinLen;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -252,15 +256,15 @@ public final class Bytes {
   @GwtCompatible
   private static class ByteArrayAsList extends AbstractList<Byte>
       implements RandomAccess, Serializable {
-    final byte[] array;
-    final @IndexOrHigh("array") int start;
+    final byte @MinLen(1)[] array;
+    final @IndexFor("array") int start;
     final @IndexOrHigh("array") int end;
 
-    ByteArrayAsList(byte[] array) {
+    ByteArrayAsList(byte @MinLen(1)[] array) {
       this(array, 0, array.length);
     }
 
-    ByteArrayAsList(byte[] array, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
+    ByteArrayAsList(byte @MinLen(1)[] array, @IndexFor("#1") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
       this.end = end;
@@ -268,7 +272,7 @@ public final class Bytes {
 
     @Override
     @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
-    public @NonNegative int size() {
+    public @Positive @LTLengthOf(value = "array", offset="start - 1") int size() { // TODO: ISSUE 3
       return end - start;
     }
 
@@ -278,7 +282,10 @@ public final class Bytes {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
+    @SuppressWarnings({
+    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
+    	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
+    })
     public Byte get(@NonNegative int index) {
       checkElementIndex(index, size());
       return array[start + index];
@@ -317,7 +324,10 @@ public final class Bytes {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
+    @SuppressWarnings({
+    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
+    	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
+    })
     public Byte set(@NonNegative int index, Byte element) {
       checkElementIndex(index, size());
       byte oldValue = array[start + index];
@@ -327,7 +337,10 @@ public final class Bytes {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
+    @SuppressWarnings({
+    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
+    	"upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
+    })
     public List<Byte> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);

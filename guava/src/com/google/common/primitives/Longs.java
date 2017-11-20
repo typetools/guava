@@ -36,9 +36,11 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
+import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
@@ -586,6 +588,7 @@ public final class Longs {
    *
    * @since 23.1
    */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/191
   public static void sortDescending(long[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
@@ -677,15 +680,15 @@ public final class Longs {
   @GwtCompatible
   private static class LongArrayAsList extends AbstractList<Long>
       implements RandomAccess, Serializable {
-    final long[] array;
-    final @IndexOrHigh("array") int start;
+    final long @MinLen(1)[] array;
+    final @IndexFor("array") int start;
     final @IndexOrHigh("array") int end;
 
-    LongArrayAsList(long[] array) {
+    LongArrayAsList(long @MinLen(1)[] array) {
       this(array, 0, array.length);
     }
 
-    LongArrayAsList(long[] array, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
+    LongArrayAsList(long @MinLen(1)[] array, @IndexFor("#1") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
       this.end = end;
@@ -693,7 +696,7 @@ public final class Longs {
 
     @Override
     @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
-    public @NonNegative int size() {
+    public @Positive @LTLengthOf(value = "array", offset="start - 1") int size() { // TODO: ISSUE 3
       return end - start;
     }
 
@@ -703,7 +706,10 @@ public final class Longs {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
+    @SuppressWarnings({
+    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
+    	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
+    })
     public Long get(@NonNegative int index) {
       checkElementIndex(index, size());
       return array[start + index];
@@ -747,7 +753,10 @@ public final class Longs {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
+    @SuppressWarnings({
+    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
+    	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
+    })
     public Long set(@NonNegative int index, Long element) {
       checkElementIndex(index, size());
       long oldValue = array[start + index];
@@ -757,7 +766,10 @@ public final class Longs {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
+    @SuppressWarnings({
+    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
+    	"upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
+    })
     public List<Long> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);
