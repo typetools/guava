@@ -111,7 +111,7 @@ public final class Ints {
    *     {@link Integer#MAX_VALUE} if it is too large, or {@link Integer#MIN_VALUE} if it is too
    *     small
    */
-  @SuppressWarnings("lowerbound:return.type.incompatible") // TODO ISSUE 4
+  @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/190
   public static @PolyLowerBound int saturatedCast(@PolyLowerBound long value) {
     if (value > Integer.MAX_VALUE) {
       return Integer.MAX_VALUE;
