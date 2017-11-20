@@ -354,8 +354,18 @@ public final class Longs {
         result['0' + i] = (byte) i;
       }
       for (int i = 0; i <= 26; i++) {
-        result['A' + i] = (byte) (10 + i);
-        result['a' + i] = (byte) (10 + i);
+        @SuppressWarnings({
+        	"unused",
+        	"upperbound:array.access.unsafe.high.range", // https://github.com/typetools/checker-framework/issues/1669
+        	"assignment.type.incompatible" // https://github.com/typetools/checker-framework/issues/1669
+        })
+        byte _unused1 = result['A' + i] = (byte) (10 + i);
+        @SuppressWarnings({
+        	"unused",
+        	"upperbound:array.access.unsafe.high.range", // https://github.com/typetools/checker-framework/issues/1669
+        	"assignment.type.incompatible" // https://github.com/typetools/checker-framework/issues/1669
+        })
+        byte _unused2 = result['a' + i] = (byte) (10 + i);
       }
       asciiDigits = result;
     }
@@ -420,7 +430,7 @@ public final class Longs {
           "radix must be between MIN_RADIX and MAX_RADIX but was " + radix);
     }
     boolean negative = string.charAt(0) == '-';
-    int index = negative ? 1 : 0;
+    @IndexOrHigh("string") int index = negative ? 1 : 0;
     if (index == string.length()) {
       return null;
     }
