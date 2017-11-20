@@ -470,7 +470,7 @@ public final class UnsignedLongs {
       return Long.toString(x, radix);
     } else {
       char[] buf = new char[64];
-      int i = buf.length;
+      @IndexOrHigh("buf") int i = buf.length;
       if ((radix & (radix - 1)) == 0) {
         // Radix is a power of two so we can avoid division.
         int shift = Integer.numberOfTrailingZeros(radix);
