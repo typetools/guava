@@ -404,9 +404,9 @@ public final class UnsignedLongs {
     private ParseOverflowDetection() {}
     
     // calculated as 0xffffffffffffffff / radix
-    static final long[] maxValueDivs = new long[Character.MAX_RADIX + 1];
-    static final int[] maxValueMods = new int[Character.MAX_RADIX + 1];
-    static final int[] maxSafeDigits = new int[Character.MAX_RADIX + 1];
+    static final long @MinLen(Character.MAX_RADIX + 1)[] maxValueDivs = new long[Character.MAX_RADIX + 1];
+    static final int @MinLen(Character.MAX_RADIX + 1)[] maxValueMods = new int[Character.MAX_RADIX + 1];
+    static final int @MinLen(Character.MAX_RADIX + 1)[] maxSafeDigits = new int[Character.MAX_RADIX + 1];
 
     static {
       BigInteger overflow = new BigInteger("10000000000000000", 16);
