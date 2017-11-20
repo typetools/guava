@@ -563,6 +563,7 @@ public final class Chars {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
     public @GTENegativeOne int indexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Character) {
@@ -575,6 +576,7 @@ public final class Chars {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
     public @GTENegativeOne int lastIndexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Character) {
