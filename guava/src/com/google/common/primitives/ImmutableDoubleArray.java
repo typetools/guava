@@ -358,6 +358,7 @@ public final class ImmutableDoubleArray implements Serializable {
   }
 
   /** Returns the number of values in this array. */
+  @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
   public @NonNegative int length() {
     return end - start;
   }
@@ -383,6 +384,7 @@ public final class ImmutableDoubleArray implements Serializable {
    * such index exists. Values are compared as if by {@link Double#equals}. Equivalent to {@code
    * asList().indexOf(target)}.
    */
+  @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
   public @GTENegativeOne int indexOf(double target) {
     for (int i = start; i < end; i++) {
       if (areEqual(array[i], target)) {
@@ -397,6 +399,7 @@ public final class ImmutableDoubleArray implements Serializable {
    * such index exists. Values are compared as if by {@link Double#equals}. Equivalent to {@code
    * asList().lastIndexOf(target)}.
    */
+  @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
   public @GTENegativeOne int lastIndexOf(double target) {
     for (int i = end - 1; i >= start; i--) {
       if (areEqual(array[i], target)) {

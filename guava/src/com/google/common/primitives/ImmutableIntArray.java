@@ -355,6 +355,7 @@ public final class ImmutableIntArray implements Serializable {
   }
 
   /** Returns the number of values in this array. */
+  @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
   public @NonNegative int length() {
     return end - start;
   }
@@ -379,6 +380,7 @@ public final class ImmutableIntArray implements Serializable {
    * Returns the smallest index for which {@link #get} returns {@code target}, or {@code -1} if no
    * such index exists. Equivalent to {@code asList().indexOf(target)}.
    */
+  @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
   public @GTENegativeOne int indexOf(int target) {
     for (int i = start; i < end; i++) {
       if (array[i] == target) {
@@ -392,6 +394,7 @@ public final class ImmutableIntArray implements Serializable {
    * Returns the largest index for which {@link #get} returns {@code target}, or {@code -1} if no
    * such index exists. Equivalent to {@code asList().lastIndexOf(target)}.
    */
+  @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
   public @GTENegativeOne int lastIndexOf(int target) {
     for (int i = end - 1; i >= start; i--) {
       if (array[i] == target) {
