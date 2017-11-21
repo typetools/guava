@@ -380,6 +380,7 @@ public final class ImmutableDoubleArray implements Serializable {
    * @throws IndexOutOfBoundsException if {@code index} is negative, or greater than or equal to
    *     {@link #length}
    */
+  @SuppressWarnings("upperbound:array.access.unsafe.high") // https://github.com/kelloggm/checker-framework/issues/154
   public double get(@NonNegative int index) {
     Preconditions.checkElementIndex(index, length());
     return array[start + index];
@@ -603,6 +604,7 @@ public final class ImmutableDoubleArray implements Serializable {
    * Arrays#toString(double[])}, for example {@code "[1, 2, 3]"}.
    */
   @Override
+  @SuppressWarnings("upperbound:array.access.unsafe.high") // TODO ISSUE 5
   public String toString() {
     if (isEmpty()) {
       return "[]";

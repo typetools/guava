@@ -377,6 +377,7 @@ public final class ImmutableIntArray implements Serializable {
    * @throws IndexOutOfBoundsException if {@code index} is negative, or greater than or equal to
    *     {@link #length}
    */
+  @SuppressWarnings("upperbound:array.access.unsafe.high") // https://github.com/kelloggm/checker-framework/issues/154
   public int get(@NonNegative int index) {
     Preconditions.checkElementIndex(index, length());
     return array[start + index];
@@ -593,6 +594,7 @@ public final class ImmutableIntArray implements Serializable {
    * Arrays#toString(int[])}, for example {@code "[1, 2, 3]"}.
    */
   @Override
+  @SuppressWarnings("upperbound:array.access.unsafe.high") // TODO ISSUE 5
   public String toString() {
     if (isEmpty()) {
       return "[]";
