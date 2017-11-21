@@ -1,6 +1,7 @@
 Unreported issues
 
-ISSUE 1: Ensures for LTLengthOf
+ISSUE 1:
+Need annotation @EnsuresLTLengthOf: https://github.com/typetools/checker-framework/issues/1606
 
 class Builder{
 	int[] array;
@@ -16,9 +17,38 @@ class Builder{
 	}
 }
 
-also needs https://github.com/kelloggm/checker-framework/issues/176
+To typecheck, this code also needs a fix for https://github.com/kelloggm/checker-framework/issues/176
+
+ISSUE 5:
+Need annotation EnsuresQualifierIf: https://github.com/typetools/checker-framework/issues/1606
+
+after checking !isEmpty(), start is IndexFor
+
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[601,38] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+  found   : @LTEqLengthOf("this.array") int
+  required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
+
+related: https://github.com/panacekcz/checker-framework/issues/27
+  
+To typecheck, this code also needs a fix for https://github.com/kelloggm/checker-framework/issues/154
+
+ISSUE 10:
+
+public Builder addAll(ImmutableIntArray values) {
+      ensureRoomFor(values.length());
+      System.arraycopy(values.array, values.start, array, count, values.length());
+      count += values.length();
+      return this;
+    }
+    
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[293,79] [argument.type.incompatible] incompatible types in argument.
+  found   : @UpperBoundUnknown int
+  required: @LTLengthOf(value={"values.array", "this.array"}, offset={"values.start - 1", "this.count - 1"}) int
+
+related: ISSUE 1
 
 ISSUE 2:
+Iterating through collection elements and incrementing separate index.
 
 int array;
 void m(Collection c, @LTLengthOf(value="array", offset="c.size() - 1")){
@@ -28,12 +58,34 @@ void m(Collection c, @LTLengthOf(value="array", offset="c.size() - 1")){
 	}
 }
 
-also needs https://github.com/kelloggm/checker-framework/issues/154
+To typecheck, this code also needs a fix for
+https://github.com/kelloggm/checker-framework/issues/154
+
+ISSUE 6:
+Iterating through collection elements and incrementing separate index.
+
+      if (this.size() != that.size()) {
+        return false;
+      }
+      int i = parent.start;
+      // Since `that` is very likely RandomAccess we could avoid allocating this iterator...
+      for (Object element : that) {
+        if (!(element instanceof Integer) || parent.array[i++] != (Integer) element) {
+          return false;
+        }
+      }
+      
+      [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[540,60] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+  index type found: @IntRange(from=-2147483648, to=2147483647) int
+  array type found: @UnknownVal int @UnknownVal []
+  required        : index of type @IndexFor("this.parent.array") or @LTLengthOf("this.parent.array"), or array of type @MinLen("2147483648")
 
 ISSUE 3:
-private annotation for a public method
+Annotation that refers to private member, in a public method
 
 ISSUE 4:
+New array has size that is sum of array lengths
+
   public static byte[] concat(byte[]... arrays) {
     int length = 0;
     for (byte[] array : arrays) {
@@ -51,36 +103,10 @@ ISSUE 4:
   found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
   required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
   
-ISSUE 5:
-after checking !isEmpty(), start is IndexFor
-Need something like EnsuresQualifierIf
-also needs https://github.com/kelloggm/checker-framework/issues/154
-
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[601,38] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTEqLengthOf("this.array") int
-  required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-
-related:https://github.com/panacekcz/checker-framework/issues/27
-  
-ISSUE 6:
-      if (this.size() != that.size()) {
-        return false;
-      }
-      int i = parent.start;
-      // Since `that` is very likely RandomAccess we could avoid allocating this iterator...
-      for (Object element : that) {
-        if (!(element instanceof Integer) || parent.array[i++] != (Integer) element) {
-          return false;
-        }
-      }
-      
-      [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[540,60] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @UnknownVal int @UnknownVal []
-  required        : index of type @IndexFor("this.parent.array") or @LTLengthOf("this.parent.array"), or array of type @MinLen("2147483648")
 ISSUE 7:
 
-Caught by catch(Throwable)
+Code can throw an exception, but the code is safe because the exception is 
+caught by catch(Throwable).
 
 	try {
         Class<?> theClass = Class.forName(UNSAFE_COMPARATOR_NAME);
@@ -92,6 +118,7 @@ Caught by catch(Throwable)
       } catch (Throwable t) { // ensure we really catch *everything*
         return lexicographicalComparatorJavaImpl();
       }
+
 ISSUE 8:
 
 Unsigned long as string fits into 64 characters.
@@ -99,6 +126,7 @@ Loop guarded by variable decreased by right shift or division.
 Assuming that Character.MIN_RADIX == 2
 
 ISSUE 9:
+One array is longer than another array.  (issue 158)
 
    private void ensureRoomFor(@NonNegative int numberToAdd) {
       int newCount = count + numberToAdd; // TODO(kevinb): check overflow now?
@@ -112,18 +140,3 @@ ISSUE 9:
 Possibly could be solved by combination of: 
 https://github.com/panacekcz/checker-framework/issues/11
 https://github.com/kelloggm/checker-framework/issues/158 
-
-ISSUE 10:
-
-public Builder addAll(ImmutableIntArray values) {
-      ensureRoomFor(values.length());
-      System.arraycopy(values.array, values.start, array, count, values.length());
-      count += values.length();
-      return this;
-    }
-    
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[293,79] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value={"values.array", "this.array"}, offset={"values.start - 1", "this.count - 1"}) int
-
-related: ISSUE 1
