@@ -371,6 +371,7 @@ public final class Chars {
    *     (but not at the start or end)
    * @param array an array of {@code char} values, possibly empty
    */
+  @SuppressWarnings("upperbound:array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/188
   public static String join(String separator, char... array) {
     checkNotNull(separator);
     int len = array.length;
