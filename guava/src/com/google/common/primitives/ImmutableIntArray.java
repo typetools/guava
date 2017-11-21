@@ -433,6 +433,7 @@ public final class ImmutableIntArray implements Serializable {
   }
 
   /** Returns a new, mutable copy of this array's values, as a primitive {@code int[]}. */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/191
   public int[] toArray() {
     return Arrays.copyOfRange(array, start, end);
   }
