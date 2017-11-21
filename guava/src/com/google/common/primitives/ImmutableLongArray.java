@@ -222,6 +222,8 @@ public final class ImmutableLongArray implements Serializable {
      * Appends {@code value} to the end of the values the built {@link ImmutableLongArray} will
      * contain.
      */
+    // indices valid thanks to ensureRoomFor
+    @SuppressWarnings("upperbound") // TODO ISSUE 1
     public Builder add(long value) {
       ensureRoomFor(1);
       array[count] = value;
@@ -233,6 +235,8 @@ public final class ImmutableLongArray implements Serializable {
      * Appends {@code values}, in order, to the end of the values the built {@link
      * ImmutableLongArray} will contain.
      */
+    // indices valid thanks to ensureRoomFor
+    @SuppressWarnings("upperbound") // TODO ISSUE 1
     public Builder addAll(long[] values) {
       ensureRoomFor(values.length);
       System.arraycopy(values, 0, array, count, values.length);
@@ -258,6 +262,8 @@ public final class ImmutableLongArray implements Serializable {
      * Appends {@code values}, in order, to the end of the values the built {@link
      * ImmutableLongArray} will contain.
      */
+    // indices valid thanks to ensureRoomFor
+    @SuppressWarnings("upperbound") // TODO ISSUE 1 and ISSUE 2
     public Builder addAll(Collection<Long> values) {
       ensureRoomFor(values.size());
       for (Long value : values) {
