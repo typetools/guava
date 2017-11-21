@@ -14,7 +14,7 @@
 
 package com.google.common.primitives;
 
-import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 import com.google.common.annotations.GwtCompatible;
@@ -26,9 +26,9 @@ import com.google.common.annotations.GwtCompatible;
 @AnnotatedFor("index")
 final class ParseRequest {
   final String rawValue;
-  final @Positive int radix;
+  final @IntRange(from=Character.MIN_RADIX,to=Character.MAX_RADIX) int radix;
 
-  private ParseRequest(String rawValue, @Positive int radix) {
+  private ParseRequest(String rawValue, @IntRange(from=Character.MIN_RADIX,to=Character.MAX_RADIX) int radix) {
     this.rawValue = rawValue;
     this.radix = radix;
   }
@@ -40,7 +40,7 @@ final class ParseRequest {
 
     // Handle radix specifier if present
     String rawValue;
-    @Positive int radix;
+    @IntRange(from=Character.MIN_RADIX,to=Character.MAX_RADIX) int radix;
     char firstChar = stringValue.charAt(0);
     if (stringValue.startsWith("0x") || stringValue.startsWith("0X")) {
       rawValue = stringValue.substring(2);

@@ -24,7 +24,7 @@ import java.math.BigInteger;
 import javax.annotation.Nullable;
 
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -124,7 +124,7 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
    *     {@link Character#MAX_RADIX}
    */
   @CanIgnoreReturnValue
-  public static UnsignedLong valueOf(String string, @Positive int radix) {
+  public static UnsignedLong valueOf(String string, @IntRange(from=Character.MIN_RADIX,to=Character.MAX_RADIX) int radix) {
     return fromLongBits(UnsignedLongs.parseUnsignedLong(string, radix));
   }
 
@@ -268,7 +268,7 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
    * {@code radix < Character.MIN_RADIX} or {@code radix > Character.MAX_RADIX}, the radix
    * {@code 10} is used.
    */
-  public String toString(@Positive int radix) {
+  public String toString(@IntRange(from=Character.MIN_RADIX,to=Character.MAX_RADIX) int radix) {
     return UnsignedLongs.toString(value, radix);
   }
 }
