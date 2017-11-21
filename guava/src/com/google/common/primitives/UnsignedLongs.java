@@ -460,6 +460,11 @@ public final class UnsignedLongs {
    * @throws IllegalArgumentException if {@code radix} is not between {@link Character#MIN_RADIX}
    *     and {@link Character#MAX_RADIX}.
    */
+  // Unsinged long converted to string always fits into 64 characters
+  @SuppressWarnings({
+	  "lowerbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/193
+	  "lowerbound:array.access.unsafe.low", "lowerbound:compound.assignment.type.incompatible" // ISSUE 8
+  })
   public static String toString(long x, @IntRange(from=Character.MIN_RADIX,to=Character.MAX_RADIX) int radix) {
     checkArgument(
         radix >= Character.MIN_RADIX && radix <= Character.MAX_RADIX,

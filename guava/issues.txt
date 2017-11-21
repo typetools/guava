@@ -51,7 +51,7 @@ ISSUE 4:
   found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
   required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
   
-ISSUE 5
+ISSUE 5:
 after checking !isEmpty(), start is IndexFor
 Need something like EnsuresQualifierIf
 also needs https://github.com/kelloggm/checker-framework/issues/154
@@ -90,3 +90,8 @@ Caught by catch(Throwable)
       } catch (Throwable t) { // ensure we really catch *everything*
         return lexicographicalComparatorJavaImpl();
       }
+ISSUE 8:
+
+Unsigned long as string fits into 64 characters.
+Loop guarded by variable decreased by right shift or division.
+Assuming that Character.MIN_RADIX == 2
