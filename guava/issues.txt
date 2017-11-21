@@ -59,6 +59,8 @@ also needs https://github.com/kelloggm/checker-framework/issues/154
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[601,38] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.array") int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
+
+related:https://github.com/panacekcz/checker-framework/issues/27
   
 ISSUE 6:
       if (this.size() != that.size()) {
