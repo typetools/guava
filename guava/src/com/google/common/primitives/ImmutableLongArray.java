@@ -290,6 +290,10 @@ public final class ImmutableLongArray implements Serializable {
      * Appends {@code values}, in order, to the end of the values the built {@link
      * ImmutableLongArray} will contain.
      */
+    @SuppressWarnings({
+      "upperbound:compound.assignment.type.incompatible", // TODO ISSUE 1
+      "upperbound:argument.type.incompatible" // TODO ISSUE 10
+    })
     public Builder addAll(ImmutableLongArray values) {
       ensureRoomFor(values.length());
       System.arraycopy(values.array, values.start, array, count, values.length());

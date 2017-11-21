@@ -291,6 +291,10 @@ public final class ImmutableDoubleArray implements Serializable {
      * Appends {@code values}, in order, to the end of the values the built {@link
      * ImmutableDoubleArray} will contain.
      */
+    @SuppressWarnings({
+      "upperbound:compound.assignment.type.incompatible", // TODO ISSUE 1
+      "upperbound:argument.type.incompatible" // TODO ISSUE 10
+    })
     public Builder addAll(ImmutableDoubleArray values) {
       ensureRoomFor(values.length());
       System.arraycopy(values.array, values.start, array, count, values.length());

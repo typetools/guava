@@ -113,3 +113,17 @@ Possibly could be solved by combination of:
 https://github.com/panacekcz/checker-framework/issues/11
 https://github.com/kelloggm/checker-framework/issues/158 
 
+ISSUE 10:
+
+public Builder addAll(ImmutableIntArray values) {
+      ensureRoomFor(values.length());
+      System.arraycopy(values.array, values.start, array, count, values.length());
+      count += values.length();
+      return this;
+    }
+    
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[293,79] [argument.type.incompatible] incompatible types in argument.
+  found   : @UpperBoundUnknown int
+  required: @LTLengthOf(value={"values.array", "this.array"}, offset={"values.start - 1", "this.count - 1"}) int
+
+related: ISSUE 1
