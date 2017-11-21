@@ -422,6 +422,7 @@ public final class Longs {
   @Beta
   @Nullable
   @CheckForNull
+  @SuppressWarnings("upperbound") // https://github.com/panacekcz/checker-framework/issues/27
   public static Long tryParse(String string, @Positive int radix) {
     if (checkNotNull(string).isEmpty()) {
       return null;
