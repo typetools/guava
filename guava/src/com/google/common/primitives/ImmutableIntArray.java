@@ -295,6 +295,7 @@ public final class ImmutableIntArray implements Serializable {
       return this;
     }
 
+    @SuppressWarnings("upperbound:argument.type.incompatible") // TODO ISSUE 9
     private void ensureRoomFor(@NonNegative int numberToAdd) {
       int newCount = count + numberToAdd; // TODO(kevinb): check overflow now?
       if (newCount > array.length) {
