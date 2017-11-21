@@ -19,52 +19,12 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/LittleEndianByteArray.java:[24,16] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[36,16] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/LittleEndianByteArray.java:[24,16] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[225,13] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTEqLengthOf("this.array") int
-  required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[226,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
-  found   : @LTLengthOf(value="this.array", offset="-2") int
-  required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[236,55] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf("values") int
-  required: @LTLengthOf(value={"values", "this.array"}, offset={"0 - 1", "this.count - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[237,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
-  found   : @LTLengthOf(value={"this.array", "values"}, offset={"-values.length - 1", "-this.count - 1"}) int
-  required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[262,20] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTEqLengthOf("this.array") int
-  required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[262,20] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
-  found   : @LTLengthOf(value="this.array", offset="-2") int
-  required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[287,79] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[293,79] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value={"values.array", "this.array"}, offset={"values.start - 1", "this.count - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[288,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[294,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[296,49] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf("this.array") int
-  required: @LTLengthOf(value={"this.array", "newArray"}, offset={"0 - 1", "0 - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[376,24] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTLengthOf(value="this.array", offset="-index - 1") int
-  required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[430,38] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf("this.array") int
-  required: @LTLengthOf(value="this.array", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[444,46] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTLengthOf(value="this.array", offset="-startIndex - 1") int
-  required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[444,66] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTLengthOf(value="this.array", offset="-endIndex - 1") int
-  required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[531,60] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @UnknownVal int @UnknownVal []
-  required        : index of type @IndexFor("this.parent.array") or @LTLengthOf("this.parent.array"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[595,38] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTEqLengthOf("this.array") int
-  required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[327,20] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[349,30] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[351,26] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -72,9 +32,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[359,32] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[360,33] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[360,54] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[454,90] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : ? extends @UnknownVal Object @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/util/concurrent/AbstractFuture.java:[1052,26] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/util/concurrent/AbstractFuture.java:[1060,15] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/util/concurrent/AbstractFuture.java:[1062,26] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -82,52 +39,12 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/util/concurrent/AbstractFuture.java:[1069,36] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/util/concurrent/AbstractFuture.java:[1070,37] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/util/concurrent/AbstractFuture.java:[1070,58] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[228,13] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTEqLengthOf("this.array") int
-  required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[229,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
-  found   : @LTLengthOf(value="this.array", offset="-2") int
-  required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[239,55] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf("values") int
-  required: @LTLengthOf(value={"values", "this.array"}, offset={"0 - 1", "this.count - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[240,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
-  found   : @LTLengthOf(value={"this.array", "values"}, offset={"-values.length - 1", "-this.count - 1"}) int
-  required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[265,20] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTEqLengthOf("this.array") int
-  required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[265,20] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
-  found   : @LTLengthOf(value="this.array", offset="-2") int
-  required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[290,79] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[296,79] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value={"values.array", "this.array"}, offset={"values.start - 1", "this.count - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[291,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[297,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[299,49] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf("this.array") int
-  required: @LTLengthOf(value={"this.array", "newArray"}, offset={"0 - 1", "0 - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[379,24] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTLengthOf(value="this.array", offset="-index - 1") int
-  required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[435,38] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf("this.array") int
-  required: @LTLengthOf(value="this.array", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[449,49] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTLengthOf(value="this.array", offset="-startIndex - 1") int
-  required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[449,69] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTLengthOf(value="this.array", offset="-endIndex - 1") int
-  required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[536,69] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @UnknownVal double @UnknownVal []
-  required        : index of type @IndexFor("this.parent.array") or @LTLengthOf("this.parent.array"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[605,38] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTEqLengthOf("this.array") int
-  required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[109,38] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[297,34] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[320,28] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -136,91 +53,12 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[327,32] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[328,35] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[328,56] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[299,52] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
-  required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Chars.java:[381,26] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal char @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Shorts.java:[302,52] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
-  required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Doubles.java:[292,52] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
-  required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/SignedBytes.java:[222,24] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf("array") int
-  required: @LTLengthOf(value="array", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedLongs.java:[428,36] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @UpperBoundUnknown int
-  required: @IndexFor("com.google.common.primitives.UnsignedLongs.ParseOverflowDetection.maxValueDivs") or @LTLengthOf("com.google.common.primitives.UnsignedLongs.ParseOverflowDetection.maxValueDivs") -- an integer less than com.google.common.primitives.UnsignedLongs.ParseOverflowDetection.maxValueDivs's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedLongs.java:[431,36] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @UpperBoundUnknown int
-  required: @IndexFor("com.google.common.primitives.UnsignedLongs.ParseOverflowDetection.maxValueDivs") or @LTLengthOf("com.google.common.primitives.UnsignedLongs.ParseOverflowDetection.maxValueDivs") -- an integer less than com.google.common.primitives.UnsignedLongs.ParseOverflowDetection.maxValueDivs's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedLongs.java:[435,38] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @UpperBoundUnknown int
-  required: @IndexFor("com.google.common.primitives.UnsignedLongs.ParseOverflowDetection.maxValueMods") or @LTLengthOf("com.google.common.primitives.UnsignedLongs.ParseOverflowDetection.maxValueMods") -- an integer less than com.google.common.primitives.UnsignedLongs.ParseOverflowDetection.maxValueMods's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedLongs.java:[481,15] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @GTENegativeOne int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedLongs.java:[481,15] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
-  found   : @GTENegativeOne int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedLongs.java:[499,15] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @GTENegativeOne int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedLongs.java:[499,15] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
-  found   : @GTENegativeOne int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedLongs.java:[504,44] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[227,13] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTEqLengthOf("this.array") int
-  required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[228,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
-  found   : @LTLengthOf(value="this.array", offset="-2") int
-  required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[238,55] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf("values") int
-  required: @LTLengthOf(value={"values", "this.array"}, offset={"0 - 1", "this.count - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[239,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
-  found   : @LTLengthOf(value={"this.array", "values"}, offset={"-values.length - 1", "-this.count - 1"}) int
-  required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[264,20] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTEqLengthOf("this.array") int
-  required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[264,20] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
-  found   : @LTLengthOf(value="this.array", offset="-2") int
-  required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[289,79] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[295,79] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value={"values.array", "this.array"}, offset={"values.start - 1", "this.count - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[290,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[296,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[298,49] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf("this.array") int
-  required: @LTLengthOf(value={"this.array", "newArray"}, offset={"0 - 1", "0 - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[378,24] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTLengthOf(value="this.array", offset="-index - 1") int
-  required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[432,38] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf("this.array") int
-  required: @LTLengthOf(value="this.array", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[446,47] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTLengthOf(value="this.array", offset="-startIndex - 1") int
-  required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[446,67] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTLengthOf(value="this.array", offset="-endIndex - 1") int
-  required: @LTEqLengthOf("this.array") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[533,57] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @UnknownVal long @UnknownVal []
-  required        : index of type @IndexFor("this.parent.array") or @LTLengthOf("this.parent.array"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[597,38] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTEqLengthOf("this.array") int
-  required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/cache/Striped64.java:[106,38] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/cache/Striped64.java:[294,34] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/cache/Striped64.java:[317,28] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -229,27 +67,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/cache/Striped64.java:[324,32] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/cache/Striped64.java:[325,35] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/cache/Striped64.java:[325,56] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[278,52] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
-  required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[432,38] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value="string", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Longs.java:[433,49] [assignment.type.incompatible] incompatible types in assignment.
-  found   : @UpperBoundUnknown int
-  required: @LTEqLengthOf("string") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Floats.java:[287,52] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
-  required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Booleans.java:[261,52] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
-  required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[184,52] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
-  required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Ints.java:[308,52] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
-  required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/LittleEndianByteArray.java:[161,26] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/LittleEndianByteArray.java:[172,28] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/LittleEndianByteArray.java:[174,24] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -264,7 +81,7 @@
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time: 01:14 min
-[INFO] Finished at: 2017-11-20T18:00:25+01:00
-[INFO] Final Memory: 26M/454M
+[INFO] Total time: 01:20 min
+[INFO] Finished at: 2017-11-21T16:18:31+01:00
+[INFO] Final Memory: 26M/455M
 [INFO] ------------------------------------------------------------------------
