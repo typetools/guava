@@ -19,12 +19,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/LittleEndianByteArray.java:[24,16] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[36,16] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/LittleEndianByteArray.java:[24,16] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[293,79] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value={"values.array", "this.array"}, offset={"values.start - 1", "this.count - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[294,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
-  found   : @UpperBoundUnknown int
-  required: @LTEqLengthOf("this.array") int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[327,20] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[349,30] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[351,26] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -39,12 +33,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/util/concurrent/AbstractFuture.java:[1069,36] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/util/concurrent/AbstractFuture.java:[1070,37] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/util/concurrent/AbstractFuture.java:[1070,58] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[296,79] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value={"values.array", "this.array"}, offset={"values.start - 1", "this.count - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableDoubleArray.java:[297,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
-  found   : @UpperBoundUnknown int
-  required: @LTEqLengthOf("this.array") int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[109,38] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[297,34] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[320,28] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -53,12 +41,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[327,32] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[328,35] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[328,56] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[295,79] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value={"values.array", "this.array"}, offset={"values.start - 1", "this.count - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableLongArray.java:[296,13] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
-  found   : @UpperBoundUnknown int
-  required: @LTEqLengthOf("this.array") int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/cache/Striped64.java:[106,38] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/cache/Striped64.java:[294,34] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/cache/Striped64.java:[317,28] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -81,7 +63,7 @@
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time: 01:20 min
-[INFO] Finished at: 2017-11-21T16:18:31+01:00
-[INFO] Final Memory: 26M/455M
+[INFO] Total time: 01:19 min
+[INFO] Finished at: 2017-11-21T16:49:04+01:00
+[INFO] Final Memory: 26M/456M
 [INFO] ------------------------------------------------------------------------
