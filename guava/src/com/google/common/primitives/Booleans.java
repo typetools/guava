@@ -250,6 +250,7 @@ public final class Booleans {
    * @param arrays zero or more {@code boolean} arrays
    * @return a single array containing all the values from the source arrays, in order
    */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // TODO ISSUE 4
   public static boolean[] concat(boolean[]... arrays) {
     int length = 0;
     for (boolean[] array : arrays) {

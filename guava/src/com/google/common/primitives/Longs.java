@@ -267,6 +267,7 @@ public final class Longs {
    * @param arrays zero or more {@code long} arrays
    * @return a single array containing all the values from the source arrays, in order
    */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // TODO ISSUE 4
   public static long[] concat(long[]... arrays) {
     int length = 0;
     for (long[] array : arrays) {

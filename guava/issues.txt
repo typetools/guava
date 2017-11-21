@@ -33,3 +33,20 @@ also needs https://github.com/kelloggm/checker-framework/issues/154
 ISSUE 3:
 private annotation for a public method
 
+ISSUE 4:
+  public static byte[] concat(byte[]... arrays) {
+    int length = 0;
+    for (byte[] array : arrays) {
+      length += array.length;
+    }
+    byte[] result = new byte[length];
+    int pos = 0;
+    for (byte[] array : arrays) {
+      System.arraycopy(array, 0, result, pos, array.length);
+      pos += array.length;
+    }
+    return result;
+  }
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[184,52] [argument.type.incompatible] incompatible types in argument.
+  found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
+  required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int

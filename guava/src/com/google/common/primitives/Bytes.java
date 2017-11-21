@@ -173,6 +173,7 @@ public final class Bytes {
    * @param arrays zero or more {@code byte} arrays
    * @return a single array containing all the values from the source arrays, in order
    */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // TODO ISSUE 4
   public static byte[] concat(byte[]... arrays) {
     int length = 0;
     for (byte[] array : arrays) {

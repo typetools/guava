@@ -276,6 +276,7 @@ public final class Floats {
    * @param arrays zero or more {@code float} arrays
    * @return a single array containing all the values from the source arrays, in order
    */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // TODO ISSUE 4
   public static float[] concat(float[]... arrays) {
     int length = 0;
     for (float[] array : arrays) {

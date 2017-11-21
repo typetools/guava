@@ -297,6 +297,7 @@ public final class Ints {
    * @param arrays zero or more {@code int} arrays
    * @return a single array containing all the values from the source arrays, in order
    */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // TODO ISSUE 4
   public static int[] concat(int[]... arrays) {
     int length = 0;
     for (int[] array : arrays) {
