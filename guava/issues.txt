@@ -50,3 +50,12 @@ ISSUE 4:
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[184,52] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
   required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
+  
+ISSUE 5
+after checking !isEmpty(), start is IndexFor
+Need something like EnsuresQualifierIf
+also needs https://github.com/kelloggm/checker-framework/issues/154
+
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[601,38] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+  found   : @LTEqLengthOf("this.array") int
+  required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
