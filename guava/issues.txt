@@ -76,3 +76,17 @@ ISSUE 6:
   index type found: @IntRange(from=-2147483648, to=2147483647) int
   array type found: @UnknownVal int @UnknownVal []
   required        : index of type @IndexFor("this.parent.array") or @LTLengthOf("this.parent.array"), or array of type @MinLen("2147483648")
+ISSUE 7:
+
+Caught by catch(Throwable)
+
+	try {
+        Class<?> theClass = Class.forName(UNSAFE_COMPARATOR_NAME);
+
+        // yes, UnsafeComparator does implement Comparator<byte[]>
+        @SuppressWarnings("unchecked")
+        Comparator<byte[]> comparator = (Comparator<byte[]>) theClass.getEnumConstants()[0];
+        return comparator;
+      } catch (Throwable t) { // ensure we really catch *everything*
+        return lexicographicalComparatorJavaImpl();
+      }
