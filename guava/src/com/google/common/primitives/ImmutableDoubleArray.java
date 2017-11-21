@@ -526,6 +526,7 @@ public final class ImmutableDoubleArray implements Serializable {
     }
 
     @Override
+    @SuppressWarnings("upperbound:array.access.unsafe.high.range") // TODO ISSUE 6
     public boolean equals(@Nullable Object object) {
       if (object instanceof AsList) {
         AsList that = (AsList) object;
