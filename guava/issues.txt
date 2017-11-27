@@ -33,7 +33,14 @@ also needs https://github.com/kelloggm/checker-framework/issues/154
 ISSUE 3:
 private annotation for a public method
 
+
 ISSUE 4:
+
+length is a sum of lengths of arrays.
+pos is increased the same way as length, so pos points to a valid
+range of length array.length in result.
+   
+Example code:
   public static byte[] concat(byte[]... arrays) {
     int length = 0;
     for (byte[] array : arrays) {
@@ -47,9 +54,11 @@ ISSUE 4:
     }
     return result;
   }
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/Bytes.java:[184,52] [argument.type.incompatible] incompatible types in argument.
+Example output:
+[WARNING] guava/guava/src/com/google/common/primitives/Bytes.java:[184,52] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
   required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
+
   
 ISSUE 5:
 after checking !isEmpty(), start is IndexFor

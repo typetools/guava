@@ -173,7 +173,12 @@ public final class Bytes {
    * @param arrays zero or more {@code byte} arrays
    * @return a single array containing all the values from the source arrays, in order
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // TODO ISSUE 4
+  /* ISSUE 4:
+   * length is a sum of lengths of arrays.
+   * pos is increased the same way as length, so pos points to a valid
+   * range of length array.length in result.   
+   */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // ISSUE 4 in issues.txt
   public static byte[] concat(byte[]... arrays) {
     int length = 0;
     for (byte[] array : arrays) {
