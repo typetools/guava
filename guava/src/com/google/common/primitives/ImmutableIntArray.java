@@ -220,8 +220,10 @@ public final class ImmutableIntArray implements Serializable {
      * Appends {@code value} to the end of the values the built {@link ImmutableIntArray} will
      * contain.
      */
-    // indices valid thanks to ensureRoomFor
-    @SuppressWarnings("upperbound") // TODO ISSUE 1
+    /* ISSUE 1
+     * Calling ensureRoomFor(1) ensures that count is IndexFor("array")
+     */
+    @SuppressWarnings("upperbound") // https://github.com/typetools/checker-framework/issues/1606
     public Builder add(int value) {
       ensureRoomFor(1);
       array[count] = value;
@@ -233,8 +235,10 @@ public final class ImmutableIntArray implements Serializable {
      * Appends {@code values}, in order, to the end of the values the built {@link
      * ImmutableIntArray} will contain.
      */
-    // indices valid thanks to ensureRoomFor
-    @SuppressWarnings("upperbound") // TODO ISSUE 1
+    /* ISSUE 1
+     * Calling ensureRoomFor(values.length) ensures that count is LTLengthOf(value="array", offset="values.length-1")
+     */
+    @SuppressWarnings("upperbound") // https://github.com/typetools/checker-framework/issues/1606
     public Builder addAll(int[] values) {
       ensureRoomFor(values.length);
       System.arraycopy(values, 0, array, count, values.length);

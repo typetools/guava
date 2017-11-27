@@ -1,22 +1,27 @@
 Unreported issues
 
+
 ISSUE 1: Ensures for LTLengthOf
 
-class Builder{
-	int[] array;
-	@IndexOrHigh("array") int count;
-	@EnsuresLTLengthOf(expression="count", value="array", offset="#1 - 1")
-	void ensureRoomFor(@NonNegative int numberToAdd){
-		// implementation
-	} 
-	void add(int value){
-		ensureRoomFor(1);
-    	array[count] = value;
-    	count += 1;
-	}
-}
+Could be solved by:
+  https://github.com/typetools/checker-framework/issues/1606
+Also needs:
+  https://github.com/kelloggm/checker-framework/issues/176
+Example code:
+  class Builder{
+    int[] array;
+    @IndexOrHigh("array") int count;
+    @EnsuresLTLengthOf(expression="count", value="array", offset="#1 - 1")
+    void ensureRoomFor(@NonNegative int numberToAdd){
+      // implementation
+    } 
+    void add(int value){
+      ensureRoomFor(1);
+      array[count] = value;
+      count += 1;
+    }
+  }
 
-also needs https://github.com/kelloggm/checker-framework/issues/176
 
 ISSUE 2:
 
