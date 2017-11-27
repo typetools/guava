@@ -17,6 +17,8 @@ package com.google.common.base;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 import com.google.common.annotations.GwtCompatible;
 
 /**
@@ -543,11 +545,12 @@ public final class Ascii {
    *     {@code truncationIndicator}
    * @since 16.0
    */
+  @SuppressWarnings("lowerbound:assignment.type.incompatible") // TODO ISSUE 15
   public static String truncate(CharSequence seq, int maxLength, String truncationIndicator) {
     checkNotNull(seq);
 
     // length to truncate the sequence to, not including the truncation indicator
-    int truncationLength = maxLength - truncationIndicator.length();
+    @NonNegative int truncationLength = maxLength - truncationIndicator.length();
 
     // in this worst case, this allows a maxLength equal to the length of the truncationIndicator,
     // meaning that a string will be truncated to just the truncation indicator itself
