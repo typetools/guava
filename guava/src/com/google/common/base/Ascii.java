@@ -423,6 +423,7 @@ public final class Ascii {
    *
    * @since 14.0
    */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
   public static String toLowerCase(CharSequence chars) {
     if (chars instanceof String) {
       return toLowerCase((String) chars);

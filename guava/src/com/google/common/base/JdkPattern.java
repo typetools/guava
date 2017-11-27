@@ -19,6 +19,8 @@ import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * A regex pattern implementation which is backed by the {@link Pattern}.
  */
@@ -81,7 +83,7 @@ final class JdkPattern extends CommonPattern implements Serializable {
     }
 
     @Override
-    boolean find(int index) {
+    boolean find(@NonNegative int index) {
       return matcher.find(index);
     }
 
@@ -91,12 +93,12 @@ final class JdkPattern extends CommonPattern implements Serializable {
     }
 
     @Override
-    int end() {
+    @NonNegative int end() {
       return matcher.end();
     }
 
     @Override
-    int start() {
+    @NonNegative int start() {
       return matcher.start();
     }
   }

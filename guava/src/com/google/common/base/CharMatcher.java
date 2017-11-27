@@ -24,6 +24,9 @@ import com.google.common.annotations.VisibleForTesting;
 import java.util.Arrays;
 import java.util.BitSet;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Determines a true or false value for any Java {@code char} value, just as {@link Predicate} does
  * for any {@link Object}. Also offers basic text processing methods based on this function.
@@ -495,6 +498,7 @@ public abstract class CharMatcher implements Predicate<Character> {
    * Returns a {@code char} matcher that matches any BMP character present in the given character
    * sequence. Returns a bogus matcher if the sequence contains supplementary characters.
    */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
   public static CharMatcher anyOf(final CharSequence sequence) {
     switch (sequence.length()) {
       case 0:
@@ -694,6 +698,7 @@ public abstract class CharMatcher implements Predicate<Character> {
    * @return {@code true} if this matcher matches every character in the sequence, including when
    *     the sequence is empty
    */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
   public boolean matchesAllOf(CharSequence sequence) {
     for (int i = sequence.length() - 1; i >= 0; i--) {
       if (!matches(sequence.charAt(i))) {
@@ -728,7 +733,7 @@ public abstract class CharMatcher implements Predicate<Character> {
    * @param sequence the character sequence to examine from the beginning
    * @return an index, or {@code -1} if no character matches
    */
-  public int indexIn(CharSequence sequence) {
+  public @GTENegativeOne int indexIn(CharSequence sequence) {
     return indexIn(sequence, 0);
   }
 
@@ -747,7 +752,7 @@ public abstract class CharMatcher implements Predicate<Character> {
    * @throws IndexOutOfBoundsException if start is negative or greater than {@code
    *         sequence.length()}
    */
-  public int indexIn(CharSequence sequence, int start) {
+  public @GTENegativeOne int indexIn(CharSequence sequence, @NonNegative int start) {
     int length = sequence.length();
     checkPositionIndex(start, length);
     for (int i = start; i < length; i++) {
@@ -768,7 +773,7 @@ public abstract class CharMatcher implements Predicate<Character> {
    * @param sequence the character sequence to examine from the end
    * @return an index, or {@code -1} if no character matches
    */
-  public int lastIndexIn(CharSequence sequence) {
+  public @GTENegativeOne int lastIndexIn(CharSequence sequence) {
     for (int i = sequence.length() - 1; i >= 0; i--) {
       if (matches(sequence.charAt(i))) {
         return i;
@@ -782,7 +787,7 @@ public abstract class CharMatcher implements Predicate<Character> {
    *
    * <p>Counts 2 per supplementary character, such as for {@link #whitespace}().{@link #negate}().
    */
-  public int countIn(CharSequence sequence) {
+  public @NonNegative int countIn(CharSequence sequence) {
     int count = 0;
     for (int i = 0; i < sequence.length(); i++) {
       if (matches(sequence.charAt(i))) {
@@ -1193,19 +1198,19 @@ public abstract class CharMatcher implements Predicate<Character> {
     }
 
     @Override
-    public int indexIn(CharSequence sequence) {
+    public @GTENegativeOne int indexIn(CharSequence sequence) {
       return (sequence.length() == 0) ? -1 : 0;
     }
 
     @Override
-    public int indexIn(CharSequence sequence, int start) {
+    public @GTENegativeOne int indexIn(CharSequence sequence, @NonNegative int start) {
       int length = sequence.length();
       checkPositionIndex(start, length);
       return (start == length) ? -1 : start;
     }
 
     @Override
-    public int lastIndexIn(CharSequence sequence) {
+    public @GTENegativeOne int lastIndexIn(CharSequence sequence) {
       return sequence.length() - 1;
     }
 
@@ -1254,7 +1259,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     }
 
     @Override
-    public int countIn(CharSequence sequence) {
+    public @NonNegative int countIn(CharSequence sequence) {
       return sequence.length();
     }
 
@@ -1290,20 +1295,20 @@ public abstract class CharMatcher implements Predicate<Character> {
     }
 
     @Override
-    public int indexIn(CharSequence sequence) {
+    public @GTENegativeOne int indexIn(CharSequence sequence) {
       checkNotNull(sequence);
       return -1;
     }
 
     @Override
-    public int indexIn(CharSequence sequence, int start) {
+    public @GTENegativeOne int indexIn(CharSequence sequence, @NonNegative int start) {
       int length = sequence.length();
       checkPositionIndex(start, length);
       return -1;
     }
 
     @Override
-    public int lastIndexIn(CharSequence sequence) {
+    public @GTENegativeOne int lastIndexIn(CharSequence sequence) {
       checkNotNull(sequence);
       return -1;
     }
@@ -1356,7 +1361,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     }
 
     @Override
-    public int countIn(CharSequence sequence) {
+    public @NonNegative int countIn(CharSequence sequence) {
       checkNotNull(sequence);
       return 0;
     }
@@ -1683,7 +1688,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     }
 
     @Override
-    public int countIn(CharSequence sequence) {
+    public @NonNegative int countIn(CharSequence sequence) {
       return sequence.length() - original.countIn(sequence);
     }
 

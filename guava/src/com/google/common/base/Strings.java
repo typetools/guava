@@ -161,7 +161,7 @@ public final class Strings {
 
     final char[] array = new char[size];
     string.getChars(0, len, array, 0);
-    int n;
+    @NonNegative int n;
     for (n = len; n < size - n; n <<= 1) {
       System.arraycopy(array, 0, array, n, n);
     }

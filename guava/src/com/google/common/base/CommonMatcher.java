@@ -14,6 +14,9 @@
 
 package com.google.common.base;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 import com.google.common.annotations.GwtCompatible;
 
 /**
@@ -22,16 +25,17 @@ import com.google.common.annotations.GwtCompatible;
  * javadoc for details.
  */
 @GwtCompatible
+@AnnotatedFor("index")
 abstract class CommonMatcher {
   abstract boolean matches();
 
   abstract boolean find();
 
-  abstract boolean find(int index);
+  abstract boolean find(@NonNegative int index);
 
   abstract String replaceAll(String replacement);
 
-  abstract int end();
+  abstract @NonNegative int end();
 
-  abstract int start();
+  abstract @NonNegative int start();
 }

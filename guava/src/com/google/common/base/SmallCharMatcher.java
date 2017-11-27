@@ -19,6 +19,9 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CharMatcher.NamedFastMatcher;
 import java.util.BitSet;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
+
 /**
  * An immutable version of CharMatcher for smallish sets of characters that uses a hash table with
  * linear probing to check for matches.
@@ -70,7 +73,7 @@ final class SmallCharMatcher extends NamedFastMatcher {
    * can hold setSize elements with the desired load factor.
    */
   @VisibleForTesting
-  static int chooseTableSize(int setSize) {
+  static @Positive int chooseTableSize(@NonNegative int setSize) {
     if (setSize == 1) {
       return 2;
     }
