@@ -392,7 +392,10 @@ public final class ImmutableDoubleArray implements Serializable {
   }
 
   /** Returns the number of values in this array. */
-  //@SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
+  @SuppressWarnings({
+    "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
+    "upperbound:return.type.incompatible" // ISSUE 12 in issues.txt
+  }) 
   public @NonNegative @LTLengthOf(value = {"array", "this"}, offset = {"start-1", "-1"}) int length() { // ISSUE 3 in issues.txt
     return end - start;
   }
@@ -408,7 +411,7 @@ public final class ImmutableDoubleArray implements Serializable {
    * @throws IndexOutOfBoundsException if {@code index} is negative, or greater than or equal to
    *     {@link #length}
    */
-  //@SuppressWarnings("upperbound:array.access.unsafe.high") // https://github.com/kelloggm/checker-framework/issues/154
+  @SuppressWarnings("upperbound:array.access.unsafe.high") // ISSUE 14 in issues.txt
   public double get(@IndexFor("this") int index) {
     Preconditions.checkElementIndex(index, length());
     return array[start + index];
@@ -419,7 +422,10 @@ public final class ImmutableDoubleArray implements Serializable {
    * such index exists. Values are compared as if by {@link Double#equals}. Equivalent to {@code
    * asList().indexOf(target)}.
    */
-  //@SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
+  @SuppressWarnings({
+    "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
+    "upperbound:return.type.incompatible" // ISSUE 13 in issues.txt 
+  })
   public @IndexOrLow("this") int indexOf(double target) {
     for (int i = start; i < end; i++) {
       if (areEqual(array[i], target)) {
@@ -434,7 +440,10 @@ public final class ImmutableDoubleArray implements Serializable {
    * such index exists. Values are compared as if by {@link Double#equals}. Equivalent to {@code
    * asList().lastIndexOf(target)}.
    */
-  //@SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
+  @SuppressWarnings({
+    "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
+    "upperbound:return.type.incompatible" // ISSUE 13 in issues.txt 
+  })
   public @IndexOrLow("this") int lastIndexOf(double target) {
     for (int i = end - 1; i >= start; i--) {
       if (areEqual(array[i], target)) {
@@ -466,7 +475,15 @@ public final class ImmutableDoubleArray implements Serializable {
   }
 
   /** Returns a new, mutable copy of this array's values, as a primitive {@code double[]}. */
-  //@SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/191
+  @SuppressWarnings({
+    "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/191
+    /* ISSUE 11:
+     * length of this is defined as end-start,
+     * Arrays.copyOfRange returns an array of length end-start,
+     * ẗherefore the result is SameLen("this")
+     */
+    "samelen:return.type.incompatible", // ISSUE 11 in issues.txt
+  }) 
   public @SameLen("this") double[] toArray() {
     return Arrays.copyOfRange(array, start, end);
   }
@@ -478,7 +495,7 @@ public final class ImmutableDoubleArray implements Serializable {
    * does (no actual copying is performed). To reduce memory usage, use {@code subArray(start,
    * end).trimmed()}.
    */
-  //@SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/panacekcz/checker-framework/issues/11
   public ImmutableDoubleArray subArray(@IndexOrHigh("this") int startIndex, @IndexOrHigh("this") int endIndex) {
     Preconditions.checkPositionIndexes(startIndex, endIndex, length());
     return startIndex == endIndex
@@ -521,7 +538,10 @@ public final class ImmutableDoubleArray implements Serializable {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
+    @SuppressWarnings({
+      "lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
+      "upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
+    })
     public Double get(@NonNegative int index) {
       return parent.get(index);
     }
@@ -542,7 +562,10 @@ public final class ImmutableDoubleArray implements Serializable {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
+    @SuppressWarnings({
+      "lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
+      "upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
+    })
     public List<Double> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       return parent.subArray(fromIndex, toIndex).asList();
     }
@@ -599,6 +622,7 @@ public final class ImmutableDoubleArray implements Serializable {
    * values as this one, in the same order. Values are compared as if by {@link Double#equals}.
    */
   @Override
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/194
   public boolean equals(@Nullable Object object) {
     if (object == this) {
       return true;

@@ -36,9 +36,12 @@ import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -386,8 +389,11 @@ public final class ImmutableIntArray implements Serializable {
   }
 
   /** Returns the number of values in this array. */
-  @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
-  public @NonNegative @LTLengthOf(value = "array", offset="start-1") int length() { // ISSUE 3 in issues.txt
+  @SuppressWarnings({
+    "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
+    "upperbound:return.type.incompatible" // ISSUE 12 in issues.txt
+  }) 
+  public @NonNegative @LTLengthOf(value = {"array", "this"}, offset = {"start-1", "-1"}) int length() { // ISSUE 3 in issues.txt
     return end - start;
   }
 
@@ -402,8 +408,8 @@ public final class ImmutableIntArray implements Serializable {
    * @throws IndexOutOfBoundsException if {@code index} is negative, or greater than or equal to
    *     {@link #length}
    */
-  @SuppressWarnings("upperbound:array.access.unsafe.high") // https://github.com/kelloggm/checker-framework/issues/154
-  public int get(@NonNegative int index) {
+  @SuppressWarnings("upperbound:array.access.unsafe.high") // ISSUE 14 in issues.txt
+  public int get(@IndexFor("this") int index) {
     Preconditions.checkElementIndex(index, length());
     return array[start + index];
   }
@@ -412,8 +418,11 @@ public final class ImmutableIntArray implements Serializable {
    * Returns the smallest index for which {@link #get} returns {@code target}, or {@code -1} if no
    * such index exists. Equivalent to {@code asList().indexOf(target)}.
    */
-  @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
-  public @GTENegativeOne int indexOf(int target) {
+  @SuppressWarnings({
+    "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
+    "upperbound:return.type.incompatible" // ISSUE 13 in issues.txt 
+  })
+  public @IndexOrLow("this") int indexOf(int target) {
     for (int i = start; i < end; i++) {
       if (array[i] == target) {
         return i - start;
@@ -426,8 +435,11 @@ public final class ImmutableIntArray implements Serializable {
    * Returns the largest index for which {@link #get} returns {@code target}, or {@code -1} if no
    * such index exists. Equivalent to {@code asList().lastIndexOf(target)}.
    */
-  @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
-  public @GTENegativeOne int lastIndexOf(int target) {
+  @SuppressWarnings({
+    "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
+    "upperbound:return.type.incompatible" // ISSUE 13 in issues.txt 
+  })
+  public @IndexOrLow("this") int lastIndexOf(int target) {
     for (int i = end - 1; i >= start; i--) {
       if (array[i] == target) {
         return i - start;
@@ -458,8 +470,16 @@ public final class ImmutableIntArray implements Serializable {
   }
 
   /** Returns a new, mutable copy of this array's values, as a primitive {@code int[]}. */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/191
-  public int[] toArray() {
+  @SuppressWarnings({
+    "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/191
+    /* ISSUE 11:
+     * length of this is defined as end-start,
+     * Arrays.copyOfRange returns an array of length end-start,
+     * ẗherefore the result is SameLen("this")
+     */
+    "samelen:return.type.incompatible", // ISSUE 11 in issues.txt
+  }) 
+  public @SameLen("this") int[] toArray() {
     return Arrays.copyOfRange(array, start, end);
   }
 
@@ -471,7 +491,7 @@ public final class ImmutableIntArray implements Serializable {
    * end).trimmed()}.
    */
   @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
-  public ImmutableIntArray subArray(@NonNegative int startIndex, @NonNegative int endIndex) {
+  public ImmutableIntArray subArray(@IndexOrHigh("this") int startIndex, @IndexOrHigh("this") int endIndex) {
     Preconditions.checkPositionIndexes(startIndex, endIndex, length());
     return startIndex == endIndex
         ? EMPTY
@@ -513,7 +533,10 @@ public final class ImmutableIntArray implements Serializable {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
+    @SuppressWarnings({
+      "lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
+      "upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
+    })
     public Integer get(@NonNegative int index) {
       return parent.get(index);
     }
@@ -534,7 +557,10 @@ public final class ImmutableIntArray implements Serializable {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:override.param.invalid") // https://github.com/typetools/checker-framework/pull/1656
+    @SuppressWarnings({
+      "lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
+      "upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
+    })
     public List<Integer> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       return parent.subArray(fromIndex, toIndex).asList();
     }
@@ -591,6 +617,7 @@ public final class ImmutableIntArray implements Serializable {
    * values as this one, in the same order.
    */
   @Override
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/194
   public boolean equals(@Nullable Object object) {
     if (object == this) {
       return true;
