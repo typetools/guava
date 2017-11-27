@@ -37,6 +37,7 @@ import javax.annotation.Nullable;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -305,7 +306,6 @@ public final class ImmutableDoubleArray implements Serializable {
        */
       "upperbound:compound.assignment.type.incompatible", // https://github.com/typetools/checker-framework/issues/1606
       /* ISSUE 10:
-       * TODO INDEX: values.length() is always @LTLengthOf(value="values.array",offset="values.start-1")
        * values.length() is @LTLengthOf(value="array",offset="count-1") by issue 1
        */
       "upperbound:argument.type.incompatible" // ISSUE 10 in issues.txt
@@ -390,7 +390,7 @@ public final class ImmutableDoubleArray implements Serializable {
 
   /** Returns the number of values in this array. */
   @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
-  public @NonNegative int length() {
+  public @NonNegative @LTLengthOf(value = "array", offset="start-1") int length() { // ISSUE 3 in issues.txt
     return end - start;
   }
 
