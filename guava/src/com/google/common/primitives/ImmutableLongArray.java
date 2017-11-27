@@ -222,7 +222,7 @@ public final class ImmutableLongArray implements Serializable {
      * Appends {@code value} to the end of the values the built {@link ImmutableLongArray} will
      * contain.
      */
-    /* ISSUE 1
+    /* ISSUE 1:
      * Calling ensureRoomFor(1) ensures that count is IndexFor("array")
      */
     @SuppressWarnings("upperbound") // https://github.com/typetools/checker-framework/issues/1606
@@ -237,7 +237,7 @@ public final class ImmutableLongArray implements Serializable {
      * Appends {@code values}, in order, to the end of the values the built {@link
      * ImmutableLongArray} will contain.
      */
-    /* ISSUE 1
+    /* ISSUE 1:
      * Calling ensureRoomFor(values.length) ensures that count is LTLengthOf(value="array", offset="values.length-1")
      */
     @SuppressWarnings("upperbound") // https://github.com/typetools/checker-framework/issues/1606
@@ -299,9 +299,16 @@ public final class ImmutableLongArray implements Serializable {
      * ImmutableLongArray} will contain.
      */
     @SuppressWarnings({
-      "upperbound:compound.assignment.type.incompatible", // TODO ISSUE 1
-      "upperbound:argument.type.incompatible" // TODO ISSUE 10
-    })
+        /* ISSUE 1:
+         * Calling ensureRoomFor(values.length()) ensures that count is @LTLengthOf(value="array",offset="values.length()-1")
+         */
+        "upperbound:compound.assignment.type.incompatible", // https://github.com/typetools/checker-framework/issues/1606
+        /* ISSUE 10:
+         * TODO INDEX: values.length() is always @LTLengthOf(value="values.array",offset="values.start-1")
+         * values.length() is @LTLengthOf(value="array",offset="count-1") by issue 1
+         */
+        "upperbound:argument.type.incompatible" // ISSUE 10 in issues.txt
+      })
     public Builder addAll(ImmutableLongArray values) {
       ensureRoomFor(values.length());
       System.arraycopy(values.array, values.start, array, count, values.length());
@@ -309,7 +316,12 @@ public final class ImmutableLongArray implements Serializable {
       return this;
     }
 
-    @SuppressWarnings("upperbound:argument.type.incompatible") // TODO ISSUE 9
+    /* ISSUE 9:
+     * expandedCapacity(array.length, newCount) is at least newCount
+     * newArray is at least as long a array
+     * therefore, count is an index for newArray
+     */
+    @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
     private void ensureRoomFor(@NonNegative int numberToAdd) {
       int newCount = count + numberToAdd; // TODO(kevinb): check overflow now?
       if (newCount > array.length) {
@@ -536,7 +548,11 @@ public final class ImmutableLongArray implements Serializable {
     }
 
     @Override
-    @SuppressWarnings("upperbound:array.access.unsafe.high.range") // TODO ISSUE 6
+    /* ISSUE 6:
+     * i is incremented in a for-each loop by that, and that has the same size as parent.array
+     * therefore i is an index for parent.array
+     */
+    @SuppressWarnings("upperbound:array.access.unsafe.high.range") // ISSUE 6 in issues.txt
     public boolean equals(@Nullable Object object) {
       if (object instanceof AsList) {
         AsList that = (AsList) object;
@@ -612,7 +628,10 @@ public final class ImmutableLongArray implements Serializable {
    * Arrays#toString(long[])}, for example {@code "[1, 2, 3]"}.
    */
   @Override
-  @SuppressWarnings("upperbound:array.access.unsafe.high") // TODO ISSUE 5
+  /* ISSUE 5:
+   * After checking !isEmpty(), start is IndexFor("this.array")
+   */
+  @SuppressWarnings("upperbound:array.access.unsafe.high") // https://github.com/typetools/checker-framework/issues/1606
   public String toString() {
     if (isEmpty()) {
       return "[]";

@@ -26,7 +26,7 @@ Example code:
 
 
 ISSUE 5:
-Need annotation EnsuresQualifierIf: https://github.com/typetools/checker-framework/issues/1606
+Need annotation EnsuresQualifierIf with arguments
 
 After checking !isEmpty(), start is IndexFor("this.array")
 
@@ -152,7 +152,7 @@ Assuming that Character.MIN_RADIX == 2
 
 
 ISSUE 9:
-One array is longer than another array.  (issue 158)
+One array is longer than another array.
 
 Possibly could be solved by combination of: 
   https://github.com/panacekcz/checker-framework/issues/11

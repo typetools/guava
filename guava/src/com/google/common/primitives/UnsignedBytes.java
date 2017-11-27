@@ -445,7 +445,11 @@ public final class UnsignedBytes {
      * Returns the Unsafe-using Comparator, or falls back to the pure-Java implementation if unable
      * to do so.
      */
-    @SuppressWarnings("upperbound:array.access.unsafe.high") // TODO ISSUE 7
+    /* ISSUE 7:
+     * Code can throw an exception, but the code is safe because the exception is 
+     * caught by catch(Throwable).
+     */
+    @SuppressWarnings("upperbound:array.access.unsafe.high") // ISSUE 7 in issues.txt
     static Comparator<byte[]> getBestComparator() {
       try {
         Class<?> theClass = Class.forName(UNSAFE_COMPARATOR_NAME);

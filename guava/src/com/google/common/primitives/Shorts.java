@@ -596,7 +596,7 @@ public final class Shorts {
 
     @Override
     @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
-    public @Positive @LTLengthOf(value = "array", offset="start - 1") int size() { // TODO: ISSUE 3
+    public @Positive @LTLengthOf(value = "array", offset="start - 1") int size() { // ISSUE 3 in issues.txt
       return end - start;
     }
 
