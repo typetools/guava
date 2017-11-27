@@ -1812,6 +1812,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     @GwtIncompatible // used only from other GwtIncompatible code
     @Override
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
     void setBits(BitSet table) {
       table.set(match);
     }
@@ -1848,6 +1849,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     @GwtIncompatible // used only from other GwtIncompatible code
     @Override
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
     void setBits(BitSet table) {
       table.set(0, match);
       table.set(match + 1, Character.MAX_VALUE + 1);
@@ -1886,6 +1888,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     @GwtIncompatible // used only from other GwtIncompatible code
     @Override
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
     void setBits(BitSet table) {
       table.set(match1);
       table.set(match2);
@@ -1950,6 +1953,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     @GwtIncompatible // used only from other GwtIncompatible code
     @Override
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
     void setBits(BitSet table) {
       table.set(startInclusive, endInclusive + 1);
     }
