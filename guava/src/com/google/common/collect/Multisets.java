@@ -580,7 +580,7 @@ public final class Multisets {
       }
 
       @Override
-      @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/187
+      @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/187
       public @NonNegative int size() {
         return IntMath.saturatedAdd(multiset1.size(), multiset2.size());
       }
