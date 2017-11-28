@@ -26,6 +26,7 @@ import java.util.BitSet;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.SameLen;
 
 /**
  * Determines a true or false value for any Java {@code char} value, just as {@link Predicate} does
@@ -1468,10 +1469,10 @@ public abstract class CharMatcher implements Predicate<Character> {
   private static class RangesMatcher extends CharMatcher {
 
     private final String description;
-    private final char[] rangeStarts;
-    private final char[] rangeEnds;
+    private final char [] rangeStarts;
+    private final char @SameLen("rangeStarts")[] rangeEnds;
 
-    RangesMatcher(String description, char[] rangeStarts, char[] rangeEnds) {
+    RangesMatcher(String description, char[] rangeStarts, char @SameLen("#2")[] rangeEnds) {
       this.description = description;
       this.rangeStarts = rangeStarts;
       this.rangeEnds = rangeEnds;
@@ -1514,11 +1515,11 @@ public abstract class CharMatcher implements Predicate<Character> {
             + "\u0e50\u0ed0\u0f20\u1040\u1090\u17e0\u1810\u1946\u19d0\u1a80\u1a90\u1b50\u1bb0"
             + "\u1c40\u1c50\ua620\ua8d0\ua900\ua9d0\ua9f0\uaa50\uabf0\uff10";
 
-    private static char[] zeroes() {
+    private static char @SameLen("ZEROES")[] zeroes() {
       return ZEROES.toCharArray();
     }
 
-    private static char[] nines() {
+    private static char @SameLen("ZEROES")[] nines() {
       char[] nines = new char[ZEROES.length()];
       for (int i = 0; i < ZEROES.length(); i++) {
         nines[i] = (char) (ZEROES.charAt(i) + 9);
@@ -1688,6 +1689,10 @@ public abstract class CharMatcher implements Predicate<Character> {
     }
 
     @Override
+    // countIn could be IndexOrHigh(sequence)
+    // to typecheck, this will be also required:
+    // https://github.com/kelloggm/checker-framework/issues/193 
+    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
     public @NonNegative int countIn(CharSequence sequence) {
       return sequence.length() - original.countIn(sequence);
     }
@@ -1917,6 +1922,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     @Override
     @GwtIncompatible // used only from other GwtIncompatible code
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
     void setBits(BitSet table) {
       for (char c : chars) {
         table.set(c);

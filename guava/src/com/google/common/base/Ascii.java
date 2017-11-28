@@ -546,7 +546,7 @@ public final class Ascii {
    * @since 16.0
    */
   @SuppressWarnings("lowerbound:assignment.type.incompatible") // TODO ISSUE 15
-  public static String truncate(CharSequence seq, int maxLength, String truncationIndicator) {
+  public static String truncate(CharSequence seq, @NonNegative int maxLength, String truncationIndicator) {
     checkNotNull(seq);
 
     // length to truncate the sequence to, not including the truncation indicator

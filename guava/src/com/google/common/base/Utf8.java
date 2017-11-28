@@ -81,7 +81,7 @@ public final class Utf8 {
     }
     return utf8Length;
   }
-
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
   private static @NonNegative int encodedLengthGeneral(CharSequence sequence, @IndexFor("#1") int start) {
     int utf16Length = sequence.length();
     int utf8Length = 0;
@@ -143,7 +143,7 @@ public final class Utf8 {
 
   @SuppressWarnings("cast.unsafe") // https://github.com/kelloggm/checker-framework/issues/149
   private static boolean isWellFormedSlowPath(byte[] bytes, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int end) {
-    int index = off;
+    @IndexOrHigh("bytes") int index = off;
     while (true) {
       int byte1;
 

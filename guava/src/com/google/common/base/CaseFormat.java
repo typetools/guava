@@ -20,6 +20,8 @@ import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+
 /**
  * Utility class for converting between various ASCII case formats. Behavior is undefined for
  * non-ASCII input.
@@ -137,7 +139,7 @@ public enum CaseFormat {
   String convert(CaseFormat format, String s) {
     // deal with camel conversion
     StringBuilder out = null;
-    int i = 0;
+    @IndexOrHigh("s") int i = 0;
     int j = -1;
     while ((j = wordBoundary.indexIn(s, ++j)) != -1) {
       if (i == 0) {
@@ -213,6 +215,7 @@ public enum CaseFormat {
     return (this == LOWER_CAMEL) ? Ascii.toLowerCase(word) : normalizeWord(word);
   }
 
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/panacekcz/checker-framework/issues/27
   private static String firstCharOnlyToUpper(String word) {
     return (word.isEmpty())
         ? word
