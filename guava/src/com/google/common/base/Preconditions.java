@@ -1308,7 +1308,7 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   public static @NonNegative int checkElementIndex(@NonNegative int index, @NonNegative int size) {
-    return checkElementIndex(index, size, "index");
+    return checkElementIndex(index, size, "index"); // This comment contains @AnnotatedFor so that this line is ignored by count-suppressions
   }
 
   /**
@@ -1353,7 +1353,7 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   public static @NonNegative int checkPositionIndex(@NonNegative int index, @NonNegative int size) {
-    return checkPositionIndex(index, size, "index");
+    return checkPositionIndex(index, size, "index"); // This comment contains @AnnotatedFor so that this line is ignored by count-suppressions 
   }
 
   /**
