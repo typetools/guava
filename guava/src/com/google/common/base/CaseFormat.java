@@ -21,6 +21,7 @@ import java.io.Serializable;
 import javax.annotation.Nullable;
 
 import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.common.value.qual.ArrayLenRange;
 
 /**
  * Utility class for converting between various ASCII case formats. Behavior is undefined for
@@ -117,7 +118,7 @@ public enum CaseFormat {
   private final CharMatcher wordBoundary;
   private final String wordSeparator;
 
-  CaseFormat(CharMatcher wordBoundary, String wordSeparator) {
+  CaseFormat(CharMatcher wordBoundary, @ArrayLenRange(from = 0, to = 1) String wordSeparator) {
     this.wordBoundary = wordBoundary;
     this.wordSeparator = wordSeparator;
   }
