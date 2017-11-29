@@ -1654,6 +1654,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     static final SingleWidth INSTANCE = new SingleWidth();
 
+    @SuppressWarnings("samelen:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/179
     private SingleWidth() {
       super(
           "CharMatcher.singleWidth()",
