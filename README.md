@@ -1,8 +1,15 @@
 Forked from
 [Google's Guava repository](https://github.com/google/guava).
 To get updates from the original repository, run
-`git pull https://github.com/google/guava`
+```git pull https://github.com/google/guava```
 and resolve merge conflicts where necessary.
+
+To create file
+`guava/target/guava-HEAD-jre-SNAPSHOT.jar`
+run
+  ```cd guava && mvn package -Dmaven.test.skip=true -Danimal.sniffer.skip=true```
+(first, optionally change `guava/pom.xml` to use a locally-built version of the Checker Framework).
+
 
 The original README.md follows.
 
@@ -27,11 +34,10 @@ Guava comes in two flavors.
 
 ## Latest release
 
-The most recent release is [Guava 23.2][current release], released October 11,
-2017.
+The most recent release is [Guava 23.5][current release], released 2017-11-22.
 
 The Maven group ID is `com.google.guava`, and the artifact ID is `guava`. Use
-version `23.2-jre` for the JRE flavor, or `23.2-android` for the Android flavor.
+version `23.5-jre` for the JRE flavor, or `23.5-android` for the Android flavor.
 
 To add a dependency on Guava using Maven, use the following:
 
@@ -39,9 +45,9 @@ To add a dependency on Guava using Maven, use the following:
 <dependency>
   <groupId>com.google.guava</groupId>
   <artifactId>guava</artifactId>
-  <version>23.2-jre</version>
+  <version>23.5-jre</version>
   <!-- or, for Android: -->
-  <version>23.2-android</version>
+  <version>23.5-android</version>
 </dependency>
 ```
 
@@ -49,9 +55,9 @@ To add a dependency using Gradle:
 
 ```
 dependencies {
-  compile 'com.google.guava:guava:23.2-jre'
+  compile 'com.google.guava:guava:23.5-jre'
   // or, for Android:
-  compile 'com.google.guava:guava:23.2-android'
+  compile 'com.google.guava:guava:23.5-android'
 }
 ```
 
@@ -66,7 +72,7 @@ flavor.
 
 ## Learn about Guava
 
-- Our users' guide, [Guava Explained][]
+- Our users' guide, [Guava Explained]
 - [A nice collection](http://www.tfnico.com/presentations/google-guava) of other helpful links
 
 ## Links
@@ -104,7 +110,7 @@ Linux. Some features, especially in `com.google.common.io`, may not work
 correctly in other environments. For the Android flavor, our unit tests run on
 API level 15 (Ice Cream Sandwich).
 
-[current release]: https://github.com/google/guava/releases/tag/v23.2
+[current release]: https://github.com/google/guava/releases/tag/v23.5
 [guava-snapshot-api-docs]: http://google.github.io/guava/releases/snapshot-jre/api/docs/
 [guava-snapshot-api-diffs]: http://google.github.io/guava/releases/snapshot-jre/api/diffs/
 [Guava Explained]: https://github.com/google/guava/wiki/Home

@@ -55,12 +55,12 @@ import javax.annotation.Nullable;
 @AnnotatedFor({"nullness"})
 @GwtCompatible
 @SuppressWarnings("nullness:generic.argument")
-public abstract class ForwardingMapEntry<K extends @org.checkerframework.checker.nullness.qual.Nullable Object, V extends @org.checkerframework.checker.nullness.qual.Nullable Object> extends ForwardingObject implements Map.Entry<K, V> {
+public abstract class ForwardingMapEntry<K, V> extends ForwardingObject implements Map.Entry<K, V> {
   /** Constructor for use by subclasses. */
   protected ForwardingMapEntry() {}
 
   @Override
-  protected abstract Map.Entry<K, V> delegate();
+  protected abstract Entry<K, V> delegate();
 
   @Pure
   @Override

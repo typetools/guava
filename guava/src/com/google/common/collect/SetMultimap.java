@@ -23,6 +23,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import javax.annotation.Nullable;
 
@@ -55,7 +56,7 @@ import javax.annotation.Nullable;
  */
 @GwtCompatible
 @AnnotatedFor({"nullness"})
-public interface SetMultimap<K extends @org.checkerframework.checker.nullness.qual.Nullable Object, V extends @org.checkerframework.checker.nullness.qual.Nullable Object> extends Multimap<K, V> {
+public interface SetMultimap<K, V> extends Multimap<K, V> {
   /**
    * {@inheritDoc}
    *
@@ -98,7 +99,7 @@ public interface SetMultimap<K extends @org.checkerframework.checker.nullness.qu
    * specified in the {@link Multimap} interface.
    */
   @Override
-  Set<Map.Entry<K, V>> entries();
+  Set<Entry<K, V>> entries();
 
   /**
    * {@inheritDoc}

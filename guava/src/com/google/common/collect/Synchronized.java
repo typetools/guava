@@ -113,12 +113,12 @@ final class Synchronized {
     private static final long serialVersionUID = 0;
   }
 
-  private static <E extends @org.checkerframework.checker.nullness.qual.Nullable Object> Collection<E> collection(Collection<E> collection, @Nullable Object mutex) {
+  private static <E> Collection<E> collection(Collection<E> collection, @Nullable Object mutex) {
     return new SynchronizedCollection<E>(collection, mutex);
   }
 
   @VisibleForTesting
-  static class SynchronizedCollection<E extends @org.checkerframework.checker.nullness.qual.Nullable Object> extends SynchronizedObject implements Collection<E> {
+  static class SynchronizedCollection<E> extends SynchronizedObject implements Collection<E> {
     private SynchronizedCollection(Collection<E> delegate, @Nullable Object mutex) {
       super(delegate, mutex);
     }
@@ -160,7 +160,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean containsAll(Collection<? extends @org.checkerframework.checker.nullness.qual.Nullable Object> c) {
+    public boolean containsAll(Collection<?> c) {
       synchronized (mutex) {
         return delegate().containsAll(c);
       }
@@ -215,14 +215,14 @@ final class Synchronized {
     }
 
     @Override
-    public boolean removeAll(Collection<? extends @org.checkerframework.checker.nullness.qual.Nullable Object> c) {
+    public boolean removeAll(Collection<?> c) {
       synchronized (mutex) {
         return delegate().removeAll(c);
       }
     }
 
     @Override
-    public boolean retainAll(Collection<? extends @org.checkerframework.checker.nullness.qual.Nullable Object> c) {
+    public boolean retainAll(Collection<?> c) {
       synchronized (mutex) {
         return delegate().retainAll(c);
       }
@@ -251,7 +251,7 @@ final class Synchronized {
     }
 
     @Override
-    public <T extends @org.checkerframework.checker.nullness.qual.Nullable Object> T[] toArray(T[] a) {
+    public <T> T[] toArray(T[] a) {
       synchronized (mutex) {
         return delegate().toArray(a);
       }
@@ -261,11 +261,11 @@ final class Synchronized {
   }
 
   @VisibleForTesting
-  static <E extends @org.checkerframework.checker.nullness.qual.Nullable Object> Set<E> set(Set<E> set, @Nullable Object mutex) {
+  static <E> Set<E> set(Set<E> set, @Nullable Object mutex) {
     return new SynchronizedSet<E>(set, mutex);
   }
 
-  static class SynchronizedSet<E extends @org.checkerframework.checker.nullness.qual.Nullable Object> extends SynchronizedCollection<E> implements Set<E> {
+  static class SynchronizedSet<E> extends SynchronizedCollection<E> implements Set<E> {
 
     SynchronizedSet(Set<E> delegate, @Nullable Object mutex) {
       super(delegate, mutex);
@@ -298,11 +298,11 @@ final class Synchronized {
     private static final long serialVersionUID = 0;
   }
 
-  private static <E extends @org.checkerframework.checker.nullness.qual.Nullable Object> SortedSet<E> sortedSet(SortedSet<E> set, @Nullable Object mutex) {
+  private static <E> SortedSet<E> sortedSet(SortedSet<E> set, @Nullable Object mutex) {
     return new SynchronizedSortedSet<E>(set, mutex);
   }
 
-  static class SynchronizedSortedSet<E extends @org.checkerframework.checker.nullness.qual.Nullable Object> extends SynchronizedSet<E> implements SortedSet<E> {
+  static class SynchronizedSortedSet<E> extends SynchronizedSet<E> implements SortedSet<E> {
     SynchronizedSortedSet(SortedSet<E> delegate, @Nullable Object mutex) {
       super(delegate, mutex);
     }
@@ -363,13 +363,13 @@ final class Synchronized {
     private static final long serialVersionUID = 0;
   }
 
-  private static <E extends @org.checkerframework.checker.nullness.qual.Nullable Object> List<E> list(List<E> list, @Nullable Object mutex) {
+  private static <E> List<E> list(List<E> list, @Nullable Object mutex) {
     return (list instanceof RandomAccess)
         ? new SynchronizedRandomAccessList<E>(list, mutex)
         : new SynchronizedList<E>(list, mutex);
   }
 
-  private static class SynchronizedList<E extends @org.checkerframework.checker.nullness.qual.Nullable Object> extends SynchronizedCollection<E> implements List<E> {
+  private static class SynchronizedList<E> extends SynchronizedCollection<E> implements List<E> {
     SynchronizedList(List<E> delegate, @Nullable Object mutex) {
       super(delegate, mutex);
     }
@@ -485,7 +485,7 @@ final class Synchronized {
     private static final long serialVersionUID = 0;
   }
 
-  private static class SynchronizedRandomAccessList<E extends @org.checkerframework.checker.nullness.qual.Nullable Object> extends SynchronizedList<E>
+  private static class SynchronizedRandomAccessList<E> extends SynchronizedList<E>
       implements RandomAccess {
     SynchronizedRandomAccessList(List<E> list, @Nullable Object mutex) {
       super(list, mutex);
@@ -494,14 +494,14 @@ final class Synchronized {
     private static final long serialVersionUID = 0;
   }
 
-  static <E extends @org.checkerframework.checker.nullness.qual.Nullable Object> Multiset<E> multiset(Multiset<E> multiset, @Nullable Object mutex) {
+  static <E> Multiset<E> multiset(Multiset<E> multiset, @Nullable Object mutex) {
     if (multiset instanceof SynchronizedMultiset || multiset instanceof ImmutableMultiset) {
       return multiset;
     }
     return new SynchronizedMultiset<E>(multiset, mutex);
   }
 
-  private static class SynchronizedMultiset<E extends @org.checkerframework.checker.nullness.qual.Nullable Object> extends SynchronizedCollection<E>
+  private static class SynchronizedMultiset<E> extends SynchronizedCollection<E>
       implements Multiset<E> {
     transient Set<E> elementSet;
     transient Set<Entry<E>> entrySet;
@@ -594,18 +594,18 @@ final class Synchronized {
     private static final long serialVersionUID = 0;
   }
 
-  static <K extends @org.checkerframework.checker.nullness.qual.Nullable Object, V extends @org.checkerframework.checker.nullness.qual.Nullable Object> Multimap<K, V> multimap(Multimap<K, V> multimap, @Nullable Object mutex) {
+  static <K, V> Multimap<K, V> multimap(Multimap<K, V> multimap, @Nullable Object mutex) {
     if (multimap instanceof SynchronizedMultimap || multimap instanceof ImmutableMultimap) {
       return multimap;
     }
     return new SynchronizedMultimap<>(multimap, mutex);
   }
 
-  private static class SynchronizedMultimap<K extends @org.checkerframework.checker.nullness.qual.Nullable Object, V extends @org.checkerframework.checker.nullness.qual.Nullable Object> extends SynchronizedObject
+  private static class SynchronizedMultimap<K, V> extends SynchronizedObject
       implements Multimap<K, V> {
     transient Set<K> keySet;
     transient Collection<V> valuesCollection;
-    transient Collection<Map.Entry<K, V>> entries;
+    transient Collection<Entry<K, V>> entries;
     transient Map<K, Collection<V>> asMap;
     transient Multiset<K> keys;
 
@@ -739,7 +739,7 @@ final class Synchronized {
 
     @SideEffectFree
     @Override
-    public Collection<Map.Entry<K, V>> entries() {
+    public Collection<Entry<K, V>> entries() {
       synchronized (mutex) {
         if (entries == null) {
           entries = typePreservingCollection(delegate().entries(), mutex);
@@ -797,7 +797,7 @@ final class Synchronized {
     private static final long serialVersionUID = 0;
   }
 
-  static <K extends @org.checkerframework.checker.nullness.qual.Nullable Object, V extends @org.checkerframework.checker.nullness.qual.Nullable Object> ListMultimap<K, V> listMultimap(
+  static <K, V> ListMultimap<K, V> listMultimap(
       ListMultimap<K, V> multimap, @Nullable Object mutex) {
     if (multimap instanceof SynchronizedListMultimap || multimap instanceof ImmutableListMultimap) {
       return multimap;
@@ -805,7 +805,7 @@ final class Synchronized {
     return new SynchronizedListMultimap<>(multimap, mutex);
   }
 
-  private static class SynchronizedListMultimap<K extends @org.checkerframework.checker.nullness.qual.Nullable Object, V extends @org.checkerframework.checker.nullness.qual.Nullable Object> extends SynchronizedMultimap<K, V>
+  private static class SynchronizedListMultimap<K, V> extends SynchronizedMultimap<K, V>
       implements ListMultimap<K, V> {
     SynchronizedListMultimap(ListMultimap<K, V> delegate, @Nullable Object mutex) {
       super(delegate, mutex);
@@ -840,16 +840,16 @@ final class Synchronized {
     private static final long serialVersionUID = 0;
   }
 
-  static <K extends @org.checkerframework.checker.nullness.qual.Nullable Object, V extends @org.checkerframework.checker.nullness.qual.Nullable Object> SetMultimap<K, V> setMultimap(SetMultimap<K, V> multimap, @Nullable Object mutex) {
+  static <K, V> SetMultimap<K, V> setMultimap(SetMultimap<K, V> multimap, @Nullable Object mutex) {
     if (multimap instanceof SynchronizedSetMultimap || multimap instanceof ImmutableSetMultimap) {
       return multimap;
     }
     return new SynchronizedSetMultimap<>(multimap, mutex);
   }
 
-  private static class SynchronizedSetMultimap<K extends @org.checkerframework.checker.nullness.qual.Nullable Object, V extends @org.checkerframework.checker.nullness.qual.Nullable Object> extends SynchronizedMultimap<K, V>
+  private static class SynchronizedSetMultimap<K, V> extends SynchronizedMultimap<K, V>
       implements SetMultimap<K, V> {
-    transient Set<Map.Entry<K, V>> entrySet;
+    transient Set<Entry<K, V>> entrySet;
 
     SynchronizedSetMultimap(SetMultimap<K, V> delegate, @Nullable Object mutex) {
       super(delegate, mutex);
@@ -883,7 +883,7 @@ final class Synchronized {
 
     @SideEffectFree
     @Override
-    public Set<Map.Entry<K, V>> entries() {
+    public Set<Entry<K, V>> entries() {
       synchronized (mutex) {
         if (entrySet == null) {
           entrySet = set(delegate().entries(), mutex);
@@ -895,7 +895,7 @@ final class Synchronized {
     private static final long serialVersionUID = 0;
   }
 
-  static <K extends @org.checkerframework.checker.nullness.qual.Nullable Object, V extends @org.checkerframework.checker.nullness.qual.Nullable Object> SortedSetMultimap<K, V> sortedSetMultimap(
+  static <K, V> SortedSetMultimap<K, V> sortedSetMultimap(
       SortedSetMultimap<K, V> multimap, @Nullable Object mutex) {
     if (multimap instanceof SynchronizedSortedSetMultimap) {
       return multimap;
@@ -903,7 +903,7 @@ final class Synchronized {
     return new SynchronizedSortedSetMultimap<>(multimap, mutex);
   }
 
-  private static class SynchronizedSortedSetMultimap<K extends @org.checkerframework.checker.nullness.qual.Nullable Object, V extends @org.checkerframework.checker.nullness.qual.Nullable Object> extends SynchronizedSetMultimap<K, V>
+  private static class SynchronizedSortedSetMultimap<K, V> extends SynchronizedSetMultimap<K, V>
       implements SortedSetMultimap<K, V> {
     SynchronizedSortedSetMultimap(SortedSetMultimap<K, V> delegate, @Nullable Object mutex) {
       super(delegate, mutex);
@@ -945,7 +945,7 @@ final class Synchronized {
     private static final long serialVersionUID = 0;
   }
 
-  private static <E extends @org.checkerframework.checker.nullness.qual.Nullable Object> Collection<E> typePreservingCollection(
+  private static <E> Collection<E> typePreservingCollection(
       Collection<E> collection, @Nullable Object mutex) {
     if (collection instanceof SortedSet) {
       return sortedSet((SortedSet<E>) collection, mutex);
@@ -959,7 +959,7 @@ final class Synchronized {
     return collection(collection, mutex);
   }
 
-  private static <E extends @org.checkerframework.checker.nullness.qual.Nullable Object> Set<E> typePreservingSet(Set<E> set, @Nullable Object mutex) {
+  private static <E> Set<E> typePreservingSet(Set<E> set, @Nullable Object mutex) {
     if (set instanceof SortedSet) {
       return sortedSet((SortedSet<E>) set, mutex);
     } else {
@@ -967,22 +967,22 @@ final class Synchronized {
     }
   }
 
-  private static class SynchronizedAsMapEntries<K extends @org.checkerframework.checker.nullness.qual.Nullable Object, V extends @org.checkerframework.checker.nullness.qual.Nullable Object>
-      extends SynchronizedSet<Map.Entry<K, Collection<V>>> {
-    SynchronizedAsMapEntries(Set<Map.Entry<K, Collection<V>>> delegate, @Nullable Object mutex) {
+  private static class SynchronizedAsMapEntries<K, V>
+      extends SynchronizedSet<Entry<K, Collection<V>>> {
+    SynchronizedAsMapEntries(Set<Entry<K, Collection<V>>> delegate, @Nullable Object mutex) {
       super(delegate, mutex);
     }
 
     @Override
-    public Iterator<Map.Entry<K, Collection<V>>> iterator() {
+    public Iterator<Entry<K, Collection<V>>> iterator() {
       // Must be manually synchronized.
-      return new TransformedIterator<Map.Entry<K, Collection<V>>, Map.Entry<K, Collection<V>>>(
+      return new TransformedIterator<Entry<K, Collection<V>>, Entry<K, Collection<V>>>(
           super.iterator()) {
         @Override
-        Map.Entry<K, Collection<V>> transform(final Map.Entry<K, Collection<V>> entry) {
+        Entry<K, Collection<V>> transform(final Entry<K, Collection<V>> entry) {
           return new ForwardingMapEntry<K, Collection<V>>() {
             @Override
-            protected Map.Entry<K, Collection<V>> delegate() {
+            protected Entry<K, Collection<V>> delegate() {
               return entry;
             }
 
@@ -1005,7 +1005,7 @@ final class Synchronized {
     }
 
     @Override
-    public <T extends @org.checkerframework.checker.nullness.qual.Nullable Object> T[] toArray(T[] array) {
+    public <T> T[] toArray(T[] array) {
       synchronized (mutex) {
         return ObjectArrays.toArrayImpl(delegate(), array);
       }
@@ -1021,7 +1021,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean containsAll(Collection<? extends @org.checkerframework.checker.nullness.qual.Nullable Object> c) {
+    public boolean containsAll(Collection<?> c) {
       synchronized (mutex) {
         return Collections2.containsAllImpl(delegate(), c);
       }
@@ -1046,14 +1046,14 @@ final class Synchronized {
     }
 
     @Override
-    public boolean removeAll(Collection<? extends @org.checkerframework.checker.nullness.qual.Nullable Object> c) {
+    public boolean removeAll(Collection<?> c) {
       synchronized (mutex) {
         return Iterators.removeAll(delegate().iterator(), c);
       }
     }
 
     @Override
-    public boolean retainAll(Collection<? extends @org.checkerframework.checker.nullness.qual.Nullable Object> c) {
+    public boolean retainAll(Collection<?> c) {
       synchronized (mutex) {
         return Iterators.retainAll(delegate().iterator(), c);
       }
@@ -1063,14 +1063,14 @@ final class Synchronized {
   }
 
   @VisibleForTesting
-  static <K extends @org.checkerframework.checker.nullness.qual.Nullable Object, V extends @org.checkerframework.checker.nullness.qual.Nullable Object> Map<K, V> map(Map<K, V> map, @Nullable Object mutex) {
+  static <K, V> Map<K, V> map(Map<K, V> map, @Nullable Object mutex) {
     return new SynchronizedMap<>(map, mutex);
   }
 
   private static class SynchronizedMap<K, V> extends SynchronizedObject implements Map<K, V> {
     transient Set<K> keySet;
     transient Collection<V> values;
-    transient Set<Map.Entry<K, V>> entrySet;
+    transient Set<Entry<K, V>> entrySet;
 
     SynchronizedMap(Map<K, V> delegate, @Nullable Object mutex) {
       super(delegate, mutex);
@@ -1107,7 +1107,7 @@ final class Synchronized {
 
     @SideEffectFree
     @Override
-    public Set<Map.Entry<K, V>> entrySet() {
+    public Set<Entry<K, V>> entrySet() {
       synchronized (mutex) {
         if (entrySet == null) {
           entrySet = set(delegate().entrySet(), mutex);
@@ -1344,7 +1344,7 @@ final class Synchronized {
     private static final long serialVersionUID = 0;
   }
 
-  static <K extends @org.checkerframework.checker.nullness.qual.Nullable Object, V extends @org.checkerframework.checker.nullness.qual.Nullable Object> BiMap<K, V> biMap(BiMap<K, V> bimap, @Nullable Object mutex) {
+  static <K, V> BiMap<K, V> biMap(BiMap<K, V> bimap, @Nullable Object mutex) {
     if (bimap instanceof SynchronizedBiMap || bimap instanceof ImmutableBiMap) {
       return bimap;
     }
@@ -1352,7 +1352,7 @@ final class Synchronized {
   }
 
   @VisibleForTesting
-  static class SynchronizedBiMap<K extends @org.checkerframework.checker.nullness.qual.Nullable Object, V extends @org.checkerframework.checker.nullness.qual.Nullable Object> extends SynchronizedMap<K, V>
+  static class SynchronizedBiMap<K, V> extends SynchronizedMap<K, V>
       implements BiMap<K, V>, Serializable {
     private transient Set<V> valueSet;
     @RetainedWith
@@ -1400,8 +1400,8 @@ final class Synchronized {
     private static final long serialVersionUID = 0;
   }
 
-  private static class SynchronizedAsMap<K extends @org.checkerframework.checker.nullness.qual.Nullable Object, V extends @org.checkerframework.checker.nullness.qual.Nullable Object> extends SynchronizedMap<K, Collection<V>> {
-    transient Set<Map.Entry<K, Collection<V>>> asMapEntrySet;
+  private static class SynchronizedAsMap<K, V> extends SynchronizedMap<K, Collection<V>> {
+    transient Set<Entry<K, Collection<V>>> asMapEntrySet;
     transient Collection<Collection<V>> asMapValues;
 
     SynchronizedAsMap(Map<K, Collection<V>> delegate, @Nullable Object mutex) {
@@ -1418,7 +1418,7 @@ final class Synchronized {
 
     @SideEffectFree
     @Override
-    public Set<Map.Entry<K, Collection<V>>> entrySet() {
+    public Set<Entry<K, Collection<V>>> entrySet() {
       synchronized (mutex) {
         if (asMapEntrySet == null) {
           asMapEntrySet = new SynchronizedAsMapEntries<>(delegate().entrySet(), mutex);
@@ -1473,7 +1473,7 @@ final class Synchronized {
   public @org.checkerframework.checker.nullness.qual.Nullable Object[] toArray() { return super.toArray(); }
 
   @SuppressWarnings("nullness")
-  @Override public <T extends @org.checkerframework.checker.nullness.qual.Nullable Object> T[] toArray(T[] arg0) { return super.toArray(arg0); }
+  @Override public <T> T[] toArray(T[] arg0) { return super.toArray(arg0); }
 
   @Pure
   @Override
@@ -1482,18 +1482,18 @@ final class Synchronized {
   @SuppressWarnings("nullness")
   @Pure
   @Override
-  public boolean containsAll(Collection<? extends @org.checkerframework.checker.nullness.qual.Nullable Object> arg0) { return super.containsAll(arg0); }
+  public boolean containsAll(Collection<?> arg0) { return super.containsAll(arg0); }
 
   @Override
   public boolean remove(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.remove(arg0); }
 
   @SuppressWarnings("nullness")
   @Override
-  public boolean removeAll(Collection<? extends @org.checkerframework.checker.nullness.qual.Nullable Object> arg0) { return super.removeAll(arg0); }
+  public boolean removeAll(Collection<?> arg0) { return super.removeAll(arg0); }
 
   @SuppressWarnings("nullness")
   @Override
-  public boolean retainAll(Collection<? extends @org.checkerframework.checker.nullness.qual.Nullable Object> arg0) { return super.retainAll(arg0); }
+  public boolean retainAll(Collection<?> arg0) { return super.retainAll(arg0); }
   }
 
   @GwtIncompatible // NavigableSet
@@ -2060,7 +2060,7 @@ final class Synchronized {
 
     private static final long serialVersionUID = 0;
   }
-  
+
   static <R, C, V> Table<R, C, V> table(Table<R, C, V> table, Object mutex) {
     return new SynchronizedTable<>(table, mutex);
   }
