@@ -614,7 +614,6 @@ public final class Ints {
 
     @Override
     @SuppressWarnings({
-    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
     	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
     })
     public Integer get(@NonNegative int index) {
@@ -661,7 +660,6 @@ public final class Ints {
 
     @Override
     @SuppressWarnings({
-    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
     	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
     })
     public Integer set(@NonNegative int index, Integer element) {
@@ -674,7 +672,6 @@ public final class Ints {
 
     @Override
     @SuppressWarnings({
-    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
     	"upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
     })
     public List<Integer> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {

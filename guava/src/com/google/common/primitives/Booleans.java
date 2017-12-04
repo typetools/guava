@@ -429,7 +429,6 @@ public final class Booleans {
 
     @Override
     @SuppressWarnings({
-    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
     	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
     })
     public Boolean get(@NonNegative int index) {
@@ -472,7 +471,6 @@ public final class Booleans {
 
     @Override
     @SuppressWarnings({
-    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
     	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
     })
     public Boolean set(@NonNegative int index, Boolean element) {
@@ -485,7 +483,6 @@ public final class Booleans {
 
     @Override
     @SuppressWarnings({
-    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
     	"upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
     })
     public List<Boolean> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {

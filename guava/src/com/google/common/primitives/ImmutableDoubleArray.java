@@ -540,7 +540,6 @@ public final class ImmutableDoubleArray implements Serializable {
 
     @Override
     @SuppressWarnings({
-      "lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
       "upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
     })
     public Double get(@NonNegative int index) {
@@ -564,7 +563,6 @@ public final class ImmutableDoubleArray implements Serializable {
 
     @Override
     @SuppressWarnings({
-      "lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
       "upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
     })
     public List<Double> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {

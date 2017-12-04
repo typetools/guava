@@ -607,7 +607,6 @@ public final class Shorts {
 
     @Override
     @SuppressWarnings({
-    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
     	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
     })
     public Short get(@NonNegative int index) {
@@ -649,7 +648,6 @@ public final class Shorts {
 
     @Override
     @SuppressWarnings({
-    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
     	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
     })
     public Short set(@NonNegative int index, Short element) {
@@ -662,7 +660,6 @@ public final class Shorts {
 
     @Override
     @SuppressWarnings({
-    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
     	"upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
     })
     public List<Short> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {

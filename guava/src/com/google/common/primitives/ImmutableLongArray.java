@@ -537,7 +537,6 @@ public final class ImmutableLongArray implements Serializable {
 
     @Override
     @SuppressWarnings({
-      "lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
       "upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
     })
     public Long get(@NonNegative int index) {
@@ -561,7 +560,6 @@ public final class ImmutableLongArray implements Serializable {
 
     @Override
     @SuppressWarnings({
-      "lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
       "upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
     })
     public List<Long> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {

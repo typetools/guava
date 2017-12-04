@@ -559,7 +559,6 @@ public final class Floats {
 
     @Override
     @SuppressWarnings({
-    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
     	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
     }) 
     public Float get(@NonNegative int index) {
@@ -601,7 +600,6 @@ public final class Floats {
 
     @Override
     @SuppressWarnings({
-    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
     	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
     }) 
     public Float set(@NonNegative int index, Float element) {
@@ -614,7 +612,6 @@ public final class Floats {
 
     @Override
     @SuppressWarnings({
-    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
     	"upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
     }) 
     public List<Float> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {

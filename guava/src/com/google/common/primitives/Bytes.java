@@ -289,7 +289,6 @@ public final class Bytes {
 
     @Override
     @SuppressWarnings({
-    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
     	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
     })
     public Byte get(@NonNegative int index) {
@@ -331,7 +330,6 @@ public final class Bytes {
 
     @Override
     @SuppressWarnings({
-    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
     	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
     })
     public Byte set(@NonNegative int index, Byte element) {
@@ -344,7 +342,6 @@ public final class Bytes {
 
     @Override
     @SuppressWarnings({
-    	"lowerbound:override.param.invalid", // https://github.com/typetools/checker-framework/pull/1656
     	"upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
     })
     public List<Byte> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
