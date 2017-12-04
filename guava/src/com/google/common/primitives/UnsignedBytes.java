@@ -449,7 +449,7 @@ public final class UnsignedBytes {
      * Code can throw an exception, but the code is safe because the exception is 
      * caught by catch(Throwable).
      */
-    @SuppressWarnings("upperbound:array.access.unsafe.high") // ISSUE 7 in issues.txt
+    @SuppressWarnings("upperbound:array.access.unsafe.high") // exception caught
     static Comparator<byte[]> getBestComparator() {
       try {
         Class<?> theClass = Class.forName(UNSAFE_COMPARATOR_NAME);

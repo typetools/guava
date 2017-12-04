@@ -281,7 +281,7 @@ public final class Floats {
    * pos is increased the same way as length, so pos points to a valid
    * range of length array.length in result.   
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // ISSUE 4 in issues.txt
+  @SuppressWarnings("upperbound:argument.type.incompatible") // sum of lengths
   public static float[] concat(float[]... arrays) {
     int length = 0;
     for (float[] array : arrays) {

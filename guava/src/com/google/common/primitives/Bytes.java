@@ -178,7 +178,7 @@ public final class Bytes {
    * pos is increased the same way as length, so pos points to a valid
    * range of length array.length in result.   
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // ISSUE 4 in issues.txt
+  @SuppressWarnings("upperbound:argument.type.incompatible") // sum of lengths
   public static byte[] concat(byte[]... arrays) {
     int length = 0;
     for (byte[] array : arrays) {

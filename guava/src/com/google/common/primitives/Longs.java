@@ -272,7 +272,7 @@ public final class Longs {
    * pos is increased the same way as length, so pos points to a valid
    * range of length array.length in result.   
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // ISSUE 4 in issues.txt
+  @SuppressWarnings("upperbound:argument.type.incompatible") // sum of lengths
   public static long[] concat(long[]... arrays) {
     int length = 0;
     for (long[] array : arrays) {

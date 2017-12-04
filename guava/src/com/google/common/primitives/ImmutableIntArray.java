@@ -273,7 +273,7 @@ public final class ImmutableIntArray implements Serializable {
      * ISSUE 2:
      * Incrementing count in a for-each loop of values means that count is increased by at most values.size()
      */
-    @SuppressWarnings("upperbound") // ISSUE 2 in issues.txt
+    @SuppressWarnings("upperbound") // increment index in for-each for Collection
     public Builder addAll(Collection<Integer> values) {
       ensureRoomFor(values.size());
       for (Integer value : values) {
@@ -306,9 +306,10 @@ public final class ImmutableIntArray implements Serializable {
          */
         "upperbound:compound.assignment.type.incompatible", // https://github.com/typetools/checker-framework/issues/1606
         /* ISSUE 10:
-         * values.length() is @LTLengthOf(value="array",offset="count-1") by issue 1
+         * count is @LTLengthOf(value="array",offset="values.length()-1"), which implies
+         * values.length() is @LTLengthOf(value="array",offset="count-1") 
          */
-        "upperbound:argument.type.incompatible" // ISSUE 10 in issues.txt
+        "upperbound:argument.type.incompatible" // LTLengthOf inversion
       })
     public Builder addAll(ImmutableIntArray values) {
       ensureRoomFor(values.length());
@@ -391,7 +392,7 @@ public final class ImmutableIntArray implements Serializable {
   /** Returns the number of values in this array. */
   @SuppressWarnings({
     "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-    "upperbound:return.type.incompatible" // ISSUE 12 in issues.txt
+    "upperbound:return.type.incompatible" // TODO ISSUE 12 in issues.txt
   }) 
   public @NonNegative @LTLengthOf(value = {"array", "this"}, offset = {"start-1", "-1"}) int length() { // ISSUE 3 in issues.txt
     return end - start;
@@ -408,7 +409,7 @@ public final class ImmutableIntArray implements Serializable {
    * @throws IndexOutOfBoundsException if {@code index} is negative, or greater than or equal to
    *     {@link #length}
    */
-  @SuppressWarnings("upperbound:array.access.unsafe.high") // ISSUE 14 in issues.txt
+  @SuppressWarnings("upperbound:array.access.unsafe.high") // TODO ISSUE 14 in issues.txt
   public int get(@IndexFor("this") int index) {
     Preconditions.checkElementIndex(index, length());
     return array[start + index];
@@ -420,7 +421,7 @@ public final class ImmutableIntArray implements Serializable {
    */
   @SuppressWarnings({
     "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-    "upperbound:return.type.incompatible" // ISSUE 13 in issues.txt 
+    "upperbound:return.type.incompatible" // TODO ISSUE 13 in issues.txt 
   })
   public @IndexOrLow("this") int indexOf(int target) {
     for (int i = start; i < end; i++) {
@@ -437,7 +438,7 @@ public final class ImmutableIntArray implements Serializable {
    */
   @SuppressWarnings({
     "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-    "upperbound:return.type.incompatible" // ISSUE 13 in issues.txt 
+    "upperbound:return.type.incompatible" // TODO ISSUE 13 in issues.txt 
   })
   public @IndexOrLow("this") int lastIndexOf(int target) {
     for (int i = end - 1; i >= start; i--) {
@@ -477,7 +478,7 @@ public final class ImmutableIntArray implements Serializable {
      * Arrays.copyOfRange returns an array of length end-start,
      * ẗherefore the result is SameLen("this")
      */
-    "samelen:return.type.incompatible", // ISSUE 11 in issues.txt
+    "samelen:return.type.incompatible", // SameLen for custom collection
   }) 
   public @SameLen("this") int[] toArray() {
     return Arrays.copyOfRange(array, start, end);
@@ -576,7 +577,7 @@ public final class ImmutableIntArray implements Serializable {
      * i is incremented in a for-each loop by that, and that has the same size as parent.array
      * therefore i is an index for parent.array
      */
-    @SuppressWarnings("upperbound:array.access.unsafe.high.range") // ISSUE 6 in issues.txt
+    @SuppressWarnings("upperbound:array.access.unsafe.high.range") // index incremented in for-each over list of same length
     public boolean equals(@Nullable Object object) {
       if (object instanceof AsList) {
         AsList that = (AsList) object;

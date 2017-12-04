@@ -286,7 +286,7 @@ public final class Doubles {
    * pos is increased the same way as length, so pos points to a valid
    * range of length array.length in result.   
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // ISSUE 4 in issues.txt
+  @SuppressWarnings("upperbound:argument.type.incompatible") // sum of lengths
   public static double[] concat(double[]... arrays) {
     int length = 0;
     for (double[] array : arrays) {
