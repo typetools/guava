@@ -23,6 +23,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.VisibleForTesting;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -146,6 +147,17 @@ public final class Strings {
    *     {@code count} is zero)
    * @throws IllegalArgumentException if {@code count} is negative
    */
+  @SuppressWarnings({
+	  "upperbound:argument.type.incompatible", // https://github.com/panacekcz/checker-framework/issues/11
+	  "upperbound:assignment.type.incompatible", // https://github.com/panacekcz/checker-framework/kelloggm/158
+	  /*
+	   * After checking that n < size - n, we know that 2*n < size,
+	   * therefore n << 1 < size, 
+	   * therefore n <<= 1 does not break IndexOrHigh("array").
+	   */
+	  "upperbound:compound.assignment.type.incompatible", // multiply index by 2 using bit shift
+	  "lowerbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/193
+  })
   public static String repeat(String string, @NonNegative int count) {
     checkNotNull(string); // eager for GWT.
 
@@ -164,7 +176,7 @@ public final class Strings {
 
     final char[] array = new char[size];
     string.getChars(0, len, array, 0);
-    @NonNegative int n;
+    @IndexOrHigh("array") int n;
     for (n = len; n < size - n; n <<= 1) {
       System.arraycopy(array, 0, array, n, n);
     }
@@ -180,6 +192,7 @@ public final class Strings {
    *
    * @since 11.0
    */
+  @SuppressWarnings("index:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
   public static String commonPrefix(CharSequence a, CharSequence b) {
     checkNotNull(a);
     checkNotNull(b);
@@ -203,6 +216,7 @@ public final class Strings {
    *
    * @since 11.0
    */
+  @SuppressWarnings("index:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
   public static String commonSuffix(CharSequence a, CharSequence b) {
     checkNotNull(a);
     checkNotNull(b);
@@ -223,6 +237,7 @@ public final class Strings {
    * True when a valid surrogate pair starts at the given {@code index} in the given {@code string}.
    * Out-of-range indexes return false.
    */
+  @SuppressWarnings("index:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
   @VisibleForTesting
   static boolean validSurrogatePairAt(CharSequence string, int index) {
     return index >= 0
