@@ -474,6 +474,7 @@ public final class Ascii {
    *
    * @since 14.0
    */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
   public static String toUpperCase(CharSequence chars) {
     if (chars instanceof String) {
       return toUpperCase((String) chars);
@@ -545,7 +546,13 @@ public final class Ascii {
    *     {@code truncationIndicator}
    * @since 16.0
    */
-  @SuppressWarnings("lowerbound:assignment.type.incompatible") // TODO ISSUE 15
+  @SuppressWarnings({
+	  /*
+	   * The parameter maxLength should be annotated @GTEqLengthOf("#3")
+	   */
+	  "lowerbound:assignment.type.incompatible", // need annotation GTEqLengthOf
+	  "upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/197
+  }) 
   public static String truncate(CharSequence seq, @NonNegative int maxLength, String truncationIndicator) {
     checkNotNull(seq);
 
@@ -595,6 +602,7 @@ public final class Ascii {
    *
    * @since 16.0
    */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
   public static boolean equalsIgnoreCase(CharSequence s1, CharSequence s2) {
     // Calling length() is the null pointer check (so do it before we can exit early).
     int length = s1.length();

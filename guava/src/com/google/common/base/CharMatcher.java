@@ -1394,7 +1394,7 @@ public abstract class CharMatcher implements Predicate<Character> {
             + "\u0009\u0020\u2006\u2001\u202F\u00A0\u000C\u2009"
             + "\u3000\u2004\u3000\u3000\u2028\n\u2007\u3000";
     static final int MULTIPLIER = 1682554634;
-    static final int SHIFT = Integer.numberOfLeadingZeros(TABLE.length() - 1);
+    static final @NonNegative int SHIFT = Integer.numberOfLeadingZeros(TABLE.length() - 1);
 
     static final Whitespace INSTANCE = new Whitespace();
 
@@ -1644,6 +1644,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     static final Invisible INSTANCE = new Invisible();
 
+    @SuppressWarnings("samelen:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/179
     private Invisible() {
       super("CharMatcher.invisible()", RANGE_STARTS.toCharArray(), RANGE_ENDS.toCharArray());
     }

@@ -136,6 +136,7 @@ final class SmallCharMatcher extends NamedFastMatcher {
   }
 
   @Override
+  @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
   void setBits(BitSet table) {
     if (containsZero) {
       table.set(0);

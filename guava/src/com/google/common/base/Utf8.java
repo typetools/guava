@@ -52,10 +52,10 @@ public final class Utf8 {
    *     surrogates)
    */
   @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
-  public static int encodedLength(CharSequence sequence) {
+  public static @NonNegative int encodedLength(CharSequence sequence) {
     // Warning to maintainers: this implementation is highly optimized.
     int utf16Length = sequence.length();
-    int utf8Length = utf16Length;
+    @NonNegative int utf8Length = utf16Length;
     int i = 0;
 
     // This loop optimizes for pure ASCII.
@@ -84,7 +84,7 @@ public final class Utf8 {
   @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
   private static @NonNegative int encodedLengthGeneral(CharSequence sequence, @IndexFor("#1") int start) {
     int utf16Length = sequence.length();
-    int utf8Length = 0;
+    @NonNegative int utf8Length = 0;
     for (int i = start; i < utf16Length; i++) {
       char c = sequence.charAt(i);
       if (c < 0x800) {
@@ -130,7 +130,7 @@ public final class Utf8 {
   //https://github.com/panacekcz/checker-framework/issues/5
   // TODO INDEX: javadoc does not specify exceptions
   public static boolean isWellFormed(byte[] bytes, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int len) {
-    int end = off + len;
+    @IndexOrHigh("bytes") int end = off + len;
     checkPositionIndexes(off, end, bytes.length);
     // Look for the first non-ASCII character.
     for (int i = off; i < end; i++) {
@@ -141,7 +141,10 @@ public final class Utf8 {
     return true;
   }
 
-  @SuppressWarnings("cast.unsafe") // https://github.com/kelloggm/checker-framework/issues/149
+  @SuppressWarnings({
+	  "cast.unsafe", // https://github.com/kelloggm/checker-framework/issues/149
+	  "upperbound:compound.assignment.type.incompatible", "upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/158
+  }) 
   private static boolean isWellFormedSlowPath(byte[] bytes, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int end) {
     @IndexOrHigh("bytes") int index = off;
     while (true) {
