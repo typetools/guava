@@ -20,6 +20,7 @@ import static java.lang.Character.MIN_SURROGATE;
 
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 import com.google.common.annotations.Beta;
@@ -51,7 +52,10 @@ public final class Utf8 {
    * @throws IllegalArgumentException if {@code sequence} contains ill-formed UTF-16 (unpaired
    *     surrogates)
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
+  @SuppressWarnings({
+	  "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/154
+	  "lowerbound:compound.assignment.type.incompatible", // TODO unsigned right shift
+  }) 
   public static @NonNegative int encodedLength(CharSequence sequence) {
     // Warning to maintainers: this implementation is highly optimized.
     int utf16Length = sequence.length();
@@ -81,7 +85,10 @@ public final class Utf8 {
     }
     return utf8Length;
   }
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
+  @SuppressWarnings({
+	  "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/154
+	  "lowerbound:compound.assignment.type.incompatible", // TODO unsigned right shift
+  }) 
   private static @NonNegative int encodedLengthGeneral(CharSequence sequence, @IndexFor("#1") int start) {
     int utf16Length = sequence.length();
     @NonNegative int utf8Length = 0;
@@ -129,7 +136,7 @@ public final class Utf8 {
    */
   //https://github.com/panacekcz/checker-framework/issues/5
   // TODO INDEX: javadoc does not specify exceptions
-  public static boolean isWellFormed(byte[] bytes, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int len) {
+  public static boolean isWellFormed(byte[] bytes, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value="#1", offset="#2-1") int len) {
     @IndexOrHigh("bytes") int end = off + len;
     checkPositionIndexes(off, end, bytes.length);
     // Look for the first non-ASCII character.

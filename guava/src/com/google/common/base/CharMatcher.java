@@ -25,8 +25,10 @@ import java.util.Arrays;
 import java.util.BitSet;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
+import org.checkerframework.common.value.qual.IntVal;
 
 /**
  * Determines a true or false value for any Java {@code char} value, just as {@link Predicate} does
@@ -753,6 +755,10 @@ public abstract class CharMatcher implements Predicate<Character> {
    * @throws IndexOutOfBoundsException if start is negative or greater than {@code
    *         sequence.length()}
    */
+  /*
+   * Cannot get index for CharSequence
+   */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   public @GTENegativeOne int indexIn(CharSequence sequence, @NonNegative int start) {
     int length = sequence.length();
     checkPositionIndex(start, length);
@@ -774,6 +780,10 @@ public abstract class CharMatcher implements Predicate<Character> {
    * @param sequence the character sequence to examine from the end
    * @return an index, or {@code -1} if no character matches
    */
+  /*
+   * Cannot get index for CharSequence
+   */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   public @GTENegativeOne int lastIndexIn(CharSequence sequence) {
     for (int i = sequence.length() - 1; i >= 0; i--) {
       if (matches(sequence.charAt(i))) {
@@ -788,6 +798,10 @@ public abstract class CharMatcher implements Predicate<Character> {
    *
    * <p>Counts 2 per supplementary character, such as for {@link #whitespace}().{@link #negate}().
    */
+  /*
+   * Cannot get index for CharSequence
+   */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   public @NonNegative int countIn(CharSequence sequence) {
     int count = 0;
     for (int i = 0; i < sequence.length(); i++) {
@@ -808,7 +822,7 @@ public abstract class CharMatcher implements Predicate<Character> {
    */
   public String removeFrom(CharSequence sequence) {
     String string = sequence.toString();
-    int pos = indexIn(string);
+    @IndexOrHigh("string") int pos = indexIn(string);
     if (pos == -1) {
       return string;
     }
@@ -1037,6 +1051,10 @@ public abstract class CharMatcher implements Predicate<Character> {
    * groups of matching BMP characters at the start or end of the sequence are removed without
    * replacement.
    */
+  /*
+   * Cannot get index for CharSequence
+   */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   public String trimAndCollapseFrom(CharSequence sequence, char replacement) {
     // This implementation avoids unnecessary allocation.
     int len = sequence.length();
@@ -1059,8 +1077,8 @@ public abstract class CharMatcher implements Predicate<Character> {
 
   private String finishCollapseFrom(
       CharSequence sequence,
-      int start,
-      int end,
+      @IndexOrHigh("#1") int start,
+      @IndexOrHigh("#1") int end,
       char replacement,
       StringBuilder builder,
       boolean inMatchingGroup) {
@@ -1394,7 +1412,7 @@ public abstract class CharMatcher implements Predicate<Character> {
             + "\u0009\u0020\u2006\u2001\u202F\u00A0\u000C\u2009"
             + "\u3000\u2004\u3000\u3000\u2028\n\u2007\u3000";
     static final int MULTIPLIER = 1682554634;
-    static final @NonNegative int SHIFT = Integer.numberOfLeadingZeros(TABLE.length() - 1);
+    static final @IntVal(27) int SHIFT = Integer.numberOfLeadingZeros(TABLE.length() - 1);
 
     static final Whitespace INSTANCE = new Whitespace();
 
@@ -1409,6 +1427,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     @GwtIncompatible // used only from other GwtIncompatible code
     @Override
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
     void setBits(BitSet table) {
       for (int i = 0; i < TABLE.length(); i++) {
         table.set(TABLE.charAt(i));
@@ -1472,6 +1491,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     private final char [] rangeStarts;
     private final char @SameLen("rangeStarts")[] rangeEnds;
 
+    @SuppressWarnings("samelen:assignment.type.incompatible") // TODO SameLen transitivity
     RangesMatcher(String description, char[] rangeStarts, char @SameLen("#2")[] rangeEnds) {
       this.description = description;
       this.rangeStarts = rangeStarts;
@@ -1515,6 +1535,7 @@ public abstract class CharMatcher implements Predicate<Character> {
             + "\u0e50\u0ed0\u0f20\u1040\u1090\u17e0\u1810\u1946\u19d0\u1a80\u1a90\u1b50\u1bb0"
             + "\u1c40\u1c50\ua620\ua8d0\ua900\ua9d0\ua9f0\uaa50\uabf0\uff10";
 
+    @SuppressWarnings("samelen:return.type.incompatible") // https://github.com/typetools/checker-framework/pull/1702
     private static char @SameLen("ZEROES")[] zeroes() {
       return ZEROES.toCharArray();
     }
@@ -1529,6 +1550,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     static final Digit INSTANCE = new Digit();
 
+    @SuppressWarnings("samelen:argument.type.incompatible") // TODO: SameLen on method calls
     private Digit() {
       super("CharMatcher.digit()", zeroes(), nines());
     }

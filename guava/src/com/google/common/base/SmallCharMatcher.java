@@ -19,8 +19,12 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CharMatcher.NamedFastMatcher;
 import java.util.BitSet;
 
+import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.common.value.qual.DoubleVal;
+import org.checkerframework.common.value.qual.IntRange;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * An immutable version of CharMatcher for smallish sets of characters that uses a hash table with
@@ -31,11 +35,11 @@ import org.checkerframework.checker.index.qual.Positive;
 @GwtIncompatible // no precomputation is done in GWT
 final class SmallCharMatcher extends NamedFastMatcher {
   static final int MAX_SIZE = 1023;
-  private final char[] table;
+  private final char @MinLen(1)[] table;
   private final boolean containsZero;
   private final long filter;
 
-  private SmallCharMatcher(char[] table, long filter, boolean containsZero, String description) {
+  private SmallCharMatcher(char @MinLen(1)[] table, long filter, boolean containsZero, String description) {
     super(description);
     this.table = table;
     this.filter = filter;
@@ -65,7 +69,7 @@ final class SmallCharMatcher extends NamedFastMatcher {
   // of dependencies.
 
   // Represents how tightly we can pack things, as a maximum.
-  private static final double DESIRED_LOAD_FACTOR = 0.5;
+  private static final @DoubleVal(0.5) double DESIRED_LOAD_FACTOR = 0.5;
 
   /**
    * Returns an array size suitable for the backing array of a hash table that uses open addressing
@@ -73,19 +77,23 @@ final class SmallCharMatcher extends NamedFastMatcher {
    * can hold setSize elements with the desired load factor.
    */
   @VisibleForTesting
-  static @Positive int chooseTableSize(@NonNegative int setSize) {
+  static @Positive int chooseTableSize(@IntRange(from=0, to=Character.MAX_VALUE) int setSize) {
     if (setSize == 1) {
       return 2;
     }
     // Correct the size for open addressing to match desired load factor.
     // Round up to the next highest power of 2.
-    int tableSize = Integer.highestOneBit(setSize - 1) << 1;
+    @Positive int tableSize = Integer.highestOneBit(setSize - 1) << 1;
     while (tableSize * DESIRED_LOAD_FACTOR < setSize) {
       tableSize <<= 1;
     }
     return tableSize;
   }
 
+  /*
+   * chars should be at most 65536 bits
+   */
+  @SuppressWarnings("index:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   static CharMatcher from(BitSet chars, String description) {
     // Compute the filter.
     long filter = 0;

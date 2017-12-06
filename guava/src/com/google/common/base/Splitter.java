@@ -546,6 +546,13 @@ public final class Splitter {
     	 */
     	"lowerbound:compound.assignment.type.incompatible", // decrement Positive which != 1
     	/*
+    	 * At the start of the loop, whenever offset!=-1 also nextStart=-1
+    	 * One of the following holds:
+    	 * - offset == nextStart
+    	 * - nextStart was not changed since the last iteration
+    	 */
+    	"lowerbound:assignment.type.incompatible", // variable!=-1 implies another variable !=-1
+    	/*
     	 * Cannot get index for CharSequence
     	 */
     	"upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
@@ -556,7 +563,7 @@ public final class Splitter {
        * one. nextStart is the start position of the returned substring, while offset is the place
        * to start looking for a separator.
        */
-      @NonNegative int nextStart = offset;
+      @GTENegativeOne int nextStart = offset;
       while (offset != -1) {
     	@NonNegative int start = nextStart;
     	@NonNegative int end;
