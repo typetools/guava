@@ -1052,8 +1052,9 @@ public abstract class CharMatcher implements Predicate<Character> {
    * replacement.
    */
   /*
-   * TODO INDEX len should be @IndexOrHigh("sequence")
-   * 
+   * len should be @IndexOrHigh("sequence")
+   * first should be @IndexOrHigh("sequence")
+   * last should be @IndexFor("sequence")
    */
   @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   public String trimAndCollapseFrom(CharSequence sequence, char replacement) {
