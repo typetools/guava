@@ -197,10 +197,3 @@ where i is IndexFor("this")
 i+start is IndexFor("array")
 Related:
   issue 12
-
-
-ISSUE 15:
-Annotation GELengthOf
-Example code:
-  public static String truncate(CharSequence seq, @GELengthOf("truncationIndicator") int maxLength, String truncationIndicator) {
-    @NonNegative int truncationLength = maxLength - truncationIndicator.length();
