@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.google.guava</groupId>
     <artifactId>guava-parent</artifactId>
-    <version>HEAD-jre-SNAPSHOT</version>
+    <version>23.5-jre</version>
   </parent>
   <artifactId>guava</artifactId>
   <packaging>bundle</packaging>
@@ -16,10 +16,9 @@
     much more.
   </description>
   <properties>
-    <checkerframework.version>LOCAL</checkerframework.version>
-    <!-- Use -Dcheckerframework.checkers=checker to switch which checkers are run."-->
+    <!-- Use -Dcheckerframework.checkers=checker to switch which checkers are run. -->
     <checkerframework.checkers>org.checkerframework.checker.index.IndexChecker</checkerframework.checkers>
-    <annotatedJdk>${CHECKERFRAMEWORK}/checker/dist/jdk8.jar</annotatedJdk>
+    <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
   </properties>
   <dependencies>
     <dependency>
@@ -41,20 +40,23 @@
     </dependency>
     <!-- TODO(cpovirk): does this comment belong on the <dependency> in <profiles>? -->
     <!-- TODO(cpovirk): want this only for dependency plugin but seems not to work there? Maven runs without failure, but the resulting Javadoc is missing the hoped-for inherited text -->
+    <!-- Annotations from the Checker Framework: nullness, interning, locking, ... -->
+    <!-- For guava only, to use a locally-built version of the Checker Framework, run with:
+       -P checkerframework-local -->
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker-qual</artifactId>
-      <version>2.2.1</version>
+      <version>2.2.2</version>
     </dependency>
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker</artifactId>
-      <version>2.2.1</version>
+      <version>2.2.2</version>
     </dependency>
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>jdk8</artifactId>
-      <version>2.2.1</version>
+      <version>2.2.2</version>
     </dependency>
   </dependencies>
   <build>
@@ -101,14 +103,17 @@
         <configuration>
             <source>1.8</source>
             <target>1.8</target>
+            <compilerArguments>
+              <Xmaxerrs>10000</Xmaxerrs>
+              <Xmaxwarns>10000</Xmaxwarns>
+            </compilerArguments>
             <annotationProcessors>
               <annotationProcessor>${checkerframework.checkers}</annotationProcessor>
             </annotationProcessors>
             <compilerArgs>
               <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
-              <arg>-AuseSafeDefaultsForUnannotatedSourceCode</arg>
-              <arg>-Awarns</arg>
               <arg>${addtionalargs}</arg>
+              <arg>-AuseDefaultsForUncheckedCode=source,bytecode</arg>
               <arg>-AprintErrorStack</arg>
               <arg>-AonlyDefs=^com\.google\.common\.base\.</arg>
             </compilerArgs>
@@ -125,12 +130,14 @@
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <id>unpack-jdk-sources</id>
-            <phase>site</phase>
             <goals>
               <goal>properties</goal>
-              <goal>unpack-dependencies</goal>
             </goals>
+          </execution>
+          <execution>
+            <id>unpack-jdk-sources</id>
+            <phase>generate-sources</phase>
+            <goals><goal>unpack-dependencies</goal></goals>
             <configuration>
               <includeArtifactIds>srczip</includeArtifactIds>
               <outputDirectory>${project.build.directory}/jdk-sources</outputDirectory>
@@ -154,13 +161,29 @@
           <additionalparam>-Xdoclint:-html</additionalparam>
           <excludePackageNames>com.google.common.base.internal</excludePackageNames>
           <linksource>true</linksource>
+          <!-- We add the link ourselves, both so that we can choose Java 9 over the version that -source suggests and so that we can solve the JSR305 problem described below. -->
+          <detectJavaApiLink>false</detectJavaApiLink>
+          <offlineLinks>
+            <offlineLink>
+              <url>https://static.javadoc.io/com.google.code.findbugs/jsr305/3.0.1/</url>
+              <location>${project.basedir}/javadoc-link/jsr305</location>
+            </offlineLink>
+            <offlineLink>
+              <url>https://static.javadoc.io/com.google.j2objc/j2objc-annotations/1.1/</url>
+              <location>${project.basedir}/javadoc-link/j2objc-annotations</location>
+            </offlineLink>
+            <!-- The JDK doc must be listed after JSR305 (and as an <offlineLink>, not a <link>) so that JSR305 "claims" javax.annotation. -->
+            <offlineLink>
+              <url>https://docs.oracle.com/javase/9/docs/api/</url>
+              <location>https://docs.oracle.com/javase/9/docs/api/</location>
+            </offlineLink>
+          </offlineLinks>
           <links>
-            <link>http://docs.oracle.com/javase/8/docs/api/</link>
-            <link>http://static.javadoc.io/com.google.code.findbugs/jsr305/3.0.1/</link>
             <link>http://errorprone.info/api/latest/</link>
-            <link>http://static.javadoc.io/com.google.j2objc/j2objc-annotations/1.1/</link>
+            <link>https://checkerframework.org/api/</link>
           </links>
           <!-- TODO(cpovirk): can we use includeDependencySources and a local com.oracle.java:jdk-lib:noversion:sources instead of all this unzipping and manual sourcepath modification? -->
+          <!-- (We need JDK *sources*, not just -link, so that {@inheritDoc} works.) -->
           <sourcepath>${project.build.sourceDirectory}:${project.build.directory}/jdk-sources</sourcepath>
           <subpackages>com.google.common</subpackages>
         </configuration>
