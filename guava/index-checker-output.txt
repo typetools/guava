@@ -33,240 +33,121 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/util/concurrent/AbstractFuture.java:[1069,36] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/util/concurrent/AbstractFuture.java:[1070,37] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/util/concurrent/AbstractFuture.java:[1070,58] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Strings.java:[163,36] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value="array", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Strings.java:[166,44] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTLengthOf(value={"array", "array"}, offset={"0", "n"}) int
-  required: @LTLengthOf(value={"array", "array"}, offset={"0 - 1", "n - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Strings.java:[168,47] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Strings.java:[186,44] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value="a", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Strings.java:[186,59] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value="b", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Strings.java:[192,29] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[819,45] [assignment.type.incompatible] incompatible types in assignment.
   found   : @GTENegativeOne int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Strings.java:[192,29] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[819,45] [assignment.type.incompatible] incompatible types in assignment.
   found   : @UpperBoundUnknown int
-  required: @LTEqLengthOf("a") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Strings.java:[209,59] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Strings.java:[209,59] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value="a", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Strings.java:[209,91] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Strings.java:[209,91] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value="b", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Strings.java:[216,37] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Strings.java:[216,37] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTEqLengthOf("a") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Strings.java:[216,50] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTEqLengthOf("a") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Strings.java:[227,52] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value="string", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Strings.java:[228,57] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value="string", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Splitter.java:[574,62] [argument.type.incompatible] incompatible types in argument.
-  found   : @GTENegativeOne int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Splitter.java:[574,62] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value="this.toSplit", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Splitter.java:[577,66] [argument.type.incompatible] incompatible types in argument.
-  found   : @GTENegativeOne int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Splitter.java:[577,66] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value="this.toSplit", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Splitter.java:[594,68] [argument.type.incompatible] incompatible types in argument.
-  found   : @GTENegativeOne int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Splitter.java:[594,68] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value="this.toSplit", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Splitter.java:[598,16] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
-  found   : @NonNegative int
-  required: @Positive int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Splitter.java:[601,36] [argument.type.incompatible] incompatible types in argument.
-  found   : @GTENegativeOne int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Splitter.java:[601,36] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTEqLengthOf("this.toSplit") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Splitter.java:[601,43] [argument.type.incompatible] incompatible types in argument.
-  found   : @GTENegativeOne int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Splitter.java:[601,43] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTEqLengthOf("this.toSplit") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[760,35] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value="sequence", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[779,35] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value="sequence", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[794,35] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value="sequence", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[827,27] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @UnknownVal char @UnknownVal []
-  required        : index of type @IndexFor("chars") or @LTLengthOf("chars"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[830,19] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+  required: @LTEqLengthOf("string") int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[830,10] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+  found   : @LTLengthOf(value="string", offset="-2") int
+  required: @LTEqLengthOf("string") int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[835,27] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+  found   : @LTEqLengthOf("string") int
+  required: @IndexFor("chars") or @LTLengthOf("chars") -- an integer less than chars's length
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[838,19] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
   found   : @LowerBoundUnknown int
   required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[830,19] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @UnknownVal char @UnknownVal []
-  required        : index of type @IndexFor("chars") or @LTLengthOf("chars"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[830,37] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @UnknownVal char @UnknownVal []
-  required        : index of type @IndexFor("chars") or @LTLengthOf("chars"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[835,30] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[838,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+  found   : @LTLengthOf(value={"string", "string"}, offset={"-1", "spread - 1"}) int
+  required: @IndexFor("chars") or @LTLengthOf("chars") -- an integer less than chars's length
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[838,37] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+  found   : @LTEqLengthOf("string") int
+  required: @IndexFor("chars") or @LTLengthOf("chars") -- an integer less than chars's length
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[839,12] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+  found   : @LTLengthOf(value="string", offset="-2") int
+  required: @LTEqLengthOf("string") int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[843,30] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="chars", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[835,37] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[843,37] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[835,37] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[843,37] [argument.type.incompatible] incompatible types in argument.
+  found   : @LTLengthOf(value={"string", "string"}, offset={"-1", "spread - 1"}) int
   required: @LTEqLengthOf("chars") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[874,11] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[882,11] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=0, to=2147483647) int
   array type found: @UnknownVal char @UnknownVal []
   required        : index of type @IndexFor("chars") or @LTLengthOf("chars"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[905,55] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[913,55] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="replacement", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[919,26] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[927,26] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("string") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[919,34] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[927,34] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("string") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[925,24] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[933,24] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("string") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[949,36] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[957,36] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="sequence", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[954,36] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[962,36] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="sequence", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[959,33] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[967,33] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("sequence") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[959,45] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[967,45] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("sequence") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[973,36] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[981,36] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="sequence", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[974,37] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[982,37] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("sequence") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[974,44] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[982,44] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("sequence") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[991,36] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[999,36] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="sequence", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[992,45] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1000,45] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("sequence") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1020,32] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1028,32] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="sequence", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1022,77] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1030,77] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="sequence", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1026,78] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1034,78] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("sequence") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1046,51] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1054,51] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="sequence", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1050,52] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1058,52] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="sequence", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1057,80] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1065,80] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1068,32] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1076,32] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1068,32] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1076,32] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="sequence", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1176,24] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1184,24] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown char
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1407,44] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1415,44] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1407,44] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1415,44] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="com.google.common.base.CharMatcher.Whitespace.TABLE", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1414,31] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown char
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1478,24] [assignment.type.incompatible] incompatible types in assignment.
-  found   : @SameLenUnknown char @SameLen({"rangeEnds", "rangeStarts"}) []
-  required: @SameLenUnknown char @SameLen("this.rangeStarts") []
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1519,32] [return.type.incompatible] incompatible types in return.
-  found   : @SameLenUnknown char @SameLen("com.google.common.base.CharMatcher.Digit.ZEROES.toCharArray()") []
-  required: @SameLenUnknown char @SameLen("com.google.common.base.CharMatcher.Digit.ZEROES") []
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1533,51] [argument.type.incompatible] incompatible types in argument.
-  found   : @SameLenUnknown char @SameLen({"()char[].nines()", "com.google.common.base.CharMatcher.Digit.ZEROES"}) []
-  required: @SameLenUnknown char @SameLen("()char[].zeroes()") []
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1648,90] [argument.type.incompatible] incompatible types in argument.
-  found   : @SameLenUnknown char @SameLen("com.google.common.base.CharMatcher.Invisible.RANGE_ENDS.toCharArray()") []
-  required: @SameLenUnknown char @SameLen("com.google.common.base.CharMatcher.Invisible.RANGE_STARTS.toCharArray()") []
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CharMatcher.java:[1661,97] [argument.type.incompatible] incompatible types in argument.
-  found   : @SameLenUnknown char @SameLen(""ӹ־ת״ۿݿ๿₯℺﷿﻿ￜ".toCharArray()") []
-  required: @SameLenUnknown char @SameLen("" ־א׳؀ݐ฀Ḁ℀ﭐﹰ｡".toCharArray()") []
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/SmallCharMatcher.java:[86,12] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/SmallCharMatcher.java:[86,66] [assignment.type.incompatible] incompatible types in assignment.
   found   : @LowerBoundUnknown int
   required: @Positive int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/SmallCharMatcher.java:[126,17] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/SmallCharMatcher.java:[126,17] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @UnknownVal char @UnknownVal []
-  required        : index of type @IndexFor("this.table") or @LTLengthOf("this.table"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/SmallCharMatcher.java:[128,24] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/SmallCharMatcher.java:[128,24] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @UnknownVal char @UnknownVal []
-  required        : index of type @IndexFor("this.table") or @LTLengthOf("this.table"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/SmallCharMatcher.java:[145,19] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown char
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/MoreObjects.java:[348,41] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTEqLengthOf("arrayString") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/MoreObjects.java:[348,65] [argument.type.incompatible] incompatible types in argument.
-  found   : @GTENegativeOne int
-  required: @NonNegative int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/SmallCharMatcher.java:[103,45] [argument.type.incompatible] incompatible types in argument.
+  found   : @IntRange(from=0, to=2147483647) int
+  required: @IntRange(from=0, to=65535) int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[109,38] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[297,34] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[320,28] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -275,57 +156,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[327,32] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[328,35] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[328,56] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Ascii.java:[410,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTLengthOf(value="string", offset="0") int
-  required: @IndexFor("chars") or @LTLengthOf("chars") -- an integer less than chars's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Ascii.java:[412,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTLengthOf(value="string", offset="0") int
-  required: @IndexFor("chars") or @LTLengthOf("chars") -- an integer less than chars's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Ascii.java:[459,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTLengthOf(value="string", offset="0") int
-  required: @IndexFor("chars") or @LTLengthOf("chars") -- an integer less than chars's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Ascii.java:[461,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTLengthOf(value="string", offset="0") int
-  required: @IndexFor("chars") or @LTLengthOf("chars") -- an integer less than chars's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Ascii.java:[483,46] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTLengthOf(value="newChars", offset="0") int
-  required: @LTLengthOf(value="chars", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Ascii.java:[573,25] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTEqLengthOf("seq") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Ascii.java:[608,27] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value="s1", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Ascii.java:[609,27] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTLengthOf(value="s2", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Utf8.java:[104,12] [return.type.incompatible] incompatible types in return.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Utf8.java:[137,17] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTLengthOf(value={"bytes", "bytes"}, offset={"-len", "-off"}) int
-  required: @IndexFor("bytes") or @LTLengthOf("bytes") -- an integer less than bytes's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Utf8.java:[138,44] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTLengthOf(value={"bytes", "bytes"}, offset={"-len", "-off"}) int
-  required: @LTEqLengthOf("bytes") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Utf8.java:[138,47] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTLengthOf(value={"bytes", "bytes"}, offset={"-len - 1", "-off - 1"}) int
-  required: @LTEqLengthOf("bytes") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Utf8.java:[164,47] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @LTEqLengthOf("bytes") int
-  required: @IndexFor("bytes") or @LTLengthOf("bytes") -- an integer less than bytes's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/Utf8.java:[164,47] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
-  found   : @LTLengthOf(value="bytes", offset="-2") int
-  required: @LTEqLengthOf("bytes") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CaseFormat.java:[149,61] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTEqLengthOf("s") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CaseFormat.java:[151,56] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
-  required: @LTEqLengthOf("s") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/base/CaseFormat.java:[154,13] [assignment.type.incompatible] incompatible types in assignment.
-  found   : @LTLengthOf(value="this.wordSeparator", offset="-j - 1") int
-  required: @LTEqLengthOf("s") int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/cache/Striped64.java:[106,38] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/cache/Striped64.java:[294,34] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/cache/Striped64.java:[317,28] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -348,7 +178,7 @@
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time: 01:19 min
-[INFO] Finished at: 2017-11-29T15:01:02+01:00
-[INFO] Final Memory: 156M/455M
+[INFO] Total time: 01:28 min
+[INFO] Finished at: 2017-12-06T18:10:10+01:00
+[INFO] Final Memory: 156M/446M
 [INFO] ------------------------------------------------------------------------
