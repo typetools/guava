@@ -77,6 +77,7 @@ final class SmallCharMatcher extends NamedFastMatcher {
    * can hold setSize elements with the desired load factor.
    */
   @VisibleForTesting
+  @SuppressWarnings("lowerbound:assignment.type.incompatible") // bit operations 
   static @Positive int chooseTableSize(@IntRange(from=0, to=Character.MAX_VALUE) int setSize) {
     if (setSize == 1) {
       return 2;
@@ -91,9 +92,9 @@ final class SmallCharMatcher extends NamedFastMatcher {
   }
 
   /*
-   * chars should be at most 65536 bits
+   * chars should be at most 65536 bits and not all zeroes
    */
-  @SuppressWarnings("index:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
+  @SuppressWarnings("value:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   static CharMatcher from(BitSet chars, String description) {
     // Compute the filter.
     long filter = 0;
