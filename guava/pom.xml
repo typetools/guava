@@ -18,7 +18,7 @@
   <properties>
     <!-- Use -Dcheckerframework.checkers=checker to switch which checkers are run. -->
     <checkerframework.checkers>org.checkerframework.checker.index.IndexChecker</checkerframework.checkers>
-    <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
+    <annotatedJdk>${CHECKERFRAMEWORK}/checker/dist/jdk8.jar</annotatedJdk>
   </properties>
   <dependencies>
     <dependency>
@@ -113,7 +113,7 @@
             <compilerArgs>
               <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
               <arg>${addtionalargs}</arg>
-              <arg>-AuseDefaultsForUncheckedCode=source,bytecode</arg>
+              <arg>-AuseSafeDefaultsForUnannotatedSourceCode</arg>
               <arg>-Awarns</arg>
               <arg>-AprintErrorStack</arg>
               <arg>-AonlyDefs=^com\.google\.common\.base\.</arg>
