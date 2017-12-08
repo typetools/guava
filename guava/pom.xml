@@ -117,9 +117,6 @@
               <arg>-AprintErrorStack</arg>
               <arg>-AonlyDefs=^com\.google\.common\.base\.</arg>
             </compilerArgs>
-            <compilerArguments>
-            	<Xmaxwarns>10000</Xmaxwarns>
-            </compilerArguments>
         </configuration>
       </plugin>
       <plugin>
