@@ -1,42 +1,5 @@
 Unreported issues
 
-ISSUE 2:
-
-Iterating through collection elements and incrementing separate index.
-
-To typecheck, this code also needs a fix for:
-  https://github.com/kelloggm/checker-framework/issues/154
-Example code:
-  int array;
-  void m(Collection c, @LTLengthOf(value="array", offset="c.size() - 1")){
-    @LTLengthOf(value="array", offset="-1") int i;
-    for(Object o: c){
-      ++i;
-    }
-  }
-
-
-ISSUE 6:
-
-Iterating through collection elements and incrementing separate index.
-
-Example code:
-      if (this.size() != that.size()) {
-        return false;
-      }
-      int i = parent.start;
-      // Since `that` is very likely RandomAccess we could avoid allocating this iterator...
-      for (Object element : that) {
-        if (!(element instanceof Integer) || parent.array[i++] != (Integer) element) {
-          return false;
-        }
-      }
-Example output:
-  [WARNING] guava/src/com/google/common/primitives/ImmutableIntArray.java:[540,60] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-    index type found: @IntRange(from=-2147483648, to=2147483647) int
-    array type found: @UnknownVal int @UnknownVal []
-    required        : index of type @IndexFor("this.parent.array") or @LTLengthOf("this.parent.array"), or array of type @MinLen("2147483648")
-
 ISSUE 4:
 New array has size that is sum of array lengths
 length is a sum of lengths of arrays.

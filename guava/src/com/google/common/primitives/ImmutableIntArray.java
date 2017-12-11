@@ -284,9 +284,12 @@ public final class ImmutableIntArray implements Serializable {
      * ensureRoomFor should be
      * @EnsuresLTLengthOf(expression="count", value="array", offset="#1 - 1")
      * To typecheck, this code also needs a fix for:
-     * https://github.com/kelloggm/checker-framework/issues/176
-     * ISSUE 2:
+     *   https://github.com/kelloggm/checker-framework/issues/176
+     * 
+     * Iterating through collection elements and incrementing separate index.
      * Incrementing count in a for-each loop of values means that count is increased by at most values.size()
+     * To typecheck, this code also needs a fix for:
+     *   https://github.com/kelloggm/checker-framework/issues/154
      */
     @SuppressWarnings("upperbound") // increment index in for-each for Collection
     public Builder addAll(Collection<Integer> values) {
@@ -612,7 +615,8 @@ public final class ImmutableIntArray implements Serializable {
     }
 
     @Override
-    /* ISSUE 6:
+    /* 
+     * Iterating through collection elements and incrementing separate index.
      * i is incremented in a for-each loop by that, and that has the same size as parent.array
      * therefore i is an index for parent.array
      */
