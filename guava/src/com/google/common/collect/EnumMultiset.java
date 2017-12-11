@@ -122,7 +122,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   }
 
   @Override
-  int distinctElements() {
+  @NonNegative int distinctElements() {
     return distinctElements;
   }
 

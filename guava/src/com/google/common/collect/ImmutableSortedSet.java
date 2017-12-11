@@ -17,6 +17,7 @@
 package com.google.common.collect;
 
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -814,7 +815,7 @@ public abstract class ImmutableSortedSet<E> extends ImmutableSortedSetFauxveride
   /**
    * Returns the position of an element within the set, or -1 if not present.
    */
-  abstract int indexOf(@Nullable Object target);
+  abstract @GTENegativeOne int indexOf(@Nullable Object target);
 
   /*
    * This class is used to serialize all ImmutableSortedSet instances,
