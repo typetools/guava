@@ -166,34 +166,3 @@ Example code:
         this.array = newArray;
       }
     } 
-
-
-ISSUE 11:
-In a fixed-size collection whosle length is defined as end-start,
-Arrays.copyOfRange returns an array of length end-start,
-ẗherefore the result is SameLen("this")
-Related:
-  issue 12
-
-
-ISSUE 12:
-In a fixed-size collection whosle length is defined as end-start,
-end-start is IndexOrHigh("this")
-
-
-ISSUE 13
-In a fixed-size collection whosle length is defined as end-start,
-where i is less than end,
-i-start is IndexFor("this")
-Related:
-  issue 12
-Needs:
-  https://github.com/kelloggm/checker-framework/issues/158
-
-
-ISSUE 14:
-In a fixed-size collection whosle length is defined as end-start,
-where i is IndexFor("this")
-i+start is IndexFor("array")
-Related:
-  issue 12

@@ -1633,7 +1633,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     static final Digit INSTANCE = new Digit();
 
-    @SuppressWarnings("samelen:argument.type.incompatible") // TODO: SameLen on method calls
+    @SuppressWarnings("samelen:argument.type.incompatible") // TODO SameLen on method calls
     private Digit() {
       super("CharMatcher.digit()", zeroes(), nines());
     }

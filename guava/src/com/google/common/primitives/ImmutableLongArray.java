@@ -394,7 +394,11 @@ public final class ImmutableLongArray implements Serializable {
   /** Returns the number of values in this array. */
   @SuppressWarnings({
     "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-    "upperbound:return.type.incompatible" // TODO ISSUE 12 in issues.txt
+    /*
+     * In a fixed-size collection whose length is defined as end-start,
+     * end-start is IndexOrHigh("this")
+     */
+    "upperbound:return.type.incompatible" // custom coll. with size end-start
   }) 
   public @NonNegative @LTLengthOf(value = {"array", "this"}, offset = {"start-1", "-1"}) int length() { // ISSUE 3 in issues.txt
     return end - start;
@@ -411,7 +415,12 @@ public final class ImmutableLongArray implements Serializable {
    * @throws IndexOutOfBoundsException if {@code index} is negative, or greater than or equal to
    *     {@link #length}
    */
-  @SuppressWarnings("upperbound:array.access.unsafe.high") // TODO ISSUE 14 in issues.txt
+  /*
+   * In a fixed-size collection whosle length is defined as end-start,
+   * where i is IndexFor("this")
+   * i+start is IndexFor("array")
+   */
+  @SuppressWarnings("upperbound:array.access.unsafe.high") // custom coll. with size end-start
   public long get(@IndexFor("this") int index) {
     Preconditions.checkElementIndex(index, length());
     return array[start + index];
@@ -423,7 +432,13 @@ public final class ImmutableLongArray implements Serializable {
    */
   @SuppressWarnings({
     "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-    "upperbound:return.type.incompatible" // TODO ISSUE 13 in issues.txt 
+    /*
+     * In a fixed-size collection whose length is defined as end-start,
+     * where i is less than end,
+     * i-start is IndexFor("this")
+     * Might require: https://github.com/kelloggm/checker-framework/issues/158
+     */
+    "upperbound:return.type.incompatible" // custom coll. with size end-start
   })
   public @IndexOrLow("this") int indexOf(long target) {
     for (int i = start; i < end; i++) {
@@ -440,7 +455,13 @@ public final class ImmutableLongArray implements Serializable {
    */
   @SuppressWarnings({
     "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-    "upperbound:return.type.incompatible" // TODO ISSUE 13 in issues.txt 
+    /*
+     * In a fixed-size collection whose length is defined as end-start,
+     * where i is less than end,
+     * i-start is IndexFor("this")
+     * Might require: https://github.com/kelloggm/checker-framework/issues/158
+     */
+    "upperbound:return.type.incompatible" // custom coll. with size end-start
   })
   public @IndexOrLow("this") int lastIndexOf(long target) {
     for (int i = end - 1; i >= start; i--) {
@@ -475,12 +496,12 @@ public final class ImmutableLongArray implements Serializable {
   /** Returns a new, mutable copy of this array's values, as a primitive {@code long[]}. */
   @SuppressWarnings({
     "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/191
-    /* ISSUE 11:
+    /*
      * length of this is defined as end-start,
      * Arrays.copyOfRange returns an array of length end-start,
      * ẗherefore the result is SameLen("this")
      */
-    "samelen:return.type.incompatible", // SameLen for custom collection
+    "samelen:return.type.incompatible", // SameLen for custom coll. with size end-start
   }) 
   public @SameLen("this") long[] toArray() {
     return Arrays.copyOfRange(array, start, end);
