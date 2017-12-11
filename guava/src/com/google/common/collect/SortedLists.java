@@ -25,6 +25,9 @@ import java.util.List;
 import java.util.RandomAccess;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Static methods pertaining to sorted {@link List} instances.
  *
@@ -49,8 +52,8 @@ import javax.annotation.Nullable;
      */
     ANY_PRESENT {
       @Override
-      <E> int resultIndex(
-          Comparator<? super E> comparator, E key, List<? extends E> list, int foundIndex) {
+      <E> @NonNegative int resultIndex(
+          Comparator<? super E> comparator, E key, List<? extends E> list, @NonNegative int foundIndex) {
         return foundIndex;
       }
     },
@@ -59,8 +62,8 @@ import javax.annotation.Nullable;
      */
     LAST_PRESENT {
       @Override
-      <E> int resultIndex(
-          Comparator<? super E> comparator, E key, List<? extends E> list, int foundIndex) {
+      <E> @NonNegative int resultIndex(
+          Comparator<? super E> comparator, E key, List<? extends E> list, @NonNegative int foundIndex) {
         // Of course, we have to use binary search to find the precise
         // breakpoint...
         int lower = foundIndex;
@@ -83,8 +86,8 @@ import javax.annotation.Nullable;
      */
     FIRST_PRESENT {
       @Override
-      <E> int resultIndex(
-          Comparator<? super E> comparator, E key, List<? extends E> list, int foundIndex) {
+      <E> @NonNegative int resultIndex(
+          Comparator<? super E> comparator, E key, List<? extends E> list, @NonNegative int foundIndex) {
         // Of course, we have to use binary search to find the precise
         // breakpoint...
         int lower = 0;
@@ -109,8 +112,8 @@ import javax.annotation.Nullable;
      */
     FIRST_AFTER {
       @Override
-      public <E> int resultIndex(
-          Comparator<? super E> comparator, E key, List<? extends E> list, int foundIndex) {
+      public <E> @NonNegative int resultIndex(
+          Comparator<? super E> comparator, E key, List<? extends E> list, @NonNegative int foundIndex) {
         return LAST_PRESENT.resultIndex(comparator, key, list, foundIndex) + 1;
       }
     },
@@ -120,14 +123,14 @@ import javax.annotation.Nullable;
      */
     LAST_BEFORE {
       @Override
-      public <E> int resultIndex(
-          Comparator<? super E> comparator, E key, List<? extends E> list, int foundIndex) {
+      public <E> @NonNegative int resultIndex(
+          Comparator<? super E> comparator, E key, List<? extends E> list, @NonNegative int foundIndex) {
         return FIRST_PRESENT.resultIndex(comparator, key, list, foundIndex) - 1;
       }
     };
 
-    abstract <E> int resultIndex(
-        Comparator<? super E> comparator, E key, List<? extends E> list, int foundIndex);
+    abstract <E> @NonNegative int resultIndex(
+        Comparator<? super E> comparator, E key, List<? extends E> list, @NonNegative int foundIndex);
   }
 
   /**
@@ -140,7 +143,7 @@ import javax.annotation.Nullable;
      */
     NEXT_LOWER {
       @Override
-      int resultIndex(int higherIndex) {
+      @GTENegativeOne int resultIndex(@NonNegative int higherIndex) {
         return higherIndex - 1;
       }
     },
@@ -150,7 +153,7 @@ import javax.annotation.Nullable;
      */
     NEXT_HIGHER {
       @Override
-      public int resultIndex(int higherIndex) {
+      public @NonNegative int resultIndex(@NonNegative int higherIndex) {
         return higherIndex;
       }
     },
@@ -168,12 +171,12 @@ import javax.annotation.Nullable;
      */
     INVERTED_INSERTION_INDEX {
       @Override
-      public int resultIndex(int higherIndex) {
+      public int resultIndex(@NonNegative int higherIndex) {
         return ~higherIndex;
       }
     };
 
-    abstract int resultIndex(int higherIndex);
+    abstract int resultIndex(@NonNegative int higherIndex);
   }
 
   /**

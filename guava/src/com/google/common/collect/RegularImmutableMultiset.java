@@ -41,7 +41,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
 
   private final transient Multisets.ImmutableEntry<E>[] entries;
   private final transient Multisets.ImmutableEntry<E>[] hashTable;
-  private final transient int size;
+  private final transient @NonNegative int size;
   private final transient int hashCode;
 
   @LazyInit
@@ -98,7 +98,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
   private static final class NonTerminalEntry<E> extends Multisets.ImmutableEntry<E> {
     private final Multisets.ImmutableEntry<E> nextInBucket;
 
-    NonTerminalEntry(E element, int count, ImmutableEntry<E> nextInBucket) {
+    NonTerminalEntry(E element, @NonNegative int count, ImmutableEntry<E> nextInBucket) {
       super(element, count);
       this.nextInBucket = nextInBucket;
     }
