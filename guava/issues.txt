@@ -1,54 +1,5 @@
 Unreported issues
 
-ISSUE 4:
-New array has size that is sum of array lengths
-length is a sum of lengths of arrays.
-pos is increased the same way as length, so pos points to a valid
-range of length array.length in result.
-   
-Example code:
-  public static byte[] concat(byte[]... arrays) {
-    int length = 0;
-    for (byte[] array : arrays) {
-      length += array.length;
-    }
-    byte[] result = new byte[length];
-    int pos = 0;
-    for (byte[] array : arrays) {
-      System.arraycopy(array, 0, result, pos, array.length);
-      pos += array.length;
-    }
-    return result;
-  }
-Example output:
-[WARNING] guava/guava/src/com/google/common/primitives/Bytes.java:[184,52] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf({"array", "array#num2[index#num3]"}) int
-  required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "pos - 1"}) int
-
-  
-ISSUE 7:
-Code can throw an exception, but the code is safe because the exception is 
-caught by catch(Throwable).
-
-Example code:
-  try {
-    Class<?> theClass = Class.forName(UNSAFE_COMPARATOR_NAME);
-
-    // yes, UnsafeComparator does implement Comparator<byte[]>
-    @SuppressWarnings("unchecked")
-    Comparator<byte[]> comparator = (Comparator<byte[]>) theClass.getEnumConstants()[0];
-    return comparator;
-  } catch (Throwable t) { // ensure we really catch *everything*
-    return lexicographicalComparatorJavaImpl();
-  }
-
-
-ISSUE 8:
-Unsigned long as string fits into 64 characters.
-Loop guarded by variable decreased by right shift or division.
-Assuming that Character.MIN_RADIX == 2
-
-
 ISSUE 9:
 One array is longer than another array.
 

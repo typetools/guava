@@ -291,7 +291,8 @@ public final class Shorts {
    * @param arrays zero or more {@code short} arrays
    * @return a single array containing all the values from the source arrays, in order
    */
-  /* ISSUE 4:
+  /* 
+   * New array has size that is sum of array lengths.
    * length is a sum of lengths of arrays.
    * pos is increased the same way as length, so pos points to a valid
    * range of length array.length in result.   
