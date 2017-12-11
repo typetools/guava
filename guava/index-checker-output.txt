@@ -477,20 +477,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/AbstractMapBasedMultimap.java:[878,46] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/AbstractMapBasedMultimap.java:[896,14] [override.return.invalid] Incompatible return type.
-  Method
-    @LowerBoundUnknown int nextIndex(@LowerBoundUnknown AbstractMapBasedMultimap<K extends @LowerBoundUnknown Object, V extends @LowerBoundUnknown Object>.@LowerBoundUnknown WrappedList.@LowerBoundUnknown WrappedListIterator this) in com.google.common.collect.AbstractMapBasedMultimap.WrappedList.WrappedListIterator
-  cannot override
-    @NonNegative int nextIndex(@LowerBoundUnknown ListIterator<V extends @LowerBoundUnknown Object> this) in java.util.ListIterator
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/AbstractMapBasedMultimap.java:[901,14] [override.return.invalid] Incompatible return type.
-  Method
-    @LowerBoundUnknown int previousIndex(@LowerBoundUnknown AbstractMapBasedMultimap<K extends @LowerBoundUnknown Object, V extends @LowerBoundUnknown Object>.@LowerBoundUnknown WrappedList.@LowerBoundUnknown WrappedListIterator this) in com.google.common.collect.AbstractMapBasedMultimap.WrappedList.WrappedListIterator
-  cannot override
-    @GTENegativeOne int previousIndex(@LowerBoundUnknown ListIterator<V extends @LowerBoundUnknown Object> this) in java.util.ListIterator
-  found   : @LowerBoundUnknown int
-  required: @GTENegativeOne int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ForwardingMultimap.java:[149,27] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
@@ -509,57 +495,57 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/FluentIterable.java:[536,47] [argument.type.incompatible] incompatible types in argument.
   found   : @GTENegativeOne int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[172,17] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[173,14] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal Comparable<? extends @UnknownVal Object> @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[172,39] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 1 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[174,14] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 1 could be larger than the array's bound
   found   : @UnknownVal Comparable<? extends @UnknownVal Object> @UnknownVal []
   required: @MinLen("2") -- an array guaranteed to have at least 2 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[172,61] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 2 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[175,14] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 2 could be larger than the array's bound
   found   : @UnknownVal Comparable<? extends @UnknownVal Object> @UnknownVal []
   required: @MinLen("3") -- an array guaranteed to have at least 3 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[173,17] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 3 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[176,14] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 3 could be larger than the array's bound
   found   : @UnknownVal Comparable<? extends @UnknownVal Object> @UnknownVal []
   required: @MinLen("4") -- an array guaranteed to have at least 4 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[174,17] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 4 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[177,14] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 4 could be larger than the array's bound
   found   : @UnknownVal Comparable<? extends @UnknownVal Object> @UnknownVal []
   required: @MinLen("5") -- an array guaranteed to have at least 5 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[175,17] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 5 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[178,14] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 5 could be larger than the array's bound
   found   : @UnknownVal Comparable<? extends @UnknownVal Object> @UnknownVal []
   required: @MinLen("6") -- an array guaranteed to have at least 6 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[397,3] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[398,27] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="contents", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[397,6] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[398,30] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[397,6] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[398,30] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("contents") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[399,16] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[401,24] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=2147483646) int
   array type found: E extends @UnknownVal Object @UnknownVal []
   required        : index of type @IndexFor("contents") or @LTLengthOf("contents"), or array of type @MinLen("2147483647")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[400,31] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[402,33] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=2147483647) int
   array type found: E extends @UnknownVal Object @UnknownVal []
   required        : index of type @IndexFor("contents") or @LTLengthOf("contents"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[403,10] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[404,25] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @UpperBoundUnknown int
   required: @IndexFor("contents") or @LTLengthOf("contents") -- an integer less than contents's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[404,13] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[407,27] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="contents", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[404,22] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[407,36] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[404,22] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[407,36] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("contents") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[408,34] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[409,52] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("contents") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[548,48] [assignment.type.incompatible] incompatible types in assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[549,30] [assignment.type.incompatible] incompatible types in assignment.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("this.contents") int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedSet.java:[160,40] [argument.type.incompatible] incompatible types in argument.
@@ -586,6 +572,13 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedSet.java:[290,42] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedSet.java:[297,3] [override.return.invalid] Incompatible return type.
+  Method
+    @LowerBoundUnknown int indexOf(@LowerBoundUnknown RegularImmutableSortedSet<E extends @LowerBoundUnknown Object> this, @LowerBoundUnknown Object p0) in com.google.common.collect.RegularImmutableSortedSet
+  cannot override
+    @GTENegativeOne int indexOf(@LowerBoundUnknown ImmutableSortedSet<E extends @LowerBoundUnknown Object> this, @LowerBoundUnknown Object p0) in com.google.common.collect.ImmutableSortedSet
+  found   : @LowerBoundUnknown int
+  required: @GTENegativeOne int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[327,20] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[349,30] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[351,26] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -878,20 +871,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Lists.java:[1198,30] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TransformedListIterator.java:[52,16] [override.return.invalid] Incompatible return type.
-  Method
-    @LowerBoundUnknown int nextIndex(@LowerBoundUnknown TransformedListIterator<F extends @LowerBoundUnknown Object, T extends @LowerBoundUnknown Object> this) in com.google.common.collect.TransformedListIterator
-  cannot override
-    @NonNegative int nextIndex(@LowerBoundUnknown ListIterator<T extends @LowerBoundUnknown Object> this) in java.util.ListIterator
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TransformedListIterator.java:[57,16] [override.return.invalid] Incompatible return type.
-  Method
-    @LowerBoundUnknown int previousIndex(@LowerBoundUnknown TransformedListIterator<F extends @LowerBoundUnknown Object, T extends @LowerBoundUnknown Object> this) in com.google.common.collect.TransformedListIterator
-  cannot override
-    @GTENegativeOne int previousIndex(@LowerBoundUnknown ListIterator<T extends @LowerBoundUnknown Object> this) in java.util.ListIterator
-  found   : @LowerBoundUnknown int
-  required: @GTENegativeOne int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Synchronized.java:[385,24] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
@@ -1044,47 +1023,31 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableBiMap.java:[298,17] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="this.entries", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[212,34] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[213,34] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[333,26] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[334,26] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[405,12] [override.return.invalid] Incompatible return type.
-  Method
-    @LowerBoundUnknown int nextIndex(@LowerBoundUnknown LinkedListMultimap<K extends @LowerBoundUnknown Object, V extends @LowerBoundUnknown Object>.@LowerBoundUnknown NodeIterator this) in com.google.common.collect.LinkedListMultimap.NodeIterator
-  cannot override
-    @NonNegative int nextIndex(@LowerBoundUnknown ListIterator<@LowerBoundUnknown Entry<K extends @LowerBoundUnknown Object, V extends @LowerBoundUnknown Object>> this) in java.util.ListIterator
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[407,14] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[410,12] [override.return.invalid] Incompatible return type.
-  Method
-    @LowerBoundUnknown int previousIndex(@LowerBoundUnknown LinkedListMultimap<K extends @LowerBoundUnknown Object, V extends @LowerBoundUnknown Object>.@LowerBoundUnknown NodeIterator this) in com.google.common.collect.LinkedListMultimap.NodeIterator
-  cannot override
-    @GTENegativeOne int previousIndex(@LowerBoundUnknown ListIterator<@LowerBoundUnknown Entry<K extends @LowerBoundUnknown Object, V extends @LowerBoundUnknown Object>> this) in java.util.ListIterator
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[412,24] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[498,26] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[499,26] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[498,33] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[499,33] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[546,12] [override.return.invalid] Incompatible return type.
-  Method
-    @LowerBoundUnknown int nextIndex(@LowerBoundUnknown LinkedListMultimap<K extends @LowerBoundUnknown Object, V extends @LowerBoundUnknown Object>.@LowerBoundUnknown ValueForKeyIterator this) in com.google.common.collect.LinkedListMultimap.ValueForKeyIterator
-  cannot override
-    @NonNegative int nextIndex(@LowerBoundUnknown ListIterator<V extends @LowerBoundUnknown Object> this) in java.util.ListIterator
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[548,14] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[551,12] [override.return.invalid] Incompatible return type.
-  Method
-    @LowerBoundUnknown int previousIndex(@LowerBoundUnknown LinkedListMultimap<K extends @LowerBoundUnknown Object, V extends @LowerBoundUnknown Object>.@LowerBoundUnknown ValueForKeyIterator this) in com.google.common.collect.LinkedListMultimap.ValueForKeyIterator
-  cannot override
-    @GTENegativeOne int previousIndex(@LowerBoundUnknown ListIterator<V extends @LowerBoundUnknown Object> this) in java.util.ListIterator
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[553,24] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[588,12] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[589,12] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Count.java:[41,11] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
@@ -1102,6 +1065,13 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/FilteredEntryMultimap.java:[352,24] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/DescendingImmutableSortedSet.java:[108,3] [override.return.invalid] Incompatible return type.
+  Method
+    @LowerBoundUnknown int indexOf(@LowerBoundUnknown DescendingImmutableSortedSet<E extends @LowerBoundUnknown Object> this, @LowerBoundUnknown Object p0) in com.google.common.collect.DescendingImmutableSortedSet
+  cannot override
+    @GTENegativeOne int indexOf(@LowerBoundUnknown ImmutableSortedSet<E extends @LowerBoundUnknown Object> this, @LowerBoundUnknown Object p0) in com.google.common.collect.ImmutableSortedSet
+  found   : @LowerBoundUnknown int
+  required: @GTENegativeOne int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMapKeySet.java:[67,40] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
@@ -1151,20 +1121,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMultiset.java:[172,20] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @UpperBoundUnknown int
   required: @IndexFor("this.entries") or @LTLengthOf("this.entries") -- an integer less than this.entries's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ForwardingListIterator.java:[64,10] [override.return.invalid] Incompatible return type.
-  Method
-    @LowerBoundUnknown int nextIndex(@LowerBoundUnknown ForwardingListIterator<E extends @LowerBoundUnknown Object> this) in com.google.common.collect.ForwardingListIterator
-  cannot override
-    @NonNegative int nextIndex(@LowerBoundUnknown ListIterator<E extends @LowerBoundUnknown Object> this) in java.util.ListIterator
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ForwardingListIterator.java:[75,10] [override.return.invalid] Incompatible return type.
-  Method
-    @LowerBoundUnknown int previousIndex(@LowerBoundUnknown ForwardingListIterator<E extends @LowerBoundUnknown Object> this) in com.google.common.collect.ForwardingListIterator
-  cannot override
-    @GTENegativeOne int previousIndex(@LowerBoundUnknown ListIterator<E extends @LowerBoundUnknown Object> this) in java.util.ListIterator
-  found   : @LowerBoundUnknown int
-  required: @GTENegativeOne int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterators.java:[1071,13] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
@@ -1250,6 +1206,13 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableRangeSet.java:[570,29] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableRangeSet.java:[655,5] [override.return.invalid] Incompatible return type.
+  Method
+    @LowerBoundUnknown int indexOf(@LowerBoundUnknown ImmutableRangeSet<C extends @LowerBoundUnknown Comparable<? extends @LowerBoundUnknown Object>>.@LowerBoundUnknown AsSet this, @LowerBoundUnknown Object p0) in com.google.common.collect.ImmutableRangeSet.AsSet
+  cannot override
+    @GTENegativeOne int indexOf(@LowerBoundUnknown ImmutableSortedSet<C extends @LowerBoundUnknown Comparable<? extends @LowerBoundUnknown Object>> this, @LowerBoundUnknown Object p0) in com.google.common.collect.ImmutableSortedSet
+  found   : @LowerBoundUnknown int
+  required: @GTENegativeOne int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableRangeMap.java:[194,35] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
@@ -1301,11 +1264,7 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/EnumMultiset.java:[107,60] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
   found   : @LowerBoundUnknown int
   required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/EnumMultiset.java:[125,3] [override.return.invalid] Incompatible return type.
-  Method
-    @LowerBoundUnknown int distinctElements(@LowerBoundUnknown EnumMultiset<E extends @LowerBoundUnknown Enum<E>> this) in com.google.common.collect.EnumMultiset
-  cannot override
-    @NonNegative int distinctElements(@LowerBoundUnknown AbstractMultiset<E extends @LowerBoundUnknown Enum<E>> this) in com.google.common.collect.AbstractMultiset
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/EnumMultiset.java:[126,12] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/EnumMultiset.java:[131,30] [return.type.incompatible] incompatible types in return.
@@ -2079,29 +2038,22 @@
   index type found: @IntRange(from=-2147483648, to=2147483647) int
   array type found: @UnknownVal ValueEntry<K extends @UnknownVal Object, V extends @UnknownVal Object> @UnknownVal []
   required        : index of type @IndexFor("this.hashTable") or @LTLengthOf("this.hashTable"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ConcurrentHashMultiset.java:[148,38] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ConcurrentHashMultiset.java:[149,38] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ConcurrentHashMultiset.java:[164,30] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ConcurrentHashMultiset.java:[165,30] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ConcurrentHashMultiset.java:[234,22] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ConcurrentHashMultiset.java:[235,22] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ConcurrentHashMultiset.java:[297,18] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ConcurrentHashMultiset.java:[298,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ConcurrentHashMultiset.java:[322,40] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ConcurrentHashMultiset.java:[323,40] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @Positive int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ConcurrentHashMultiset.java:[391,20] [return.type.incompatible] incompatible types in return.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ConcurrentHashMultiset.java:[493,3] [override.return.invalid] Incompatible return type.
-  Method
-    @LowerBoundUnknown int distinctElements(@LowerBoundUnknown ConcurrentHashMultiset<E extends @LowerBoundUnknown Object> this) in com.google.common.collect.ConcurrentHashMultiset
-  cannot override
-    @NonNegative int distinctElements(@LowerBoundUnknown AbstractMultiset<E extends @LowerBoundUnknown Object> this) in com.google.common.collect.AbstractMultiset
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ConcurrentHashMultiset.java:[392,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/FilteredKeyMultimap.java:[158,26] [argument.type.incompatible] incompatible types in argument.
@@ -2243,23 +2195,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableClassToInstanceMap.java:[116,41] [argument.type.incompatible] incompatible types in argument.
   found   : T extends B extends @UpperBoundUnknown Object
   required: ? extends T extends B extends @UpperBoundUnknown Object
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/HashMultiset.java:[105,8] [override.return.invalid] Incompatible return type.
-  Method
-    @LowerBoundUnknown int count(@LowerBoundUnknown HashMultiset<E extends @LowerBoundUnknown Object> this, @LowerBoundUnknown Object p0) in com.google.common.collect.HashMultiset
-  cannot override
-    @NonNegative int count(@LowerBoundUnknown AbstractMapBasedMultiset<E extends @LowerBoundUnknown Object> this, @LowerBoundUnknown Object p0) in com.google.common.collect.AbstractMapBasedMultiset
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/HashMultiset.java:[114,8] [override.return.invalid] Incompatible return type.
-  Method
-    @LowerBoundUnknown int remove(@LowerBoundUnknown HashMultiset<E extends @LowerBoundUnknown Object> this, @LowerBoundUnknown Object p0, @LowerBoundUnknown int p1) in com.google.common.collect.HashMultiset
-  cannot override
-    @NonNegative int remove(@LowerBoundUnknown AbstractMapBasedMultiset<E extends @LowerBoundUnknown Object> this, @LowerBoundUnknown Object p0, @NonNegative int p1) in com.google.common.collect.AbstractMapBasedMultiset
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/HashMultiset.java:[114,123] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedAsList.java:[85,61] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
@@ -2393,6 +2328,13 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/LittleEndianByteArray.java:[182,30] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/LittleEndianByteArray.java:[183,31] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/LittleEndianByteArray.java:[183,52] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularContiguousSet.java:[76,3] [override.return.invalid] Incompatible return type.
+  Method
+    @LowerBoundUnknown int indexOf(@LowerBoundUnknown RegularContiguousSet<C extends @LowerBoundUnknown Comparable<? extends @LowerBoundUnknown Object>> this, @LowerBoundUnknown Object p0) in com.google.common.collect.RegularContiguousSet
+  cannot override
+    @GTENegativeOne int indexOf(@LowerBoundUnknown ImmutableSortedSet<C extends @LowerBoundUnknown Comparable<? extends @LowerBoundUnknown Object>> this, @LowerBoundUnknown Object p0) in com.google.common.collect.ImmutableSortedSet
+  found   : @LowerBoundUnknown int
+  required: @GTENegativeOne int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularContiguousSet.java:[147,44] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
@@ -2469,7 +2411,7 @@
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time: 10:12 min
-[INFO] Finished at: 2017-12-11T12:01:48+01:00
-[INFO] Final Memory: 28M/594M
+[INFO] Total time: 09:39 min
+[INFO] Finished at: 2017-12-11T12:18:26+01:00
+[INFO] Final Memory: 28M/613M
 [INFO] ------------------------------------------------------------------------
