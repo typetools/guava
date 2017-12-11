@@ -343,10 +343,13 @@ public final class ImmutableLongArray implements Serializable {
       return this;
     }
 
-    /* ISSUE 9:
+    /* 
      * expandedCapacity(array.length, newCount) is at least newCount
-     * newArray is at least as long a array
+     * newArray is at least as long as array
      * therefore, count is an index for newArray
+     * Possibly could be solved by combination of: 
+     *   https://github.com/panacekcz/checker-framework/issues/11
+     *   https://github.com/kelloggm/checker-framework/issues/158
      */
     @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
     private void ensureRoomFor(@NonNegative int numberToAdd) {
