@@ -424,7 +424,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
     ImmutableList<E> createAsList() {
       return new ImmutableAsList<E>() {
         @Override
-        public E get(int index) {
+        public E get(@NonNegative int index) {
           return Indexed.this.get(index);
         }
 
@@ -517,7 +517,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
       super(DEFAULT_INITIAL_CAPACITY);
     }
 
-    Builder(int capacity) {
+    Builder(@NonNegative int capacity) {
       super(capacity);
       this.hashTable = new Object[chooseTableSize(capacity)];
     }

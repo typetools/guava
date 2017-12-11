@@ -14,6 +14,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -88,9 +89,9 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
 
   private transient Class<E> type;
   private transient E[] enumConstants;
-  private transient int[] counts;
-  private transient int distinctElements;
-  private transient long size;
+  private transient @NonNegative int[] counts;
+  private transient @NonNegative int distinctElements;
+  private transient @NonNegative long size;
 
   /** Creates an empty {@code EnumMultiset}. */
   private EnumMultiset(Class<E> type) {
@@ -214,10 +215,10 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   }
 
   abstract class Itr<T> implements Iterator<T> {
-    int index = 0;
-    int toRemove = -1;
+	@NonNegative int index = 0;
+    @GTENegativeOne int toRemove = -1;
 
-    abstract T output(int index);
+    abstract T output(@NonNegative int index);
 
     @Override
     public boolean hasNext() {
@@ -260,7 +261,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
       public Iterator<E> iterator() {
         return new Itr<E>() {
           @Override
-          E output(int index) {
+          E output(@NonNegative int index) {
             return enumConstants[index];
           }
         };
@@ -272,7 +273,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   Iterator<Entry<E>> entryIterator() {
     return new Itr<Entry<E>>() {
       @Override
-      Entry<E> output(final int index) {
+      Entry<E> output(final @NonNegative int index) {
         return new Multisets.AbstractEntry<E>() {
           @Override
           public E getElement() {
@@ -280,7 +281,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
           }
 
           @Override
-          public int getCount() {
+          public @NonNegative int getCount() {
             return counts[index];
           }
         };
