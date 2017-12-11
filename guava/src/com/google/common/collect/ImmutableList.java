@@ -402,10 +402,10 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
   }
 
   @Override
-  public UnmodifiableListIterator<E> listIterator(int index) {
+  public UnmodifiableListIterator<E> listIterator(@NonNegative int index) {
     return new AbstractIndexedListIterator<E>(size(), index) {
       @Override
-      protected E get(int index) {
+      protected E get(@NonNegative int index) {
         return ImmutableList.this.get(index);
       }
     };
@@ -622,11 +622,11 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
 
     // IndexFor cannot refer to custom collections
     // https://github.com/kelloggm/checker-framework/issues/154
-    private @GTENegativeOne int reverseIndex(@UpperBoundBottom /*!IndexFor("this")*/ int index) {
+    private @NonNegative int reverseIndex(@NonNegative int index) {
       return (size() - 1) - index;
     }
 
-    private int reversePosition(int index) {
+    private @NonNegative int reversePosition(@NonNegative int index) {
       return size() - index;
     }
 
@@ -653,13 +653,13 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
     }
 
     @Override
-    public ImmutableList<E> subList(int fromIndex, int toIndex) {
+    public ImmutableList<E> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       checkPositionIndexes(fromIndex, toIndex, size());
       return forwardList.subList(reversePosition(toIndex), reversePosition(fromIndex)).reverse();
     }
 
     @Override
-    public E get(int index) {
+    public E get(@NonNegative int index) {
       checkElementIndex(index, size());
       return forwardList.get(reverseIndex(index));
     }
@@ -741,7 +741,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * @since 23.1
    */
   @Beta
-  public static <E> Builder<E> builderWithExpectedSize(int expectedSize) {
+  public static <E> Builder<E> builderWithExpectedSize(@NonNegative int expectedSize) {
     checkNonnegative(expectedSize, "expectedSize");
     return new ImmutableList.Builder<E>(expectedSize);
   }

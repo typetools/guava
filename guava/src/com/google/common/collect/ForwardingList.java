@@ -17,6 +17,7 @@
 package com.google.common.collect;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -72,18 +73,18 @@ public abstract class ForwardingList<E> extends ForwardingCollection<E> implemen
   protected abstract List<E> delegate();
 
   @Override
-  public void add(int index, E element) {
+  public void add(@NonNegative int index, E element) {
     delegate().add(index, element);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public boolean addAll(int index, Collection<? extends E> elements) {
+  public boolean addAll(@NonNegative int index, Collection<? extends E> elements) {
     return delegate().addAll(index, elements);
   }
 
   @Override
-  public E get(int index) {
+  public E get(@NonNegative int index) {
     return delegate().get(index);
   }
 
@@ -105,25 +106,25 @@ public abstract class ForwardingList<E> extends ForwardingCollection<E> implemen
   }
 
   @Override
-  public ListIterator<E> listIterator(int index) {
+  public ListIterator<E> listIterator(@NonNegative int index) {
     return delegate().listIterator(index);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public E remove(int index) {
+  public E remove(@NonNegative int index) {
     return delegate().remove(index);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public E set(int index, E element) {
+  public E set(@NonNegative int index, E element) {
     return delegate().set(index, element);
   }
 
   @SideEffectFree
   @Override
-  public List<E> subList(int fromIndex, int toIndex) {
+  public List<E> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
     return delegate().subList(fromIndex, toIndex);
   }
 
@@ -160,7 +161,7 @@ public abstract class ForwardingList<E> extends ForwardingCollection<E> implemen
    *
    * @since 7.0
    */
-  protected boolean standardAddAll(int index, Iterable<? extends E> elements) {
+  protected boolean standardAddAll(@NonNegative int index, Iterable<? extends E> elements) {
     return Lists.addAllImpl(this, index, elements);
   }
 
@@ -220,7 +221,7 @@ public abstract class ForwardingList<E> extends ForwardingCollection<E> implemen
    * @since 7.0
    */
   @Beta
-  protected ListIterator<E> standardListIterator(int start) {
+  protected ListIterator<E> standardListIterator(@NonNegative int start) {
     return Lists.listIteratorImpl(this, start);
   }
 
@@ -232,7 +233,7 @@ public abstract class ForwardingList<E> extends ForwardingCollection<E> implemen
    * @since 7.0
    */
   @Beta
-  protected List<E> standardSubList(int fromIndex, int toIndex) {
+  protected List<E> standardSubList(@NonNegative int fromIndex, @NonNegative int toIndex) {
     return Lists.subListImpl(this, fromIndex, toIndex);
   }
 
