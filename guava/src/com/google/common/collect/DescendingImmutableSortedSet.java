@@ -19,6 +19,7 @@ package com.google.common.collect;
 import com.google.common.annotations.GwtIncompatible;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
@@ -105,7 +106,7 @@ final class DescendingImmutableSortedSet<E> extends ImmutableSortedSet<E> {
   }
 
   @Override
-  int indexOf(@Nullable Object target) {
+  @GTENegativeOne int indexOf(@Nullable Object target) {
     int index = forward.indexOf(target);
     if (index == -1) {
       return index;
