@@ -24,7 +24,7 @@ import java.io.Serializable;
 import javax.annotation.Nullable;
 
 /** An ordering that treats {@code null} as greater than all other values. */
-@AnnotatedFor({"nullness"})
+@AnnotatedFor({"nullness", "index"})
 @GwtCompatible(serializable = true)
 final class NullsLastOrdering<T> extends Ordering<T> implements Serializable {
   final Ordering<? super T> ordering;

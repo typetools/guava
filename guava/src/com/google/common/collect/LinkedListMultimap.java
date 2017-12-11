@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -402,12 +403,12 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
-    public int nextIndex() {
+    public @NonNegative int nextIndex() {
       return nextIndex;
     }
 
     @Override
-    public int previousIndex() {
+    public @GTENegativeOne int previousIndex() {
       return nextIndex - 1;
     }
 
@@ -543,12 +544,12 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
-    public int nextIndex() {
+    public @NonNegative int nextIndex() {
       return nextIndex;
     }
 
     @Override
-    public int previousIndex() {
+    public @GTENegativeOne int previousIndex() {
       return nextIndex - 1;
     }
 

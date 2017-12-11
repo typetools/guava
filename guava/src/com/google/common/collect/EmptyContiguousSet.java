@@ -20,6 +20,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
@@ -87,7 +88,7 @@ final class EmptyContiguousSet<C extends Comparable> extends ContiguousSet<C> {
 
   @GwtIncompatible // not used by GWT emulation
   @Override
-  int indexOf(Object target) {
+  @GTENegativeOne int indexOf(Object target) {
     return -1;
   }
 

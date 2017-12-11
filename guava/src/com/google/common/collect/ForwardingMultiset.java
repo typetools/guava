@@ -234,7 +234,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    *
    * @since 7.0
    */
-  protected int standardSetCount(E element, int count) {
+  protected @NonNegative int standardSetCount(E element, @NonNegative int count) {
     return Multisets.setCountImpl(this, element, count);
   }
 
@@ -246,7 +246,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    *
    * @since 7.0
    */
-  protected boolean standardSetCount(E element, int oldCount, int newCount) {
+  protected boolean standardSetCount(E element, @NonNegative int oldCount, @NonNegative int newCount) {
     return Multisets.setCountImpl(this, element, oldCount, newCount);
   }
 
@@ -292,7 +292,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    *
    * @since 7.0
    */
-  protected int standardSize() {
+  protected @NonNegative int standardSize() {
     return Multisets.sizeImpl(this);
   }
 

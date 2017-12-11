@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
@@ -398,7 +399,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
   }
 
   abstract static class Indexed<E> extends ImmutableSet<E> {
-    abstract E get(int index);
+    abstract E get(@IndexFor("this") int index);
 
     @Override
     public UnmodifiableIterator<E> iterator() {
@@ -423,7 +424,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
     ImmutableList<E> createAsList() {
       return new ImmutableAsList<E>() {
         @Override
-        public E get(int index) {
+        public E get(@NonNegative int index) {
           return Indexed.this.get(index);
         }
 
@@ -516,7 +517,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
       super(DEFAULT_INITIAL_CAPACITY);
     }
 
-    Builder(int capacity) {
+    Builder(@NonNegative int capacity) {
       super(capacity);
       this.hashTable = new Object[chooseTableSize(capacity)];
     }

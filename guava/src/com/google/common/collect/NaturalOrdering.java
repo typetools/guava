@@ -25,7 +25,7 @@ import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
 
 /** An ordering that uses the natural order of the values. */
-@AnnotatedFor({"nullness"})
+@AnnotatedFor({"nullness", "index"})
 @GwtCompatible(serializable = true)
 @SuppressWarnings("unchecked") // TODO(kevinb): the right way to explain this??
 final class NaturalOrdering extends Ordering<Comparable> implements Serializable {

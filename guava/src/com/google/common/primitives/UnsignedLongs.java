@@ -460,8 +460,10 @@ public final class UnsignedLongs {
    * @throws IllegalArgumentException if {@code radix} is not between {@link Character#MIN_RADIX}
    *     and {@link Character#MAX_RADIX}.
    */
-  /* ISSUE 8:
+  /*
    * Unsinged long converted to string always fits into 64 characters.
+   * Loop guarded by variable decreased by right shift or division.
+   * Assuming that Character.MIN_RADIX == 2
    */
   @SuppressWarnings({
 	  "lowerbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/193

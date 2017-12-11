@@ -1503,7 +1503,10 @@ public abstract class CharMatcher implements Predicate<Character> {
     }
 
     @Override
-    @SuppressWarnings("index:argument.type.incompatible") // TODO unsigned right shift
+    /*
+     * unsigned right shift on int
+     */
+    @SuppressWarnings("index:argument.type.incompatible") // unsigned right shift
     public boolean matches(char c) {
       return TABLE.charAt((MULTIPLIER * c) >>> SHIFT) == c;
     }
@@ -1633,7 +1636,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     static final Digit INSTANCE = new Digit();
 
-    @SuppressWarnings("samelen:argument.type.incompatible") // TODO: SameLen on method calls
+    @SuppressWarnings("samelen:argument.type.incompatible") // TODO SameLen on method calls
     private Digit() {
       super("CharMatcher.digit()", zeroes(), nines());
     }
@@ -1799,7 +1802,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     // countIn could be IndexOrHigh(sequence)
     // to typecheck, this will be also required:
     // https://github.com/kelloggm/checker-framework/issues/193 
-    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
+    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
     public @NonNegative int countIn(CharSequence sequence) {
       return sequence.length() - original.countIn(sequence);
     }

@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -376,7 +377,7 @@ public final class Collections2 {
   /**
    * Returns best-effort-sized StringBuilder based on the given collection size.
    */
-  static StringBuilder newStringBuilderForCollection(int size) {
+  static StringBuilder newStringBuilderForCollection(@NonNegative int size) {
     checkNonnegative(size, "size");
     return new StringBuilder((int) Math.min(size * 8L, Ints.MAX_POWER_OF_TWO));
   }
@@ -580,7 +581,7 @@ public final class Collections2 {
       Collections.reverse(nextPermutation.subList(j + 1, n));
     }
 
-    int findNextJ() {
+    @GTENegativeOne int findNextJ() {
       for (int k = nextPermutation.size() - 2; k >= 0; k--) {
         if (comparator.compare(nextPermutation.get(k), nextPermutation.get(k + 1)) < 0) {
           return k;
@@ -589,7 +590,7 @@ public final class Collections2 {
       return -1;
     }
 
-    int findNextL(int j) {
+    @NonNegative int findNextL(@NonNegative int j) {
       E ak = nextPermutation.get(j);
       for (int l = nextPermutation.size() - 1; l > j; l--) {
         if (comparator.compare(ak, nextPermutation.get(l)) < 0) {

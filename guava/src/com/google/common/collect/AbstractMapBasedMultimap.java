@@ -893,12 +893,12 @@ abstract class AbstractMapBasedMultimap<K, V> extends AbstractMultimap<K, V>
       }
 
       @Override
-      public int nextIndex() {
+      public @NonNegative int nextIndex() {
         return getDelegateListIterator().nextIndex();
       }
 
       @Override
-      public int previousIndex() {
+      public @GTENegativeOne int previousIndex() {
         return getDelegateListIterator().previousIndex();
       }
 

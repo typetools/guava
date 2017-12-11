@@ -267,7 +267,8 @@ public final class Longs {
    * @param arrays zero or more {@code long} arrays
    * @return a single array containing all the values from the source arrays, in order
    */
-  /* ISSUE 4:
+  /* 
+   * New array has size that is sum of array lengths.
    * length is a sum of lengths of arrays.
    * pos is increased the same way as length, so pos points to a valid
    * range of length array.length in result.   
@@ -715,7 +716,7 @@ public final class Longs {
 
     @Override
     @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
-    public @Positive @LTLengthOf(value = "array", offset="start - 1") int size() { // ISSUE 3 in issues.txt
+    public @Positive @LTLengthOf(value = "array", offset="start - 1") int size() { // INDEX: Annotation on a public method refers to private member.
       return end - start;
     }
 

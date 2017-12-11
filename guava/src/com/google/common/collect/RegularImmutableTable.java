@@ -37,7 +37,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 abstract class RegularImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
   RegularImmutableTable() {}
 
-  abstract Cell<R, C, V> getCell(int iterationIndex);
+  abstract Cell<R, C, V> getCell(@NonNegative int iterationIndex);
 
   @Override
   final ImmutableSet<Cell<R, C, V>> createCellSet() {
@@ -52,7 +52,7 @@ abstract class RegularImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
     }
 
     @Override
-    Cell<R, C, V> get(int index) {
+    Cell<R, C, V> get(@NonNegative int index) {
       return getCell(index);
     }
 
@@ -87,7 +87,7 @@ abstract class RegularImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
     }
 
     @Override
-    public V get(int index) {
+    public V get(@NonNegative int index) {
       return getValue(index);
     }
 

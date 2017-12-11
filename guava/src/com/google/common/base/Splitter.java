@@ -555,7 +555,7 @@ public final class Splitter {
     	/*
     	 * Cannot get index for CharSequence
     	 */
-    	"upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
+    	"upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/197
     })
     protected String computeNext() {
       /*
