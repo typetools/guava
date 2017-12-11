@@ -603,7 +603,7 @@ public final class Ints {
 
     @Override
     @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
-    public @Positive @LTLengthOf(value = "array", offset="start - 1") int size() { // ISSUE 3 in issues.txt
+    public @Positive @LTLengthOf(value = "array", offset="start - 1") int size() { // INDEX: Annotation on a public method refers to private member.
       return end - start;
     }
 

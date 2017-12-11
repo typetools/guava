@@ -227,8 +227,13 @@ public final class ImmutableDoubleArray implements Serializable {
      * Appends {@code value} to the end of the values the built {@link ImmutableDoubleArray} will
      * contain.
      */
-    /* ISSUE 1:
-     * Calling ensureRoomFor(1) ensures that count is IndexFor("array")
+    /*
+     * Calling ensureRoomFor(1) ensures that count is IndexFor("array").
+     * Need ensures annotation for @LTLengthOf, for example @EnsuresLTLengthOf.
+     * ensureRoomFor should be
+     * @EnsuresLTLengthOf(expression="count", value="array", offset="#1 - 1")
+     * To typecheck, this code also needs a fix for:
+     * https://github.com/kelloggm/checker-framework/issues/176
      */
     @SuppressWarnings("upperbound") // https://github.com/typetools/checker-framework/issues/1606
     public Builder add(double value) {
@@ -242,8 +247,13 @@ public final class ImmutableDoubleArray implements Serializable {
      * Appends {@code values}, in order, to the end of the values the built {@link
      * ImmutableDoubleArray} will contain.
      */
-    /* ISSUE 1:
+    /*
      * Calling ensureRoomFor(values.length) ensures that count is LTLengthOf(value="array", offset="values.length-1")
+     * Need ensures annotation for @LTLengthOf, for example @EnsuresLTLengthOf.
+     * ensureRoomFor should be
+     * @EnsuresLTLengthOf(expression="count", value="array", offset="#1 - 1")
+     * To typecheck, this code also needs a fix for:
+     * https://github.com/kelloggm/checker-framework/issues/176
      */
     @SuppressWarnings("upperbound") // https://github.com/typetools/checker-framework/issues/1606
     public Builder addAll(double[] values) {
@@ -271,8 +281,13 @@ public final class ImmutableDoubleArray implements Serializable {
      * Appends {@code values}, in order, to the end of the values the built {@link
      * ImmutableDoubleArray} will contain.
      */
-    /* ISSUE 1:
+    /*
      * Calling ensureRoomFor(values.size()) ensures that count is LTLengthOf(value="array", offset="values.size()-1")
+     * Need ensures annotation for @LTLengthOf, for example @EnsuresLTLengthOf.
+     * ensureRoomFor should be
+     * @EnsuresLTLengthOf(expression="count", value="array", offset="#1 - 1")
+     * To typecheck, this code also needs a fix for:
+     * https://github.com/kelloggm/checker-framework/issues/176
      * ISSUE 2:
      * Incrementing count in a for-each loop of values means that count is increased by at most values.size()
      */
@@ -304,11 +319,16 @@ public final class ImmutableDoubleArray implements Serializable {
      * ImmutableDoubleArray} will contain.
      */
     @SuppressWarnings({
-      /* ISSUE 1:
+      /*
        * Calling ensureRoomFor(values.length()) ensures that count is @LTLengthOf(value="array",offset="values.length()-1")
+       * Need ensures annotation for @LTLengthOf, for example @EnsuresLTLengthOf.
+       * ensureRoomFor should be
+       * @EnsuresLTLengthOf(expression="count", value="array", offset="#1 - 1")
+       * To typecheck, this code also needs a fix for:
+       * https://github.com/kelloggm/checker-framework/issues/176
        */
       "upperbound:compound.assignment.type.incompatible", // https://github.com/typetools/checker-framework/issues/1606
-      /* ISSUE 10:
+      /*
        * count is @LTLengthOf(value="array",offset="values.length()-1"), which implies
        * values.length() is @LTLengthOf(value="array",offset="count-1") 
        */
@@ -401,7 +421,7 @@ public final class ImmutableDoubleArray implements Serializable {
      */
     "upperbound:return.type.incompatible" // custom coll. with size end-start
   }) 
-  public @NonNegative @LTLengthOf(value = {"array", "this"}, offset = {"start-1", "-1"}) int length() { // ISSUE 3 in issues.txt
+  public @NonNegative @LTLengthOf(value = {"array", "this"}, offset = {"start-1", "-1"}) int length() { // INDEX: Annotation on a public method refers to private member.
     return end - start;
   }
 
@@ -683,8 +703,13 @@ public final class ImmutableDoubleArray implements Serializable {
    * Arrays#toString(double[])}, for example {@code "[1, 2, 3]"}.
    */
   @Override
-  /* ISSUE 5:
-   * After checking !isEmpty(), start is IndexFor("this.array")
+  /*
+   * After checking !isEmpty(), start is IndexFor("this.array").
+   * Needs annotation EnsuresQualifierIf with arguments.
+   * To typecheck, this code also needs a fix for:
+   *   https://github.com/kelloggm/checker-framework/issues/154
+   * Related:
+   *   https://github.com/panacekcz/checker-framework/issues/27
    */
   @SuppressWarnings("upperbound:array.access.unsafe.high") // https://github.com/typetools/checker-framework/issues/1606
   public String toString() {

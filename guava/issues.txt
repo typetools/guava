@@ -1,65 +1,5 @@
 Unreported issues
 
-
-ISSUE 1: 
-
-Need ensures annotation for @LTLengthOf, for example @EnsuresLTLengthOf.
-
-Could be solved by:
-  https://github.com/typetools/checker-framework/issues/1606
-To typecheck, this code also needs a fix for:
-  https://github.com/kelloggm/checker-framework/issues/176
-Example code:
-  class Builder{
-    int[] array;
-    @IndexOrHigh("array") int count;
-    @EnsuresLTLengthOf(expression="count", value="array", offset="#1 - 1")
-    void ensureRoomFor(@NonNegative int numberToAdd){
-      // implementation
-    } 
-    void add(int value){
-      ensureRoomFor(1);
-      array[count] = value;
-      count += 1;
-    }
-  }
-
-
-ISSUE 5:
-Need annotation EnsuresQualifierIf with arguments
-
-After checking !isEmpty(), start is IndexFor("this.array")
-
-Could be solved by:
-  https://github.com/typetools/checker-framework/issues/1606
-To typecheck, this code also needs a fix for:
-  https://github.com/kelloggm/checker-framework/issues/154
-Related:
-  https://github.com/panacekcz/checker-framework/issues/27
-  Issue 1
-Example output:
-  [WARNING] guava/src/com/google/common/primitives/ImmutableIntArray.java:[601,38] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-    found   : @LTEqLengthOf("this.array") int
-    required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-
-
-ISSUE 10:
-
-Related:
-  Issue 1
-Example code:
-  public Builder addAll(ImmutableIntArray values) {
-    ensureRoomFor(values.length());
-    System.arraycopy(values.array, values.start, array, count, values.length());
-    count += values.length();
-    return this;
-  }
-Example output:
-  [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/ImmutableIntArray.java:[293,79] [argument.type.incompatible] incompatible types in argument.
-    found   : @UpperBoundUnknown int
-    required: @LTLengthOf(value={"values.array", "this.array"}, offset={"values.start - 1", "this.count - 1"}) int
-
-
 ISSUE 2:
 
 Iterating through collection elements and incrementing separate index.
@@ -96,11 +36,6 @@ Example output:
     index type found: @IntRange(from=-2147483648, to=2147483647) int
     array type found: @UnknownVal int @UnknownVal []
     required        : index of type @IndexFor("this.parent.array") or @LTLengthOf("this.parent.array"), or array of type @MinLen("2147483648")
-
-
-ISSUE 3:
-Annotation that refers to private member, in a public method
-
 
 ISSUE 4:
 New array has size that is sum of array lengths
