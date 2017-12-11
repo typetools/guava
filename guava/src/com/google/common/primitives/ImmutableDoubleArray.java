@@ -292,7 +292,7 @@ public final class ImmutableDoubleArray implements Serializable {
      * Iterating through collection elements and incrementing separate index.
      * Incrementing count in a for-each loop of values means that count is increased by at most values.size()
      * To typecheck, this code also needs a fix for:
-     *   https://github.com/kelloggm/checker-framework/issues/154
+     *   https://github.com/kelloggm/checker-framework/issues/197
      */
     @SuppressWarnings("upperbound") // increment index in for-each for Collection
     public Builder addAll(Collection<Double> values) {
@@ -713,8 +713,6 @@ public final class ImmutableDoubleArray implements Serializable {
   /*
    * After checking !isEmpty(), start is IndexFor("this.array").
    * Needs annotation EnsuresQualifierIf with arguments.
-   * To typecheck, this code also needs a fix for:
-   *   https://github.com/kelloggm/checker-framework/issues/154
    * Related:
    *   https://github.com/panacekcz/checker-framework/issues/27
    */

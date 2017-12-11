@@ -192,7 +192,7 @@ public final class Strings {
    *
    * @since 11.0
    */
-  @SuppressWarnings("index:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
+  @SuppressWarnings("index:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   public static String commonPrefix(CharSequence a, CharSequence b) {
     checkNotNull(a);
     checkNotNull(b);
@@ -216,7 +216,7 @@ public final class Strings {
    *
    * @since 11.0
    */
-  @SuppressWarnings("index:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
+  @SuppressWarnings("index:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   public static String commonSuffix(CharSequence a, CharSequence b) {
     checkNotNull(a);
     checkNotNull(b);
@@ -237,7 +237,7 @@ public final class Strings {
    * True when a valid surrogate pair starts at the given {@code index} in the given {@code string}.
    * Out-of-range indexes return false.
    */
-  @SuppressWarnings("index:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
+  @SuppressWarnings("index:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   @VisibleForTesting
   static boolean validSurrogatePairAt(CharSequence string, int index) {
     return index >= 0

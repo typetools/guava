@@ -53,7 +53,7 @@ public final class Utf8 {
    *     surrogates)
    */
   @SuppressWarnings({
-	  "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/154
+	  "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
 	  "lowerbound:compound.assignment.type.incompatible", // TODO unsigned right shift
   }) 
   public static @NonNegative int encodedLength(CharSequence sequence) {
@@ -86,7 +86,7 @@ public final class Utf8 {
     return utf8Length;
   }
   @SuppressWarnings({
-	  "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/154
+	  "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
 	  "lowerbound:compound.assignment.type.incompatible", // TODO unsigned right shift
   }) 
   private static @NonNegative int encodedLengthGeneral(CharSequence sequence, @IndexFor("#1") int start) {

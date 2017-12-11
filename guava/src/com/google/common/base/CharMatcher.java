@@ -1799,7 +1799,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     // countIn could be IndexOrHigh(sequence)
     // to typecheck, this will be also required:
     // https://github.com/kelloggm/checker-framework/issues/193 
-    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
+    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
     public @NonNegative int countIn(CharSequence sequence) {
       return sequence.length() - original.countIn(sequence);
     }
