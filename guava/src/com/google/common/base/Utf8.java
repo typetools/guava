@@ -54,7 +54,10 @@ public final class Utf8 {
    */
   @SuppressWarnings({
 	  "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
-	  "lowerbound:compound.assignment.type.incompatible", // TODO unsigned right shift
+      /*
+       * unsigned right shift on int
+       */
+	  "lowerbound:compound.assignment.type.incompatible", // unsigned right shift
   }) 
   public static @NonNegative int encodedLength(CharSequence sequence) {
     // Warning to maintainers: this implementation is highly optimized.
@@ -87,7 +90,10 @@ public final class Utf8 {
   }
   @SuppressWarnings({
 	  "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
-	  "lowerbound:compound.assignment.type.incompatible", // TODO unsigned right shift
+      /*
+	   * unsigned right shift on int
+	   */
+	  "lowerbound:compound.assignment.type.incompatible", // unsigned right shift
   }) 
   private static @NonNegative int encodedLengthGeneral(CharSequence sequence, @IndexFor("#1") int start) {
     int utf16Length = sequence.length();

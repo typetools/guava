@@ -1503,7 +1503,10 @@ public abstract class CharMatcher implements Predicate<Character> {
     }
 
     @Override
-    @SuppressWarnings("index:argument.type.incompatible") // TODO unsigned right shift
+    /*
+     * unsigned right shift on int
+     */
+    @SuppressWarnings("index:argument.type.incompatible") // unsigned right shift
     public boolean matches(char c) {
       return TABLE.charAt((MULTIPLIER * c) >>> SHIFT) == c;
     }
