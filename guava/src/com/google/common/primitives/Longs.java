@@ -377,7 +377,7 @@ public final class Longs {
       asciiDigits = result;
     }
 
-    @SuppressWarnings("lowerbound:array.access.unsafe.low") // https://github.com/kelloggm/checker-framework/issues/192
+    @SuppressWarnings("lowerbound:array.access.unsafe.low") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
     static @IntRange(from = -1, to = 36) int digit(char c) {
       return (c < 128) ? asciiDigits[c] : -1;
     }

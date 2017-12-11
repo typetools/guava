@@ -1271,7 +1271,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
     public boolean matches(char c) {
       return table.get(c);
     }
@@ -1513,7 +1513,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     @GwtIncompatible // used only from other GwtIncompatible code
     @Override
-    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
     void setBits(BitSet table) {
       for (int i = 0; i < TABLE.length(); i++) {
         table.set(TABLE.charAt(i));
@@ -1927,7 +1927,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     @GwtIncompatible // used only from other GwtIncompatible code
     @Override
-    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
     void setBits(BitSet table) {
       table.set(match);
     }
@@ -1964,7 +1964,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     @GwtIncompatible // used only from other GwtIncompatible code
     @Override
-    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
     void setBits(BitSet table) {
       table.set(0, match);
       table.set(match + 1, Character.MAX_VALUE + 1);
@@ -2003,7 +2003,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     @GwtIncompatible // used only from other GwtIncompatible code
     @Override
-    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
     void setBits(BitSet table) {
       table.set(match1);
       table.set(match2);
@@ -2032,7 +2032,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     @Override
     @GwtIncompatible // used only from other GwtIncompatible code
-    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
     void setBits(BitSet table) {
       for (char c : chars) {
         table.set(c);
@@ -2069,7 +2069,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     @GwtIncompatible // used only from other GwtIncompatible code
     @Override
-    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
     void setBits(BitSet table) {
       table.set(startInclusive, endInclusive + 1);
     }
