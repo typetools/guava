@@ -166,7 +166,7 @@ public abstract class ImmutableSortedSet<E> extends ImmutableSortedSetFauxveride
    * @throws NullPointerException if any element is null
    * @since 3.0 (source-compatible since 2.0)
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked"})
   public static <E extends Comparable<? super E>> ImmutableSortedSet<E> of(
       E e1, E e2, E e3, E e4, E e5, E e6, E... remaining) {
     Comparable[] contents = new Comparable[6 + remaining.length];

@@ -956,7 +956,7 @@ public final class Multisets {
   /**
    * An implementation of {@link Multiset#setCount(Object, int)}.
    */
-  static <E> int setCountImpl(Multiset<E> self, E element, int count) {
+  static <E> @NonNegative int setCountImpl(Multiset<E> self, E element, @NonNegative int count) {
     checkNonnegative(count, "count");
 
     int oldCount = self.count(element);
@@ -974,7 +974,7 @@ public final class Multisets {
   /**
    * An implementation of {@link Multiset#setCount(Object, int, int)}.
    */
-  static <E> boolean setCountImpl(Multiset<E> self, E element, int oldCount, int newCount) {
+  static <E> boolean setCountImpl(Multiset<E> self, E element, @NonNegative int oldCount, @NonNegative int newCount) {
     checkNonnegative(oldCount, "oldCount");
     checkNonnegative(newCount, "newCount");
 
