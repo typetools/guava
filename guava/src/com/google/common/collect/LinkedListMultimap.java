@@ -323,13 +323,13 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
 
   /** An {@code Iterator} over all nodes. */
   private class NodeIterator implements ListIterator<Entry<K, V>> {
-    int nextIndex;
+	@NonNegative int nextIndex;
     @org.checkerframework.checker.nullness.qual.Nullable Node<K, V> next;
     @org.checkerframework.checker.nullness.qual.Nullable Node<K, V> current;
     Node<K, V> previous;
     int expectedModCount = modCount;
 
-    NodeIterator(int index) {
+    NodeIterator(@NonNegative int index) {
       int size = size();
       checkPositionIndex(index, size);
       if (index >= (size / 2)) {

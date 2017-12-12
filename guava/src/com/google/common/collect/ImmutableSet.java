@@ -19,6 +19,7 @@ package com.google.common.collect;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -243,7 +244,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * can hold setSize elements with the desired load factor.  Always returns at least setSize + 2.
    */
   @VisibleForTesting
-  static @NonNegative int chooseTableSize(@NonNegative int setSize) {
+  static @Positive int chooseTableSize(@NonNegative int setSize) {
     setSize = Math.max(setSize, 2);
     // Correct the size for open addressing to match desired load factor.
     if (setSize < CUTOFF) {

@@ -592,7 +592,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
   }
 
   @Override
-  int copyIntoArray(Object[] dst, @NonNegative int offset) {
+  @NonNegative int copyIntoArray(Object[] dst, @IndexOrHigh("#1") int offset) {
     // this loop is faster for RandomAccess instances, which ImmutableLists are
     int size = size();
     for (int i = 0; i < size; i++) {

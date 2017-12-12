@@ -706,7 +706,7 @@ public final class Lists {
    * @return a list of consecutive sublists
    * @throws IllegalArgumentException if {@code partitionSize} is nonpositive
    */
-  public static <T> List<List<T>> partition(List<T> list, int size) {
+  public static <T> List<List<T>> partition(List<T> list, @NonNegative int size) {
     checkNotNull(list);
     checkArgument(size > 0);
     return (list instanceof RandomAccess)
@@ -780,7 +780,7 @@ public final class Lists {
     }
 
     @Override
-    public ImmutableList<Character> subList(int fromIndex, int toIndex) {
+    public ImmutableList<Character> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       checkPositionIndexes(fromIndex, toIndex, size()); // for GWT
       return charactersOf(string.substring(fromIndex, toIndex));
     }

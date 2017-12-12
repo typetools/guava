@@ -123,13 +123,13 @@ import org.checkerframework.checker.index.qual.NonNegative;
      */
     LAST_BEFORE {
       @Override
-      public <E> @NonNegative int resultIndex(
+      public <E> @GTENegativeOne int resultIndex(
           Comparator<? super E> comparator, E key, List<? extends E> list, @NonNegative int foundIndex) {
         return FIRST_PRESENT.resultIndex(comparator, key, list, foundIndex) - 1;
       }
     };
 
-    abstract <E> @NonNegative int resultIndex(
+    abstract <E> @GTENegativeOne int resultIndex(
         Comparator<? super E> comparator, E key, List<? extends E> list, @NonNegative int foundIndex);
   }
 
@@ -201,6 +201,12 @@ import org.checkerframework.checker.index.qual.NonNegative;
    * <p>Equivalent to {@link #binarySearch(List, Function, Object, Comparator, KeyPresentBehavior,
    * KeyAbsentBehavior)} using {@link Ordering#natural}.
    */
+  /*
+   * INDEX: 
+   * if absentBehavior is INVERTED_INSERTION_INDEX, returns @LowerBoundUnknown
+   * if absentBehavior is NEXT_LOWER or presentBehavior is LAST_BEFORE, returns @GTENegativeOne
+   * otherwise returns @NonNegative
+   */
   public static <E, K extends Comparable> int binarySearch(
       List<E> list,
       Function<? super E, K> keyFunction,
@@ -217,6 +223,12 @@ import org.checkerframework.checker.index.qual.NonNegative;
    * <p>Equivalent to
    * {@link #binarySearch(List, Object, Comparator, KeyPresentBehavior, KeyAbsentBehavior)} using
    * {@link Lists#transform(List, Function) Lists.transform(list, keyFunction)}.
+   */
+  /*
+   * INDEX: 
+   * if absentBehavior is INVERTED_INSERTION_INDEX, returns @LowerBoundUnknown
+   * if absentBehavior is NEXT_LOWER or presentBehavior is LAST_BEFORE, returns @GTENegativeOne
+   * otherwise returns @NonNegative
    */
   public static <E, K> int binarySearch(
       List<E> list,
@@ -251,6 +263,12 @@ import org.checkerframework.checker.index.qual.NonNegative;
    *        equal to the key.
    * @return the index determined by the {@code KeyPresentBehavior}, if the key is in the list;
    *         otherwise the index determined by the {@code KeyAbsentBehavior}.
+   */
+  /*
+   * INDEX: 
+   * if absentBehavior is INVERTED_INSERTION_INDEX, returns @LowerBoundUnknown
+   * if absentBehavior is NEXT_LOWER or presentBehavior is LAST_BEFORE, returns @GTENegativeOne
+   * otherwise returns @NonNegative
    */
   public static <E> int binarySearch(
       List<? extends E> list,

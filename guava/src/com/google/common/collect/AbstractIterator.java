@@ -68,7 +68,7 @@ import java.util.NoSuchElementException;
  */
 // When making changes to this class, please also update the copy at
 // com.google.common.base.AbstractIterator
-@AnnotatedFor({"nullness"})
+@AnnotatedFor({"nullness", "index"})
 @GwtCompatible
 public abstract class AbstractIterator<T> extends UnmodifiableIterator<T> {
   private State state = State.NOT_READY;

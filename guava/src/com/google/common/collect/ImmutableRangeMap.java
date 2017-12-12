@@ -33,6 +33,7 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
@@ -181,7 +182,7 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
   @Override
   @Nullable
   public V get(K key) {
-    int index =
+    @GTENegativeOne int index =
         SortedLists.binarySearch(
             ranges,
             Range.<K>lowerBoundFn(),
@@ -199,7 +200,7 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
   @Override
   @Nullable
   public Entry<Range<K>, V> getEntry(K key) {
-    int index =
+	@GTENegativeOne int index =
         SortedLists.binarySearch(
             ranges,
             Range.<K>lowerBoundFn(),
@@ -311,14 +312,14 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
     } else if (ranges.isEmpty() || range.encloses(span())) {
       return this;
     }
-    int lowerIndex =
+    @NonNegative int lowerIndex =
         SortedLists.binarySearch(
             ranges,
             Range.<K>upperBoundFn(),
             range.lowerBound,
             KeyPresentBehavior.FIRST_AFTER,
             KeyAbsentBehavior.NEXT_HIGHER);
-    int upperIndex =
+    @NonNegative int upperIndex =
         SortedLists.binarySearch(
             ranges,
             Range.<K>lowerBoundFn(),
