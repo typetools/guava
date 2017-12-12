@@ -342,7 +342,7 @@ public abstract class ImmutableMultimap<K, V> extends AbstractMultimap<K, V>
   }
 
   final transient ImmutableMap<K, ? extends ImmutableCollection<V>> map;
-  final transient int size;
+  final transient @NonNegative int size;
 
   // These constants allow the deserialization code to set final fields. This
   // holder class makes sure they are not initialized unless an instance is
@@ -357,7 +357,7 @@ public abstract class ImmutableMultimap<K, V> extends AbstractMultimap<K, V>
         Serialization.getFieldSetter(ImmutableSetMultimap.class, "emptySet");
   }
 
-  ImmutableMultimap(ImmutableMap<K, ? extends ImmutableCollection<V>> map, int size) {
+  ImmutableMultimap(ImmutableMap<K, ? extends ImmutableCollection<V>> map, @NonNegative int size) {
     this.map = map;
     this.size = size;
   }

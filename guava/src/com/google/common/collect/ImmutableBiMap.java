@@ -184,7 +184,7 @@ public abstract class ImmutableBiMap<K, V> extends ImmutableBiMapFauxverideShim<
      */
     public Builder() {}
 
-    Builder(int size) {
+    Builder(@NonNegative int size) {
       super(size);
     }
 

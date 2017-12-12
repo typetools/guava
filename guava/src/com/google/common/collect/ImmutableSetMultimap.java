@@ -459,7 +459,7 @@ public class ImmutableSetMultimap<K, V> extends ImmutableMultimap<K, V>
 
   ImmutableSetMultimap(
       ImmutableMap<K, ImmutableSet<V>> map,
-      int size,
+      @NonNegative int size,
       @Nullable Comparator<? super V> valueComparator) {
     super(map, size);
     this.emptySet = emptySet(valueComparator);
