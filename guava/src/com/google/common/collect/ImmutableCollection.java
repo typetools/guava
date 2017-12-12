@@ -345,7 +345,7 @@ public abstract class ImmutableCollection<E> extends AbstractCollection<E> imple
    * offset.  Returns {@code offset + size()}.
    */
   @CanIgnoreReturnValue
-  @NonNegative int copyIntoArray(Object[] dst, @IndexOrHigh("dst") int offset) {
+  @NonNegative int copyIntoArray(Object[] dst, @IndexOrHigh("#1") int offset) {
     for (E e : this) {
       dst[offset++] = e;
     }

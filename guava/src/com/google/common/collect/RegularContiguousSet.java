@@ -132,7 +132,7 @@ final class RegularContiguousSet<C extends Comparable> extends ContiguousSet<C> 
         }
 
         @Override
-        public C get(int i) {
+        public C get(@NonNegative int i) {
           checkElementIndex(i, size());
           return domain.offset(first(), i);
         }
