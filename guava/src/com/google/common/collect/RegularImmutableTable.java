@@ -72,7 +72,7 @@ abstract class RegularImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
     }
   }
 
-  abstract V getValue(int iterationIndex);
+  abstract V getValue(@NonNegative int iterationIndex);
 
   @Override
   final ImmutableCollection<V> createValues() {

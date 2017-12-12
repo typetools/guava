@@ -151,7 +151,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
   private static class KeyList<K, V> {
     Node<K, V> head;
     Node<K, V> tail;
-    int count;
+    @NonNegative int count;
 
     KeyList(Node<K, V> firstNode) {
       this.head = firstNode;
@@ -165,7 +165,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
   private transient @org.checkerframework.checker.nullness.qual.Nullable Node<K, V> head; // the head for all keys
   private transient @org.checkerframework.checker.nullness.qual.Nullable Node<K, V> tail; // the tail for all keys
   private transient Map<K, KeyList<K, V>> keyToKeyList;
-  private transient int size;
+  private transient @NonNegative int size;
 
   /*
    * Tracks modifications to keyToKeyList so that addition or removal of keys invalidates
@@ -189,7 +189,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
    * @param expectedKeys the expected number of distinct keys
    * @throws IllegalArgumentException if {@code expectedKeys} is negative
    */
-  public static <K, V> LinkedListMultimap<K, V> create(int expectedKeys) {
+  public static <K, V> LinkedListMultimap<K, V> create(@NonNegative int expectedKeys) {
     return new LinkedListMultimap<>(expectedKeys);
   }
 
@@ -209,7 +209,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
     keyToKeyList = Maps.newHashMap();
   }
 
-  private LinkedListMultimap(int expectedKeys) {
+  private LinkedListMultimap(@NonNegative int expectedKeys) {
     keyToKeyList = new HashMap<>(expectedKeys);
   }
 
