@@ -521,7 +521,6 @@ public final class ImmutableLongArray implements Serializable {
 
   /** Returns a new, mutable copy of this array's values, as a primitive {@code long[]}. */
   @SuppressWarnings({
-    "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/191
     /*
      * length of this is defined as end-start,
      * Arrays.copyOfRange returns an array of length end-start,
