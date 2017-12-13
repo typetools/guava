@@ -66,10 +66,9 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableList.java:[469,43] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableList.java:[599,18] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @UnknownVal Object @UnknownVal []
-  required        : index of type @IndexFor("dst") or @LTLengthOf("dst"), or array of type @MinLen("2147483648")
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableList.java:[599,18] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+  found   : @LTLengthOf(value="dst", offset="-i - 1") int
+  required: @IndexFor("dst") or @LTLengthOf("dst") -- an integer less than dst's length
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableList.java:[626,27] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
@@ -80,8 +79,11 @@
   found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableCollection.java:[350,17] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @UpperBoundUnknown int
+  found   : @LTEqLengthOf("dst") int
   required: @IndexFor("dst") or @LTLengthOf("dst") -- an integer less than dst's length
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableCollection.java:[350,17] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+  found   : @LTLengthOf(value="dst", offset="-2") int
+  required: @LTEqLengthOf("dst") int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableCollection.java:[502,20] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.contents") int
   required: @IndexFor("this.contents") or @LTLengthOf("this.contents") -- an integer less than this.contents's length
@@ -95,9 +97,6 @@
   found   : @LTLengthOf(value={"elements", "this.contents"}, offset={"-this.size - 1", "-elements.length - 1"}) int
   required: @LTEqLengthOf("this.contents") int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableCollection.java:[524,51] [assignment.type.incompatible] incompatible types in assignment.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableCollection.java:[524,51] [assignment.type.incompatible] incompatible types in assignment.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("this.contents") int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableCollection.java:[536,73] [argument.type.incompatible] incompatible types in argument.
@@ -106,201 +105,120 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableCollection.java:[537,12] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @LTLengthOf(value={"builder.contents", "this.contents"}, offset={"-this.size - 1", "-builder.size - 1"}) int
   required: @LTEqLengthOf("this.contents") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultiset.java:[96,90] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultiset.java:[97,90] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultiset.java:[341,24] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultiset.java:[342,24] [argument.type.incompatible] incompatible types in argument.
+  found   : @LTEqLengthOf("dst") int
   required: @LTLengthOf(value="dst", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultiset.java:[341,39] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultiset.java:[342,39] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("dst") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultiset.java:[452,16] [assignment.type.incompatible] incompatible types in assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultiset.java:[343,14] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+  found   : @UpperBoundUnknown int
+  required: @LTEqLengthOf("dst") int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultiset.java:[453,16] [assignment.type.incompatible] incompatible types in assignment.
   found   : @SameLenUnknown int @SameLenUnknown []
   required: @SameLenUnknown int @SameLen("this.elements") []
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultiset.java:[455,18] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultiset.java:[456,18] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=9223372036854775807) int
   array type found: @UnknownVal Object @UnknownVal []
   required        : index of type @IndexFor("this.elements") or @LTLengthOf("this.elements"), or array of type @MinLen("-9223372036854775808")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultiset.java:[456,16] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultiset.java:[457,16] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=9223372036854775807) int
   array type found: @IntRangeFromNonNegative int @UnknownVal []
   required        : index of type @IndexFor("this.counts") or @LTLengthOf("this.counts"), or array of type @MinLen("-9223372036854775808")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[200,30] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[200,30] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @UnknownVal Object @UnknownVal []
-  required        : index of type @IndexFor("table") or @LTLengthOf("table"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[203,27] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[204,27] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=9223372036854775807) int
   array type found: @UnknownVal Object @UnknownVal []
   required        : index of type @IndexFor("elements") or @LTLengthOf("elements"), or array of type @MinLen("-9223372036854775808")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[204,17] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[204,17] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @UnknownVal Object @UnknownVal []
-  required        : index of type @IndexFor("table") or @LTLengthOf("table"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[212,27] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[213,27] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="elements", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[221,24] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[222,24] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("elements") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[255,14] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[256,14] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[345,34] [argument.type.incompatible] incompatible types in argument.
+  required: @Positive int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[346,34] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("elements") int
   required: @LTEqLengthOf("elements.clone()") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[419,29] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[420,29] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="this", offset={}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[487,22] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[488,22] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[488,27] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[489,27] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[517,13] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[518,13] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[554,37] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[555,37] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
   found   : @LowerBoundUnknown int
   required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[554,37] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[555,37] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=2147483647) int
   array type found: @UnknownVal Object @UnknownVal []
   required        : index of type @IndexFor("this.hashTable") or @LTLengthOf("this.hashTable"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[556,21] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[557,21] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
   found   : @LowerBoundUnknown int
   required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[556,21] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[557,21] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=2147483647) int
   array type found: @UnknownVal Object @UnknownVal []
   required        : index of type @IndexFor("this.hashTable") or @LTLengthOf("this.hashTable"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[656,48] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[657,48] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal Object @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[666,31] [assignment.type.incompatible] incompatible types in assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[662,92] [argument.type.incompatible] incompatible types in argument.
+  found   : @GTENegativeOne int
+  required: @NonNegative int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSet.java:[667,31] [assignment.type.incompatible] incompatible types in assignment.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("this.contents") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[52,42] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[76,48] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[79,48] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("first") int
   required: @LTLengthOf(value={"first", "result"}, offset={"0 - 1", "0 - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[77,61] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[80,61] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("second") int
   required: @LTLengthOf(value={"second", "result"}, offset={"0 - 1", "first.length - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[92,12] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[95,12] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : T extends @UnknownVal Object @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[93,48] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[96,48] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("array") int
   required: @LTLengthOf(value={"array", "result"}, offset={"0 - 1", "1 - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[108,17] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[111,17] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("array") int
   required: @IndexFor("result") or @LTLengthOf("result") -- an integer less than result's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[161,26] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[161,41] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[165,11] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[167,27] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[167,43] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[167,43] [argument.type.incompatible] incompatible types in argument.
-  found   : @UpperBoundUnknown int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[170,43] [argument.type.incompatible] incompatible types in argument.
+  found   : @LTEqLengthOf("src") int
   required: @LTLengthOf(value={"src", "dst"}, offset={"offset - 1", "0 - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[194,26] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[194,41] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[198,34] [array.length.negative] Variable used in array creation could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[199,32] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[199,51] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[199,51] [argument.type.incompatible] incompatible types in argument.
-  found   : @LTEqLengthOf("result") int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[202,51] [argument.type.incompatible] incompatible types in argument.
+  found   : @LTEqLengthOf({"elements", "result"}) int
   required: @LTLengthOf(value={"elements", "result"}, offset={"offset - 1", "0 - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[207,14] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[210,14] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=9223372036854775807) int
   array type found: @UnknownVal Object @UnknownVal []
   required        : index of type @IndexFor("array") or @LTLengthOf("array"), or array of type @MinLen("-9223372036854775808")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[216,25] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[216,25] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @UpperBoundUnknown int
-  required: @IndexFor("array") or @LTLengthOf("array") -- an integer less than array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[217,11] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[217,11] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @UpperBoundUnknown int
-  required: @IndexFor("array") or @LTLengthOf("array") -- an integer less than array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[217,22] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[217,22] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @UpperBoundUnknown int
-  required: @IndexFor("array") or @LTLengthOf("array") -- an integer less than array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[218,11] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[218,11] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @UpperBoundUnknown int
-  required: @IndexFor("array") or @LTLengthOf("array") -- an integer less than array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ObjectArrays.java:[229,33] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483646) int
-  array type found: @UnknownVal Object @UnknownVal []
-  required        : index of type @IndexFor("array") or @LTLengthOf("array"), or array of type @MinLen("2147483647")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableList.java:[61,37] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableList.java:[61,50] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableList.java:[62,50] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("this.array") int
   required: @LTLengthOf(value={"this.array", "dst"}, offset={"0 - 1", "dstOff - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableList.java:[69,22] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableList.java:[69,22] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableList.java:[70,22] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @UpperBoundUnknown int
   required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableList.java:[102,76] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableList.java:[102,82] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/DiscreteDomain.java:[83,50] [argument.type.incompatible] incompatible types in argument.
   found   : @UnknownVal long
   required: @IntRange(from=-2147483648, to=2147483647) long
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMap.java:[212,22] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMap.java:[268,32] [array.length.negative] Variable used in array creation could be negative.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMap.java:[213,26] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
+  required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMap.java:[291,19] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTEqLengthOf("this.entries") int
   required: @IndexFor("this.entries") or @LTLengthOf("this.entries") -- an integer less than this.entries's length
@@ -333,24 +251,22 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMap.java:[924,37] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.keys", offset="0") int
   required: @IndexFor("this.values") or @LTLengthOf("this.values") -- an integer less than this.values's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultimap.java:[502,12] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultimap.java:[679,81] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultimap.java:[679,81] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultimap.java:[734,5] [override.return.invalid] Incompatible return type.
+  Method
+    @LowerBoundUnknown int copyIntoArray(@LowerBoundUnknown Values<K extends @LowerBoundUnknown Object, V extends @LowerBoundUnknown Object> this, @LowerBoundUnknown Object @LowerBoundUnknown [] p0, @LowerBoundUnknown int p1) in com.google.common.collect.ImmutableMultimap.Values
+  cannot override
+    @NonNegative int copyIntoArray(@LowerBoundUnknown ImmutableCollection<V extends @LowerBoundUnknown Object> this, @LowerBoundUnknown Object @LowerBoundUnknown [] p0, @NonNegative int p1) in com.google.common.collect.ImmutableCollection
   found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultimap.java:[736,53] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/AbstractMultimap.java:[230,40] [return.type.incompatible] incompatible types in return.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Multimaps.java:[1426,31] [return.type.incompatible] incompatible types in return.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Multimaps.java:[1817,29] [return.type.incompatible] incompatible types in return.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMultimap.java:[736,53] [argument.type.incompatible] incompatible types in argument.
+  found   : @UpperBoundUnknown int
+  required: @LTEqLengthOf("dst") int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/AbstractMapBasedMultimap.java:[505,18] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @GTENegativeOne int
   required: @NonNegative int
@@ -380,9 +296,6 @@
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/AbstractMapBasedMultimap.java:[1194,16] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @GTENegativeOne int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ForwardingMultimap.java:[149,27] [return.type.incompatible] incompatible types in return.
-  found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Maps.java:[306,35] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
@@ -417,6 +330,12 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[178,14] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 5 could be larger than the array's bound
   found   : @UnknownVal Comparable<? extends @UnknownVal Object> @UnknownVal []
   required: @MinLen("6") -- an array guaranteed to have at least 6 elements
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[397,36] [argument.type.incompatible] incompatible types in argument.
+  found   : @LowerBoundUnknown int
+  required: @NonNegative int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[397,36] [argument.type.incompatible] incompatible types in argument.
+  found   : @UpperBoundUnknown int
+  required: @LTEqLengthOf("contents") int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[398,27] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="contents", offset={}) int
@@ -452,28 +371,26 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedSet.java:[549,30] [assignment.type.incompatible] incompatible types in assignment.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("this.contents") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedSet.java:[161,40] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableListMultimap.java:[394,16] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedSet.java:[217,32] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedSet.java:[161,3] [override.return.invalid] Incompatible return type.
+  Method
+    @LowerBoundUnknown int copyIntoArray(@LowerBoundUnknown RegularImmutableSortedSet<E extends @LowerBoundUnknown Object> this, @LowerBoundUnknown Object @LowerBoundUnknown [] p0, @NonNegative int p1) in com.google.common.collect.RegularImmutableSortedSet
+  cannot override
+    @NonNegative int copyIntoArray(@LowerBoundUnknown ImmutableCollection<E extends @LowerBoundUnknown Object> this, @LowerBoundUnknown Object @LowerBoundUnknown [] p0, @NonNegative int p1) in com.google.common.collect.ImmutableCollection
+  found   : @LowerBoundUnknown int
+  required: @NonNegative int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedSet.java:[218,32] [argument.type.incompatible] incompatible types in argument.
   found   : @GTENegativeOne int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedSet.java:[223,48] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedSet.java:[224,48] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedSet.java:[229,48] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedSet.java:[230,48] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedSet.java:[235,52] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedSet.java:[241,52] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedSet.java:[291,28] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedSet.java:[291,42] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedSet.java:[247,34] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/primitives/UnsignedBytes.java:[327,20] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -504,6 +421,12 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedMap.java:[580,62] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal Entry<K extends @UnknownVal Object, V extends @UnknownVal Object> @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedMap.java:[751,28] [argument.type.incompatible] incompatible types in argument.
+  found   : @LowerBoundUnknown int
+  required: @NonNegative int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedMap.java:[751,39] [argument.type.incompatible] incompatible types in argument.
+  found   : @LowerBoundUnknown int
+  required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedMap.java:[751,67] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
@@ -570,27 +493,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ArrayTable.java:[370,57] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("this.array[i]") int
   required: @LTLengthOf(value={"this.array[i]", "copy[i]"}, offset={"0 - 1", "0 - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ArrayTable.java:[440,66] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown Integer
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ArrayTable.java:[440,76] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown Integer
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ArrayTable.java:[467,16] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown Integer
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ArrayTable.java:[467,26] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown Integer
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ArrayTable.java:[524,16] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown Integer
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ArrayTable.java:[524,26] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown Integer
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ArrayTable.java:[612,73] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown Integer
-  required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ArrayTable.java:[630,17] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
@@ -639,30 +541,12 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Lists.java:[679,45] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Lists.java:[713,45] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Lists.java:[714,33] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Lists.java:[737,28] [return.type.incompatible] incompatible types in return.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Lists.java:[784,28] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Lists.java:[784,39] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Lists.java:[785,44] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Lists.java:[785,44] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("this.string") int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Lists.java:[785,55] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Lists.java:[785,55] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTEqLengthOf("this.string") int
@@ -676,9 +560,6 @@
   found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Lists.java:[884,19] [return.type.incompatible] incompatible types in return.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Synchronized.java:[626,31] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedMultiset.java:[65,51] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
@@ -729,6 +610,12 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedMultiset.java:[120,36] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedMultiset.java:[126,73] [argument.type.incompatible] incompatible types in argument.
+  found   : @LowerBoundUnknown int
+  required: @NonNegative int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSortedMultiset.java:[126,79] [argument.type.incompatible] incompatible types in argument.
+  found   : @LowerBoundUnknown int
+  required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedMultiset.java:[93,90] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
@@ -757,9 +644,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableSortedMultiset.java:[590,47] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @LTLengthOf(value="this.elements", offset="0") int
   required: @IndexFor("this.counts") or @LTLengthOf("this.counts") -- an integer less than this.counts's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMapEntry.java:[44,34] [array.length.negative] Variable used in array creation could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Platform.java:[45,48] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
@@ -780,7 +664,10 @@
   index type found: @IntRange(from=0, to=2147483647) int
   array type found: @UnknownVal Segment<K extends @UnknownVal Object, V extends @UnknownVal Object, E extends @UnknownVal InternalEntry<K extends @UnknownVal Object, V extends @UnknownVal Object, E>, S extends @UnknownVal Segment<K extends @UnknownVal Object, V extends @UnknownVal Object, E extends @UnknownVal InternalEntry<K extends @UnknownVal Object, V extends @UnknownVal Object, E>, S>> @UnknownVal []
   required        : index of type @IndexFor("this.segments") or @LTLengthOf("this.segments"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Serialization.java:[137,29] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Serialization.java:[79,30] [argument.type.incompatible] incompatible types in argument.
+  found   : @LowerBoundUnknown int
+  required: @NonNegative int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Serialization.java:[138,29] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/Striped64.java:[109,38] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -803,16 +690,19 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/DescendingImmutableSortedMultiset.java:[63,54] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableBiMap.java:[147,22] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableBiMap.java:[148,22] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableBiMap.java:[283,29] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableBiMap.java:[149,26] [argument.type.incompatible] incompatible types in argument.
+  found   : @LowerBoundUnknown int
+  required: @NonNegative int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableBiMap.java:[284,29] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal Entry<K extends @UnknownVal Object, V extends @UnknownVal Object> @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableBiMap.java:[283,50] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableBiMap.java:[284,50] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal Entry<K extends @UnknownVal Object, V extends @UnknownVal Object> @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableBiMap.java:[298,17] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableBiMap.java:[299,17] [argument.type.incompatible] incompatible types in argument.
   found   : @UpperBoundUnknown int
   required: @LTLengthOf(value="this.entries", offset={}) int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[295,20] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
@@ -821,15 +711,15 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[309,9] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @GTENegativeOne int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[334,26] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[343,21] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+  found   : @GTENegativeOne int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[407,14] [return.type.incompatible] incompatible types in return.
-  found   : @LowerBoundUnknown int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[379,18] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+  found   : @GTENegativeOne int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[412,24] [return.type.incompatible] incompatible types in return.
-  found   : @LowerBoundUnknown int
-  required: @GTENegativeOne int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[401,16] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+  found   : @GTENegativeOne int
+  required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedListMultimap.java:[499,26] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
@@ -854,7 +744,7 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/FilteredEntryMultimap.java:[352,24] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/SortedLists.java:[283,73] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/SortedLists.java:[301,73] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/DescendingImmutableSortedSet.java:[114,25] [return.type.incompatible] incompatible types in return.
@@ -863,26 +753,17 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableMapKeySet.java:[67,40] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMultiset.java:[64,78] [array.length.negative] Variable used in array creation could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMultiset.java:[74,60] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMultiset.java:[74,60] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @UnknownVal ImmutableEntry<E extends @UnknownVal Object> @UnknownVal []
+  array type found: @UnknownVal ImmutableEntry<E extends @UnknownVal Object> @ArrayLenRange(from=1, to=2147483647) []
   required        : index of type @IndexFor("hashTable") or @LTLengthOf("hashTable"), or array of type @MinLen("2147483648")
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMultiset.java:[87,25] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=9223372036854775807) int
   array type found: @UnknownVal ImmutableEntry<E extends @UnknownVal Object> @UnknownVal []
   required        : index of type @IndexFor("entryArray") or @LTLengthOf("entryArray"), or array of type @MinLen("-9223372036854775808")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMultiset.java:[88,19] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMultiset.java:[88,19] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @UnknownVal ImmutableEntry<E extends @UnknownVal Object> @UnknownVal []
+  array type found: @UnknownVal ImmutableEntry<E extends @UnknownVal Object> @ArrayLenRange(from=1, to=2147483647) []
   required        : index of type @IndexFor("hashTable") or @LTLengthOf("hashTable"), or array of type @MinLen("2147483648")
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMultiset.java:[125,61] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
   found   : @LowerBoundUnknown int
@@ -903,29 +784,29 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMultiset.java:[172,20] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @UpperBoundUnknown int
   required: @IndexFor("this.entries") or @LTLengthOf("this.entries") -- an integer less than this.entries's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterators.java:[1071,13] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterators.java:[1072,13] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterators.java:[1071,21] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterators.java:[1072,21] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterators.java:[1078,27] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterators.java:[1079,27] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
   found   : @LowerBoundUnknown int
   required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterators.java:[1078,27] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterators.java:[1079,27] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=2147483647) int
   array type found: T extends @UnknownVal Object @UnknownVal []
   required        : index of type @IndexFor("this.array") or @LTLengthOf("this.array"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterators.java:[1095,40] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterators.java:[1096,40] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterators.java:[1095,48] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterators.java:[1096,48] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterators.java:[1096,38] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterators.java:[1097,38] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterators.java:[1096,45] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterators.java:[1097,45] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Comparators.java:[131,22] [argument.type.incompatible] incompatible types in argument.
@@ -970,25 +851,19 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableRangeSet.java:[571,29] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableRangeMap.java:[194,35] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableRangeMap.java:[186,33] [assignment.type.incompatible] incompatible types in assignment.
   found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableRangeMap.java:[195,47] [argument.type.incompatible] incompatible types in argument.
+  required: @GTENegativeOne int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableRangeMap.java:[204,33] [assignment.type.incompatible] incompatible types in assignment.
   found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableRangeMap.java:[212,35] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableRangeMap.java:[213,74] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableRangeMap.java:[223,51] [argument.type.incompatible] incompatible types in argument.
+  required: @GTENegativeOne int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableRangeMap.java:[224,51] [argument.type.incompatible] incompatible types in argument.
   found   : @GTENegativeOne int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableRangeMap.java:[356,66] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableRangeMap.java:[316,33] [assignment.type.incompatible] incompatible types in assignment.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableRangeMap.java:[356,78] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableRangeMap.java:[323,33] [assignment.type.incompatible] incompatible types in assignment.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/CartesianList.java:[58,25] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
@@ -1070,178 +945,106 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/EnumMultiset.java:[250,16] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @UpperBoundUnknown int
   required: @IndexFor("this.counts") or @LTLengthOf("this.counts") -- an integer less than this.counts's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[227,30] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[229,30] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[232,30] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[234,30] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[269,18] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[271,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[293,18] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[295,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[315,18] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[317,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[593,18] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[599,20] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[607,18] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[613,20] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[621,14] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[634,18] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[640,20] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[641,31] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[642,34] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[644,34] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @GTENegativeOne int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[643,39] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[648,24] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[652,18] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[658,20] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[659,31] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[660,34] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[662,34] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @GTENegativeOne int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[661,39] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[670,14] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[685,18] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[691,34] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[692,32] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[694,32] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @GTENegativeOne int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[693,40] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[697,25] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[699,25] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @LowerBoundUnknown long
   required: @NonNegative long
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[697,43] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[702,18] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[708,34] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[709,32] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[711,32] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @GTENegativeOne int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[710,40] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[714,25] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[716,25] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @LowerBoundUnknown long
   required: @NonNegative long
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[714,43] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[719,14] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
-  found   : @UnknownVal int @UnknownVal []
-  required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[723,23] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[725,23] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @LowerBoundUnknown long
   required: @NonNegative long
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[738,18] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[740,18] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal int @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[747,20] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[749,20] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal int @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[748,39] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[750,39] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal int @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[749,34] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[751,34] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @GTENegativeOne int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[750,45] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[752,45] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal int @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[753,27] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[755,27] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @LowerBoundUnknown long
   required: @NonNegative long
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[753,48] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[755,48] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal int @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[759,18] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[761,18] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal int @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[768,20] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[770,20] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal int @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[769,39] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[771,39] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal int @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[770,34] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[772,34] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @GTENegativeOne int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[771,45] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[773,45] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal int @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[774,27] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[776,27] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @LowerBoundUnknown long
   required: @NonNegative long
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[774,48] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[776,48] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal int @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[780,14] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[782,14] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal int @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[785,25] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[787,25] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @LowerBoundUnknown long
   required: @NonNegative long
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[804,52] [assignment.type.incompatible] incompatible types in assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[806,52] [assignment.type.incompatible] incompatible types in assignment.
   found   : @GTENegativeOne int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[805,40] [assignment.type.incompatible] incompatible types in assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[807,40] [assignment.type.incompatible] incompatible types in assignment.
   found   : @LowerBoundUnknown long
   required: @NonNegative long
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[811,52] [assignment.type.incompatible] incompatible types in assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[813,52] [assignment.type.incompatible] incompatible types in assignment.
   found   : @GTENegativeOne int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[812,40] [assignment.type.incompatible] incompatible types in assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[814,40] [assignment.type.incompatible] incompatible types in assignment.
   found   : @LowerBoundUnknown long
   required: @NonNegative long
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[823,25] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[825,25] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @GTENegativeOne int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[835,25] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TreeMultiset.java:[837,25] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
   found   : @GTENegativeOne int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/MutableClassToInstanceMap.java:[137,37] [argument.type.incompatible] incompatible types in argument.
@@ -1322,81 +1125,61 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/AbstractMapBasedMultiset.java:[307,24] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[71,24] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[92,58] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+  index type found: @IntRange(from=-2147483648, to=2147483647) int
+  array type found: @UnknownVal ImmutableMapEntry<K extends @UnknownVal Object, V extends @UnknownVal Object> @UnknownVal []
+  required        : index of type @IndexFor("table") or @LTLengthOf("table"), or array of type @MinLen("2147483648")
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[103,13] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+  index type found: @IntRange(from=-2147483648, to=2147483647) int
+  array type found: @UnknownVal ImmutableMapEntry<K extends @UnknownVal Object, V extends @UnknownVal Object> @UnknownVal []
+  required        : index of type @IndexFor("table") or @LTLengthOf("table"), or array of type @MinLen("2147483648")
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[104,15] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+  found   : @LTLengthOf(value="entryArray", offset="0") int
+  required: @IndexFor("entries") or @LTLengthOf("entries") -- an integer less than entries's length
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[113,17] [assignment.type.incompatible] incompatible types in assignment.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[85,38] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483646) int
-  array type found: @UnknownVal Entry<K extends @UnknownVal Object, V extends @UnknownVal Object> @UnknownVal []
-  required        : index of type @IndexFor("entryArray") or @LTLengthOf("entryArray"), or array of type @MinLen("2147483647")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[90,58] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[113,17] [assignment.type.incompatible] incompatible types in assignment.
+  found   : @UpperBoundUnknown int
+  required: @LTLengthOf(value="this.table", offset={}) int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[141,51] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
   found   : @LowerBoundUnknown int
   required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[90,58] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @UnknownVal ImmutableMapEntry<K extends @UnknownVal Object, V extends @UnknownVal Object> @UnknownVal []
-  required        : index of type @IndexFor("table") or @LTLengthOf("table"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[101,13] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[101,13] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @UnknownVal ImmutableMapEntry<K extends @UnknownVal Object, V extends @UnknownVal Object> @UnknownVal []
-  required        : index of type @IndexFor("table") or @LTLengthOf("table"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[102,15] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=9223372036854775807) int
-  array type found: @UnknownVal Entry<K extends @UnknownVal Object, V extends @UnknownVal Object> @UnknownVal []
-  required        : index of type @IndexFor("entries") or @LTLengthOf("entries"), or array of type @MinLen("-9223372036854775808")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[139,51] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[139,51] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[141,51] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=2147483647) int
   array type found: @UnknownVal ImmutableMapEntry<? extends @UnknownVal Object, V extends @UnknownVal Object> @UnknownVal []
   required        : index of type @IndexFor("keyTable") or @LTLengthOf("keyTable"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[196,26] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[198,26] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
   found   : @LowerBoundUnknown int
   required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[196,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[198,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @UpperBoundUnknown int
   required: @IndexFor("this.map.entries") or @LTLengthOf("this.map.entries") -- an integer less than this.map.entries's length
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[251,26] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[251,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableMap.java:[253,26] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @UpperBoundUnknown int
   required: @IndexFor("this.map.entries") or @LTLengthOf("this.map.entries") -- an integer less than this.map.entries's length
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableBiMap.java:[66,24] [argument.type.incompatible] incompatible types in argument.
+  found   : @LowerBoundUnknown int
+  required: @NonNegative int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableBiMap.java:[75,34] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableBiMap.java:[81,38] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=2147483646) int
   array type found: @UnknownVal Entry<K extends @UnknownVal Object, V extends @UnknownVal Object> @UnknownVal []
   required        : index of type @IndexFor("entryArray") or @LTLengthOf("entryArray"), or array of type @MinLen("2147483647")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableBiMap.java:[90,58] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableBiMap.java:[90,58] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=2147483647) int
   array type found: @UnknownVal ImmutableMapEntry<K extends @UnknownVal Object, V extends @UnknownVal Object> @UnknownVal []
   required        : index of type @IndexFor("keyTable") or @LTLengthOf("keyTable"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableBiMap.java:[92,62] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableBiMap.java:[92,62] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=2147483647) int
   array type found: @UnknownVal ImmutableMapEntry<K extends @UnknownVal Object, V extends @UnknownVal Object> @UnknownVal []
   required        : index of type @IndexFor("valueTable") or @LTLengthOf("valueTable"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableBiMap.java:[110,16] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableBiMap.java:[110,16] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=2147483647) int
   array type found: @UnknownVal ImmutableMapEntry<K extends @UnknownVal Object, V extends @UnknownVal Object> @UnknownVal []
   required        : index of type @IndexFor("keyTable") or @LTLengthOf("keyTable"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableBiMap.java:[111,18] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableBiMap.java:[111,18] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
   index type found: @IntRange(from=-2147483648, to=2147483647) int
   array type found: @UnknownVal ImmutableMapEntry<K extends @UnknownVal Object, V extends @UnknownVal Object> @UnknownVal []
@@ -1519,6 +1302,19 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/MinMaxPriorityQueue.java:[993,42] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableAsList.java:[69,3] [override.return.invalid] Incompatible return type.
+  Method
+    @LowerBoundUnknown int copyIntoArray(@LowerBoundUnknown RegularImmutableAsList<E extends @LowerBoundUnknown Object> this, @LowerBoundUnknown Object @LowerBoundUnknown [] p0, @NonNegative int p1) in com.google.common.collect.RegularImmutableAsList
+  cannot override
+    @NonNegative int copyIntoArray(@LowerBoundUnknown ImmutableList<E extends @LowerBoundUnknown Object> this, @LowerBoundUnknown Object @LowerBoundUnknown [] p0, @NonNegative int p1) in com.google.common.collect.ImmutableList
+  found   : @LowerBoundUnknown int
+  required: @NonNegative int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableAsList.java:[70,44] [argument.type.incompatible] incompatible types in argument.
+  found   : @UpperBoundUnknown int
+  required: @LTEqLengthOf("dst") int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Hashing.java:[75,12] [return.type.incompatible] incompatible types in return.
+  found   : @LowerBoundUnknown int
+  required: @Positive int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableTable.java:[552,27] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : @UnknownVal Object @UnknownVal []
   required: @MinLen("1") -- an array guaranteed to have at least 1 elements
@@ -1663,9 +1459,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedHashMultimap.java:[234,68] [assignment.type.incompatible] incompatible types in assignment.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedHashMultimap.java:[361,53] [array.length.negative] Variable used in array creation could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/LinkedHashMultimap.java:[449,59] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
   found   : @LowerBoundUnknown int
   required: an integer >= 0 (@NonNegative or @Positive)
@@ -1730,9 +1523,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ConcurrentHashMultiset.java:[298,18] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ConcurrentHashMultiset.java:[323,40] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @Positive int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ConcurrentHashMultiset.java:[392,20] [return.type.incompatible] incompatible types in return.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
@@ -1742,17 +1532,14 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/FilteredKeyMultimap.java:[166,26] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterables.java:[762,36] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterables.java:[764,36] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterables.java:[789,50] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterables.java:[791,50] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterables.java:[867,33] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/Iterables.java:[869,33] [argument.type.incompatible] incompatible types in argument.
   found   : @GTENegativeOne int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/HashBiMap.java:[126,22] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/HashBiMap.java:[144,52] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
   found   : @LowerBoundUnknown int
@@ -1782,6 +1569,9 @@
   index type found: @IntRange(from=-2147483648, to=2147483647) int
   array type found: @UnknownVal BiEntry<K extends @UnknownVal Object, V extends @UnknownVal Object> @UnknownVal []
   required        : index of type @IndexFor("this.hashTableVToK") or @LTLengthOf("this.hashTableVToK"), or array of type @MinLen("2147483648")
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/HashBiMap.java:[186,9] [compound.assignment.type.incompatible] incompatible result type in compound assignment.
+  found   : @GTENegativeOne int
+  required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/HashBiMap.java:[192,44] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
   found   : @LowerBoundUnknown int
   required: an integer >= 0 (@NonNegative or @Positive)
@@ -1827,10 +1617,7 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/HashBiMap.java:[379,24] [array.length.negative] Variable used in array creation could be negative.
   found   : @LowerBoundUnknown int
   required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/HashBiMap.java:[408,12] [return.type.incompatible] incompatible types in return.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/HashBiMap.java:[575,14] [return.type.incompatible] incompatible types in return.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/HashBiMap.java:[754,45] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/ImmutableClassToInstanceMap.java:[116,41] [argument.type.incompatible] incompatible types in argument.
@@ -1866,24 +1653,14 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/HashBasedTable.java:[90,22] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSet.java:[64,32] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSet.java:[64,32] [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
-  index type found: @IntRange(from=-2147483648, to=2147483647) int
-  array type found: @UnknownVal Object @UnknownVal []
-  required        : index of type @IndexFor("table") or @LTLengthOf("table"), or array of type @MinLen("2147483648")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSet.java:[90,40] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSet.java:[90,56] [argument.type.incompatible] incompatible types in argument.
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSet.java:[41,57] [argument.type.incompatible] incompatible types in argument.
+  found   : @UpperBoundUnknown int
+  required: @LTLengthOf(value="null", offset={}) int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularImmutableSet.java:[92,56] [argument.type.incompatible] incompatible types in argument.
   found   : @LTEqLengthOf("this.elements") int
   required: @LTLengthOf(value={"this.elements", "dst"}, offset={"0 - 1", "offset - 1"}) int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/SingletonImmutableSet.java:[89,9] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/SingletonImmutableSet.java:[89,9] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
-  found   : @UpperBoundUnknown int
+[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/SingletonImmutableSet.java:[90,9] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+  found   : @LTEqLengthOf("dst") int
   required: @IndexFor("dst") or @LTLengthOf("dst") -- an integer less than dst's length
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TopKSelector.java:[136,14] [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
   found   : T extends @UnknownVal Object @UnknownVal []
@@ -1968,9 +1745,6 @@
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/TopKSelector.java:[272,28] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
   found   : @GTENegativeOne int
   required: an integer >= 0 (@NonNegative or @Positive)
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/FilteredMultimapValues.java:[57,25] [return.type.incompatible] incompatible types in return.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/LittleEndianByteArray.java:[161,26] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/LittleEndianByteArray.java:[172,28] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/hash/LittleEndianByteArray.java:[174,24] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
@@ -1982,12 +1756,6 @@
   found   : @LowerBoundUnknown int
   required: @GTENegativeOne int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/RegularContiguousSet.java:[148,44] [return.type.incompatible] incompatible types in return.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/MultimapBuilder.java:[97,22] [argument.type.incompatible] incompatible types in argument.
-  found   : @LowerBoundUnknown int
-  required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/MultimapBuilder.java:[128,22] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/SparseImmutableTable.java:[49,45] [assignment.type.incompatible] incompatible types in assignment.
@@ -2004,36 +1772,24 @@
   index type found: @IntRange(from=-2147483648, to=9223372036854775807) int
   array type found: @UnknownVal int @UnknownVal []
   required        : index of type @IndexFor("cellColumnInRowIndices") or @LTLengthOf("cellColumnInRowIndices"), or array of type @MinLen("-9223372036854775808")
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/SparseImmutableTable.java:[121,35] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/SparseImmutableTable.java:[121,35] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @UpperBoundUnknown int
   required: @IndexFor("this.cellRowIndices") or @LTLengthOf("this.cellRowIndices") -- an integer less than this.cellRowIndices's length
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/SparseImmutableTable.java:[122,76] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/SparseImmutableTable.java:[124,46] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/SparseImmutableTable.java:[124,46] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @UpperBoundUnknown int
   required: @IndexFor("this.cellColumnInRowIndices") or @LTLengthOf("this.cellColumnInRowIndices") -- an integer less than this.cellColumnInRowIndices's length
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/SparseImmutableTable.java:[125,56] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/SparseImmutableTable.java:[131,35] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/SparseImmutableTable.java:[131,35] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @UpperBoundUnknown int
   required: @IndexFor("this.cellRowIndices") or @LTLengthOf("this.cellRowIndices") -- an integer less than this.cellRowIndices's length
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/SparseImmutableTable.java:[132,59] [argument.type.incompatible] incompatible types in argument.
   found   : @LowerBoundUnknown int
   required: @NonNegative int
-[WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/SparseImmutableTable.java:[133,46] [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
-  found   : @LowerBoundUnknown int
-  required: an integer >= 0 (@NonNegative or @Positive)
 [WARNING] /home/vlasta/git/guava/guava/src/com/google/common/collect/SparseImmutableTable.java:[133,46] [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
   found   : @UpperBoundUnknown int
   required: @IndexFor("this.cellColumnInRowIndices") or @LTLengthOf("this.cellColumnInRowIndices") -- an integer less than this.cellColumnInRowIndices's length
@@ -2057,7 +1813,7 @@
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time: 11:00 min
-[INFO] Finished at: 2017-12-12T11:13:42+01:00
-[INFO] Final Memory: 27M/572M
+[INFO] Total time: 09:24 min
+[INFO] Finished at: 2017-12-12T13:37:37+01:00
+[INFO] Final Memory: 28M/605M
 [INFO] ------------------------------------------------------------------------
