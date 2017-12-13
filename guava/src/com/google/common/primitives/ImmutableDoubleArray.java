@@ -228,6 +228,7 @@ public final class ImmutableDoubleArray implements Serializable {
      * contain.
      */
     /*
+     * count starts out as @IndexOrHigh("array").
      * Calling ensureRoomFor(1) ensures that count is IndexFor("array").
      * Need ensures annotation for @LTLengthOf, for example @EnsuresLTLengthOf.
      * ensureRoomFor should be
@@ -345,8 +346,8 @@ public final class ImmutableDoubleArray implements Serializable {
     }
 
     /* 
-     * expandedCapacity(array.length, newCount) is at least newCount
-     * newArray is at least as long as array
+     * expandedCapacity(array.length, newCount) >= newCount
+     * newArray.length >= array.length
      * therefore, count is an index for newArray
      * Possibly could be solved by combination of: 
      *   https://github.com/panacekcz/checker-framework/issues/11
