@@ -73,7 +73,7 @@ public final class ArrayListMultimap<K, V>
   // Default from ArrayList
   private static final int DEFAULT_VALUES_PER_KEY = 3;
 
-  @VisibleForTesting transient int expectedValuesPerKey;
+  @VisibleForTesting transient @NonNegative int expectedValuesPerKey;
 
   /**
    * Creates a new, empty {@code ArrayListMultimap} with the default initial capacities.
@@ -97,7 +97,7 @@ public final class ArrayListMultimap<K, V>
    * @throws IllegalArgumentException if {@code expectedKeys} or {@code expectedValuesPerKey} is
    *     negative
    */
-  public static <K, V> ArrayListMultimap<K, V> create(int expectedKeys, int expectedValuesPerKey) {
+  public static <K, V> ArrayListMultimap<K, V> create(@NonNegative int expectedKeys, @NonNegative int expectedValuesPerKey) {
     return new ArrayListMultimap<>(expectedKeys, expectedValuesPerKey);
   }
 
@@ -118,7 +118,7 @@ public final class ArrayListMultimap<K, V>
     expectedValuesPerKey = DEFAULT_VALUES_PER_KEY;
   }
 
-  private ArrayListMultimap(int expectedKeys, int expectedValuesPerKey) {
+  private ArrayListMultimap(@NonNegative int expectedKeys, @NonNegative int expectedValuesPerKey) {
     super(Maps.<K, Collection<V>>newHashMapWithExpectedSize(expectedKeys));
     checkNonnegative(expectedValuesPerKey, "expectedValuesPerKey");
     this.expectedValuesPerKey = expectedValuesPerKey;

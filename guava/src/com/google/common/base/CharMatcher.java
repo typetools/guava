@@ -25,8 +25,13 @@ import java.util.Arrays;
 import java.util.BitSet;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.IndexOrLow;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
+import org.checkerframework.common.value.qual.IntVal;
 
 /**
  * Determines a true or false value for any Java {@code char} value, just as {@link Predicate} does
@@ -499,7 +504,11 @@ public abstract class CharMatcher implements Predicate<Character> {
    * Returns a {@code char} matcher that matches any BMP character present in the given character
    * sequence. Returns a bogus matcher if the sequence contains supplementary characters.
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
+  /*
+   * The CharSequence is not mutated, therefore after checking its length, 
+   * accesses to lower indices are safe.
+   */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   public static CharMatcher anyOf(final CharSequence sequence) {
     switch (sequence.length()) {
       case 0:
@@ -636,7 +645,7 @@ public abstract class CharMatcher implements Predicate<Character> {
    */
   @GwtIncompatible // SmallCharMatcher
   private static CharMatcher precomputedPositive(
-      int totalCharacters, BitSet table, String description) {
+       int totalCharacters, BitSet table, String description) {
     switch (totalCharacters) {
       case 0:
         return none();
@@ -699,7 +708,11 @@ public abstract class CharMatcher implements Predicate<Character> {
    * @return {@code true} if this matcher matches every character in the sequence, including when
    *     the sequence is empty
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
+  /*
+   * The CharSequence is not mutated, therefore acesses to indices less
+   * than the length are safe,
+   */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   public boolean matchesAllOf(CharSequence sequence) {
     for (int i = sequence.length() - 1; i >= 0; i--) {
       if (!matches(sequence.charAt(i))) {
@@ -753,6 +766,12 @@ public abstract class CharMatcher implements Predicate<Character> {
    * @throws IndexOutOfBoundsException if start is negative or greater than {@code
    *         sequence.length()}
    */
+  /*
+   * The CharSequence is not mutated, therefore acesses to indices less
+   * than the length are safe,
+   * start should be @IndexOrHigh("#1")
+   */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   public @GTENegativeOne int indexIn(CharSequence sequence, @NonNegative int start) {
     int length = sequence.length();
     checkPositionIndex(start, length);
@@ -774,6 +793,11 @@ public abstract class CharMatcher implements Predicate<Character> {
    * @param sequence the character sequence to examine from the end
    * @return an index, or {@code -1} if no character matches
    */
+  /*
+   * The CharSequence is not mutated, therefore acesses to indices less
+   * than the length are safe,
+   */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   public @GTENegativeOne int lastIndexIn(CharSequence sequence) {
     for (int i = sequence.length() - 1; i >= 0; i--) {
       if (matches(sequence.charAt(i))) {
@@ -788,6 +812,11 @@ public abstract class CharMatcher implements Predicate<Character> {
    *
    * <p>Counts 2 per supplementary character, such as for {@link #whitespace}().{@link #negate}().
    */
+  /*
+   * The CharSequence is not mutated, therefore acesses to indices less
+   * than the length are safe,
+   */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   public @NonNegative int countIn(CharSequence sequence) {
     int count = 0;
     for (int i = 0; i < sequence.length(); i++) {
@@ -806,9 +835,27 @@ public abstract class CharMatcher implements Predicate<Character> {
    *
    * ... returns {@code "bzr"}.
    */
+  @SuppressWarnings({
+	  /*
+	   * indexIn should return @LTEqLengthOf("#1")
+	   */
+	  "upperbound:assignment.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
+	  /*
+	   * at entry to OUT, pos is IndexFor("string"),
+       * and after each pos++, it is checked against chars.length
+       * if equal, pos is not incremented anymore
+       * therefore both pos++ are safe
+	   */
+	  "upperbound:compound.assignment.type.incompatible", // index incremented in nested loop with break
+	  "upperbound:array.access.unsafe.high", "upperbound:argument.type.incompatible", // https://github.com/typetools/checker-framework/pull/1702
+	  /*
+	   * spread <= pos, therefore pos-spread >= 0
+	   */
+	  "lowerbound:array.access.unsafe.low", "lowerbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/158
+  })
   public String removeFrom(CharSequence sequence) {
     String string = sequence.toString();
-    int pos = indexIn(string);
+    @GTENegativeOne @LTEqLengthOf("string") int pos = indexIn(string);
     if (pos == -1) {
       return string;
     }
@@ -864,9 +911,17 @@ public abstract class CharMatcher implements Predicate<Character> {
    *     character in {@code sequence}
    * @return the new string
    */
+  /*
+   * CharSequence sequence is not mutated, so indices less than length are valid
+   * indexIn should return @IndexFor("#1") 
+   */
+  @SuppressWarnings({
+	  "upperbound:assignment.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
+	  "upperbound:array.access.unsafe.high" // https://github.com/typetools/checker-framework/pull/1702
+  })
   public String replaceFrom(CharSequence sequence, char replacement) {
     String string = sequence.toString();
-    int pos = indexIn(string);
+    @IndexOrLow("string") int pos = indexIn(string);
     if (pos == -1) {
       return string;
     }
@@ -896,6 +951,14 @@ public abstract class CharMatcher implements Predicate<Character> {
    *     character in {@code sequence}
    * @return the new string
    */
+  /*
+   * CharSequence sequence and replacemen are not mutated, so indices less than length are valid
+   * replacementLen should be @IndexOrHigh("replacement")
+   * indexIn should return @IndexFor("#1") 
+   */
+  @SuppressWarnings({
+	  "upperbound:argument.type.incompatible","upperbound:assignment.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
+  })
   public String replaceFrom(CharSequence sequence, CharSequence replacement) {
     int replacementLen = replacement.length();
     if (replacementLen == 0) {
@@ -906,7 +969,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     }
 
     String string = sequence.toString();
-    int pos = indexIn(string);
+    @IndexOrLow("string") int pos = indexIn(string);
     if (pos == -1) {
       return string;
     }
@@ -914,7 +977,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     int len = string.length();
     StringBuilder buf = new StringBuilder((len * 3 / 2) + 16);
 
-    int oldpos = 0;
+    @IndexOrHigh("string") int oldpos = 0;
     do {
       buf.append(string, oldpos, pos);
       buf.append(replacement);
@@ -940,6 +1003,13 @@ public abstract class CharMatcher implements Predicate<Character> {
    *
    * ... is equivalent to {@link String#trim()}.
    */
+  /*
+   * CharSequence sequence is not mutated, so indices less than length are valid
+   * len should be @IndexOrHigh("sequence")
+   * first should be @IndexOrHigh("sequence")
+   * last should be @IndexFor("sequence")
+   */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   public String trimFrom(CharSequence sequence) {
     int len = sequence.length();
     int first;
@@ -967,6 +1037,12 @@ public abstract class CharMatcher implements Predicate<Character> {
    *
    * ... returns {@code "catbab"}.
    */
+  /*
+   * CharSequence sequence is not mutated, so indices less than length are valid
+   * len should be @IndexOrHigh("sequence")
+   * first should be @IndexOrLow("sequence")
+   */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   public String trimLeadingFrom(CharSequence sequence) {
     int len = sequence.length();
     for (int first = 0; first < len; first++) {
@@ -985,6 +1061,12 @@ public abstract class CharMatcher implements Predicate<Character> {
    *
    * ... returns {@code "abacat"}.
    */
+  /*
+   * CharSequence sequence is not mutated, so indices less than length are valid
+   * len should be @IndexOrHigh("sequence")
+   * last should be @IndexOrLow("sequence")
+   */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   public String trimTrailingFrom(CharSequence sequence) {
     int len = sequence.length();
     for (int last = len - 1; last >= 0; last--) {
@@ -1013,6 +1095,13 @@ public abstract class CharMatcher implements Predicate<Character> {
    *     matching characters in {@code sequence}
    * @return the new string
    */
+  /*
+   * CharSequence sequence is not mutated, so indices less than length are valid
+   * len should be @IndexOrHigh("sequence")
+   * i should be @IndexOrHigh("sequence")
+   * inside the loop, i is @IndexFor("sequence")
+   */
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   public String collapseFrom(CharSequence sequence, char replacement) {
     // This implementation avoids unnecessary allocation.
     int len = sequence.length();
@@ -1037,6 +1126,16 @@ public abstract class CharMatcher implements Predicate<Character> {
    * groups of matching BMP characters at the start or end of the sequence are removed without
    * replacement.
    */
+  /*
+   * len should be @IndexOrHigh("sequence")
+   * first should be @IndexOrHigh("sequence")
+   * last should be @IndexFor("sequence")
+   * last >= first
+   */
+  @SuppressWarnings({
+	  "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
+	  "lowerbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
+  })
   public String trimAndCollapseFrom(CharSequence sequence, char replacement) {
     // This implementation avoids unnecessary allocation.
     int len = sequence.length();
@@ -1059,8 +1158,8 @@ public abstract class CharMatcher implements Predicate<Character> {
 
   private String finishCollapseFrom(
       CharSequence sequence,
-      int start,
-      int end,
+      @IndexOrHigh("#1") int start,
+      @IndexOrHigh("#1") int end,
       char replacement,
       StringBuilder builder,
       boolean inMatchingGroup) {
@@ -1172,6 +1271,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     }
 
     @Override
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
     public boolean matches(char c) {
       return table.get(c);
     }
@@ -1394,7 +1494,7 @@ public abstract class CharMatcher implements Predicate<Character> {
             + "\u0009\u0020\u2006\u2001\u202F\u00A0\u000C\u2009"
             + "\u3000\u2004\u3000\u3000\u2028\n\u2007\u3000";
     static final int MULTIPLIER = 1682554634;
-    static final int SHIFT = Integer.numberOfLeadingZeros(TABLE.length() - 1);
+    static final @IntVal(27) int SHIFT = Integer.numberOfLeadingZeros(TABLE.length() - 1);
 
     static final Whitespace INSTANCE = new Whitespace();
 
@@ -1403,12 +1503,17 @@ public abstract class CharMatcher implements Predicate<Character> {
     }
 
     @Override
+    /*
+     * unsigned right shift on int
+     */
+    @SuppressWarnings("index:argument.type.incompatible") // unsigned right shift
     public boolean matches(char c) {
       return TABLE.charAt((MULTIPLIER * c) >>> SHIFT) == c;
     }
 
     @GwtIncompatible // used only from other GwtIncompatible code
     @Override
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
     void setBits(BitSet table) {
       for (int i = 0; i < TABLE.length(); i++) {
         table.set(TABLE.charAt(i));
@@ -1472,6 +1577,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     private final char [] rangeStarts;
     private final char @SameLen("rangeStarts")[] rangeEnds;
 
+    @SuppressWarnings("samelen:assignment.type.incompatible") // TODO SameLen transitivity
     RangesMatcher(String description, char[] rangeStarts, char @SameLen("#2")[] rangeEnds) {
       this.description = description;
       this.rangeStarts = rangeStarts;
@@ -1515,6 +1621,7 @@ public abstract class CharMatcher implements Predicate<Character> {
             + "\u0e50\u0ed0\u0f20\u1040\u1090\u17e0\u1810\u1946\u19d0\u1a80\u1a90\u1b50\u1bb0"
             + "\u1c40\u1c50\ua620\ua8d0\ua900\ua9d0\ua9f0\uaa50\uabf0\uff10";
 
+    @SuppressWarnings("samelen:return.type.incompatible") // https://github.com/typetools/checker-framework/pull/1702
     private static char @SameLen("ZEROES")[] zeroes() {
       return ZEROES.toCharArray();
     }
@@ -1529,6 +1636,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     static final Digit INSTANCE = new Digit();
 
+    @SuppressWarnings("samelen:argument.type.incompatible") // TODO SameLen on method calls
     private Digit() {
       super("CharMatcher.digit()", zeroes(), nines());
     }
@@ -1644,6 +1752,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     static final Invisible INSTANCE = new Invisible();
 
+    @SuppressWarnings("samelen:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/179
     private Invisible() {
       super("CharMatcher.invisible()", RANGE_STARTS.toCharArray(), RANGE_ENDS.toCharArray());
     }
@@ -1693,7 +1802,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     // countIn could be IndexOrHigh(sequence)
     // to typecheck, this will be also required:
     // https://github.com/kelloggm/checker-framework/issues/193 
-    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
+    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
     public @NonNegative int countIn(CharSequence sequence) {
       return sequence.length() - original.countIn(sequence);
     }
@@ -1818,7 +1927,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     @GwtIncompatible // used only from other GwtIncompatible code
     @Override
-    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
     void setBits(BitSet table) {
       table.set(match);
     }
@@ -1855,7 +1964,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     @GwtIncompatible // used only from other GwtIncompatible code
     @Override
-    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
     void setBits(BitSet table) {
       table.set(0, match);
       table.set(match + 1, Character.MAX_VALUE + 1);
@@ -1894,7 +2003,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     @GwtIncompatible // used only from other GwtIncompatible code
     @Override
-    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
     void setBits(BitSet table) {
       table.set(match1);
       table.set(match2);
@@ -1923,7 +2032,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     @Override
     @GwtIncompatible // used only from other GwtIncompatible code
-    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
     void setBits(BitSet table) {
       for (char c : chars) {
         table.set(c);
@@ -1960,7 +2069,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     @GwtIncompatible // used only from other GwtIncompatible code
     @Override
-    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
     void setBits(BitSet table) {
       table.set(startInclusive, endInclusive + 1);
     }

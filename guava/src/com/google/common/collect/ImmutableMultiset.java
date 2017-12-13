@@ -16,6 +16,8 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.dataflow.qual.Pure;
@@ -335,7 +337,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
 
   @GwtIncompatible // not present in emulated superclass
   @Override
-  int copyIntoArray(Object[] dst, @NonNegative int offset) {
+  @NonNegative int copyIntoArray(Object[] dst, @IndexOrHigh("#1") int offset) {
     for (Multiset.Entry<E> entry : entrySet()) {
       Arrays.fill(dst, offset, offset + entry.getCount(), entry.getElement());
       offset += entry.getCount();
@@ -379,7 +381,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
     return isEmpty() ? ImmutableSet.<Entry<E>>of() : new EntrySet();
   }
 
-  abstract Entry<E> getEntry(int index);
+  abstract Entry<E> getEntry(@IndexFor("this") int index);
 
   @WeakOuter
   private final class EntrySet extends ImmutableSet.Indexed<Entry<E>> {
@@ -389,7 +391,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
     }
 
     @Override
-    Entry<E> get(int index) {
+    Entry<E> get(@IndexFor("this") int index) {
       return getEntry(index);
     }
 
@@ -443,7 +445,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
 
   private static class SerializedForm implements Serializable {
     final Object[] elements;
-    final @SameLen("elements") int[] counts;
+    final @NonNegative int @SameLen("elements")[] counts;
 
     SerializedForm(Multiset<?> multiset) {
       int distinct = multiset.entrySet().size();
@@ -543,7 +545,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
      *     occurrences of the element
      */
     @CanIgnoreReturnValue
-    public Builder<E> addCopies(E element, int occurrences) {
+    public Builder<E> addCopies(E element, @NonNegative int occurrences) {
       contents.add(checkNotNull(element), occurrences);
       return this;
     }
@@ -559,7 +561,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
      * @throws IllegalArgumentException if {@code count} is negative
      */
     @CanIgnoreReturnValue
-    public Builder<E> setCount(E element, int count) {
+    public Builder<E> setCount(E element, @NonNegative int count) {
       contents.setCount(checkNotNull(element), count);
       return this;
     }

@@ -17,6 +17,7 @@
 package com.google.common.collect;
 
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -165,7 +166,7 @@ public abstract class ImmutableSortedSet<E> extends ImmutableSortedSetFauxveride
    * @throws NullPointerException if any element is null
    * @since 3.0 (source-compatible since 2.0)
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked"})
   public static <E extends Comparable<? super E>> ImmutableSortedSet<E> of(
       E e1, E e2, E e3, E e4, E e5, E e6, E... remaining) {
     Comparable[] contents = new Comparable[6 + remaining.length];
@@ -814,7 +815,7 @@ public abstract class ImmutableSortedSet<E> extends ImmutableSortedSetFauxveride
   /**
    * Returns the position of an element within the set, or -1 if not present.
    */
-  abstract int indexOf(@Nullable Object target);
+  abstract @GTENegativeOne int indexOf(@Nullable Object target);
 
   /*
    * This class is used to serialize all ImmutableSortedSet instances,

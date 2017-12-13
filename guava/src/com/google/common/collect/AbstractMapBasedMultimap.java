@@ -113,7 +113,7 @@ abstract class AbstractMapBasedMultimap<K, V> extends AbstractMultimap<K, V>
    */
 
   private transient Map<K, Collection<V>> map;
-  private transient int totalSize;
+  private transient @NonNegative int totalSize;
 
   /**
    * Creates a new multimap that uses the provided map.
@@ -806,19 +806,19 @@ abstract class AbstractMapBasedMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
-    public V get(int index) {
+    public V get(@NonNegative int index) {
       refreshIfEmpty();
       return getListDelegate().get(index);
     }
 
     @Override
-    public V set(int index, V element) {
+    public V set(@NonNegative int index, V element) {
       refreshIfEmpty();
       return getListDelegate().set(index, element);
     }
 
     @Override
-    public void add(int index, V element) {
+    public void add(@NonNegative int index, V element) {
       refreshIfEmpty();
       boolean wasEmpty = getDelegate().isEmpty();
       getListDelegate().add(index, element);
@@ -829,7 +829,7 @@ abstract class AbstractMapBasedMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
-    public V remove(int index) {
+    public V remove(@NonNegative int index) {
       refreshIfEmpty();
       V value = getListDelegate().remove(index);
       totalSize--;
@@ -856,13 +856,13 @@ abstract class AbstractMapBasedMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
-    public ListIterator<V> listIterator(int index) {
+    public ListIterator<V> listIterator(@NonNegative int index) {
       refreshIfEmpty();
       return new WrappedListIterator(index);
     }
 
     @Override
-    public List<V> subList(int fromIndex, int toIndex) {
+    public List<V> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       refreshIfEmpty();
       return wrapList(
           getKey(),
@@ -874,7 +874,7 @@ abstract class AbstractMapBasedMultimap<K, V> extends AbstractMultimap<K, V>
     private class WrappedListIterator extends WrappedIterator implements ListIterator<V> {
       WrappedListIterator() {}
 
-      public WrappedListIterator(int index) {
+      public WrappedListIterator(@NonNegative int index) {
         super(getListDelegate().listIterator(index));
       }
 
@@ -893,12 +893,12 @@ abstract class AbstractMapBasedMultimap<K, V> extends AbstractMultimap<K, V>
       }
 
       @Override
-      public int nextIndex() {
+      public @NonNegative int nextIndex() {
         return getDelegateListIterator().nextIndex();
       }
 
       @Override
-      public int previousIndex() {
+      public @GTENegativeOne int previousIndex() {
         return getDelegateListIterator().previousIndex();
       }
 

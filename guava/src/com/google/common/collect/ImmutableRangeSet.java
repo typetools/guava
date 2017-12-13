@@ -36,6 +36,7 @@ import java.util.Set;
 import java.util.stream.Collector;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
@@ -157,7 +158,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
 
   @Override
   public boolean intersects(Range<C> otherRange) {
-    int ceilingIndex =
+    @NonNegative int ceilingIndex =
         SortedLists.binarySearch(
             ranges,
             Range.<C>lowerBoundFn(),
@@ -177,7 +178,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
 
   @Override
   public boolean encloses(Range<C> otherRange) {
-    int index =
+	@GTENegativeOne int index =
         SortedLists.binarySearch(
             ranges,
             Range.<C>lowerBoundFn(),
@@ -190,7 +191,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
 
   @Override
   public Range<C> rangeContaining(C value) {
-    int index =
+	@GTENegativeOne int index =
         SortedLists.binarySearch(
             ranges,
             Range.<C>lowerBoundFn(),
@@ -316,7 +317,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
     // True if the "positive" range set is empty or bounded above.
     private final boolean positiveBoundedAbove;
 
-    private final int size;
+    private final @NonNegative int size;
 
     ComplementRanges() {
       this.positiveBoundedBelow = ranges.get(0).hasLowerBound();
@@ -338,7 +339,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
     }
 
     @Override
-    public Range<C> get(int index) {
+    public Range<C> get(@NonNegative int index) {
       checkElementIndex(index, size);
 
       Cut<C> lowerBound;
@@ -652,7 +653,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
     }
 
     @Override
-    int indexOf(Object target) {
+    @GTENegativeOne int indexOf(Object target) {
       if (contains(target)) {
         @SuppressWarnings("unchecked") // if it's contained, it's definitely a C
         C c = (C) target;

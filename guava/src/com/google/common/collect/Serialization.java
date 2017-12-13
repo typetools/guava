@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 import com.google.common.annotations.GwtIncompatible;
@@ -83,7 +84,7 @@ final class Serialization {
    * See {@link #writeMap} for the data format. The size is determined by a
    * prior call to {@link #readCount}.
    */
-  static <K, V> void populateMap(Map<K, V> map, ObjectInputStream stream, int size)
+  static <K, V> void populateMap(Map<K, V> map, ObjectInputStream stream, @NonNegative int size)
       throws IOException, ClassNotFoundException {
     for (int i = 0; i < size; i++) {
       @SuppressWarnings("unchecked") // reading data stored by writeMap

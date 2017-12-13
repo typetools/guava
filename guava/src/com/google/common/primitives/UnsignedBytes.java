@@ -445,7 +445,7 @@ public final class UnsignedBytes {
      * Returns the Unsafe-using Comparator, or falls back to the pure-Java implementation if unable
      * to do so.
      */
-    /* ISSUE 7:
+    /* 
      * Code can throw an exception, but the code is safe because the exception is 
      * caught by catch(Throwable).
      */
@@ -484,7 +484,6 @@ public final class UnsignedBytes {
    *
    * @since 23.1
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/191
   public static void sort(byte[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
@@ -514,7 +513,6 @@ public final class UnsignedBytes {
    *
    * @since 23.1
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/191
   public static void sortDescending(byte[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);

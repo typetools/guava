@@ -20,6 +20,7 @@ import static java.lang.Character.MIN_SURROGATE;
 
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 import com.google.common.annotations.Beta;
@@ -51,11 +52,17 @@ public final class Utf8 {
    * @throws IllegalArgumentException if {@code sequence} contains ill-formed UTF-16 (unpaired
    *     surrogates)
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
-  public static int encodedLength(CharSequence sequence) {
+  @SuppressWarnings({
+	  "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
+      /*
+       * unsigned right shift on int
+       */
+	  "lowerbound:compound.assignment.type.incompatible", // unsigned right shift
+  }) 
+  public static @NonNegative int encodedLength(CharSequence sequence) {
     // Warning to maintainers: this implementation is highly optimized.
     int utf16Length = sequence.length();
-    int utf8Length = utf16Length;
+    @NonNegative int utf8Length = utf16Length;
     int i = 0;
 
     // This loop optimizes for pure ASCII.
@@ -81,10 +88,16 @@ public final class Utf8 {
     }
     return utf8Length;
   }
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
+  @SuppressWarnings({
+	  "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
+      /*
+	   * unsigned right shift on int
+	   */
+	  "lowerbound:compound.assignment.type.incompatible", // unsigned right shift
+  }) 
   private static @NonNegative int encodedLengthGeneral(CharSequence sequence, @IndexFor("#1") int start) {
     int utf16Length = sequence.length();
-    int utf8Length = 0;
+    @NonNegative int utf8Length = 0;
     for (int i = start; i < utf16Length; i++) {
       char c = sequence.charAt(i);
       if (c < 0x800) {
@@ -129,8 +142,8 @@ public final class Utf8 {
    */
   //https://github.com/panacekcz/checker-framework/issues/5
   // TODO INDEX: javadoc does not specify exceptions
-  public static boolean isWellFormed(byte[] bytes, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int len) {
-    int end = off + len;
+  public static boolean isWellFormed(byte[] bytes, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value="#1", offset="#2-1") int len) {
+    @IndexOrHigh("bytes") int end = off + len;
     checkPositionIndexes(off, end, bytes.length);
     // Look for the first non-ASCII character.
     for (int i = off; i < end; i++) {
@@ -141,7 +154,10 @@ public final class Utf8 {
     return true;
   }
 
-  @SuppressWarnings("cast.unsafe") // https://github.com/kelloggm/checker-framework/issues/149
+  @SuppressWarnings({
+	  "cast.unsafe", // https://github.com/kelloggm/checker-framework/issues/149
+	  "upperbound:compound.assignment.type.incompatible", "upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/158
+  }) 
   private static boolean isWellFormedSlowPath(byte[] bytes, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int end) {
     @IndexOrHigh("bytes") int index = off;
     while (true) {

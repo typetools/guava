@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
  *
  * @author Jared Levy
  */
-@AnnotatedFor({"nullness"})
+@AnnotatedFor({"nullness", "index"})
 @GwtCompatible
 abstract class AbstractMapEntry<K, V> implements Entry<K, V> {
 

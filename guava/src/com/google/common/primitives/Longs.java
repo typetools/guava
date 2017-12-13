@@ -267,7 +267,8 @@ public final class Longs {
    * @param arrays zero or more {@code long} arrays
    * @return a single array containing all the values from the source arrays, in order
    */
-  /* ISSUE 4:
+  /* 
+   * New array has size that is sum of array lengths.
    * length is a sum of lengths of arrays.
    * pos is increased the same way as length, so pos points to a valid
    * range of length array.length in result.   
@@ -376,7 +377,7 @@ public final class Longs {
       asciiDigits = result;
     }
 
-    @SuppressWarnings("lowerbound:array.access.unsafe.low") // https://github.com/kelloggm/checker-framework/issues/192
+    @SuppressWarnings("lowerbound:array.access.unsafe.low") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
     static @IntRange(from = -1, to = 36) int digit(char c) {
       return (c < 128) ? asciiDigits[c] : -1;
     }
@@ -607,7 +608,6 @@ public final class Longs {
    *
    * @since 23.1
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/191
   public static void sortDescending(long[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
@@ -715,7 +715,7 @@ public final class Longs {
 
     @Override
     @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
-    public @Positive @LTLengthOf(value = "array", offset="start - 1") int size() { // ISSUE 3 in issues.txt
+    public @Positive @LTLengthOf(value = "array", offset="start - 1") int size() { // INDEX: Annotation on a public method refers to private member.
       return end - start;
     }
 

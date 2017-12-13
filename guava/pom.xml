@@ -113,13 +113,10 @@
             <compilerArgs>
               <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
               <arg>${addtionalargs}</arg>
-              <arg>-AuseDefaultsForUncheckedCode=source,bytecode</arg>
+              <arg>-Awarns</arg>
               <arg>-AprintErrorStack</arg>
-              <arg>-AonlyDefs=^com\.google\.common\.base\.</arg>
+              <arg>-AonlyDefs=^com\.google\.common\.collect\.</arg>
             </compilerArgs>
-            <compilerArguments>
-            	<Xmaxwarns>10000</Xmaxwarns>
-            </compilerArguments>
         </configuration>
       </plugin>
       <plugin>

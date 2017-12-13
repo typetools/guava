@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 
 /**
@@ -538,16 +539,34 @@ public final class Splitter {
     }
 
     @Override
+    @SuppressWarnings({
+    	/*
+    	 * limit is always positive.
+    	 * When limit is not 1, then it can be safely decremented.
+    	 */
+    	"lowerbound:compound.assignment.type.incompatible", // decrement Positive which != 1
+    	/*
+    	 * At the start of the loop, whenever offset!=-1 also nextStart=-1
+    	 * One of the following holds:
+    	 * - offset == nextStart
+    	 * - nextStart was not changed since the last iteration
+    	 */
+    	"lowerbound:assignment.type.incompatible", // variable!=-1 implies another variable !=-1
+    	/*
+    	 * Cannot get index for CharSequence
+    	 */
+    	"upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/197
+    })
     protected String computeNext() {
       /*
        * The returned string will be from the end of the last match to the beginning of the next
        * one. nextStart is the start position of the returned substring, while offset is the place
        * to start looking for a separator.
        */
-      int nextStart = offset;
+      @GTENegativeOne int nextStart = offset;
       while (offset != -1) {
-        int start = nextStart;
-        int end;
+    	@NonNegative int start = nextStart;
+    	@NonNegative int end;
 
         int separatorPosition = separatorStart(offset);
         if (separatorPosition == -1) {

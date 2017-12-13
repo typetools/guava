@@ -77,7 +77,7 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
    * @param expectedSize the expected number of entries
    * @throws IllegalArgumentException if the specified expected size is negative
    */
-  public static <K, V> HashBiMap<K, V> create(int expectedSize) {
+  public static <K, V> HashBiMap<K, V> create(@NonNegative int expectedSize) {
     return new HashBiMap<>(expectedSize);
   }
 
@@ -114,15 +114,15 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
   private transient BiEntry<K, V>[] hashTableVToK;
   private transient BiEntry<K, V> firstInKeyInsertionOrder;
   private transient BiEntry<K, V> lastInKeyInsertionOrder;
-  private transient int size;
+  private transient @NonNegative int size;
   private transient int mask;
   private transient int modCount;
 
-  private HashBiMap(int expectedSize) {
+  private HashBiMap(@NonNegative int expectedSize) {
     init(expectedSize);
   }
 
-  private void init(int expectedSize) {
+  private void init(@NonNegative int expectedSize) {
     checkNonnegative(expectedSize, "expectedSize");
     int tableSize = Hashing.closedTableSize(expectedSize, LOAD_FACTOR);
     this.hashTableKToV = createTable(tableSize);

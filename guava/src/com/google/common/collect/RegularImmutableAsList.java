@@ -20,6 +20,8 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 import java.util.function.Consumer;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * An {@link ImmutableAsList} implementation specialized for when the delegate collection is
  * already backed by an {@code ImmutableList} or array.
@@ -52,7 +54,7 @@ class RegularImmutableAsList<E> extends ImmutableAsList<E> {
 
   @SuppressWarnings("unchecked") // safe covariant cast!
   @Override
-  public UnmodifiableListIterator<E> listIterator(int index) {
+  public UnmodifiableListIterator<E> listIterator(@NonNegative int index) {
     return (UnmodifiableListIterator<E>) delegateList.listIterator(index);
   }
 
@@ -64,12 +66,12 @@ class RegularImmutableAsList<E> extends ImmutableAsList<E> {
 
   @GwtIncompatible // not present in emulated superclass
   @Override
-  int copyIntoArray(Object[] dst, int offset) {
+  int copyIntoArray(Object[] dst, @NonNegative int offset) {
     return delegateList.copyIntoArray(dst, offset);
   }
 
   @Override
-  public E get(int index) {
+  public E get(@NonNegative int index) {
     return delegateList.get(index);
   }
 }

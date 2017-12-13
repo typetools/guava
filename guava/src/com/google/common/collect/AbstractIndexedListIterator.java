@@ -24,7 +24,9 @@ import java.util.NoSuchElementException;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.framework.qual.EnsuresQualifierIf;
 
 /**
  * This class provides a skeletal implementation of the {@link ListIterator}
@@ -93,6 +95,7 @@ abstract class AbstractIndexedListIterator<E> extends UnmodifiableListIterator<E
   }
 
   @Override
+  @EnsuresQualifierIf(expression = "position", qualifier = Positive.class, result = true)
   public final boolean hasPrevious() {
     return position > 0;
   }

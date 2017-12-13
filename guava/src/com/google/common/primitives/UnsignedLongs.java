@@ -198,7 +198,6 @@ public final class UnsignedLongs {
    *
    * @since 23.1
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/191
   public static void sort(long[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
@@ -228,7 +227,6 @@ public final class UnsignedLongs {
    *
    * @since 23.1
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/191
   public static void sortDescending(long[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
@@ -460,8 +458,10 @@ public final class UnsignedLongs {
    * @throws IllegalArgumentException if {@code radix} is not between {@link Character#MIN_RADIX}
    *     and {@link Character#MAX_RADIX}.
    */
-  /* ISSUE 8:
+  /*
    * Unsinged long converted to string always fits into 64 characters.
+   * Loop guarded by variable decreased by right shift or division.
+   * Assuming that Character.MIN_RADIX == 2
    */
   @SuppressWarnings({
 	  "lowerbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/193

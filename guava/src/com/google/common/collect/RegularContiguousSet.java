@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
@@ -73,7 +74,7 @@ final class RegularContiguousSet<C extends Comparable> extends ContiguousSet<C> 
 
   @GwtIncompatible // not used by GWT emulation
   @Override
-  int indexOf(Object target) {
+  @GTENegativeOne int indexOf(Object target) {
     return contains(target) ? (int) domain.distance(first(), (C) target) : -1;
   }
 
@@ -131,7 +132,7 @@ final class RegularContiguousSet<C extends Comparable> extends ContiguousSet<C> 
         }
 
         @Override
-        public C get(int i) {
+        public C get(@NonNegative int i) {
           checkElementIndex(i, size());
           return domain.offset(first(), i);
         }

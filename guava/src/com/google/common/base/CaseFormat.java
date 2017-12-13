@@ -20,7 +20,9 @@ import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
 import javax.annotation.Nullable;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.common.value.qual.ArrayLenRange;
 
 /**
@@ -116,7 +118,7 @@ public enum CaseFormat {
   };
 
   private final CharMatcher wordBoundary;
-  private final String wordSeparator;
+  private final @ArrayLenRange(from = 0, to = 1) String wordSeparator;
 
   CaseFormat(CharMatcher wordBoundary, @ArrayLenRange(from = 0, to = 1) String wordSeparator) {
     this.wordBoundary = wordBoundary;
@@ -137,11 +139,16 @@ public enum CaseFormat {
   /**
    * Enum values can override for performance reasons.
    */
+  /*
+   * j = wordBoundary.indexIn ensures that j is -1 or
+   * j >= 0 && j < s.length() 
+   */
+  @SuppressWarnings({"upperbound:assignment.type.incompatible", "upperbound:compound.assignment.type.incompatible"}) // https://github.com/kelloggm/checker-framework/issues/197
   String convert(CaseFormat format, String s) {
     // deal with camel conversion
     StringBuilder out = null;
     @IndexOrHigh("s") int i = 0;
-    int j = -1;
+    @GTENegativeOne @LTEqLengthOf("s") int j = -1;
     while ((j = wordBoundary.indexIn(s, ++j)) != -1) {
       if (i == 0) {
         // include some extra space for separators

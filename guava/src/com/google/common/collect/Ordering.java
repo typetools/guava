@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -733,7 +734,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    * @throws IllegalArgumentException if {@code k} is negative
    * @since 8.0
    */
-  public <E extends T> List<E> leastOf(Iterable<E> iterable, int k) {
+  public <E extends T> List<E> leastOf(Iterable<E> iterable, @NonNegative int k) {
     if (iterable instanceof Collection) {
       Collection<E> collection = (Collection<E>) iterable;
       if (collection.size() <= 2L * k) {
@@ -769,7 +770,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    * @throws IllegalArgumentException if {@code k} is negative
    * @since 14.0
    */
-  public <E extends T> List<E> leastOf(Iterator<E> iterator, int k) {
+  public <E extends T> List<E> leastOf(Iterator<E> iterator, @NonNegative int k) {
     checkNotNull(iterator);
     checkNonnegative(k, "k");
 
@@ -807,7 +808,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    * @throws IllegalArgumentException if {@code k} is negative
    * @since 8.0
    */
-  public <E extends T> List<E> greatestOf(Iterable<E> iterable, int k) {
+  public <E extends T> List<E> greatestOf(Iterable<E> iterable, @NonNegative int k) {
     // TODO(kevinb): see if delegation is hurting performance noticeably
     // TODO(kevinb): if we change this implementation, add full unit tests.
     return reverse().leastOf(iterable, k);
@@ -829,7 +830,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    * @throws IllegalArgumentException if {@code k} is negative
    * @since 14.0
    */
-  public <E extends T> List<E> greatestOf(Iterator<E> iterator, int k) {
+  public <E extends T> List<E> greatestOf(Iterator<E> iterator, @NonNegative int k) {
     return reverse().leastOf(iterator, k);
   }
 

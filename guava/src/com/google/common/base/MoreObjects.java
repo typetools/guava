@@ -326,6 +326,7 @@ public final class MoreObjects {
      * duplication of properties (multiple name/value pairs with the same name can be added).
      */
     @Override
+    @SuppressWarnings("index:argument.type.incompatible") // https://github.com/typetools/checker-framework/pull/1702
     public String toString() {
       // create a copy to keep it consistent in case value changes
       boolean omitNullValuesSnapshot = omitNullValues;

@@ -42,7 +42,9 @@ import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
 
 /**
  * A double-ended priority queue, which provides constant-time access to both
@@ -138,7 +140,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
    * MinMaxPriorityQueue} instances sized appropriately to hold {@code
    * expectedSize} elements.
    */
-  public static Builder<Comparable> expectedSize(int expectedSize) {
+  public static Builder<Comparable> expectedSize(@NonNegative int expectedSize) {
     return new Builder<Comparable>(Ordering.natural()).expectedSize(expectedSize);
   }
 
@@ -149,7 +151,8 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
    * removes its greatest element (according to its comparator), which might be
    * the element that was just added.
    */
-  public static Builder<Comparable> maximumSize(int maximumSize) {
+  // TODO INDEX: requiring positive argument not in javadoc
+  public static Builder<Comparable> maximumSize(@Positive int maximumSize) {
     return new Builder<Comparable>(Ordering.natural()).maximumSize(maximumSize);
   }
 
@@ -176,7 +179,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
 
     private final Comparator<B> comparator;
     private int expectedSize = UNSET_EXPECTED_SIZE;
-    private int maximumSize = Integer.MAX_VALUE;
+    private @NonNegative int maximumSize = Integer.MAX_VALUE;
 
     private Builder(Comparator<B> comparator) {
       this.comparator = checkNotNull(comparator);
@@ -187,7 +190,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
      * expected size of {@code expectedSize}.
      */
     @CanIgnoreReturnValue
-    public Builder<B> expectedSize(int expectedSize) {
+    public Builder<B> expectedSize(@NonNegative int expectedSize) {
       checkArgument(expectedSize >= 0);
       this.expectedSize = expectedSize;
       return this;
@@ -199,8 +202,9 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
      * beyond this bound, it immediately removes its greatest element (according
      * to its comparator), which might be the element that was just added.
      */
+    // TODO INDEX: requiring positive argument not in javadoc
     @CanIgnoreReturnValue
-    public Builder<B> maximumSize(int maximumSize) {
+    public Builder<B> maximumSize(@Positive int maximumSize) {
       checkArgument(maximumSize > 0);
       this.maximumSize = maximumSize;
       return this;
@@ -238,10 +242,10 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
   private final Heap maxHeap;
   @VisibleForTesting final int maximumSize;
   private Object[] queue;
-  private int size;
+  private @NonNegative int size;
   private int modCount;
 
-  private MinMaxPriorityQueue(Builder<? super E> builder, int queueSize) {
+  private MinMaxPriorityQueue(Builder<? super E> builder, @NonNegative int queueSize) {
     Ordering<E> ordering = builder.ordering();
     this.minHeap = new Heap(ordering);
     this.maxHeap = new Heap(ordering.reverse());
@@ -312,7 +316,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
   }
 
   @SuppressWarnings("unchecked") // we must carefully only allow Es to get in
-  E elementData(int index) {
+  E elementData(@NonNegative int index) {
     return (E) queue[index];
   }
 
@@ -324,7 +328,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
   /**
    * Returns the index of the max element.
    */
-  private int getMaxElementIndex() {
+  private @NonNegative int getMaxElementIndex() {
     switch (size) {
       case 1:
         return 0; // The lone element in the queue is the maximum.
@@ -411,7 +415,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
    */
   @VisibleForTesting
   @CanIgnoreReturnValue
-  MoveDesc<E> removeAt(int index) {
+  MoveDesc<E> removeAt(@NonNegative int index) {
     checkPositionIndex(index, size);
     modCount++;
     size--;
@@ -446,7 +450,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
     return changes;
   }
 
-  private MoveDesc<E> fillHole(int index, E toTrickle) {
+  private MoveDesc<E> fillHole(@NonNegative int index, E toTrickle) {
     Heap heap = heapForIndex(index);
     // We consider elementData(index) a "hole", and we want to fill it
     // with the last element of the heap, toTrickle.
@@ -482,13 +486,13 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
   /**
    * Removes and returns the value at {@code index}.
    */
-  private E removeAndGet(int index) {
+  private E removeAndGet(@NonNegative int index) {
     E value = elementData(index);
     removeAt(index);
     return value;
   }
 
-  private Heap heapForIndex(int i) {
+  private Heap heapForIndex(@NonNegative int i) {
     return isEvenLevel(i) ? minHeap : maxHeap;
   }
 
@@ -533,7 +537,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
       this.ordering = ordering;
     }
 
-    int compareElements(int a, int b) {
+    int compareElements(@NonNegative int a, @NonNegative int b) {
       return ordering.compare(elementData(a), elementData(b));
     }
 
@@ -542,7 +546,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
      * bubble up there. If it moved before {@code removeIndex} this method
      * returns a pair as described in {@link #removeAt}.
      */
-    MoveDesc<E> tryCrossOverAndBubbleUp(int removeIndex, int vacated, E toTrickle) {
+    MoveDesc<E> tryCrossOverAndBubbleUp(@NonNegative int removeIndex, @NonNegative int vacated, E toTrickle) {
       int crossOver = crossOver(vacated, toTrickle);
       if (crossOver == vacated) {
         return null;
@@ -571,7 +575,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
     /**
      * Bubbles a value from {@code index} up the appropriate heap if required.
      */
-    void bubbleUp(int index, E x) {
+    void bubbleUp(@NonNegative int index, E x) {
       int crossOver = crossOverUp(index, x);
 
       Heap heap;
@@ -589,7 +593,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
      * returns the index the element ended up at.
      */
     @CanIgnoreReturnValue
-    int bubbleUpAlternatingLevels(int index, E x) {
+    @NonNegative int bubbleUpAlternatingLevels(@NonNegative int index, E x) {
       while (index > 2) {
         int grandParentIndex = getGrandparentIndex(index);
         E e = elementData(grandParentIndex);
@@ -608,7 +612,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
      * {@code index + len}, or {@code -1} if {@code index} is greater than
      * {@code size}.
      */
-    int findMin(int index, int len) {
+    @GTENegativeOne int findMin(@NonNegative int index, @NonNegative int len) {
       if (index >= size) {
         return -1;
       }
@@ -626,14 +630,14 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
     /**
      * Returns the minimum child or {@code -1} if no child exists.
      */
-    int findMinChild(int index) {
+    @GTENegativeOne int findMinChild(@NonNegative int index) {
       return findMin(getLeftChildIndex(index), 2);
     }
 
     /**
      * Returns the minimum grand child or -1 if no grand child exists.
      */
-    int findMinGrandChild(int index) {
+    @GTENegativeOne int findMinGrandChild(@NonNegative int index) {
       int leftChildIndex = getLeftChildIndex(index);
       if (leftChildIndex < 0) {
         return -1;
@@ -646,7 +650,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
      * (or vice versa).
      * Returns the new position of the element.
      */
-    int crossOverUp(int index, E x) {
+    @NonNegative int crossOverUp(@NonNegative int index, E x) {
       if (index == 0) {
         queue[0] = x;
         return 0;
@@ -687,7 +691,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
      * becomes the new parent of the uncle. In that case, we first
      * switch the last element with its uncle, before returning.
      */
-    int swapWithConceptuallyLastElement(E actualLastElement) {
+    @NonNegative int swapWithConceptuallyLastElement(E actualLastElement) {
       int parentIndex = getParentIndex(size);
       if (parentIndex != 0) {
         int grandparentIndex = getParentIndex(parentIndex);
@@ -710,7 +714,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
      *
      * Returns the new position of the element.
      */
-    int crossOver(int index, E x) {
+    @NonNegative int crossOver(@NonNegative int index, E x) {
       int minChildIndex = findMinChild(index);
       // TODO(kevinb): split the && into two if's and move crossOverUp so it's
       // only called when there's no child.
@@ -730,7 +734,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
      * @return the position of the new hole (where the lowest grandchild moved
      *     from, that had no grandchild to replace it)
      */
-    int fillHoleAt(int index) {
+    @NonNegative int fillHoleAt(@NonNegative int index) {
       int minGrandchildIndex;
       while ((minGrandchildIndex = findMinGrandChild(index)) > 0) {
         queue[index] = elementData(minGrandchildIndex);
@@ -739,7 +743,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
       return index;
     }
 
-    private boolean verifyIndex(int i) {
+    private boolean verifyIndex(@NonNegative int i) {
       if ((getLeftChildIndex(i) < size) && (compareElements(i, getLeftChildIndex(i)) > 0)) {
         return false;
       }
@@ -757,19 +761,19 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
 
     // These would be static if inner classes could have static members.
 
-    private int getLeftChildIndex(int i) {
+    private @NonNegative int getLeftChildIndex(@NonNegative int i) {
       return i * 2 + 1;
     }
 
-    private int getRightChildIndex(int i) {
+    private @NonNegative int getRightChildIndex(@NonNegative int i) {
       return i * 2 + 2;
     }
 
-    private int getParentIndex(int i) {
+    private @NonNegative int getParentIndex(@Positive int i) {
       return (i - 1) / 2;
     }
 
-    private int getGrandparentIndex(int i) {
+    private @NonNegative int getGrandparentIndex(@Positive int i) {
       return getParentIndex(getParentIndex(i)); // (i - 3) / 4
     }
   }
@@ -943,7 +947,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
   }
 
   @VisibleForTesting
-  int capacity() {
+  @NonNegative int capacity() {
     return queue.length;
   }
 
@@ -990,7 +994,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
   }
 
   /** There's no reason for the queueSize to ever be more than maxSize + 1 */
-  private static int capAtMaximumSize(int queueSize, int maximumSize) {
+  private static @NonNegative int capAtMaximumSize(@NonNegative int queueSize, @NonNegative int maximumSize) {
     return Math.min(queueSize - 1, maximumSize) + 1; // don't overflow
   }
 }
