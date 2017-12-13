@@ -251,7 +251,6 @@ public abstract class DiscreteDomain<C extends Comparable> {
    * Returns, conceptually, "origin + distance", or equivalently, the result of calling
    * {@link #next} on {@code origin} {@code distance} times.
    */
-  // TODO INDEX: @NonNegative not in javadoc
   C offset(C origin, @NonNegative long distance) {
     checkNonnegative(distance, "distance");
     for (long i = 0; i < distance; i++) {
