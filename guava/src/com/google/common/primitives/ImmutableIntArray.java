@@ -232,7 +232,7 @@ public final class ImmutableIntArray implements Serializable {
      * To typecheck, this code also needs a fix for:
      * https://github.com/kelloggm/checker-framework/issues/176
      */
-    @SuppressWarnings("upperbound") // https://github.com/typetools/checker-framework/issues/1606
+    @SuppressWarnings("upperbound") // https://tinyurl.com/cfissue/1606 EnsuresQualifierIf with args
     public Builder add(int value) {
       ensureRoomFor(1);
       array[count] = value;
@@ -252,7 +252,7 @@ public final class ImmutableIntArray implements Serializable {
      * To typecheck, this code also needs a fix for:
      * https://github.com/kelloggm/checker-framework/issues/176
      */
-    @SuppressWarnings("upperbound") // https://github.com/typetools/checker-framework/issues/1606
+    @SuppressWarnings("upperbound") // https://tinyurl.com/cfissue/1606 EnsuresQualifierIf with args
     public Builder addAll(int[] values) {
       ensureRoomFor(values.length);
       System.arraycopy(values, 0, array, count, values.length);
@@ -327,7 +327,7 @@ public final class ImmutableIntArray implements Serializable {
          * To typecheck, this code also needs a fix for:
          * https://github.com/kelloggm/checker-framework/issues/176
          */
-        "upperbound:compound.assignment.type.incompatible", // https://github.com/typetools/checker-framework/issues/1606
+        "upperbound:compound.assignment.type.incompatible", // https://tinyurl.com/cfissue/1606 EnsuresQualifierIf with args
         /*
          * count is @LTLengthOf(value="array",offset="values.length()-1"), which implies
          * values.length() is @LTLengthOf(value="array",offset="count-1") 
@@ -705,7 +705,7 @@ public final class ImmutableIntArray implements Serializable {
    * Related:
    *   https://github.com/panacekcz/checker-framework/issues/27
    */
-  @SuppressWarnings("upperbound:array.access.unsafe.high") // https://github.com/typetools/checker-framework/issues/1606
+  @SuppressWarnings("upperbound:array.access.unsafe.high") // https://tinyurl.com/cfissue/1606 EnsuresQualifierIf with args
   public String toString() {
     if (isEmpty()) {
       return "[]";
