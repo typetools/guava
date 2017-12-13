@@ -149,7 +149,7 @@ public final class Strings {
    */
   @SuppressWarnings({
 	  "upperbound:argument.type.incompatible", // https://github.com/panacekcz/checker-framework/issues/11
-	  "upperbound:assignment.type.incompatible", // https://github.com/panacekcz/checker-framework/kelloggm/158
+	  "upperbound:assignment.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
 	  /*
 	   * After checking that n < size - n, we know that 2*n < size,
 	   * therefore n << 1 < size, 
