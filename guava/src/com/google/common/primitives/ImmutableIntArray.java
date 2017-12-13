@@ -141,7 +141,7 @@ public final class ImmutableIntArray implements Serializable {
   /** Returns an immutable array containing the given values, in order. */
   // Use (first, rest) so that `of(someIntArray)` won't compile (they should use copyOf), which is
   // okay since we have to copy the just-created array anyway.
-  @SuppressWarnings("array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/188
+  @SuppressWarnings("array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/182
   public static ImmutableIntArray of(int first, int... rest) {
     int[] array = new int[rest.length + 1];
     array[0] = first;
