@@ -16,6 +16,9 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 import static com.google.common.base.Preconditions.checkPositionIndexes;
@@ -48,7 +51,7 @@ public final class ObjectArrays {
    */
   @GwtIncompatible // Array.newInstance(Class, int)
   @SuppressWarnings("unchecked")
-  public static <T> T[] newArray(Class<T> type, int length) {
+  public static <T> T[] newArray(Class<T> type, @NonNegative int length) {
     return (T[]) Array.newInstance(type, length);
   }
 
@@ -59,7 +62,7 @@ public final class ObjectArrays {
    * @param reference any array of the desired type
    * @param length the length of the new array
    */
-  public static <T> T[] newArray(T[] reference, int length) {
+  public static <T> T[] newArray(T[] reference, @NonNegative int length) {
     return Platform.newArray(reference, length);
   }
 
@@ -157,7 +160,7 @@ public final class ObjectArrays {
    * collection is set to {@code null}. This is useful in determining the length of the collection
    * <i>only</i> if the caller knows that the collection does not contain any null elements.
    */
-  static <T> T[] toArrayImpl(Object[] src, int offset, int len, T[] dst) {
+  static <T> T[] toArrayImpl(Object[] src, @IndexOrHigh("#1") int offset, @IndexOrHigh("#1") int len, T[] dst) {
     checkPositionIndexes(offset, offset + len, src.length);
     if (dst.length < len) {
       dst = newArray(dst, len);
@@ -190,7 +193,7 @@ public final class ObjectArrays {
    * Returns a copy of the specified subrange of the specified array that is literally an Object[],
    * and not e.g. a {@code String[]}.
    */
-  static Object[] copyAsObjectArray(Object[] elements, int offset, int length) {
+  static Object[] copyAsObjectArray(Object[] elements, @IndexOrHigh("#1") int offset, @IndexOrHigh("#1") int length) {
     checkPositionIndexes(offset, offset + length, elements.length);
     if (length == 0) {
       return new Object[0];
@@ -212,7 +215,7 @@ public final class ObjectArrays {
   /**
    * Swaps {@code array[i]} with {@code array[j]}.
    */
-  static void swap(Object[] array, int i, int j) {
+  static void swap(Object[] array, @IndexFor("#1") int i, @IndexFor("#1") int j) {
     Object temp = array[i];
     array[i] = array[j];
     array[j] = temp;
@@ -224,7 +227,7 @@ public final class ObjectArrays {
   }
 
   @CanIgnoreReturnValue
-  static Object[] checkElementsNotNull(Object[] array, int length) {
+  static Object[] checkElementsNotNull(Object[] array, @IndexOrHigh("#1") int length) {
     for (int i = 0; i < length; i++) {
       checkElementNotNull(array[i], i);
     }

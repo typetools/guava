@@ -26,6 +26,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * A collection that associates an ordered pair of keys, called a row key and a
@@ -57,6 +58,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
  * @since 7.0
  */
 @GwtCompatible
+@AnnotatedFor("index")
 public interface Table<R, C, V> {
   // TODO(jlevy): Consider adding methods similar to ConcurrentMap methods.
 

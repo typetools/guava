@@ -31,7 +31,7 @@ import java.util.Iterator;
  * @author Jared Levy
  * @since 2.0
  */
-@AnnotatedFor({"nullness"})
+@AnnotatedFor({"nullness", "index"})
 @GwtCompatible
 public abstract class UnmodifiableIterator<E> implements Iterator<E> {
   /** Constructor for use by subclasses. */

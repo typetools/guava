@@ -17,6 +17,7 @@
 package com.google.common.collect;
 
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -600,7 +601,7 @@ public final class Iterators {
    *     iterator} divided into partitions
    * @throws IllegalArgumentException if {@code size} is nonpositive
    */
-  public static <T> UnmodifiableIterator<List<T>> partition(Iterator<T> iterator, int size) {
+  public static <T> UnmodifiableIterator<List<T>> partition(Iterator<T> iterator, @Positive int size) {
     return partitionImpl(iterator, size, false);
   }
 
@@ -620,12 +621,12 @@ public final class Iterators {
    *     trailing null elements)
    * @throws IllegalArgumentException if {@code size} is nonpositive
    */
-  public static <T> UnmodifiableIterator<List<T>> paddedPartition(Iterator<T> iterator, int size) {
+  public static <T> UnmodifiableIterator<List<T>> paddedPartition(Iterator<T> iterator, @Positive int size) {
     return partitionImpl(iterator, size, true);
   }
 
   private static <T> UnmodifiableIterator<List<T>> partitionImpl(
-      final Iterator<T> iterator, final int size, final boolean pad) {
+      final Iterator<T> iterator, final @Positive int size, final boolean pad) {
     checkNotNull(iterator);
     checkArgument(size > 0);
     return new UnmodifiableIterator<List<T>>() {

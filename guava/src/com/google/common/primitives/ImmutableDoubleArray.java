@@ -142,7 +142,8 @@ public final class ImmutableDoubleArray implements Serializable {
   /** Returns an immutable array containing the given values, in order. */
   // Use (first, rest) so that `of(someDoubleArray)` won't compile (they should use copyOf), which
   // is okay since we have to copy the just-created array anyway.
-  @SuppressWarnings("array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/188
+  // TODO INDEX: if rest has Integer.MAX_VALUE elements, will attempt to create negative-size array
+  @SuppressWarnings("upperbound:array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/182
   public static ImmutableDoubleArray of(double first, double... rest) {
     double[] array = new double[rest.length + 1];
     array[0] = first;
@@ -236,7 +237,7 @@ public final class ImmutableDoubleArray implements Serializable {
      * To typecheck, this code also needs a fix for:
      * https://github.com/kelloggm/checker-framework/issues/176
      */
-    @SuppressWarnings("upperbound") // https://tinyurl.com/cfissue/1606 EnsuresQualifierIf with args
+    @SuppressWarnings("upperbound") // https://github.com/kelloggm/checker-framework/issues/200
     public Builder add(double value) {
       ensureRoomFor(1);
       array[count] = value;
@@ -256,7 +257,7 @@ public final class ImmutableDoubleArray implements Serializable {
      * To typecheck, this code also needs a fix for:
      * https://github.com/kelloggm/checker-framework/issues/176
      */
-    @SuppressWarnings("upperbound") // https://tinyurl.com/cfissue/1606 EnsuresQualifierIf with args
+    @SuppressWarnings("upperbound") // https://github.com/kelloggm/checker-framework/issues/200
     public Builder addAll(double[] values) {
       ensureRoomFor(values.length);
       System.arraycopy(values, 0, array, count, values.length);
@@ -331,7 +332,7 @@ public final class ImmutableDoubleArray implements Serializable {
        * To typecheck, this code also needs a fix for:
        * https://github.com/kelloggm/checker-framework/issues/176
        */
-      "upperbound:compound.assignment.type.incompatible", // https://tinyurl.com/cfissue/1606 EnsuresQualifierIf with args
+      "upperbound:compound.assignment.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/200
       /*
        * count is @LTLengthOf(value="array",offset="values.length()-1"), which implies
        * values.length() is @LTLengthOf(value="array",offset="count-1") 
@@ -525,7 +526,6 @@ public final class ImmutableDoubleArray implements Serializable {
 
   /** Returns a new, mutable copy of this array's values, as a primitive {@code double[]}. */
   @SuppressWarnings({
-    "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/191
     /*
      * length of this is defined as end-start,
      * Arrays.copyOfRange returns an array of length end-start,
@@ -717,7 +717,7 @@ public final class ImmutableDoubleArray implements Serializable {
    * Related:
    *   https://github.com/panacekcz/checker-framework/issues/27
    */
-  @SuppressWarnings("upperbound:array.access.unsafe.high") // https://tinyurl.com/cfissue/1606 EnsuresQualifierIf with args
+  @SuppressWarnings("upperbound:array.access.unsafe.high") // https://github.com/kelloggm/checker-framework/issues/200
   public String toString() {
     if (isEmpty()) {
       return "[]";

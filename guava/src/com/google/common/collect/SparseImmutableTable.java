@@ -117,7 +117,7 @@ final class SparseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V>
   }
 
   @Override
-  Cell<R, C, V> getCell(int index) {
+  Cell<R, C, V> getCell(@NonNegative int index) {
     int rowIndex = cellRowIndices[index];
     Entry<R, ImmutableMap<C, V>> rowEntry = rowMap.entrySet().asList().get(rowIndex);
     ImmutableMap<C, V> row = rowEntry.getValue();
@@ -127,7 +127,7 @@ final class SparseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V>
   }
 
   @Override
-  V getValue(int index) {
+  V getValue(@NonNegative int index) {
     int rowIndex = cellRowIndices[index];
     ImmutableMap<C, V> row = rowMap.values().asList().get(rowIndex);
     int columnIndex = cellColumnInRowIndices[index];

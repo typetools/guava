@@ -17,6 +17,7 @@
 package com.google.common.collect;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -157,7 +158,7 @@ final class RegularImmutableSortedSet<E> extends ImmutableSortedSet<E> {
   }
 
   @Override
-  int copyIntoArray(Object[] dst, int offset) {
+  int copyIntoArray(Object[] dst, @IndexOrHigh("#1") int offset) {
     return elements.copyIntoArray(dst, offset);
   }
 
@@ -266,7 +267,7 @@ final class RegularImmutableSortedSet<E> extends ImmutableSortedSet<E> {
     return getSubSet(tailIndex(fromElement, inclusive), size());
   }
 
-  int tailIndex(E fromElement, boolean inclusive) {
+  @NonNegative int tailIndex(E fromElement, boolean inclusive) {
     int index = Collections.binarySearch(elements, checkNotNull(fromElement), comparator());
     if (index >= 0) {
       return inclusive ? index : index + 1;
@@ -283,7 +284,7 @@ final class RegularImmutableSortedSet<E> extends ImmutableSortedSet<E> {
     return (Comparator<Object>) comparator;
   }
 
-  RegularImmutableSortedSet<E> getSubSet(int newFromIndex, int newToIndex) {
+  RegularImmutableSortedSet<E> getSubSet(@NonNegative int newFromIndex, @NonNegative int newToIndex) {
     if (newFromIndex == 0 && newToIndex == size()) {
       return this;
     } else if (newFromIndex < newToIndex) {

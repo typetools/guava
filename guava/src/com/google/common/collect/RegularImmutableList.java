@@ -17,6 +17,7 @@
 package com.google.common.collect;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -57,7 +58,7 @@ class RegularImmutableList<E> extends ImmutableList<E> {
   }
 
   @Override
-  int copyIntoArray(Object[] dst, int dstOff) {
+  @NonNegative int copyIntoArray(Object[] dst, @IndexOrHigh("#1") int dstOff) {
     System.arraycopy(array, 0, dst, dstOff, array.length);
     return dstOff + array.length;
   }
@@ -65,13 +66,13 @@ class RegularImmutableList<E> extends ImmutableList<E> {
   // The fake cast to E is safe because the creation methods only allow E's
   @Override
   @SuppressWarnings("unchecked")
-  public E get(int index) {
+  public E get(@NonNegative int index) {
     return (E) array[index];
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public UnmodifiableListIterator<E> listIterator(int index) {
+  public UnmodifiableListIterator<E> listIterator(@NonNegative int index) {
     // for performance
     // The fake cast to E is safe because the creation methods only allow E's
     return (UnmodifiableListIterator<E>) Iterators.forArray(array, 0, array.length, index);
@@ -99,7 +100,7 @@ public @GTENegativeOne int lastIndexOf(@org.checkerframework.checker.nullness.qu
 
 @SideEffectFree
 @Override
-public ImmutableList<E> subList(int arg0, int arg1) { return super.subList(arg0, arg1); }
+public ImmutableList<E> subList(@NonNegative int arg0, @NonNegative int arg1) { return super.subList(arg0, arg1); }
 
 @Pure
 @Override

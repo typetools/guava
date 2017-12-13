@@ -19,6 +19,7 @@ package com.google.common.collect;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -144,7 +145,8 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    */
   @SafeVarargs // For Eclipse. For internal javac we have disabled this pointless type of warning.
   // elements has at least 6 elements
-  @SuppressWarnings("array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/182
+  // TODO INDEX: if rest has >= Integer.MAX_VALUE-5 elements, will attempt to create negative-size array
+  @SuppressWarnings("upperbound:array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/182
   public static <E> ImmutableSet<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E... others) {
     final int paramCount = 6;
     Object[] elements = new Object[paramCount + others.length];
@@ -174,7 +176,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    *          null
    */
   // elements has at least one element
-  @SuppressWarnings("array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/188
+  @SuppressWarnings("upperbound:array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/188
   // https://github.com/kelloggm/checker-framework/issues/181
   private static <E> ImmutableSet<E> construct(@IndexOrHigh("#2") int n, Object... elements) {
     switch (n) {
@@ -243,7 +245,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * can hold setSize elements with the desired load factor.  Always returns at least setSize + 2.
    */
   @VisibleForTesting
-  static @NonNegative int chooseTableSize(@NonNegative int setSize) {
+  static @Positive int chooseTableSize(@NonNegative int setSize) {
     setSize = Math.max(setSize, 2);
     // Correct the size for open addressing to match desired load factor.
     if (setSize < CUTOFF) {

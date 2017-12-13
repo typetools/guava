@@ -380,21 +380,21 @@ final class Synchronized {
     }
 
     @Override
-    public void add(int index, E element) {
+    public void add(@NonNegative int index, E element) {
       synchronized (mutex) {
         delegate().add(index, element);
       }
     }
 
     @Override
-    public boolean addAll(int index, Collection<? extends E> c) {
+    public boolean addAll(@NonNegative int index, Collection<? extends E> c) {
       synchronized (mutex) {
         return delegate().addAll(index, c);
       }
     }
 
     @Override
-    public E get(int index) {
+    public E get(@NonNegative int index) {
       synchronized (mutex) {
         return delegate().get(index);
       }
@@ -422,19 +422,19 @@ final class Synchronized {
     }
 
     @Override
-    public ListIterator<E> listIterator(int index) {
+    public ListIterator<E> listIterator(@NonNegative int index) {
       return delegate().listIterator(index); // manually synchronized
     }
 
     @Override
-    public E remove(int index) {
+    public E remove(@NonNegative int index) {
       synchronized (mutex) {
         return delegate().remove(index);
       }
     }
 
     @Override
-    public E set(int index, E element) {
+    public E set(@NonNegative int index, E element) {
       synchronized (mutex) {
         return delegate().set(index, element);
       }
@@ -457,7 +457,7 @@ final class Synchronized {
     }
 
     @Override
-    public List<E> subList(int fromIndex, int toIndex) {
+    public List<E> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
       synchronized (mutex) {
         return list(delegate().subList(fromIndex, toIndex), mutex);
       }

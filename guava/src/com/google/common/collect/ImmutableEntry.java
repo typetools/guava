@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 /**
  * @see com.google.common.collect.Maps#immutableEntry(Object, Object)
  */
-@AnnotatedFor({"nullness"})
+@AnnotatedFor({"nullness", "index"})
 @GwtCompatible(serializable = true)
 class ImmutableEntry<K, V> extends AbstractMapEntry<K, V> implements Serializable {
   final K key;

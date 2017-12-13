@@ -35,7 +35,7 @@ import javax.annotation.Nullable;
  * @author Jared Levy
  * @since 2.0
  */
-@AnnotatedFor({"nullness"})
+@AnnotatedFor({"nullness", "index"})
 @GwtCompatible
 abstract class AbstractListMultimap<K, V> extends AbstractMapBasedMultimap<K, V>
     implements ListMultimap<K, V> {

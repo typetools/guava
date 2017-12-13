@@ -316,7 +316,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    * @throws IllegalArgumentException if {@code occurrences} is negative
    */
   @CanIgnoreReturnValue
-  public boolean removeExactly(@Nullable Object element, int occurrences) {
+  public boolean removeExactly(@Nullable Object element, @NonNegative int occurrences) {
     if (occurrences == 0) {
       return true;
     }

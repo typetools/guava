@@ -264,7 +264,7 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    Builder(int initialCapacity) {
+    Builder(@NonNegative int initialCapacity) {
       this.entries = new Entry[initialCapacity];
       this.size = 0;
       this.entriesUsed = false;
