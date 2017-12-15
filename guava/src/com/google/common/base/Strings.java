@@ -197,6 +197,7 @@ public final class Strings {
     checkNotNull(a);
     checkNotNull(b);
 
+    // Should be inferred as @IndexOrHigh({"a","b"})
     int maxPrefixLength = Math.min(a.length(), b.length());
     int p = 0;
     while (p < maxPrefixLength && a.charAt(p) == b.charAt(p)) {
