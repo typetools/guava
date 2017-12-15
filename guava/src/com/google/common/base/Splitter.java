@@ -429,7 +429,7 @@ public final class Splitter {
    *
    * @since 10.0
    */
-  // TODO INDEX: MinLen requirement not in javadoc
+  // MinLen requirement not in javadoc
   @Beta
   public MapSplitter withKeyValueSeparator(@MinLen(1) String separator) {
     return withKeyValueSeparator(on(separator));

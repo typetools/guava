@@ -151,7 +151,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
    * removes its greatest element (according to its comparator), which might be
    * the element that was just added.
    */
-  // TODO INDEX: requiring positive argument not in javadoc
+  // requiring positive argument not in javadoc
   public static Builder<Comparable> maximumSize(@Positive int maximumSize) {
     return new Builder<Comparable>(Ordering.natural()).maximumSize(maximumSize);
   }
@@ -202,7 +202,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
      * beyond this bound, it immediately removes its greatest element (according
      * to its comparator), which might be the element that was just added.
      */
-    // TODO INDEX: requiring positive argument not in javadoc
+    // requiring positive argument not in javadoc
     @CanIgnoreReturnValue
     public Builder<B> maximumSize(@Positive int maximumSize) {
       checkArgument(maximumSize > 0);

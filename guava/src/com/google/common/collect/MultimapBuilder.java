@@ -124,7 +124,7 @@ public abstract class MultimapBuilder<K0, V0> {
    * to the multimap, save that if all values associated with a key are removed and then the key is
    * added back into the multimap, that key will come last in the key iteration order.
    */
-  // TODO INDEX: javadoc does not specify NonNegative
+  // javadoc does not specify NonNegative
   public static MultimapBuilderWithKeys<Object> linkedHashKeys(final @NonNegative int expectedKeys) {
     checkNonnegative(expectedKeys, "expectedKeys");
     return new MultimapBuilderWithKeys<Object>() {
