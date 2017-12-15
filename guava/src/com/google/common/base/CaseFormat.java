@@ -223,7 +223,7 @@ public enum CaseFormat {
     return (this == LOWER_CAMEL) ? Ascii.toLowerCase(word) : normalizeWord(word);
   }
 
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/panacekcz/checker-framework/issues/27
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/201
   private static String firstCharOnlyToUpper(String word) {
     return (word.isEmpty())
         ? word
