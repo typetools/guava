@@ -538,7 +538,7 @@ public final class ImmutableIntArray implements Serializable {
    * does (no actual copying is performed). To reduce memory usage, use {@code subArray(start,
    * end).trimmed()}.
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/11
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/panacekcz/checker-framework/issues/11
   public ImmutableIntArray subArray(@IndexOrHigh("this") int startIndex, @IndexOrHigh("this") int endIndex) {
     Preconditions.checkPositionIndexes(startIndex, endIndex, length());
     return startIndex == endIndex
