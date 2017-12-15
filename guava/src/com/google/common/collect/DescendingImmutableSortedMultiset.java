@@ -59,7 +59,7 @@ final class DescendingImmutableSortedMultiset<E> extends ImmutableSortedMultiset
   }
 
   @Override
-  Entry<E> getEntry(int index) {
+  Entry<E> getEntry(@NonNegative int index) {
     return forward.entrySet().asList().reverse().get(index);
   }
 
