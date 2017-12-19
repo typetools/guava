@@ -40,6 +40,7 @@ import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -567,8 +568,9 @@ public final class ImmutableIntArray implements Serializable {
   }
 
   static class AsList extends AbstractList<Integer> implements RandomAccess, Serializable {
-    private final ImmutableIntArray parent;
+    private final @SameLen("this") ImmutableIntArray parent;
 
+    @SuppressWarnings("samelen:assignment.type.incompatible") // SameLen("this") field
     private AsList(ImmutableIntArray parent) {
       this.parent = parent;
     }
@@ -581,10 +583,7 @@ public final class ImmutableIntArray implements Serializable {
     }
 
     @Override
-    @SuppressWarnings({
-      "upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
-    })
-    public Integer get(@NonNegative int index) {
+    public Integer get(@IndexFor("this") int index) {
       return parent.get(index);
     }
 
@@ -604,10 +603,7 @@ public final class ImmutableIntArray implements Serializable {
     }
 
     @Override
-    @SuppressWarnings({
-      "upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
-    })
-    public List<Integer> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
+    public List<Integer> subList(@IndexOrHigh("this") int fromIndex, @IndexOrHigh("this") int toIndex) {
       return parent.subArray(fromIndex, toIndex).asList();
     }
 
