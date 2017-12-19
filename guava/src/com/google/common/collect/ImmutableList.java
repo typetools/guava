@@ -621,8 +621,6 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
       this.forwardList = backingList;
     }
 
-    // IndexFor cannot refer to custom collections
-    // https://github.com/kelloggm/checker-framework/issues/154
     private @NonNegative int reverseIndex(@NonNegative int index) {
       return (size() - 1) - index;
     }

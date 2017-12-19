@@ -1594,7 +1594,7 @@ public final class Sets {
 
     @Override
     // inputSet has at most 30 elements
-    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/154
+    @SuppressWarnings("lowerbound:return.type.incompatible") // ImmutableMap has at most 30 elements
     public @NonNegative int size() {
       return 1 << inputSet.size();
     }
