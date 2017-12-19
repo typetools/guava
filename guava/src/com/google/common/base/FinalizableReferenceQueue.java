@@ -307,7 +307,7 @@ public class FinalizableReferenceQueue implements Closeable {
     /**
      * Gets URL for base of path containing Finalizer.class.
      */
-    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/panacekcz/checker-framework/issues/11
+    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/203
     URL getBaseUrl() throws IOException {
       // Find URL pointing to Finalizer.class file.
       String finalizerPath = FINALIZER_CLASS_NAME.replace('.', '/') + ".class";
