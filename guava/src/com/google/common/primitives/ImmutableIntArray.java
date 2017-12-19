@@ -348,7 +348,7 @@ public final class ImmutableIntArray implements Serializable {
      * newArray is at least as long as array
      * therefore, count is an index for newArray
      * Possibly could be solved by combination of: 
-     *   https://github.com/panacekcz/checker-framework/issues/11
+     *   https://github.com/kelloggm/checker-framework/issues/202
      *   https://github.com/kelloggm/checker-framework/issues/158
      */
     @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
@@ -539,7 +539,8 @@ public final class ImmutableIntArray implements Serializable {
    * does (no actual copying is performed). To reduce memory usage, use {@code subArray(start,
    * end).trimmed()}.
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/panacekcz/checker-framework/issues/11
+  // array should be @LongerThanEq(value="this", offset="start")
+  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/202
   public ImmutableIntArray subArray(@IndexOrHigh("this") int startIndex, @IndexOrHigh("this") int endIndex) {
     Preconditions.checkPositionIndexes(startIndex, endIndex, length());
     return startIndex == endIndex
