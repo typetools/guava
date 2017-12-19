@@ -560,10 +560,9 @@ public final class Chars {
     }
 
     @Override
-    @SuppressWarnings({
-    	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
-    })
-    public Character get(@NonNegative int index) {
+    // array should be @LongerThanEq(value="this", offset="start")
+    @SuppressWarnings("upperbound:array.access.unsafe.high") // https://github.com/kelloggm/checker-framework/issues/202
+    public Character get(@IndexFor("this") int index) {
       checkElementIndex(index, size());
       return array[start + index];
     }
@@ -602,10 +601,9 @@ public final class Chars {
     }
 
     @Override
-    @SuppressWarnings({
-    	"upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/154
-    })
-    public Character set(@NonNegative int index, Character element) {
+    // array should be @LongerThanEq(value="this", offset="start")
+    @SuppressWarnings("upperbound:array.access.unsafe.high") // https://github.com/kelloggm/checker-framework/issues/202
+    public Character set(@IndexFor("this") int index, Character element) {
       checkElementIndex(index, size());
       char oldValue = array[start + index];
       // checkNotNull for GWT (do not optimize)
@@ -614,10 +612,9 @@ public final class Chars {
     }
 
     @Override
-    @SuppressWarnings({
-    	"upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/154
-    })
-    public List<Character> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
+    // array should be @LongerThanEq(value="this", offset="start")
+    @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/202
+    public List<Character> subList(@IndexOrHigh("this") int fromIndex, @IndexOrHigh("this") int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);
       if (fromIndex == toIndex) {
