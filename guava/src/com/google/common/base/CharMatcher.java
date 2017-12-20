@@ -30,6 +30,7 @@ import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.common.value.qual.IntVal;
 
@@ -842,7 +843,7 @@ public abstract class CharMatcher implements Predicate<Character> {
        * therefore both pos++ are safe
 	   */
 	  "upperbound:compound.assignment.type.incompatible", // index incremented in nested loop with break
-	  "upperbound:array.access.unsafe.high", "upperbound:argument.type.incompatible", // https://github.com/typetools/checker-framework/pull/1702
+	  "upperbound:array.access.unsafe.high", "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/204
 	  /*
 	   * spread <= pos, therefore pos-spread >= 0
 	   */
@@ -856,7 +857,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     }
 
     char[] chars = string.toCharArray();
-    int spread = 1;
+    @Positive int spread = 1;
 
     // This unusual loop comes from extensive benchmarking
     OUT:
@@ -912,7 +913,6 @@ public abstract class CharMatcher implements Predicate<Character> {
    */
   @SuppressWarnings({
 	  "upperbound:assignment.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
-	  "upperbound:array.access.unsafe.high" // https://github.com/typetools/checker-framework/pull/1702
   })
   public String replaceFrom(CharSequence sequence, char replacement) {
     String string = sequence.toString();
@@ -1611,7 +1611,6 @@ public abstract class CharMatcher implements Predicate<Character> {
             + "\u0e50\u0ed0\u0f20\u1040\u1090\u17e0\u1810\u1946\u19d0\u1a80\u1a90\u1b50\u1bb0"
             + "\u1c40\u1c50\ua620\ua8d0\ua900\ua9d0\ua9f0\uaa50\uabf0\uff10";
 
-    @SuppressWarnings("samelen:return.type.incompatible") // https://github.com/typetools/checker-framework/pull/1702
     private static char @SameLen("ZEROES")[] zeroes() {
       return ZEROES.toCharArray();
     }

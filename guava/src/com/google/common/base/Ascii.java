@@ -401,7 +401,6 @@ public final class Ascii {
    * characters} have been converted to lowercase. All other characters are copied without
    * modification.
    */
-  @SuppressWarnings("upperbound:array.access.unsafe.high") // https://github.com/typetools/checker-framework/pull/1702
   public static String toLowerCase(String string) {
     int length = string.length();
     for (int i = 0; i < length; i++) {
@@ -450,7 +449,6 @@ public final class Ascii {
    * characters} have been converted to uppercase. All other characters are copied without
    * modification.
    */
-  @SuppressWarnings("upperbound:array.access.unsafe.high") // https://github.com/typetools/checker-framework/pull/1702
   public static String toUpperCase(String string) {
     int length = string.length();
     for (int i = 0; i < length; i++) {
