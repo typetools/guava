@@ -53,7 +53,6 @@ public final class Utf8 {
    *     surrogates)
    */
   @SuppressWarnings({
-	  "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
       /*
        * unsigned right shift on int
        */
@@ -89,13 +88,12 @@ public final class Utf8 {
     return utf8Length;
   }
   @SuppressWarnings({
-	  "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
       /*
 	   * unsigned right shift on int
 	   */
 	  "lowerbound:compound.assignment.type.incompatible", // unsigned right shift
   }) 
-  private static @NonNegative int encodedLengthGeneral(CharSequence sequence, @IndexFor("#1") int start) {
+  private static @NonNegative int encodedLengthGeneral(CharSequence sequence, @NonNegative/*!IndexFor("#1")*/ int start) {
     int utf16Length = sequence.length();
     @NonNegative int utf8Length = 0;
     for (int i = start; i < utf16Length; i++) {

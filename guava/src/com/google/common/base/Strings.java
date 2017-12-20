@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.framework.qual.EnsuresQualifierIf;
 
 /**
  * Static utility methods pertaining to {@code String} or {@code CharSequence} instances.
@@ -191,14 +192,14 @@ public final class Strings {
    *
    * @since 11.0
    */
-  @SuppressWarnings("index:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
+  @SuppressWarnings("index:compound.assignment.type.incompatible") // i-1 is @NonNegative means i-- is @NonNegative 
   public static String commonPrefix(CharSequence a, CharSequence b) {
     checkNotNull(a);
     checkNotNull(b);
 
     // Should be inferred as @IndexOrHigh({"a","b"})
     int maxPrefixLength = Math.min(a.length(), b.length());
-    int p = 0;
+    @NonNegative int p = 0;
     while (p < maxPrefixLength && a.charAt(p) == b.charAt(p)) {
       p++;
     }
@@ -216,13 +217,20 @@ public final class Strings {
    *
    * @since 11.0
    */
-  @SuppressWarnings("index:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
+  /*
+   * s should be @IndexOrHigh("a")
+   * a.length() - s should be @NonNegative
+   */
+  @SuppressWarnings({
+	  "index:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
+  	  "index:compound.assignment.type.incompatible" // i-1 is @NonNegative means i-- is @NonNegative
+  })
   public static String commonSuffix(CharSequence a, CharSequence b) {
     checkNotNull(a);
     checkNotNull(b);
 
     int maxSuffixLength = Math.min(a.length(), b.length());
-    int s = 0;
+    @NonNegative int s = 0;
     while (s < maxSuffixLength && a.charAt(a.length() - s - 1) == b.charAt(b.length() - s - 1)) {
       s++;
     }
@@ -237,8 +245,8 @@ public final class Strings {
    * True when a valid surrogate pair starts at the given {@code index} in the given {@code string}.
    * Out-of-range indexes return false.
    */
-  @SuppressWarnings("index:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
   @VisibleForTesting
+  @EnsuresQualifierIf(result=true, expression="#2", qualifier=NonNegative.class)
   static boolean validSurrogatePairAt(CharSequence string, int index) {
     return index >= 0
         && index <= (string.length() - 2)

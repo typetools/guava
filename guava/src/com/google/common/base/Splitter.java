@@ -552,10 +552,6 @@ public final class Splitter {
     	 * - nextStart was not changed since the last iteration
     	 */
     	"lowerbound:assignment.type.incompatible", // variable!=-1 implies another variable !=-1
-    	/*
-    	 * Cannot get index for CharSequence
-    	 */
-    	"upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/197
     })
     protected String computeNext() {
       /*
