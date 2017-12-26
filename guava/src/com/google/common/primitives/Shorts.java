@@ -184,7 +184,7 @@ public final class Shorts {
    * @param array the array to search for the sequence {@code target}
    * @param target the array to search for as a sub-sequence of {@code array}
    */
-  @SuppressWarnings("substringindex:return.type.incompatible") // https://github.com/panacekcz/checker-framework/issues/24 https://github.com/panacekcz/checker-framework/issues/25 https://github.com/panacekcz/checker-framework/issues/26
+  @SuppressWarnings("substringindex:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/206 https://github.com/kelloggm/checker-framework/issues/207 https://github.com/kelloggm/checker-framework/issues/208
   public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset="#2.length - 1") int indexOf(short[] array, short[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
