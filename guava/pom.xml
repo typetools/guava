@@ -115,7 +115,7 @@
               <arg>${addtionalargs}</arg>
               <arg>-Awarns</arg>
               <arg>-AprintErrorStack</arg>
-              <arg>-AonlyDefs=^com\.google\.common\.collect\.</arg>
+              <arg>-AonlyDefs=^com\.google\.common\.primitives\.|^com\.google\.common\.base\.</arg>
             </compilerArgs>
         </configuration>
       </plugin>
