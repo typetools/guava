@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.common.value.qual.IntRange;
@@ -539,20 +540,20 @@ public final class Splitter {
     }
 
     @Override
-    @SuppressWarnings({
+  /*  @SuppressWarnings({
     	/*
     	 * limit is always positive.
     	 * When limit is not 1, then it can be safely decremented.
-    	 */
+    	 *-/
     	"lowerbound:compound.assignment.type.incompatible", // decrement Positive which != 1
     	/*
     	 * At the start of the loop, whenever offset!=-1 also nextStart=-1
     	 * One of the following holds:
     	 * - offset == nextStart
     	 * - nextStart was not changed since the last iteration
-    	 */
+    	 *-/
     	"lowerbound:assignment.type.incompatible", // variable!=-1 implies another variable !=-1
-    })
+    })*/
     protected String computeNext() {
       /*
        * The returned string will be from the end of the last match to the beginning of the next
@@ -561,8 +562,8 @@ public final class Splitter {
        */
       @GTENegativeOne int nextStart = offset;
       while (offset != -1) {
-    	@NonNegative int start = nextStart;
-    	@NonNegative int end;
+    	@IndexOrHigh("toSplit") int start = nextStart;
+    	@IndexOrHigh("toSplit") int end;
 
         int separatorPosition = separatorStart(offset);
         if (separatorPosition == -1) {

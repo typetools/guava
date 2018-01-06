@@ -199,7 +199,7 @@ public final class Strings {
 
     // Should be inferred as @IndexOrHigh({"a","b"})
     int maxPrefixLength = Math.min(a.length(), b.length());
-    @NonNegative int p = 0;
+    @IndexOrHigh("a") int p = 0;
     while (p < maxPrefixLength && a.charAt(p) == b.charAt(p)) {
       p++;
     }
