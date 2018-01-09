@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.common.value.qual.IntRange;
@@ -520,16 +521,16 @@ public final class Splitter {
      * Returns the first index in {@code toSplit} at or after {@code start} that contains the
      * separator.
      */
-    abstract @GTENegativeOne int separatorStart(@NonNegative int start);
+    abstract @GTENegativeOne @LTEqLengthOf("toSplit") int separatorStart(@NonNegative int start);
 
     /**
      * Returns the first index in {@code toSplit} after {@code
      * separatorPosition} that does not contain a separator. This method is only invoked after a
      * call to {@code separatorStart}.
      */
-    abstract @NonNegative int separatorEnd(@NonNegative int separatorPosition);
+    abstract @IndexOrHigh("toSplit") int separatorEnd(@NonNegative int separatorPosition);
 
-    @GTENegativeOne int offset = 0;
+    @GTENegativeOne @LTEqLengthOf("toSplit") int offset = 0;
     @Positive int limit;
 
     protected SplittingIterator(Splitter splitter, CharSequence toSplit) {
@@ -540,20 +541,20 @@ public final class Splitter {
     }
 
     @Override
-  /*  @SuppressWarnings({
+    @SuppressWarnings({
     	/*
     	 * limit is always positive.
     	 * When limit is not 1, then it can be safely decremented.
-    	 *-/
+    	 */
     	"lowerbound:compound.assignment.type.incompatible", // decrement Positive which != 1
     	/*
     	 * At the start of the loop, whenever offset!=-1 also nextStart=-1
     	 * One of the following holds:
     	 * - offset == nextStart
     	 * - nextStart was not changed since the last iteration
-    	 *-/
+    	 */
     	"lowerbound:assignment.type.incompatible", // variable!=-1 implies another variable !=-1
-    })*/
+    })
     protected String computeNext() {
       /*
        * The returned string will be from the end of the last match to the beginning of the next
