@@ -530,7 +530,7 @@ public final class Splitter {
      */
     abstract @IndexOrHigh("toSplit") int separatorEnd(@NonNegative int separatorPosition);
 
-    @GTENegativeOne @LTEqLengthOf("toSplit") int offset = 0;
+    @GTENegativeOne int offset = 0;
     @Positive int limit;
 
     protected SplittingIterator(Splitter splitter, CharSequence toSplit) {
@@ -554,6 +554,11 @@ public final class Splitter {
     	 * - nextStart was not changed since the last iteration
     	 */
     	"lowerbound:assignment.type.incompatible", // variable!=-1 implies another variable !=-1
+    	/*
+    	 * offset is usually @LTEqLengthOf("toSplit")
+    	 * offset > toSplit.length() can happen, but is immediately corrected to -1
+    	 */
+    	"upperbound:assignment.type.incompatible" // variable temporarily exceeds upper bound
     })
     protected String computeNext() {
       /*
@@ -561,7 +566,7 @@ public final class Splitter {
        * one. nextStart is the start position of the returned substring, while offset is the place
        * to start looking for a separator.
        */
-      @GTENegativeOne int nextStart = offset;
+      @GTENegativeOne @LTEqLengthOf("toSplit") int nextStart = offset;
       while (offset != -1) {
     	@IndexOrHigh("toSplit") int start = nextStart;
     	@IndexOrHigh("toSplit") int end;

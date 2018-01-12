@@ -143,7 +143,10 @@ public enum CaseFormat {
    * j = wordBoundary.indexIn ensures that j is -1 or
    * j >= 0 && j < s.length() 
    */
-  @SuppressWarnings({"upperbound:assignment.type.incompatible", "upperbound:compound.assignment.type.incompatible"}) // https://github.com/kelloggm/checker-framework/issues/197
+  @SuppressWarnings({
+	  "upperbound:assignment.type.incompatible", "upperbound:compound.assignment.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
+	  "upperbound:argument.type.incompatible", // TODO
+  }) 
   String convert(CaseFormat format, String s) {
     // deal with camel conversion
     StringBuilder out = null;
