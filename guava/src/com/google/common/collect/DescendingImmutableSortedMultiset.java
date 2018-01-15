@@ -15,7 +15,7 @@
 package com.google.common.collect;
 
 import com.google.common.annotations.GwtIncompatible;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 
@@ -34,7 +34,7 @@ final class DescendingImmutableSortedMultiset<E> extends ImmutableSortedMultiset
   }
 
   @Override
-  public @NonNegative int count(@Nullable Object element) {
+  public @NonNegative int count(@NullableDecl Object element) {
     return forward.count(element);
   }
 

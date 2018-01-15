@@ -35,11 +35,11 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.function.Consumer;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
- * An immutable sorted set with one or more elements. TODO(jlevy): Consider
- * separate class for a single-element sorted set.
+ * An immutable sorted set with one or more elements. TODO(jlevy): Consider separate class for a
+ * single-element sorted set.
  *
  * @author Jared Levy
  * @author Louis Wasserman
@@ -87,7 +87,7 @@ final class RegularImmutableSortedSet<E> extends ImmutableSortedSet<E> {
 
   @Pure
   @Override
-  public boolean contains(@Nullable Object o) {
+  public boolean contains(@NullableDecl Object o) {
     try {
       return o != null && unsafeBinarySearch(o) >= 0;
     } catch (ClassCastException e) {
@@ -114,14 +114,14 @@ final class RegularImmutableSortedSet<E> extends ImmutableSortedSet<E> {
      * in O(n) time stepping through the two collections.
      */
     Iterator<E> thisIterator = iterator();
-    
-    Iterator<?> thatIterator = targets.iterator(); 
+
+    Iterator<?> thatIterator = targets.iterator();
     // known nonempty since we checked targets.size() > 1
-    
+
     if (!thisIterator.hasNext()) {
       return false;
     }
-    
+
     Object target = thatIterator.next();
     E current = thisIterator.next();
     try {
@@ -164,7 +164,7 @@ final class RegularImmutableSortedSet<E> extends ImmutableSortedSet<E> {
 
   @Pure
   @Override
-  public boolean equals(@Nullable Object object) {
+  public boolean equals(@NullableDecl Object object) {
     if (object == this) {
       return true;
     }
@@ -296,7 +296,7 @@ final class RegularImmutableSortedSet<E> extends ImmutableSortedSet<E> {
   }
 
   @Override
-  @GTENegativeOne int indexOf(@Nullable Object target) {
+  @GTENegativeOne int indexOf(@NullableDecl Object target) {
     if (target == null) {
       return -1;
     }

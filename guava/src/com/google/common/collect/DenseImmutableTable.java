@@ -21,8 +21,7 @@ import com.google.common.collect.ImmutableMap.IteratorBasedImmutableMap;
 import com.google.errorprone.annotations.Immutable;
 import com.google.j2objc.annotations.WeakOuter;
 import java.util.Map;
-import java.util.Map.Entry;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 
@@ -85,9 +84,7 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
     this.columnMap = new ColumnMap();
   }
 
-  /**
-   * An immutable map implementation backed by an indexed nullable array.
-   */
+  /** An immutable map implementation backed by an indexed nullable array. */
   private abstract static class ImmutableArrayMap<K, V> extends IteratorBasedImmutableMap<K, V> {
     private final @NonNegative int size;
 
@@ -106,7 +103,7 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
       return keyToIndex().keySet().asList().get(index);
     }
 
-    @Nullable
+    @NullableDecl
     abstract V getValue(@NonNegative int keyIndex);
 
     @Override
@@ -120,7 +117,7 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
     }
 
     @Override
-    public V get(@Nullable Object key) {
+    public V get(@NullableDecl Object key) {
       Integer keyIndex = keyToIndex().get(key);
       return (keyIndex == null) ? null : getValue(keyIndex);
     }
@@ -252,7 +249,7 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
   }
 
   @Override
-  public V get(@Nullable Object rowKey, @Nullable Object columnKey) {
+  public V get(@NullableDecl Object rowKey, @NullableDecl Object columnKey) {
     Integer rowIndex = rowKeyToIndex.get(rowKey);
     Integer columnIndex = columnKeyToIndex.get(columnKey);
     return ((rowIndex == null) || (columnIndex == null)) ? null : values[rowIndex][columnIndex];

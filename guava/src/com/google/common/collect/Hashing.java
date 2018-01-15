@@ -22,7 +22,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.primitives.Ints;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Static methods for implementing hash-based collections.
@@ -56,7 +56,7 @@ final class Hashing {
     return (int) (C2 * Integer.rotateLeft((int) (hashCode * C1), 15));
   }
 
-  static int smearedHash(@Nullable Object o) {
+  static int smearedHash(@NullableDecl Object o) {
     return smear((o == null) ? 0 : o.hashCode());
   }
 

@@ -16,7 +16,7 @@ package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 
@@ -61,7 +61,7 @@ final class Count implements Serializable {
   }
 
   @Override
-  public boolean equals(@Nullable Object obj) {
+  public boolean equals(@NullableDecl Object obj) {
     return obj instanceof Count && ((Count) obj).value == value;
   }
 

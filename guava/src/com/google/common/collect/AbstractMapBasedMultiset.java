@@ -38,14 +38,14 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.ObjIntConsumer;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.MonotonicNonNullDecl;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
- * Basic implementation of {@code Multiset<E>} backed by an instance of {@code
- * Map<E, Count>}.
+ * Basic implementation of {@code Multiset<E>} backed by an instance of {@code Map<E, Count>}.
  *
- * <p>For serialization to work, the subclass must specify explicit {@code
- * readObject} and {@code writeObject} methods.
+ * <p>For serialization to work, the subclass must specify explicit {@code readObject} and {@code
+ * writeObject} methods.
  *
  * @author Kevin Bourrillion
  */
@@ -78,9 +78,9 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
   /**
    * {@inheritDoc}
    *
-   * <p>Invoking {@link Multiset.Entry#getCount} on an entry in the returned
-   * set always returns the current count of that element in the multiset, as
-   * opposed to the count at the time the entry was retrieved.
+   * <p>Invoking {@link Multiset.Entry#getCount} on an entry in the returned set always returns the
+   * current count of that element in the multiset, as opposed to the count at the time the entry
+   * was retrieved.
    */
   @SideEffectFree
   @Override
@@ -89,10 +89,38 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
   }
 
   @Override
+  Iterator<E> elementIterator() {
+    final Iterator<Map.Entry<E, Count>> backingEntries = backingMap.entrySet().iterator();
+    return new Iterator<E>() {
+      @NullableDecl Map.Entry<E, Count> toRemove;
+
+      @Override
+      public boolean hasNext() {
+        return backingEntries.hasNext();
+      }
+
+      @Override
+      public E next() {
+        final Map.Entry<E, Count> mapEntry = backingEntries.next();
+        toRemove = mapEntry;
+        return mapEntry.getKey();
+      }
+
+      @Override
+      public void remove() {
+        checkRemove(toRemove != null);
+        size -= toRemove.getValue().getAndSet(0);
+        backingEntries.remove();
+        toRemove = null;
+      }
+    };
+  }
+
+  @Override
   Iterator<Entry<E>> entryIterator() {
     final Iterator<Map.Entry<E, Count>> backingEntries = backingMap.entrySet().iterator();
     return new Iterator<Multiset.Entry<E>>() {
-      Map.Entry<E, Count> toRemove;
+      @NullableDecl Map.Entry<E, Count> toRemove;
 
       @Override
       public boolean hasNext() {
@@ -133,7 +161,8 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
     };
   }
 
-  @Override public void forEachEntry(ObjIntConsumer<? super E> action) {
+  @Override
+  public void forEachEntry(ObjIntConsumer<? super E> action) {
     checkNotNull(action);
     backingMap.forEach((element, count) -> action.accept(element, count.get()));
   }
@@ -172,7 +201,7 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
    */
   private class MapBasedMultisetIterator implements Iterator<E> {
     final Iterator<Map.Entry<E, Count>> entryIterator;
-    Map.Entry<E, Count> currentEntry;
+    @MonotonicNonNullDecl Map.Entry<E, Count> currentEntry;
     int occurrencesLeft;
     boolean canRemove;
 
@@ -212,7 +241,7 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
   }
 
   @Override
-  public @NonNegative int count(@Nullable Object element) {
+  public @NonNegative int count(@NullableDecl Object element) {
     Count frequency = Maps.safeGet(backingMap, element);
     return (frequency == null) ? 0 : frequency.get();
   }
@@ -222,13 +251,12 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
   /**
    * {@inheritDoc}
    *
-   * @throws IllegalArgumentException if the call would result in more than
-   *     {@link Integer#MAX_VALUE} occurrences of {@code element} in this
-   *     multiset.
+   * @throws IllegalArgumentException if the call would result in more than {@link
+   *     Integer#MAX_VALUE} occurrences of {@code element} in this multiset.
    */
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int add(@Nullable E element, @NonNegative int occurrences) {
+  public @NonNegative int add(@NullableDecl E element, @NonNegative int occurrences) {
     if (occurrences == 0) {
       return count(element);
     }
@@ -250,7 +278,7 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
 
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int remove(@Nullable Object element, @NonNegative int occurrences) {
+  public @NonNegative int remove(@NullableDecl Object element, @NonNegative int occurrences) {
     if (occurrences == 0) {
       return count(element);
     }
@@ -278,7 +306,7 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
   // Roughly a 33% performance improvement over AbstractMultiset.setCount().
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int setCount(@Nullable E element, @NonNegative int count) {
+  public @NonNegative int setCount(@NullableDecl E element, @NonNegative int count) {
     checkNonnegative(count, "count");
 
     Count existingCounter;
@@ -299,7 +327,7 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
     return oldCount;
   }
 
-  private static @NonNegative int getAndSet(@Nullable Count i, int count) {
+  private static @NonNegative int getAndSet(@NullableDecl Count i, int count) {
     if (i == null) {
       return 0;
     }

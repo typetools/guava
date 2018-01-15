@@ -23,13 +23,12 @@ import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
- * An implementation of {@link ImmutableTable} holding an arbitrary number of
- * cells.
+ * An implementation of {@link ImmutableTable} holding an arbitrary number of cells.
  *
  * @author Gregory Kick
  */
@@ -57,7 +56,7 @@ abstract class RegularImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
     }
 
     @Override
-    public boolean contains(@Nullable Object object) {
+    public boolean contains(@NullableDecl Object object) {
       if (object instanceof Cell) {
         Cell<?, ?, ?> cell = (Cell<?, ?, ?>) object;
         Object value = RegularImmutableTable.this.get(cell.getRowKey(), cell.getColumnKey());
@@ -99,8 +98,8 @@ abstract class RegularImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
 
   static <R, C, V> RegularImmutableTable<R, C, V> forCells(
       List<Cell<R, C, V>> cells,
-      @Nullable final Comparator<? super R> rowComparator,
-      @Nullable final Comparator<? super C> columnComparator) {
+      @NullableDecl final Comparator<? super R> rowComparator,
+      @NullableDecl final Comparator<? super C> columnComparator) {
     checkNotNull(cells);
     if (rowComparator != null || columnComparator != null) {
       /*
@@ -137,8 +136,8 @@ abstract class RegularImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
 
   private static final <R, C, V> RegularImmutableTable<R, C, V> forCellsInternal(
       Iterable<Cell<R, C, V>> cells,
-      @Nullable Comparator<? super R> rowComparator,
-      @Nullable Comparator<? super C> columnComparator) {
+      @NullableDecl Comparator<? super R> rowComparator,
+      @NullableDecl Comparator<? super C> columnComparator) {
     Set<R> rowSpaceBuilder = new LinkedHashSet<>();
     Set<C> columnSpaceBuilder = new LinkedHashSet<>();
     ImmutableList<Cell<R, C, V>> cellList = ImmutableList.copyOf(cells);

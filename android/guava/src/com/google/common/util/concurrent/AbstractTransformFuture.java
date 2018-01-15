@@ -16,7 +16,6 @@ package com.google.common.util.concurrent;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.util.concurrent.Futures.getDone;
-import static com.google.common.util.concurrent.MoreExecutors.directExecutor;
 import static com.google.common.util.concurrent.MoreExecutors.rejectionPropagatingExecutor;
 
 import com.google.common.annotations.GwtCompatible;
@@ -26,11 +25,9 @@ import java.lang.reflect.UndeclaredThrowableException;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-/**
- * Implementations of {@code Futures.transform*}.
- */
+/** Implementations of {@code Futures.transform*}. */
 @GwtCompatible
 abstract class AbstractTransformFuture<I, O, F, T> extends AbstractFuture.TrustedFuture<O>
     implements Runnable {
@@ -56,8 +53,8 @@ abstract class AbstractTransformFuture<I, O, F, T> extends AbstractFuture.Truste
    * In certain circumstances, this field might theoretically not be visible to an afterDone() call
    * triggered by cancel(). For details, see the comments on the fields of TimeoutFuture.
    */
-  @Nullable ListenableFuture<? extends I> inputFuture;
-  @Nullable F function;
+  @NullableDecl ListenableFuture<? extends I> inputFuture;
+  @NullableDecl F function;
 
   AbstractTransformFuture(ListenableFuture<? extends I> inputFuture, F function) {
     this.inputFuture = checkNotNull(inputFuture);
@@ -72,7 +69,6 @@ abstract class AbstractTransformFuture<I, O, F, T> extends AbstractFuture.Truste
       return;
     }
     inputFuture = null;
-    function = null;
 
     /*
      * Any of the setException() calls below can fail if the output Future is cancelled between now
@@ -121,6 +117,8 @@ abstract class AbstractTransformFuture<I, O, F, T> extends AbstractFuture.Truste
       // This exception is irrelevant in this thread, but useful for the client.
       setException(t);
       return;
+    } finally {
+      function = null;
     }
 
     /*
@@ -164,12 +162,12 @@ abstract class AbstractTransformFuture<I, O, F, T> extends AbstractFuture.Truste
 
   /** Template method for subtypes to actually run the transform. */
   @ForOverride
-  @Nullable
-  abstract T doTransform(F function, @Nullable I result) throws Exception;
+  @NullableDecl
+  abstract T doTransform(F function, @NullableDecl I result) throws Exception;
 
   /** Template method for subtypes to actually set the result. */
   @ForOverride
-  abstract void setResult(@Nullable T result);
+  abstract void setResult(@NullableDecl T result);
 
   @Override
   protected final void afterDone() {
@@ -184,13 +182,15 @@ abstract class AbstractTransformFuture<I, O, F, T> extends AbstractFuture.Truste
     F localFunction = function;
     if (localInputFuture != null && localFunction != null) {
       return "inputFuture=[" + localInputFuture + "], function=[" + localFunction + "]";
+    } else if (localFunction != null) {
+      return "function=[" + localFunction + "]";
     }
     return null;
   }
 
   /**
-   * An {@link AbstractTransformFuture} that delegates to an {@link AsyncFunction} and
-   * {@link #setFuture(ListenableFuture)}.
+   * An {@link AbstractTransformFuture} that delegates to an {@link AsyncFunction} and {@link
+   * #setFuture(ListenableFuture)}.
    */
   private static final class AsyncTransformFuture<I, O>
       extends AbstractTransformFuture<
@@ -202,7 +202,7 @@ abstract class AbstractTransformFuture<I, O, F, T> extends AbstractFuture.Truste
 
     @Override
     ListenableFuture<? extends O> doTransform(
-        AsyncFunction<? super I, ? extends O> function, @Nullable I input) throws Exception {
+        AsyncFunction<? super I, ? extends O> function, @NullableDecl I input) throws Exception {
       ListenableFuture<? extends O> outputFuture = function.apply(input);
       checkNotNull(
           outputFuture,
@@ -218,8 +218,8 @@ abstract class AbstractTransformFuture<I, O, F, T> extends AbstractFuture.Truste
   }
 
   /**
-   * An {@link AbstractTransformFuture} that delegates to a {@link Function} and
-   * {@link #set(Object)}.
+   * An {@link AbstractTransformFuture} that delegates to a {@link Function} and {@link
+   * #set(Object)}.
    */
   private static final class TransformFuture<I, O>
       extends AbstractTransformFuture<I, O, Function<? super I, ? extends O>, O> {
@@ -229,14 +229,14 @@ abstract class AbstractTransformFuture<I, O, F, T> extends AbstractFuture.Truste
     }
 
     @Override
-    @Nullable
-    O doTransform(Function<? super I, ? extends O> function, @Nullable I input) {
+    @NullableDecl
+    O doTransform(Function<? super I, ? extends O> function, @NullableDecl I input) {
       return function.apply(input);
       // TODO(lukes): move the UndeclaredThrowable catch block here?
     }
 
     @Override
-    void setResult(@Nullable O result) {
+    void setResult(@NullableDecl O result) {
       set(result);
     }
   }

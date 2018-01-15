@@ -19,9 +19,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 
 import com.google.common.annotations.GwtCompatible;
 
-/**
- * A string to be parsed as a number and the radix to interpret it in.
- */
+/** A string to be parsed as a number and the radix to interpret it in. */
 @GwtCompatible
 @AnnotatedFor("index")
 final class ParseRequest {

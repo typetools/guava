@@ -22,10 +22,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
 
-/**
- * An ordering that uses the natural order of the string representation of the
- * values.
- */
+/** An ordering that uses the natural order of the string representation of the values. */
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true)
 final class UsingToStringOrdering extends Ordering<Object> implements Serializable {

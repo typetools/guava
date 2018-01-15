@@ -32,7 +32,7 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 
@@ -101,7 +101,7 @@ public final class Throwables {
   @Deprecated
   @GwtIncompatible // throwIfInstanceOf
   public static <X extends Throwable> void propagateIfInstanceOf(
-      @Nullable Throwable throwable, Class<X> declaredType) throws X {
+      @NullableDecl Throwable throwable, Class<X> declaredType) throws X {
     if (throwable != null) {
       throwIfInstanceOf(throwable, declaredType);
     }
@@ -156,7 +156,7 @@ public final class Throwables {
    */
   @Deprecated
   @GwtIncompatible
-  public static void propagateIfPossible(@Nullable Throwable throwable) {
+  public static void propagateIfPossible(@NullableDecl Throwable throwable) {
     if (throwable != null) {
       throwIfUnchecked(throwable);
     }
@@ -182,7 +182,7 @@ public final class Throwables {
    */
   @GwtIncompatible // propagateIfInstanceOf
   public static <X extends Throwable> void propagateIfPossible(
-      @Nullable Throwable throwable, Class<X> declaredType) throws X {
+      @NullableDecl Throwable throwable, Class<X> declaredType) throws X {
     propagateIfInstanceOf(throwable, declaredType);
     propagateIfPossible(throwable);
   }
@@ -200,7 +200,7 @@ public final class Throwables {
    */
   @GwtIncompatible // propagateIfInstanceOf
   public static <X1 extends Throwable, X2 extends Throwable> void propagateIfPossible(
-      @Nullable Throwable throwable, Class<X1> declaredType1, Class<X2> declaredType2)
+      @NullableDecl Throwable throwable, Class<X1> declaredType1, Class<X2> declaredType2)
       throws X1, X2 {
     checkNotNull(declaredType2);
     propagateIfInstanceOf(throwable, declaredType1);
@@ -450,7 +450,7 @@ public final class Throwables {
 
   /** Access to some fancy internal JVM internals. */
   @GwtIncompatible // java.lang.reflect
-  @Nullable
+  @NullableDecl
   private static final Object jla = getJLA();
 
   /**
@@ -458,7 +458,7 @@ public final class Throwables {
    * find it when available. When this is null, use the slow way.
    */
   @GwtIncompatible // java.lang.reflect
-  @Nullable
+  @NullableDecl
   private static final Method getStackTraceElementMethod = (jla == null) ? null : getGetMethod();
 
   /**
@@ -466,7 +466,7 @@ public final class Throwables {
    * when available. When this is null, use the slow way.
    */
   @GwtIncompatible // java.lang.reflect
-  @Nullable
+  @NullableDecl
   private static final Method getStackTraceDepthMethod = (jla == null) ? null : getSizeMethod();
 
   /**
@@ -474,7 +474,7 @@ public final class Throwables {
    * AppEngine, and not present in non-Sun JDKs.
    */
   @GwtIncompatible // java.lang.reflect
-  @Nullable
+  @NullableDecl
   private static Object getJLA() {
     try {
       /*
@@ -500,7 +500,7 @@ public final class Throwables {
    * method cannot be found (it is only to be found in fairly recent JDKs).
    */
   @GwtIncompatible // java.lang.reflect
-  @Nullable
+  @NullableDecl
   private static Method getGetMethod() {
     return getJlaMethod("getStackTraceElement", Throwable.class, int.class);
   }
@@ -515,7 +515,7 @@ public final class Throwables {
    * UnsupportedOperationException</a>.
    */
   @GwtIncompatible // java.lang.reflect
-  @Nullable
+  @NullableDecl
   private static Method getSizeMethod() {
     try {
       Method getStackTraceDepth = getJlaMethod("getStackTraceDepth", Throwable.class);
@@ -530,7 +530,7 @@ public final class Throwables {
   }
 
   @GwtIncompatible // java.lang.reflect
-  @Nullable
+  @NullableDecl
   private static Method getJlaMethod(String name, Class<?>... parameterTypes) throws ThreadDeath {
     try {
       return Class.forName(JAVA_LANG_ACCESS_CLASSNAME, false, null).getMethod(name, parameterTypes);

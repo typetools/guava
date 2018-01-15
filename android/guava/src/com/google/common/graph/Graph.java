@@ -18,7 +18,7 @@ package com.google.common.graph;
 
 import com.google.common.annotations.Beta;
 import java.util.Set;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * An interface for <a
@@ -52,11 +52,11 @@ import javax.annotation.Nullable;
  * <h3>Building a {@code Graph}</h3>
  *
  * <p>The implementation classes that {@code common.graph} provides are not public, by design. To
- * create an instance of one of the built-in implementations of {@code Graph}, use the
- * {@link GraphBuilder} class:
+ * create an instance of one of the built-in implementations of {@code Graph}, use the {@link
+ * GraphBuilder} class:
  *
  * <pre>{@code
- *   MutableGraph<Integer> graph = GraphBuilder.undirected().build();
+ * MutableGraph<Integer> graph = GraphBuilder.undirected().build();
  * }</pre>
  *
  * <p>{@link GraphBuilder#build()} returns an instance of {@link MutableGraph}, which is a subtype
@@ -68,7 +68,7 @@ import javax.annotation.Nullable;
  * ImmutableGraph#copyOf(Graph)}:
  *
  * <pre>{@code
- *   ImmutableGraph<Integer> immutableGraph = ImmutableGraph.copyOf(graph);
+ * ImmutableGraph<Integer> immutableGraph = ImmutableGraph.copyOf(graph);
  * }</pre>
  *
  * <p>Instances of {@link ImmutableGraph} do not implement {@link MutableGraph} (obviously!) and are
@@ -147,6 +147,10 @@ public interface Graph<N> extends BaseGraph<N> {
 
   /** {@inheritDoc} */
   @Override
+  Set<EndpointPair<N>> incidentEdges(N node);
+
+  /** {@inheritDoc} */
+  @Override
   int degree(N node);
 
   /** {@inheritDoc} */
@@ -172,9 +176,9 @@ public interface Graph<N> extends BaseGraph<N> {
    * <p>Thus, two graphs A and B are equal if <b>all</b> of the following are true:
    *
    * <ul>
-   * <li>A and B have equal {@link #isDirected() directedness}.
-   * <li>A and B have equal {@link #nodes() node sets}.
-   * <li>A and B have equal {@link #edges() edge sets}.
+   *   <li>A and B have equal {@link #isDirected() directedness}.
+   *   <li>A and B have equal {@link #nodes() node sets}.
+   *   <li>A and B have equal {@link #edges() edge sets}.
    * </ul>
    *
    * <p>Graph properties besides {@link #isDirected() directedness} do <b>not</b> affect equality.
@@ -185,7 +189,7 @@ public interface Graph<N> extends BaseGraph<N> {
    * <p>A reference implementation of this is provided by {@link AbstractGraph#equals(Object)}.
    */
   @Override
-  boolean equals(@Nullable Object object);
+  boolean equals(@NullableDecl Object object);
 
   /**
    * Returns the hash code for this graph. The hash code of a graph is defined as the hash code of

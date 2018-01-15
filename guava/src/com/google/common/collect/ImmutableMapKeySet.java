@@ -24,7 +24,7 @@ import com.google.j2objc.annotations.Weak;
 import java.io.Serializable;
 import java.util.Spliterator;
 import java.util.function.Consumer;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 
@@ -58,7 +58,7 @@ final class ImmutableMapKeySet<K, V> extends ImmutableSet.Indexed<K> {
   }
 
   @Override
-  public boolean contains(@Nullable Object object) {
+  public boolean contains(@NullableDecl Object object) {
     return map.containsKey(object);
   }
 

@@ -25,7 +25,7 @@ import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map.Entry;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 
@@ -48,7 +48,7 @@ final class FilteredMultimapValues<K, V> extends AbstractCollection<V> {
   }
 
   @Override
-  public boolean contains(@Nullable Object o) {
+  public boolean contains(@NullableDecl Object o) {
     return multimap.containsValue(o);
   }
 
@@ -58,11 +58,10 @@ final class FilteredMultimapValues<K, V> extends AbstractCollection<V> {
   }
 
   @Override
-  public boolean remove(@Nullable Object o) {
+  public boolean remove(@NullableDecl Object o) {
     Predicate<? super Entry<K, V>> entryPredicate = multimap.entryPredicate();
     for (Iterator<Entry<K, V>> unfilteredItr = multimap.unfiltered().entries().iterator();
-        unfilteredItr.hasNext();
-        ) {
+        unfilteredItr.hasNext(); ) {
       Entry<K, V> entry = unfilteredItr.next();
       if (entryPredicate.apply(entry) && Objects.equal(entry.getValue(), o)) {
         unfilteredItr.remove();

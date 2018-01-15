@@ -32,9 +32,9 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code long} primitives that interpret values as
- * <i>unsigned</i> (that is, any negative value {@code x} is treated as the positive value
- * {@code 2^64 + x}). The methods for which signedness is not an issue are in {@link Longs}, as well
- * as signed versions of methods for which signedness is an issue.
+ * <i>unsigned</i> (that is, any negative value {@code x} is treated as the positive value {@code
+ * 2^64 + x}). The methods for which signedness is not an issue are in {@link Longs}, as well as
+ * signed versions of methods for which signedness is an issue.
  *
  * <p>In addition, this class provides several static methods for converting a {@code long} to a
  * {@code String} and a {@code String} to a {@code long} that treat the {@code long} as an unsigned
@@ -44,8 +44,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * {@code long} values. When possible, it is recommended that the {@link UnsignedLong} wrapper class
  * be used, at a small efficiency penalty, to enforce the distinction in the type system.
  *
- * <p>See the Guava User Guide article on
- * <a href="https://github.com/google/guava/wiki/PrimitivesExplained#unsigned-support">unsigned
+ * <p>See the Guava User Guide article on <a
+ * href="https://github.com/google/guava/wiki/PrimitivesExplained#unsigned-support">unsigned
  * primitive utilities</a>.
  *
  * @author Louis Wasserman
@@ -71,8 +71,8 @@ public final class UnsignedLongs {
   }
 
   /**
-   * Compares the two specified {@code long} values, treating them as unsigned values between
-   * {@code 0} and {@code 2^64 - 1} inclusive.
+   * Compares the two specified {@code long} values, treating them as unsigned values between {@code
+   * 0} and {@code 2^64 - 1} inclusive.
    *
    * <p><b>Java 8 users:</b> use {@link Long#compareUnsigned(long, long)} instead.
    *
@@ -126,8 +126,8 @@ public final class UnsignedLongs {
   }
 
   /**
-   * Returns a string containing the supplied unsigned {@code long} values separated by
-   * {@code separator}. For example, {@code join("-", 1, 2, 3)} returns the string {@code "1-2-3"}.
+   * Returns a string containing the supplied unsigned {@code long} values separated by {@code
+   * separator}. For example, {@code join("-", 1, 2, 3)} returns the string {@code "1-2-3"}.
    *
    * @param separator the text that should appear between consecutive values in the resulting string
    *     (but not at the start or end)
@@ -156,8 +156,8 @@ public final class UnsignedLongs {
    * example, {@code [] < [1L] < [1L, 2L] < [2L] < [1L << 63]}.
    *
    * <p>The returned comparator is inconsistent with {@link Object#equals(Object)} (since arrays
-   * support only identity equality), but it is consistent with
-   * {@link Arrays#equals(long[], long[])}.
+   * support only identity equality), but it is consistent with {@link Arrays#equals(long[],
+   * long[])}.
    */
   public static Comparator<long[]> lexicographicalComparator() {
     return LexicographicalComparator.INSTANCE;
@@ -182,6 +182,7 @@ public final class UnsignedLongs {
       return "UnsignedLongs.lexicographicalComparator()";
     }
   }
+
   /**
    * Sorts the array, treating its elements as unsigned 64-bit integers.
    *
@@ -317,8 +318,8 @@ public final class UnsignedLongs {
    *
    * @throws NumberFormatException if the string does not contain a valid unsigned {@code long}
    *     value
-   * @throws NullPointerException if {@code string} is null (in contrast to
-   *     {@link Long#parseLong(String)})
+   * @throws NullPointerException if {@code string} is null (in contrast to {@link
+   *     Long#parseLong(String)})
    */
   @CanIgnoreReturnValue
   public static long parseUnsignedLong(String string) {
@@ -328,13 +329,13 @@ public final class UnsignedLongs {
   /**
    * Returns the unsigned {@code long} value represented by the given string.
    *
-   * Accepts a decimal, hexadecimal, or octal number given by specifying the following prefix:
+   * <p>Accepts a decimal, hexadecimal, or octal number given by specifying the following prefix:
    *
    * <ul>
-   * <li>{@code 0x}<i>HexDigits</i>
-   * <li>{@code 0X}<i>HexDigits</i>
-   * <li>{@code #}<i>HexDigits</i>
-   * <li>{@code 0}<i>OctalDigits</i>
+   *   <li>{@code 0x}<i>HexDigits</i>
+   *   <li>{@code 0X}<i>HexDigits</i>
+   *   <li>{@code #}<i>HexDigits</i>
+   *   <li>{@code 0}<i>OctalDigits</i>
    * </ul>
    *
    * @throws NumberFormatException if the string does not contain a valid unsigned {@code long}
@@ -363,10 +364,10 @@ public final class UnsignedLongs {
    * @param string the string containing the unsigned {@code long} representation to be parsed.
    * @param radix the radix to use while parsing {@code string}
    * @throws NumberFormatException if the string does not contain a valid unsigned {@code long} with
-   *     the given radix, or if {@code radix} is not between {@link Character#MIN_RADIX} and
-   *     {@link Character#MAX_RADIX}.
-   * @throws NullPointerException if {@code string} is null (in contrast to
-   *     {@link Long#parseLong(String)})
+   *     the given radix, or if {@code radix} is not between {@link Character#MIN_RADIX} and {@link
+   *     Character#MAX_RADIX}.
+   * @throws NullPointerException if {@code string} is null (in contrast to {@link
+   *     Long#parseLong(String)})
    */
   @CanIgnoreReturnValue
   public static long parseUnsignedLong(String string, @IntRange(from=Character.MIN_RADIX,to=Character.MAX_RADIX) int radix) {
@@ -393,14 +394,14 @@ public final class UnsignedLongs {
 
     return value;
   }
-  
+
   /*
    * We move the static constants into this class so ProGuard can inline UnsignedLongs entirely
    * unless the user is actually calling a parse method.
    */
   private static final class ParseOverflowDetection {
     private ParseOverflowDetection() {}
-    
+
     // calculated as 0xffffffffffffffff / radix
     static final long @MinLen(Character.MAX_RADIX + 1)[] maxValueDivs = new long[Character.MAX_RADIX + 1];
     static final int @MinLen(Character.MAX_RADIX + 1)[] maxValueMods = new int[Character.MAX_RADIX + 1];

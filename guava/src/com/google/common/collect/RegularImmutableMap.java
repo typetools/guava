@@ -36,7 +36,7 @@ import com.google.j2objc.annotations.Weak;
 import java.io.Serializable;
 import java.util.function.BiConsumer;
 import java.util.Map;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Implementation of {@link ImmutableMap} with two or more entries.
@@ -53,8 +53,7 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
       new RegularImmutableMap<>((Entry<Object, Object>[]) ImmutableMap.EMPTY_ENTRY_ARRAY, null, 0);
 
   // entries in insertion order
-  @VisibleForTesting
-  final transient Entry<K, V>[] entries;
+  @VisibleForTesting final transient Entry<K, V>[] entries;
   // array of linked lists of entries
   private final transient ImmutableMapEntry<K, V>[] table;
   // 'and' with an int to get a table index
@@ -65,9 +64,9 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
   }
 
   /**
-   * Creates a RegularImmutableMap from the first n entries in entryArray.  This implementation
-   * may replace the entries in entryArray with its own entry objects (though they will have the
-   * same key/value contents), and may take ownership of entryArray.
+   * Creates a RegularImmutableMap from the first n entries in entryArray. This implementation may
+   * replace the entries in entryArray with its own entry objects (though they will have the same
+   * key/value contents), and may take ownership of entryArray.
    */
   static <K, V> RegularImmutableMap<K, V> fromEntryArray(@IndexOrHigh("#2") int n, Entry<K, V>[] entryArray) {
     checkPositionIndex(n, entryArray.length);
@@ -89,7 +88,7 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
       V value = entry.getValue();
       checkEntryNotNull(key, value);
       int tableIndex = Hashing.smear(key.hashCode()) & mask;
-      @Nullable ImmutableMapEntry<K, V> existing = table[tableIndex];
+      @NullableDecl ImmutableMapEntry<K, V> existing = table[tableIndex];
       // prepend, not append, so the entries can be immutable
       ImmutableMapEntry<K, V> newEntry;
       if (existing == null) {
@@ -114,26 +113,27 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
   }
 
   static void checkNoConflictInKeyBucket(
-      Object key, Entry<?, ?> entry, @Nullable ImmutableMapEntry<?, ?> keyBucketHead) {
+      Object key, Entry<?, ?> entry, @NullableDecl ImmutableMapEntry<?, ?> keyBucketHead) {
     for (; keyBucketHead != null; keyBucketHead = keyBucketHead.getNextInKeyBucket()) {
       checkNoConflict(!key.equals(keyBucketHead.getKey()), "key", entry, keyBucketHead);
     }
   }
 
   /**
-   * Closed addressing tends to perform well even with high load factors.
-   * Being conservative here ensures that the table is still likely to be
-   * relatively sparse (hence it misses fast) while saving space.
+   * Closed addressing tends to perform well even with high load factors. Being conservative here
+   * ensures that the table is still likely to be relatively sparse (hence it misses fast) while
+   * saving space.
    */
   private static final double MAX_LOAD_FACTOR = 1.2;
 
   @Override
-  public @org.checkerframework.checker.nullness.qual.Nullable V get(@Nullable Object key) {
+  public V get(@NullableDecl Object key) {
     return get(key, table, mask);
   }
 
-  @Nullable
-  static <V> V get(@Nullable Object key, @Nullable ImmutableMapEntry<?, V>[] keyTable, int mask) {
+  @NullableDecl
+  static <V> V get(
+      @NullableDecl Object key, @NullableDecl ImmutableMapEntry<?, V>[] keyTable, int mask) {
     if (key == null || keyTable == null) {
       return null;
     }

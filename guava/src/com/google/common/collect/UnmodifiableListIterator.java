@@ -22,8 +22,7 @@ import java.util.ListIterator;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
- * A list iterator that does not support {@link #remove}, {@link #add}, or
- * {@link #set}.
+ * A list iterator that does not support {@link #remove}, {@link #add}, or {@link #set}.
  *
  * @since 7.0
  * @author Louis Wasserman

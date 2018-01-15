@@ -16,13 +16,13 @@ package com.google.common.util.concurrent;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Preconditions;
+import com.google.errorprone.annotations.concurrent.GuardedBy;
 import com.google.j2objc.annotations.WeakOuter;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.Executor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.concurrent.GuardedBy;
 
 /**
  * Executor ensuring that all Runnables submitted are executed in order, using the provided
@@ -77,7 +77,7 @@ final class SequentialExecutor implements Executor {
   }
 
   /**
-   * Starts a worker.  This should only be called if:
+   * Starts a worker. This should only be called if:
    *
    * <ul>
    *   <li>{@code isWorkerRunning == true}
@@ -124,12 +124,11 @@ final class SequentialExecutor implements Executor {
      *
      * <p>The thread's interrupt bit is cleared before execution of each task.
      *
-     * <p>If the Thread in use is interrupted before or during execution of the tasks in
-     * {@link #queue}, the Executor will complete its tasks, and then restore the interruption.
-     * This means that once the Thread returns to the Executor that this Executor composes, the
-     * interruption will still be present. If the composed Executor is an ExecutorService, it can
-     * respond to shutdown() by returning tasks queued on that Thread after {@link #worker} drains
-     * the queue.
+     * <p>If the Thread in use is interrupted before or during execution of the tasks in {@link
+     * #queue}, the Executor will complete its tasks, and then restore the interruption. This means
+     * that once the Thread returns to the Executor that this Executor composes, the interruption
+     * will still be present. If the composed Executor is an ExecutorService, it can respond to
+     * shutdown() by returning tasks queued on that Thread after {@link #worker} drains the queue.
      */
     private void workOnQueue() {
       boolean interruptedDuringTask = false;

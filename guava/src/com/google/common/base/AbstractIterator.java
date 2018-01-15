@@ -20,7 +20,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -42,11 +42,11 @@ abstract class AbstractIterator<T> implements Iterator<T> {
     FAILED,
   }
 
-  private T next;
+  @NullableDecl private T next;
 
   protected abstract T computeNext();
 
-  @Nullable
+  @NullableDecl
   @CanIgnoreReturnValue
   protected final T endOfData() {
     state = State.DONE;

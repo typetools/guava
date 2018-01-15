@@ -23,10 +23,10 @@ import java.nio.charset.Charset;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
 
-/** 
+/**
  * Skeleton implementation of {@link HashFunction} in terms of {@link #newHasher()}.
- * 
- * TODO(lowasser): make public 
+ *
+ * <p>TODO(lowasser): make public
  */
 abstract class AbstractHashFunction implements HashFunction {
   @Override

@@ -18,12 +18,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Objects;
+import com.google.common.collect.Multiset.Entry;
 import com.google.common.collect.Multisets.ImmutableEntry;
 import com.google.common.primitives.Ints;
 import com.google.errorprone.annotations.concurrent.LazyInit;
 import com.google.j2objc.annotations.WeakOuter;
+import java.io.Serializable;
 import java.util.Collection;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 
@@ -40,12 +42,11 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
       new RegularImmutableMultiset<>(ImmutableList.<Entry<Object>>of());
 
   private final transient Multisets.ImmutableEntry<E>[] entries;
-  private final transient Multisets.ImmutableEntry<E>[] hashTable;
+  @NullableDecl private final transient Multisets.ImmutableEntry<E>[] hashTable;
   private final transient @NonNegative int size;
   private final transient int hashCode;
 
-  @LazyInit
-  private transient ImmutableSet<E> elementSet;
+  @LazyInit private transient ImmutableSet<E> elementSet;
 
   RegularImmutableMultiset(Collection<? extends Entry<? extends E>> entries) {
     int distinct = entries.size();
@@ -115,7 +116,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
   }
 
   @Override
-  public @NonNegative int count(@Nullable Object element) {
+  public @NonNegative int count(@NullableDecl Object element) {
     Multisets.ImmutableEntry<E>[] hashTable = this.hashTable;
     if (element == null || hashTable == null) {
       return 0;
@@ -152,7 +153,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
     }
 
     @Override
-    public boolean contains(@Nullable Object object) {
+    public boolean contains(@NullableDecl Object object) {
       return RegularImmutableMultiset.this.contains(object);
     }
 
@@ -175,5 +176,38 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
   @Override
   public int hashCode() {
     return hashCode;
+  }
+
+  private static class SerializedForm implements Serializable {
+    final Object[] elements;
+    final int[] counts;
+
+    SerializedForm(Multiset<?> multiset) {
+      int distinct = multiset.entrySet().size();
+      elements = new Object[distinct];
+      counts = new int[distinct];
+      int i = 0;
+      for (Entry<?> entry : multiset.entrySet()) {
+        elements[i] = entry.getElement();
+        counts[i] = entry.getCount();
+        i++;
+      }
+    }
+
+    Object readResolve() {
+      LinkedHashMultiset<Object> multiset = LinkedHashMultiset.create(elements.length);
+      for (int i = 0; i < elements.length; i++) {
+        multiset.add(elements[i], counts[i]);
+      }
+      return ImmutableMultiset.copyOf(multiset);
+    }
+
+    private static final long serialVersionUID = 0;
+  }
+
+  //We can't label this with @Override, because it doesn't override anything
+  // in the GWT emulated version.
+  Object writeReplace() {
+    return new SerializedForm(this);
   }
 }

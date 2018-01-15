@@ -32,7 +32,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 
@@ -89,7 +89,7 @@ public abstract class AbstractNetwork<N, E> implements Network<N, E> {
           // Network<LinkedList>.
           @SuppressWarnings("unchecked")
           @Override
-          public boolean contains(@Nullable Object obj) {
+          public boolean contains(@NullableDecl Object obj) {
             if (!(obj instanceof EndpointPair)) {
               return false;
             }
@@ -194,7 +194,7 @@ public abstract class AbstractNetwork<N, E> implements Network<N, E> {
   }
 
   @Override
-  @Nullable
+  @NullableDecl
   public E edgeConnectingOrNull(N nodeU, N nodeV) {
     return edgeConnecting(nodeU, nodeV).orElse(null);
   }
@@ -205,7 +205,7 @@ public abstract class AbstractNetwork<N, E> implements Network<N, E> {
   }
 
   @Override
-  public final boolean equals(@Nullable Object obj) {
+  public final boolean equals(@NullableDecl Object obj) {
     if (obj == this) {
       return true;
     }
