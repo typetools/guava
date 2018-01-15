@@ -34,7 +34,8 @@ import java.util.Spliterators;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
-
+import org.checkerframework.checker.index.qual.EnsuresLTLengthOf;
+import org.checkerframework.checker.index.qual.EnsuresLTLengthOfIf;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
@@ -226,15 +227,6 @@ public final class ImmutableIntArray implements Serializable {
      * Appends {@code value} to the end of the values the built {@link ImmutableIntArray} will
      * contain.
      */
-    /*
-     * Calling ensureRoomFor(1) ensures that count is IndexFor("array")
-     * Need ensures annotation for @LTLengthOf, for example @EnsuresLTLengthOf.
-     * ensureRoomFor should be
-     * @EnsuresLTLengthOf(expression="count", value="array", offset="#1 - 1")
-     * To typecheck, this code also needs a fix for:
-     * https://github.com/kelloggm/checker-framework/issues/176
-     */
-    @SuppressWarnings("upperbound") // https://github.com/kelloggm/checker-framework/issues/200
     public Builder add(int value) {
       ensureRoomFor(1);
       array[count] = value;
@@ -248,13 +240,8 @@ public final class ImmutableIntArray implements Serializable {
      */
     /*
      * Calling ensureRoomFor(values.length) ensures that count is LTLengthOf(value="array", offset="values.length-1")
-     * Need ensures annotation for @LTLengthOf, for example @EnsuresLTLengthOf.
-     * ensureRoomFor should be
-     * @EnsuresLTLengthOf(expression="count", value="array", offset="#1 - 1")
-     * To typecheck, this code also needs a fix for:
-     * https://github.com/kelloggm/checker-framework/issues/176
      */
-    @SuppressWarnings("upperbound") // https://github.com/kelloggm/checker-framework/issues/200
+    @SuppressWarnings("upperbound") // https://github.com/kelloggm/checker-framework/issues/176
     public Builder addAll(int[] values) {
       ensureRoomFor(values.length);
       System.arraycopy(values, 0, array, count, values.length);
@@ -329,7 +316,7 @@ public final class ImmutableIntArray implements Serializable {
          * To typecheck, this code also needs a fix for:
          * https://github.com/kelloggm/checker-framework/issues/176
          */
-        "upperbound:compound.assignment.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/200
+        "upperbound:compound.assignment.type.incompatible", // TODO
         /*
          * count is @LTLengthOf(value="array",offset="values.length()-1"), which implies
          * values.length() is @LTLengthOf(value="array",offset="count-1") 
@@ -352,6 +339,7 @@ public final class ImmutableIntArray implements Serializable {
      *   https://github.com/kelloggm/checker-framework/issues/158
      */
     @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
+    @EnsuresLTLengthOf(value="count", targetValue="array", offset="#1 - 1")
     private void ensureRoomFor(@NonNegative int numberToAdd) {
       int newCount = count + numberToAdd; // TODO(kevinb): check overflow now?
       if (newCount > array.length) {
@@ -431,6 +419,7 @@ public final class ImmutableIntArray implements Serializable {
   }
 
   /** Returns {@code true} if there are no values in this array ({@link #length} is zero). */
+  @EnsuresLTLengthOfIf(result = false, expression = "start", targetValue = "array")
   public boolean isEmpty() {
     return end == start;
   }
@@ -697,13 +686,6 @@ public final class ImmutableIntArray implements Serializable {
    * Arrays#toString(int[])}, for example {@code "[1, 2, 3]"}.
    */
   @Override
-  /*
-   * After checking !isEmpty(), start is IndexFor("this.array").
-   * Needs annotation EnsuresQualifierIf with arguments.
-   * Related:
-   *   https://github.com/kelloggm/checker-framework/issues/201
-   */
-  @SuppressWarnings("upperbound:array.access.unsafe.high") // https://github.com/kelloggm/checker-framework/issues/200
   public String toString() {
     if (isEmpty()) {
       return "[]";

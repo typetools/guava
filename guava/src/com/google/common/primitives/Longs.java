@@ -422,7 +422,7 @@ public final class Longs {
    */
   @Beta
   @NullableDecl
-  @SuppressWarnings("upperbound") // https://github.com/kelloggm/checker-framework/issues/201
+  @SuppressWarnings("upperbound") // annotation inferred by contract doesn't propagate through checkNotNull 
   public static Long tryParse(String string, @Positive int radix) {
     if (checkNotNull(string).isEmpty()) {
       return null;
