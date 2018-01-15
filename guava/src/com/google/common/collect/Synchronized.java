@@ -56,6 +56,7 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.compatqual.MonotonicNonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Synchronized collection views. The returned synchronized collection views are serializable if the

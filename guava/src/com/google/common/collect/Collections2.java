@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Provides static methods for working with {@code Collection} instances.
