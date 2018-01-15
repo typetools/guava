@@ -1566,7 +1566,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     private final char [] rangeStarts;
     private final char @SameLen("rangeStarts")[] rangeEnds;
 
-    @SuppressWarnings("samelen:assignment.type.incompatible") // TODO SameLen transitivity
+    @SuppressWarnings("samelen:assignment.type.incompatible") // SameLen transitivity
     RangesMatcher(String description, char[] rangeStarts, char @SameLen("#2")[] rangeEnds) {
       this.description = description;
       this.rangeStarts = rangeStarts;
@@ -1624,7 +1624,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
     static final Digit INSTANCE = new Digit();
 
-    @SuppressWarnings("samelen:argument.type.incompatible") // TODO SameLen on method calls
+    @SuppressWarnings("samelen:argument.type.incompatible") // SameLen on method calls
     private Digit() {
       super("CharMatcher.digit()", zeroes(), nines());
     }
