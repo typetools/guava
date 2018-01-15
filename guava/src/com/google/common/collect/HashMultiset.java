@@ -95,18 +95,4 @@ public final class HashMultiset<E> extends AbstractMapBasedMultiset<E> {
   @GwtIncompatible // Not needed in emulated source.
   private static final long serialVersionUID = 0;
 
-@Override
-public boolean contains(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.contains(arg0); }
-
-@Override
-public @NonNegative int count(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.count(arg0); }
-
-@Override
-public boolean equals(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.equals(arg0); }
-
-@Override
-public boolean remove(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.remove(arg0); }
-
-@Override
-public @NonNegative int remove(@org.checkerframework.checker.nullness.qual.Nullable Object arg0, @NonNegative int arg1) { return super.remove(arg0, arg1); }
 }

@@ -106,30 +106,4 @@ public final class LinkedHashMultiset<E> extends AbstractMapBasedMultiset<E> {
   @GwtIncompatible // not needed in emulated source
   private static final long serialVersionUID = 0;
 
-@Pure
-@Override
-public boolean contains(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.contains(arg0); }
-
-@Override
-public @NonNegative int count(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.count(arg0); }
-
-@Pure
-@Override
-public boolean equals(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.equals(arg0); }
-
-@Override
-public boolean remove(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.remove(arg0); }
-
-@Override
-public @NonNegative int remove(@org.checkerframework.checker.nullness.qual.Nullable Object arg0, @NonNegative int arg1) { return super.remove(arg0, arg1); }
-
-@Pure
-@Override
-public boolean containsAll(Collection<?> arg0) { return super.containsAll(arg0); }
-
-@Override
-public boolean removeAll(Collection<?> arg0) { return super.removeAll(arg0); }
-
-@Override
-public boolean retainAll(Collection<?> arg0) { return super.retainAll(arg0); }
 }
