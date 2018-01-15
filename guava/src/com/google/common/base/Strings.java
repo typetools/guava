@@ -215,20 +215,16 @@ public final class Strings {
    *
    * @since 11.0
    */
-  /*
-   * s should be @IndexOrHigh("a")
-   * a.length() - s should be @NonNegative
-   */
   @SuppressWarnings({
-	  "index:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
-  	  "index:compound.assignment.type.incompatible" // i-1 is @NonNegative means i-- is @NonNegative
+	  "lowerbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/193
+  	  "lowerbound:compound.assignment.type.incompatible" // i-1 is @NonNegative means i-- is @NonNegative
   })
   public static String commonSuffix(CharSequence a, CharSequence b) {
     checkNotNull(a);
     checkNotNull(b);
 
-    int maxSuffixLength = Math.min(a.length(), b.length());
-    @NonNegative int s = 0;
+    @IndexOrHigh({"a", "b"}) int maxSuffixLength = Math.min(a.length(), b.length());
+    @IndexOrHigh({"a", "b"}) int s = 0;
     while (s < maxSuffixLength && a.charAt(a.length() - s - 1) == b.charAt(b.length() - s - 1)) {
       s++;
     }

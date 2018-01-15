@@ -826,10 +826,6 @@ public abstract class CharMatcher implements Predicate<Character> {
    */
   @SuppressWarnings({
 	  /*
-	   * indexIn should return @IndexOrLow("#1")
-	   */
-	  "upperbound:assignment.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
-	  /*
 	   * at entry to OUT, pos is IndexFor("string"),
        * and after each pos++, it is checked against chars.length
        * if equal, pos is not incremented anymore
@@ -904,13 +900,6 @@ public abstract class CharMatcher implements Predicate<Character> {
    *     character in {@code sequence}
    * @return the new string
    */
-  /*
-   * CharSequence sequence is not mutated, so indices less than length are valid
-   * indexIn should return @IndexOrLow("#1") 
-   */
-  @SuppressWarnings({
-	  "upperbound:assignment.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
-  })
   public String replaceFrom(CharSequence sequence, char replacement) {
     String string = sequence.toString();
     @IndexOrLow("string") int pos = indexIn(string);
@@ -951,7 +940,6 @@ public abstract class CharMatcher implements Predicate<Character> {
    * indexIn should return @IndexOrLow("#1") 
    */
   @SuppressWarnings({
-	  "upperbound:assignment.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/197
 	  "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/188
   })
   public String replaceFrom(CharSequence sequence, CharSequence replacement) {
@@ -1799,11 +1787,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     }
 
     @Override
-    // countIn could be @IndexOrHigh("sequence")
-    // sequence.length() could be @LengthOf("sequence")
-    // to typecheck, this will be also required:
-    // https://github.com/kelloggm/checker-framework/issues/193 
-    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
+    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/193 
     public @IndexOrHigh("#1") int countIn(CharSequence sequence) {
       return sequence.length() - original.countIn(sequence);
     }
