@@ -117,7 +117,6 @@
             <compilerArgs>
               <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
               <arg>${addtionalargs}</arg>
-              <arg>-Awarns</arg>
               <arg>-AprintErrorStack</arg>
               <arg>-AonlyDefs=^com\.google\.common\.primitives\.|^com\.google\.common\.base\.</arg>
             </compilerArgs>
