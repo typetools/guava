@@ -341,7 +341,10 @@ public final class ImmutableDoubleArray implements Serializable {
      *   https://github.com/kelloggm/checker-framework/issues/202
      *   https://github.com/kelloggm/checker-framework/issues/158
      */
-    @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
+    @SuppressWarnings({
+    	"upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
+    	"contracts.postcondition.not.satisfied", // postcondition
+    }) 
     @EnsuresLTLengthOf(value="count", targetValue="array", offset="#1 - 1")
     private void ensureRoomFor(@NonNegative int numberToAdd) {
       int newCount = count + numberToAdd; // TODO(kevinb): check overflow now?
@@ -422,6 +425,7 @@ public final class ImmutableDoubleArray implements Serializable {
   }
 
   /** Returns {@code true} if there are no values in this array ({@link #length} is zero). */
+  @SuppressWarnings("contracts.conditional.postcondition.not.satisfied") // postcondition
   @EnsuresLTLengthOfIf(result = false, expression = "start", targetValue = "array")
   public boolean isEmpty() {
     return end == start;
