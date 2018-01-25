@@ -311,22 +311,13 @@ public final class ImmutableDoubleArray implements Serializable {
      * Appends {@code values}, in order, to the end of the values the built {@link
      * ImmutableDoubleArray} will contain.
      */
-    @SuppressWarnings({
-      /*
-       * Calling ensureRoomFor(values.length()) ensures that count is @LTLengthOf(value="array",offset="values.length()-1")
-       * Need ensures annotation for @LTLengthOf, for example @EnsuresLTLengthOf.
-       * ensureRoomFor should be
-       * @EnsuresLTLengthOf(expression="count", value="array", offset="#1 - 1")
-       * To typecheck, this code also needs a fix for:
-       * https://github.com/kelloggm/checker-framework/issues/176
-       */
-      "upperbound:compound.assignment.type.incompatible", // TODO
+    @SuppressWarnings(
       /*
        * count is @LTLengthOf(value="array",offset="values.length()-1"), which implies
-       * values.length() is @LTLengthOf(value="array",offset="count-1") 
+       * values.length() is @LTLengthOf(value="array",offset="count-1")
        */
       "upperbound:argument.type.incompatible" // LTLengthOf inversion
-    })
+    )
     public Builder addAll(ImmutableDoubleArray values) {
       ensureRoomFor(values.length());
       System.arraycopy(values.array, values.start, array, count, values.length());
