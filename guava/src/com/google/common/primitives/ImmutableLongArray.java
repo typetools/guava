@@ -44,6 +44,7 @@ import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.LengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
+import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -418,7 +419,8 @@ public final class ImmutableLongArray implements Serializable {
      * end-start is IndexOrHigh("this")
      */
     "upperbound:return.type.incompatible" // custom coll. with size end-start
-  }) 
+  })
+  @Pure
   public @NonNegative @LTLengthOf(value = {"array", "this"}, offset = {"start-1", "-1"}) int length() { // INDEX: Annotation on a public method refers to private member.
     return end - start;
   }
@@ -442,6 +444,7 @@ public final class ImmutableLongArray implements Serializable {
    * i+start is IndexFor("array")
    */
   @SuppressWarnings("upperbound:array.access.unsafe.high") // custom coll. with size end-start
+  @Pure
   public long get(@IndexFor("this") int index) {
     Preconditions.checkElementIndex(index, length());
     return array[start + index];
@@ -656,7 +659,6 @@ public final class ImmutableLongArray implements Serializable {
    * values as this one, in the same order.
    */
   @Override
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/194
   public boolean equals(@NullableDecl Object object) {
     if (object == this) {
       return true;
