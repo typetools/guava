@@ -507,15 +507,7 @@ public final class ImmutableIntArray implements Serializable {
   }
 
   /** Returns a new, mutable copy of this array's values, as a primitive {@code int[]}. */
-  @SuppressWarnings({
-    /*
-     * length of this is defined as end-start,
-     * Arrays.copyOfRange returns an array of length end-start,
-     * ẗherefore the result is SameLen("this")
-     */
-    "samelen:return.type.incompatible", // SameLen for custom coll. with size end-start
-  }) 
-  public @SameLen("this") int[] toArray() {
+  public int[] toArray() {
     return Arrays.copyOfRange(array, start, end);
   }
 
