@@ -521,7 +521,7 @@ public final class ImmutableLongArray implements Serializable {
    * end).trimmed()}.
    */
   // array should be @LongerThanEq(value="this", offset="start")
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/202
+  @SuppressWarnings("upperbound:argument.type.incompatible") // custom coll. with size end-start
   public ImmutableLongArray subArray(@NonNegative int startIndex, @NonNegative int endIndex) {
     Preconditions.checkPositionIndexes(startIndex, endIndex, length());
     return startIndex == endIndex

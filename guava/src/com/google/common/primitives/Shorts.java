@@ -593,9 +593,11 @@ public final class Shorts {
       this.end = end;
     }
 
-    @Override
-    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
-    public @Positive @LTLengthOf(value = "array", offset="start - 1") int size() { // INDEX: Annotation on a public method refers to private member.
+      @Override
+      @SuppressWarnings({
+              "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
+              "upperbound:return.type.incompatible"}) // custom coll. with size end-start
+      public @Positive @LTLengthOf(value = {"this","array"}, offset={"0","start - 1"}) int size() { // INDEX: Annotation on a public method refers to private member.
       return end - start;
     }
 
@@ -606,7 +608,7 @@ public final class Shorts {
 
     @Override
     // array should be @LongerThanEq(value="this", offset="start")
-    @SuppressWarnings("upperbound:array.access.unsafe.high") // https://github.com/kelloggm/checker-framework/issues/202
+    @SuppressWarnings("upperbound:array.access.unsafe.high") // custom coll. with size end-start
     public Short get(@IndexFor("this") int index) {
       checkElementIndex(index, size());
       return array[start + index];
@@ -619,8 +621,11 @@ public final class Shorts {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
-    public @GTENegativeOne int indexOf(@NullableDecl Object target) {
+    @SuppressWarnings({
+            "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
+            "upperbound:return.type.incompatible" // custom coll. with size end-start
+    })
+    public @IndexOrLow("this") int indexOf(@NullableDecl Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Short) {
         int i = Shorts.indexOf(array, (Short) target, start, end);
@@ -632,8 +637,11 @@ public final class Shorts {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/158
-    public @GTENegativeOne int lastIndexOf(@NullableDecl Object target) {
+    @SuppressWarnings({
+            "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
+            "upperbound:return.type.incompatible" // custom coll. with size end-start
+    })
+    public @IndexOrLow("this") int lastIndexOf(@NullableDecl Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Short) {
         int i = Shorts.lastIndexOf(array, (Short) target, start, end);
@@ -646,7 +654,7 @@ public final class Shorts {
 
     @Override
     // array should be @LongerThanEq(value="this", offset="start")
-    @SuppressWarnings("upperbound:array.access.unsafe.high") // https://github.com/kelloggm/checker-framework/issues/202
+    @SuppressWarnings("upperbound:array.access.unsafe.high") // custom coll. with size end-start
     public Short set(@IndexFor("this") int index, Short element) {
       checkElementIndex(index, size());
       short oldValue = array[start + index];
@@ -657,7 +665,7 @@ public final class Shorts {
 
     @Override
     // array should be @LongerThanEq(value="this", offset="start")
-    @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/202
+    @SuppressWarnings("upperbound:argument.type.incompatible") // custom coll. with size end-start
     public List<Short> subList(@IndexOrHigh("this") int fromIndex, @IndexOrHigh("this") int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);
