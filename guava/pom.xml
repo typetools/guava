@@ -17,7 +17,7 @@
   </description>
   <properties>
     <!-- Use -Dcheckerframework.checkers=checker to switch which checkers are run. -->
-    <checkerframework.checkers>org.checkerframework.checker.index.IndexChecker</checkerframework.checkers>
+    <checkerframework.checkers>org.checkerframework.checker.index.IndexChecker,org.checkerframework.common.util.count.JavaCodeStatistics,org.checkerframework.common.util.count.AnnotationStatistics</checkerframework.checkers>
     <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
   </properties>
   <dependencies>
@@ -116,8 +116,9 @@
             </annotationProcessors>
             <compilerArgs>
               <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
-              <arg>${addtionalargs}</arg>
+              <arg>${addtionalArgs}</arg>
               <arg>-AprintErrorStack</arg>
+              <arg>-Anolocations</arg>
               <arg>-AonlyDefs=^com\.google\.common\.primitives\.|^com\.google\.common\.base\.</arg>
             </compilerArgs>
         </configuration>
