@@ -23,6 +23,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
+import org.checkerframework.common.value.qual.ArrayLen;
 import org.checkerframework.common.value.qual.ArrayLenRange;
 
 /**
@@ -108,9 +109,9 @@ public enum CaseFormat {
   };
 
   private final CharMatcher wordBoundary;
-  private final @ArrayLenRange(from = 0, to = 1) String wordSeparator;
+  private final @ArrayLen({0, 1}) String wordSeparator;
 
-  CaseFormat(CharMatcher wordBoundary, @ArrayLenRange(from = 0, to = 1) String wordSeparator) {
+  CaseFormat(CharMatcher wordBoundary, @ArrayLen({0, 1}) String wordSeparator) {
     this.wordBoundary = wordBoundary;
     this.wordSeparator = wordSeparator;
   }

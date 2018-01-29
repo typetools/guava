@@ -69,7 +69,7 @@ final class SmallCharMatcher extends NamedFastMatcher {
   // of dependencies.
 
   // Represents how tightly we can pack things, as a maximum.
-  private static final @DoubleVal(0.5) double DESIRED_LOAD_FACTOR = 0.5;
+  private static final double DESIRED_LOAD_FACTOR = 0.5;
 
   /**
    * Returns an array size suitable for the backing array of a hash table that uses open addressing
