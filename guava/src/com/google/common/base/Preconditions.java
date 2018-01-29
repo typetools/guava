@@ -1453,7 +1453,6 @@ public final class Preconditions {
    *     to strings using {@link String#valueOf(Object)}. Arguments can be null.
    */
   // Note that this is somewhat-improperly used from Verify.java as well.
-  @SuppressWarnings("upperbound:assignment.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/176
   static String format(@NullableDecl String template, @NullableDecl Object... args) {
     template = String.valueOf(template); // null -> "null"
 
