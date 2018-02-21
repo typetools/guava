@@ -40,7 +40,6 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
 import org.checkerframework.checker.nullness.compatqual.MonotonicNonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A general-purpose bimap implementation using any two backing {@code Map} instances.
@@ -162,7 +161,7 @@ abstract class AbstractBiMap<K, V> extends ForwardingMap<K, V>
   }
 
   @CanIgnoreReturnValue
-  private V removeFromBothMaps(@Nullable Object key) {
+  private V removeFromBothMaps(@NullableDecl Object key) {
     V oldValue = delegate.remove(key);
     removeFromInverseMap(oldValue);
     return oldValue;

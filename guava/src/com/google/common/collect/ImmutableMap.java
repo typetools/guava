@@ -658,7 +658,7 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
    */
   @Deprecated
   @Override
-  public final V remove(@Nullable Object o) {
+  public final V remove(@NullableDecl Object o) {
     throw new UnsupportedOperationException();
   }
 
@@ -706,7 +706,7 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
 
   // Overriding to mark it Nullable
   @Override
-  public abstract V get(@NullableDecl Object key);
+  public abstract @org.checkerframework.checker.nullness.qual.Nullable V get(@NullableDecl Object key);
 
   /**
    * @since 21.0 (but only since 23.5 in the Android <a

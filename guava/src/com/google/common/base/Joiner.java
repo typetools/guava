@@ -129,7 +129,7 @@ public class Joiner {
   /** Appends to {@code appendable} the string representation of each of the remaining arguments. */
   @CanIgnoreReturnValue
   public final <A extends Appendable> A appendTo(
-      A appendable, @NullableDecl Object first, @NullableDecl Object second, Object... rest)
+      A appendable, @NullableDecl Object first, @NullableDecl Object second, @org.checkerframework.checker.nullness.qual.Nullable Object... rest)
       throws IOException {
     return appendTo(appendable, iterable(first, second, rest));
   }
@@ -181,7 +181,7 @@ public class Joiner {
       StringBuilder builder,
       @NullableDecl Object first,
       @NullableDecl Object second,
-      Object... rest) {
+      @org.checkerframework.checker.nullness.qual.Nullable Object... rest) {
     return appendTo(builder, iterable(first, second, rest));
   }
 
@@ -216,7 +216,7 @@ public class Joiner {
    * configured separator between each.
    */
   public final String join(
-      @NullableDecl Object first, @NullableDecl Object second, Object... rest) {
+      @NullableDecl Object first, @NullableDecl Object second, @org.checkerframework.checker.nullness.qual.Nullable Object... rest) {
     return join(iterable(first, second, rest));
   }
 

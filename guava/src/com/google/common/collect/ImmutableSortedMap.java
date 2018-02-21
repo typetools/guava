@@ -598,7 +598,7 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
   }
 
   @Override
-  public V get(@NullableDecl Object key) {
+  public @org.checkerframework.checker.nullness.qual.Nullable V get(@NullableDecl Object key) {
     int index = keySet.indexOf(key);
     return (index == -1) ? null : valueList.get(index);
   }

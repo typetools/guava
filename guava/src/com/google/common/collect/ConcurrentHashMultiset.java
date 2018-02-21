@@ -626,4 +626,10 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
 
   private static final long serialVersionUID = 1;
 
+@Override
+public boolean contains(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.contains(arg0); }
+
+@Pure
+@Override
+public boolean containsAll(Collection<?> arg0) { return super.containsAll(arg0); }
 }

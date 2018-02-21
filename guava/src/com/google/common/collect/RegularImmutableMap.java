@@ -35,8 +35,8 @@ import com.google.common.collect.ImmutableMapEntry.NonTerminalImmutableMapEntry;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.j2objc.annotations.Weak;
 import java.io.Serializable;
-import java.util.function.BiConsumer;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
@@ -160,7 +160,7 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
   }
 
   @Override
-  public V get(@NullableDecl Object key) {
+  public @org.checkerframework.checker.nullness.qual.Nullable V get(@NullableDecl Object key) {
     return get(key, table, mask);
   }
 

@@ -22,7 +22,6 @@ import com.google.errorprone.annotations.Immutable;
 import com.google.j2objc.annotations.WeakOuter;
 import java.util.Map;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
-
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /** A {@code RegularImmutableTable} optimized for dense data. */

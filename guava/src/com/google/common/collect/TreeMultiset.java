@@ -1042,4 +1042,9 @@ public final class TreeMultiset<E> extends AbstractSortedMultiset<E> implements 
   @GwtIncompatible // not needed in emulated source
   private static final long serialVersionUID = 1;
 
+@Pure
+public boolean contains(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.contains(arg0); }
+
+public boolean containsAll(Collection<?> arg0) { return super.containsAll(arg0); }
+
 }

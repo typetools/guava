@@ -210,7 +210,7 @@ final class Synchronized {
     }
 
     @Override
-    public boolean remove(@Nullable Object o) {
+    public boolean remove(@NullableDecl Object o) {
       synchronized (mutex) {
         return delegate().remove(o);
       }
@@ -1127,7 +1127,7 @@ final class Synchronized {
     }
 
     @Override
-    public @Nullable V get(@Nullable Object key) {
+    public @NullableDecl V get(@NullableDecl Object key) {
       synchronized (mutex) {
         return delegate().get(key);
       }
@@ -1232,7 +1232,7 @@ final class Synchronized {
     }
 
     @Override
-    public @Nullable V remove(@Nullable Object key) {
+    public @NullableDecl V remove(@NullableDecl Object key) {
       synchronized (mutex) {
         return delegate().remove(key);
       }

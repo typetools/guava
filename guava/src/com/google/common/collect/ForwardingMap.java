@@ -98,23 +98,20 @@ public abstract class ForwardingMap<K, V> extends ForwardingObject implements Ma
 
   @Pure
   @Override
-  @SuppressWarnings("nullness")
-  // Suppressed due to annotations on containsKey in Java.Map
+  @SuppressWarnings("nullness") // Suppressed due to annotations on containsKey in Java.Map
   public boolean containsKey(@NullableDecl Object key) {
     return delegate().containsKey(key);
   }
 
   @Pure
   @Override
-  @SuppressWarnings("nullness")
-  // Suppressed due to annotations on containsValue in Java.Map
+  @SuppressWarnings("nullness") // Suppressed due to annotations on containsValue in Java.Map
   public boolean containsValue(@NullableDecl Object value) {
     return delegate().containsValue(value);
   }
 
   @Override
-  @SuppressWarnings("nullness")
-  // Suppressed due to annotations on get in Java.Map
+  @SuppressWarnings("nullness") // Suppressed due to annotations on get in Java.Map
   public V get(@NullableDecl Object key) {
     return delegate().get(key);
   }

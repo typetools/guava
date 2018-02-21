@@ -173,9 +173,7 @@ public final class Iterators {
     return Ints.saturatedCast(count);
   }
 
-  /**
-   * Returns {@code true} if {@code iterator} contains {@code element}.
-   */
+  /** Returns {@code true} if {@code iterator} contains {@code element}. */
   @Pure
   public static boolean contains(Iterator<?> iterator, @NullableDecl Object element) {
     if (element == null) {
@@ -1064,7 +1062,7 @@ public final class Iterators {
    *
    * <p>The {@link Iterable} equivalent of this method is {@link Collections#singleton}.
    */
-  public static <T> UnmodifiableIterator<T> singletonIterator(@NullableDecl final T value) {
+  public static <T> UnmodifiableIterator<T> singletonIterator(@NullableDecl final @org.checkerframework.checker.nullness.qual.Nullable T value) {
     return new UnmodifiableIterator<T>() {
       boolean done;
 

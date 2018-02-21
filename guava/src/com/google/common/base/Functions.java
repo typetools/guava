@@ -94,7 +94,7 @@ public final class Functions {
 
     @Override
     @NullableDecl
-    public Object apply(@NullableDecl Object o) {
+    public @org.checkerframework.checker.nullness.qual.Nullable Object apply(@NullableDecl Object o) {
       return o;
     }
 
@@ -148,7 +148,8 @@ public final class Functions {
     }
 
     @Override
-    public V apply(@NullableDecl K key) {
+    public @org.checkerframework.checker.nullness.qual.Nullable V apply(@NullableDecl K key) {
+      @org.checkerframework.checker.nullness.qual.Nullable
       V result = map.get(key);
       checkArgument(result != null || map.containsKey(key), "Key '%s' not present in map", key);
       return result;
