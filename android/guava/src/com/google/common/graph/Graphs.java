@@ -209,38 +209,6 @@ public final class Graphs {
     return Collections.unmodifiableSet(visitedNodes);
   }
 
-  /**
-   * @deprecated Use {@link Graph#equals(Object)} instead. This method will be removed in January
-   *     2018.
-   */
-  // TODO(user): Delete this method.
-  @Deprecated
-  public static boolean equivalent(@NullableDecl Graph<?> graphA, @NullableDecl Graph<?> graphB) {
-    return Objects.equal(graphA, graphB);
-  }
-
-  /**
-   * @deprecated Use {@link ValueGraph#equals(Object)} instead. This method will be removed in
-   *     January 2018.
-   */
-  // TODO(user): Delete this method.
-  @Deprecated
-  public static boolean equivalent(
-      @NullableDecl ValueGraph<?, ?> graphA, @NullableDecl ValueGraph<?, ?> graphB) {
-    return Objects.equal(graphA, graphB);
-  }
-
-  /**
-   * @deprecated Use {@link Network#equals(Object)} instead. This method will be removed in January
-   *     2018.
-   */
-  // TODO(user): Delete this method.
-  @Deprecated
-  public static boolean equivalent(
-      @NullableDecl Network<?, ?> networkA, @NullableDecl Network<?, ?> networkB) {
-    return Objects.equal(networkA, networkB);
-  }
-
   // Graph mutation methods
 
   // Graph view methods

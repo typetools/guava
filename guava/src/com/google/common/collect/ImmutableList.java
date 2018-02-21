@@ -19,10 +19,10 @@ package com.google.common.collect;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.index.qual.UpperBoundBottom;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkElementIndex;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkPositionIndexes;
@@ -198,6 +198,8 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
   /**
    * Returns an immutable list containing the given elements, in order.
    *
+   * <p>The array {@code others} must not be longer than {@code Integer.MAX_VALUE - 12}.
+   *
    * @throws NullPointerException if any element is null
    * @since 3.0 (source-compatible since 2.0)
    */
@@ -207,6 +209,9 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
   @SuppressWarnings("upperbound:array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/182
   public static <E> ImmutableList<E> of(
       E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9, E e10, E e11, E e12, E... others) {
+    checkArgument(
+        others.length <= Integer.MAX_VALUE - 12,
+        "the total number of elements must fit in an int");
     Object[] array = new Object[12 + others.length];
     array[0] = e1;
     array[1] = e2;

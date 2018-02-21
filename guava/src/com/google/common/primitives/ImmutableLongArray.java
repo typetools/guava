@@ -141,12 +141,19 @@ public final class ImmutableLongArray implements Serializable {
 
   // TODO(kevinb): go up to 11?
 
-  /** Returns an immutable array containing the given values, in order. */
+  /**
+   * Returns an immutable array containing the given values, in order.
+   *
+   * <p>The array {@code rest} must not be longer than {@code Integer.MAX_VALUE - 1}.
+   */
   // Use (first, rest) so that `of(someLongArray)` won't compile (they should use copyOf), which is
   // okay since we have to copy the just-created array anyway.
   //TODO INDEX: if rest has Integer.MAX_VALUE elements, will attempt to create negative-size array
   @SuppressWarnings("upperbound:array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/182
   public static ImmutableLongArray of(long first, long... rest) {
+    checkArgument(
+        rest.length <= Integer.MAX_VALUE - 1,
+        "the total number of elements must fit in an int");
     long[] array = new long[rest.length + 1];
     array[0] = first;
     System.arraycopy(rest, 0, array, 1, rest.length);
