@@ -36,7 +36,6 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Implementation of {@code Multimap} whose keys and values are ordered by their natural ordering or

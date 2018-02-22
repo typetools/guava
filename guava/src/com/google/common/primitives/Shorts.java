@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.RandomAccess;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;

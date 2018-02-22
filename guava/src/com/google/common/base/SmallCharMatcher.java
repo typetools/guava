@@ -19,10 +19,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CharMatcher.NamedFastMatcher;
 import java.util.BitSet;
 
-import org.checkerframework.checker.index.qual.IndexFor;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
-import org.checkerframework.common.value.qual.DoubleVal;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 

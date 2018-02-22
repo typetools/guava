@@ -24,7 +24,6 @@ import java.io.InputStream;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * An {@link InputStream} that counts the number of bytes read.

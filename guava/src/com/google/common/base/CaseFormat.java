@@ -24,7 +24,6 @@ import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.common.value.qual.ArrayLen;
-import org.checkerframework.common.value.qual.ArrayLenRange;
 
 /**
  * Utility class for converting between various ASCII case formats. Behavior is undefined for

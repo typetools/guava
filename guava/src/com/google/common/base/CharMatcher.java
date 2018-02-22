@@ -25,11 +25,9 @@ import java.util.Arrays;
 import java.util.BitSet;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.common.value.qual.IntVal;

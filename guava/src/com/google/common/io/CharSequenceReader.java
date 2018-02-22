@@ -24,7 +24,6 @@ import java.io.Reader;
 import java.nio.CharBuffer;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * A {@link Reader} that reads the characters in a {@link CharSequence}. Like {@code StringReader},

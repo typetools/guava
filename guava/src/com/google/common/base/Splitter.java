@@ -33,7 +33,6 @@ import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
-import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 
 /**

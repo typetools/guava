@@ -18,7 +18,6 @@ package com.google.common.collect;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.common.value.qual.ArrayLen;
-import org.checkerframework.common.value.qual.MinLen;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 

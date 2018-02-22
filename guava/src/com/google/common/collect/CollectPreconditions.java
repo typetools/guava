@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkState;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
-import org.checkerframework.framework.qual.EnsuresQualifier;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
