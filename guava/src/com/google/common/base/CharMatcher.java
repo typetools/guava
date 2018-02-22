@@ -639,7 +639,7 @@ public abstract class CharMatcher implements Predicate<Character> {
    */
   @GwtIncompatible // SmallCharMatcher
   private static CharMatcher precomputedPositive(
-       int totalCharacters, BitSet table, String description) {
+      int totalCharacters, BitSet table, String description) {
     switch (totalCharacters) {
       case 0:
         return none();
