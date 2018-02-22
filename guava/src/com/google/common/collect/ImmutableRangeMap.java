@@ -192,7 +192,7 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
   @Override
   @NullableDecl
   public Entry<Range<K>, V> getEntry(K key) {
-	@GTENegativeOne int index =
+    @GTENegativeOne int index =
         SortedLists.binarySearch(
             ranges,
             Range.<K>lowerBoundFn(),

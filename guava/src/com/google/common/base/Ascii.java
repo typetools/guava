@@ -547,18 +547,17 @@ public final class Ascii {
    * @since 16.0
    */
   @SuppressWarnings({
-	  /*
-	   * The parameter maxLength should be annotated @GTEqLengthOf("#3").
-	   * Lower bound validity:
-	   *   truncationIndicator.length <= maxLength,
-	   *   therefore truncationLength >= 0
-	   * Upper bound validity:
-	   *   truncationLength <= maxLength,
-	   *   seq.length > maxLength,
-	   *   therefore truncationLength <= seq.length
-	   */
-	  "lowerbound:assignment.type.incompatible", "upperbound:argument.type.incompatible"// need annotation GTEqLengthOf
-	   
+    /*
+     * The parameter maxLength should be annotated @GTEqLengthOf("#3").
+     * Lower bound validity:
+     *   truncationIndicator.length <= maxLength,
+     *   therefore truncationLength >= 0
+     * Upper bound validity:
+     *   truncationLength <= maxLength,
+     *   seq.length > maxLength,
+     *   therefore truncationLength <= seq.length
+     */
+    "lowerbound:assignment.type.incompatible", "upperbound:argument.type.incompatible"// need annotation GTEqLengthOf
   }) 
   public static String truncate(CharSequence seq, @NonNegative int maxLength, String truncationIndicator) {
     checkNotNull(seq);

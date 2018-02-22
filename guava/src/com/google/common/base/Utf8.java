@@ -56,7 +56,7 @@ public final class Utf8 {
       /*
        * unsigned right shift on int
        */
-	  "lowerbound:compound.assignment.type.incompatible", // unsigned right shift
+    "lowerbound:compound.assignment.type.incompatible", // unsigned right shift
   }) 
   public static @NonNegative int encodedLength(CharSequence sequence) {
     // Warning to maintainers: this implementation is highly optimized.
@@ -89,9 +89,9 @@ public final class Utf8 {
   }
   @SuppressWarnings({
       /*
-	   * unsigned right shift on int
-	   */
-	  "lowerbound:compound.assignment.type.incompatible", // unsigned right shift
+     * unsigned right shift on int
+     */
+    "lowerbound:compound.assignment.type.incompatible", // unsigned right shift
   }) 
   private static @NonNegative int encodedLengthGeneral(CharSequence sequence, @NonNegative/*!IndexFor("#1")*/ int start) {
     int utf16Length = sequence.length();
@@ -153,8 +153,8 @@ public final class Utf8 {
   }
 
   @SuppressWarnings({
-	  "cast.unsafe", // https://github.com/kelloggm/checker-framework/issues/149
-	  "upperbound:compound.assignment.type.incompatible", "upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/158
+    "cast.unsafe", // https://github.com/kelloggm/checker-framework/issues/149
+    "upperbound:compound.assignment.type.incompatible", "upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/158
   }) 
   private static boolean isWellFormedSlowPath(byte[] bytes, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int end) {
     @IndexOrHigh("bytes") int index = off;

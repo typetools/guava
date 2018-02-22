@@ -542,23 +542,23 @@ public final class Splitter {
 
     @Override
     @SuppressWarnings({
-    	/*
-    	 * limit is always positive.
-    	 * When limit is not 1, then it can be safely decremented.
-    	 */
-    	"lowerbound:compound.assignment.type.incompatible", // decrement Positive which != 1
-    	/*
-    	 * At the start of the loop, whenever offset!=-1 also nextStart=-1
-    	 * One of the following holds:
-    	 * - offset == nextStart
-    	 * - nextStart was not changed since the last iteration
-    	 */
-    	"lowerbound:assignment.type.incompatible", // variable!=-1 implies another variable !=-1
-    	/*
-    	 * offset is usually @LTEqLengthOf("toSplit")
-    	 * offset > toSplit.length() can happen, but is immediately corrected to -1
-    	 */
-    	"upperbound:assignment.type.incompatible" // variable temporarily exceeds upper bound
+      /*
+       * limit is always positive.
+       * When limit is not 1, then it can be safely decremented.
+       */
+      "lowerbound:compound.assignment.type.incompatible", // decrement Positive which != 1
+      /*
+       * At the start of the loop, whenever offset!=-1 also nextStart=-1
+       * One of the following holds:
+       * - offset == nextStart
+       * - nextStart was not changed since the last iteration
+       */
+      "lowerbound:assignment.type.incompatible", // variable!=-1 implies another variable !=-1
+      /*
+       * offset is usually @LTEqLengthOf("toSplit")
+       * offset > toSplit.length() can happen, but is immediately corrected to -1
+       */
+      "upperbound:assignment.type.incompatible" // variable temporarily exceeds upper bound
     })
     protected String computeNext() {
       /*
@@ -568,8 +568,8 @@ public final class Splitter {
        */
       @GTENegativeOne @LTEqLengthOf("toSplit") int nextStart = offset;
       while (offset != -1) {
-    	@IndexOrHigh("toSplit") int start = nextStart;
-    	@IndexOrHigh("toSplit") int end;
+        @IndexOrHigh("toSplit") int start = nextStart;
+        @IndexOrHigh("toSplit") int end;
 
         int separatorPosition = separatorStart(offset);
         if (separatorPosition == -1) {

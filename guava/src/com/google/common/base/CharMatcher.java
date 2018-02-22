@@ -825,18 +825,18 @@ public abstract class CharMatcher implements Predicate<Character> {
    * ... returns {@code "bzr"}.
    */
   @SuppressWarnings({
-	  /*
-	   * at entry to OUT, pos is IndexFor("string"),
+    /*
+     * at entry to OUT, pos is IndexFor("string"),
        * and after each pos++, it is checked against chars.length
        * if equal, pos is not incremented anymore
        * therefore both pos++ are safe
-	   */
-	  "upperbound:compound.assignment.type.incompatible", // index incremented in nested loop with break
-	  "upperbound:array.access.unsafe.high", "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/204
-	  /*
-	   * spread <= pos, therefore pos-spread >= 0
-	   */
-	  "lowerbound:array.access.unsafe.low", "lowerbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/158
+     */
+    "upperbound:compound.assignment.type.incompatible", // index incremented in nested loop with break
+    "upperbound:array.access.unsafe.high", "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/204
+    /*
+     * spread <= pos, therefore pos-spread >= 0
+     */
+    "lowerbound:array.access.unsafe.low", "lowerbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/158
   })
   public String removeFrom(CharSequence sequence) {
     String string = sequence.toString();
@@ -940,7 +940,7 @@ public abstract class CharMatcher implements Predicate<Character> {
    * indexIn should return @IndexOrLow("#1") 
    */
   @SuppressWarnings({
-	  "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/188
+    "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/188
   })
   public String replaceFrom(CharSequence sequence, CharSequence replacement) {
     int replacementLen = replacement.length();
@@ -1121,7 +1121,7 @@ public abstract class CharMatcher implements Predicate<Character> {
    * last >= first
    */
   @SuppressWarnings({
-	  "lowerbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
+    "lowerbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
   })
   public String trimAndCollapseFrom(CharSequence sequence, char replacement) {
     // This implementation avoids unnecessary allocation.

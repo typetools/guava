@@ -340,8 +340,8 @@ public final class ImmutableLongArray implements Serializable {
      *   https://github.com/kelloggm/checker-framework/issues/158
      */
     @SuppressWarnings({
-    	"upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-    	"contracts.postcondition.not.satisfied", // postcondition
+      "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
+      "contracts.postcondition.not.satisfied", // postcondition
     }) 
     @EnsuresLTLengthOf(value="count", targetValue="array", offset="#1 - 1")
     private void ensureRoomFor(@NonNegative int numberToAdd) {

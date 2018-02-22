@@ -133,8 +133,8 @@ public enum CaseFormat {
    * j >= 0 && j < s.length() 
    */
   @SuppressWarnings({
-	  "upperbound:assignment.type.incompatible", "upperbound:compound.assignment.type.incompatible", // refinement on multiple assignments in expression
-	  "upperbound:argument.type.incompatible", // length of sequence with ArrayLenRange in offset
+    "upperbound:assignment.type.incompatible", "upperbound:compound.assignment.type.incompatible", // refinement on multiple assignments in expression
+    "upperbound:argument.type.incompatible", // length of sequence with ArrayLenRange in offset
   }) 
   String convert(CaseFormat format, String s) {
     // deal with camel conversion

@@ -215,7 +215,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   }
 
   abstract class Itr<T> implements Iterator<T> {
-	@NonNegative int index = 0;
+    @NonNegative int index = 0;
     @GTENegativeOne int toRemove = -1;
 
     abstract T output(@NonNegative int index);

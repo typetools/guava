@@ -358,15 +358,15 @@ public final class Longs {
       }
       for (int i = 0; i <= 26; i++) {
         @SuppressWarnings({
-        	"unused",
-        	"upperbound:array.access.unsafe.high.range", // https://github.com/typetools/checker-framework/issues/1669
-        	"assignment.type.incompatible" // https://github.com/typetools/checker-framework/issues/1669
+          "unused",
+          "upperbound:array.access.unsafe.high.range", // https://github.com/typetools/checker-framework/issues/1669
+          "assignment.type.incompatible" // https://github.com/typetools/checker-framework/issues/1669
         })
         byte _unused1 = result['A' + i] = (byte) (10 + i);
         @SuppressWarnings({
-        	"unused",
-        	"upperbound:array.access.unsafe.high.range", // https://github.com/typetools/checker-framework/issues/1669
-        	"assignment.type.incompatible" // https://github.com/typetools/checker-framework/issues/1669
+          "unused",
+          "upperbound:array.access.unsafe.high.range", // https://github.com/typetools/checker-framework/issues/1669
+          "assignment.type.incompatible" // https://github.com/typetools/checker-framework/issues/1669
         })
         byte _unused2 = result['a' + i] = (byte) (10 + i);
       }

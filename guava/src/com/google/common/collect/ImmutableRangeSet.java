@@ -174,7 +174,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
 
   @Override
   public boolean encloses(Range<C> otherRange) {
-	@GTENegativeOne int index =
+    @GTENegativeOne int index =
         SortedLists.binarySearch(
             ranges,
             Range.<C>lowerBoundFn(),
@@ -187,7 +187,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
 
   @Override
   public Range<C> rangeContaining(C value) {
-	@GTENegativeOne int index =
+    @GTENegativeOne int index =
         SortedLists.binarySearch(
             ranges,
             Range.<C>lowerBoundFn(),
