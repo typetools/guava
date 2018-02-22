@@ -147,7 +147,6 @@ public final class ImmutableLongArray implements Serializable {
    */
   // Use (first, rest) so that `of(someLongArray)` won't compile (they should use copyOf), which is
   // okay since we have to copy the just-created array anyway.
-  //TODO INDEX: if rest has Integer.MAX_VALUE elements, will attempt to create negative-size array
   @SuppressWarnings("upperbound:array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/182
   public static ImmutableLongArray of(long first, long... rest) {
     checkArgument(

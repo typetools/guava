@@ -206,7 +206,6 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    */
   @SafeVarargs // For Eclipse. For internal javac we have disabled this pointless type of warning.
   // array has at least 12 elements
-  // TODO INDEX: if rest has >= Integer.MAX_VALUE-11 elements, will attempt to create negative-size array
   @SuppressWarnings("upperbound:array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/182
   public static <E> ImmutableList<E> of(
       E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9, E e10, E e11, E e12, E... others) {

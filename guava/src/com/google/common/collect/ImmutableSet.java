@@ -148,7 +148,6 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    */
   @SafeVarargs // For Eclipse. For internal javac we have disabled this pointless type of warning.
   // elements has at least 6 elements
-  // TODO INDEX: if rest has >= Integer.MAX_VALUE-5 elements, will attempt to create negative-size array
   @SuppressWarnings("upperbound:array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/182
   public static <E> ImmutableSet<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E... others) {
     checkArgument(
