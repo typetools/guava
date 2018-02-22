@@ -1088,7 +1088,7 @@ public abstract class CharMatcher implements Predicate<Character> {
    * i should be @IndexOrHigh("sequence")
    * inside the loop, i is @IndexFor("sequence")
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // TODO
+  @SuppressWarnings("upperbound:argument.type.incompatible") // refinement by inequality with expression referring to length in a local variable
   public String collapseFrom(CharSequence sequence, char replacement) {
     // This implementation avoids unnecessary allocation.
     int len = sequence.length();
@@ -1283,13 +1283,19 @@ public abstract class CharMatcher implements Predicate<Character> {
       return true;
     }
 
-    @SuppressWarnings("return.type.incompatible") // TODO
+    /*
+     * If length() != 0, then sequence is MinLen(1), so 0 is LTLengthOf(sequence) 
+     */
+    @SuppressWarnings("return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/188
     @Override
     public @IndexOrLow("#1") int indexIn(CharSequence sequence) {
       return (sequence.length() == 0) ? -1 : 0;
     }
 
-    @SuppressWarnings("return.type.incompatible") // TODO
+    /*
+     * If start != length(), then start is LTLengthOf(sequence)
+     */
+    @SuppressWarnings("return.type.incompatible") // Refine index by comparison to length method
     @Override
     public @IndexOrLow("#1") int indexIn(CharSequence sequence, @IndexOrHigh("#1") int start) {
       int length = sequence.length();
