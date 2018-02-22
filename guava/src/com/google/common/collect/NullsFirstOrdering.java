@@ -24,7 +24,7 @@ import java.io.Serializable;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /** An ordering that treats {@code null} as less than all other values. */
-@AnnotatedFor({"nullness", "index"})
+@AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true)
 final class NullsFirstOrdering<T> extends Ordering<T> implements Serializable {
   final Ordering<? super T> ordering;

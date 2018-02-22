@@ -26,15 +26,12 @@ import java.util.Set;
 import java.util.SortedMap;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.framework.qual.AnnotatedFor;
-
 /**
  * Skeletal implementation of {@link NavigableMap}.
  *
  * @author Louis Wasserman
  */
 @GwtIncompatible
-@AnnotatedFor("index")
 abstract class AbstractNavigableMap<K, V> extends IteratorBasedAbstractMap<K, V>
     implements NavigableMap<K, V> {
 

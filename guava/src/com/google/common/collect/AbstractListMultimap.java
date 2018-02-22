@@ -35,7 +35,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Jared Levy
  * @since 2.0
  */
-@AnnotatedFor({"nullness", "index"})
+@AnnotatedFor({"nullness"})
 @GwtCompatible
 abstract class AbstractListMultimap<K, V> extends AbstractMapBasedMultimap<K, V>
     implements ListMultimap<K, V> {

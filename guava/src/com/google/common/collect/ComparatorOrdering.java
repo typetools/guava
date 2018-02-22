@@ -27,7 +27,7 @@ import java.util.Comparator;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /** An ordering for a pre-existing comparator. */
-@AnnotatedFor({"nullness", "index"})
+@AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true)
 final class ComparatorOrdering<T> extends Ordering<T> implements Serializable {
   final Comparator<T> comparator;

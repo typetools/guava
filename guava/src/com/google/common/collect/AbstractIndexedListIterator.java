@@ -25,7 +25,6 @@ import java.util.NoSuchElementException;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
-import org.checkerframework.framework.qual.AnnotatedFor;
 import org.checkerframework.framework.qual.EnsuresQualifierIf;
 
 /**
@@ -36,7 +35,6 @@ import org.checkerframework.framework.qual.EnsuresQualifierIf;
  * @author Jared Levy
  */
 @GwtCompatible
-@AnnotatedFor("lowerbound")
 abstract class AbstractIndexedListIterator<E> extends UnmodifiableListIterator<E> {
   private final @NonNegative int size;
   private @NonNegative int position;

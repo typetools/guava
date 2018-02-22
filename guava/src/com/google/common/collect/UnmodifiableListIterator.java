@@ -19,8 +19,6 @@ package com.google.common.collect;
 import com.google.common.annotations.GwtCompatible;
 import java.util.ListIterator;
 
-import org.checkerframework.framework.qual.AnnotatedFor;
-
 /**
  * A list iterator that does not support {@link #remove}, {@link #add}, or {@link #set}.
  *
@@ -28,7 +26,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @author Louis Wasserman
  */
 @GwtCompatible
-@AnnotatedFor("index")
 public abstract class UnmodifiableListIterator<E> extends UnmodifiableIterator<E>
     implements ListIterator<E> {
   /** Constructor for use by subclasses. */

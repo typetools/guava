@@ -24,7 +24,7 @@ import java.io.Serializable;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /** @see com.google.common.collect.Maps#immutableEntry(Object, Object) */
-@AnnotatedFor({"nullness", "index"})
+@AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true)
 class ImmutableEntry<K, V> extends AbstractMapEntry<K, V> implements Serializable {
   @NullableDecl final K key;

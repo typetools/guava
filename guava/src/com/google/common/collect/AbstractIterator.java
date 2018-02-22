@@ -68,7 +68,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  */
 // When making changes to this class, please also update the copy at
 // com.google.common.base.AbstractIterator
-@AnnotatedFor({"nullness", "index"})
+@AnnotatedFor({"nullness"})
 @GwtCompatible
 public abstract class AbstractIterator<T> extends UnmodifiableIterator<T> {
   private State state = State.NOT_READY;

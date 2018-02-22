@@ -22,8 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.checkerframework.framework.qual.AnnotatedFor;
-
 /**
  * Contains static utility methods pertaining to primitive types and their corresponding wrapper
  * types.
@@ -32,7 +30,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @since 1.0
  */
 @GwtIncompatible
-@AnnotatedFor("index")
 public final class Primitives {
   private Primitives() {}
 

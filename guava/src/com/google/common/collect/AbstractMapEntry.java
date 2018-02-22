@@ -30,7 +30,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @author Jared Levy
  */
-@AnnotatedFor({"nullness", "index"})
+@AnnotatedFor({"nullness"})
 @GwtCompatible
 abstract class AbstractMapEntry<K, V> implements Entry<K, V> {
 

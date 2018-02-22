@@ -26,7 +26,7 @@ import java.io.Serializable;
 import org.checkerframework.checker.nullness.compatqual.MonotonicNonNullDecl;
 
 /** An ordering that uses the natural order of the values. */
-@AnnotatedFor({"nullness", "index"})
+@AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true)
 @SuppressWarnings("unchecked") // TODO(kevinb): the right way to explain this??
 final class NaturalOrdering extends Ordering<Comparable> implements Serializable {
