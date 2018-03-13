@@ -900,7 +900,7 @@ public abstract class CharMatcher implements Predicate<Character> {
    */
   public String replaceFrom(CharSequence sequence, char replacement) {
     String string = sequence.toString();
-    @IndexOrLow("string") int pos = indexIn(string);
+    int pos = indexIn(string);
     if (pos == -1) {
       return string;
     }
