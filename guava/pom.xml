@@ -125,7 +125,7 @@
         <executions>
           <execution>
           	<id>check-index</id>
-          	<phase>post-compile</phase>
+          	<phase>process-classes</phase>
             <goals><goal>compile</goal></goals>
             <configuration>
               <annotationProcessors>
@@ -133,11 +133,9 @@
               </annotationProcessors>
               <compilerArgs>
                 <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
-                <arg>${addtionalargs}</arg>
-                <arg>-AuseDefaultsForUncheckedCode=source,bytecode</arg>
-                <arg>-Awarns</arg>
                 <arg>-AprintErrorStack</arg>
                 <arg>-proc:only</arg>
+                <arg>-Awarns</arg>
                 <arg>-AonlyDefs=^com\.google\.common\.primitives\.|^com\.google\.common\.base\.</arg>
               </compilerArgs>
             </configuration>
