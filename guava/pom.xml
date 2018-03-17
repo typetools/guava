@@ -122,6 +122,27 @@
               <arg>-AprintErrorStack</arg>
             </compilerArgs>
         </configuration>
+        <executions>
+          <execution>
+          	<id>check-index</id>
+          	<phase>post-compile</phase>
+            <goals><goal>compile</goal></goals>
+            <configuration>
+              <annotationProcessors>
+                <annotationProcessor>org.checkerframework.checker.index.IndexChecker</annotationProcessor>
+              </annotationProcessors>
+              <compilerArgs>
+                <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
+                <arg>${addtionalargs}</arg>
+                <arg>-AuseDefaultsForUncheckedCode=source,bytecode</arg>
+                <arg>-Awarns</arg>
+                <arg>-AprintErrorStack</arg>
+                <arg>-proc:only</arg>
+                <arg>-AonlyDefs=^com\.google\.common\.primitives\.|^com\.google\.common\.base\.</arg>
+              </compilerArgs>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
