@@ -698,10 +698,6 @@ public abstract class CharMatcher implements Predicate<Character> {
    * @return {@code true} if this matcher matches every character in the sequence, including when
    *     the sequence is empty
    */
-  /*
-   * The CharSequence is not mutated, therefore acesses to indices less
-   * than the length are safe,
-   */
   public boolean matchesAllOf(CharSequence sequence) {
     for (int i = sequence.length() - 1; i >= 0; i--) {
       if (!matches(sequence.charAt(i))) {
@@ -755,10 +751,6 @@ public abstract class CharMatcher implements Predicate<Character> {
    * @throws IndexOutOfBoundsException if start is negative or greater than {@code
    *     sequence.length()}
    */
-  /*
-   * The CharSequence is not mutated, therefore acesses to indices less
-   * than the length are safe,
-   */
   public @IndexOrLow("#1") int indexIn(CharSequence sequence, @IndexOrHigh("#1") int start) {
     int length = sequence.length();
     checkPositionIndex(start, length);
@@ -779,10 +771,6 @@ public abstract class CharMatcher implements Predicate<Character> {
    *
    * @param sequence the character sequence to examine from the end
    * @return an index, or {@code -1} if no character matches
-   */
-  /*
-   * The CharSequence is not mutated, therefore acesses to indices less
-   * than the length are safe,
    */
   public @IndexOrLow("#1") int lastIndexIn(CharSequence sequence) {
     for (int i = sequence.length() - 1; i >= 0; i--) {
@@ -988,12 +976,6 @@ public abstract class CharMatcher implements Predicate<Character> {
    *
    * ... is equivalent to {@link String#trim()}.
    */
-  /*
-   * CharSequence sequence is not mutated, so indices less than length are valid
-   * len should be @IndexOrHigh("sequence")
-   * first should be @IndexOrHigh("sequence")
-   * last should be @IndexFor("sequence")
-   */
   public String trimFrom(CharSequence sequence) {
     int len = sequence.length();
     @IndexOrHigh("sequence") int first;
@@ -1023,11 +1005,6 @@ public abstract class CharMatcher implements Predicate<Character> {
    *
    * ... returns {@code "catbab"}.
    */
-  /*
-   * CharSequence sequence is not mutated, so indices less than length are valid
-   * len should be @IndexOrHigh("sequence")
-   * first should be @IndexOrLow("sequence")
-   */
   public String trimLeadingFrom(CharSequence sequence) {
     int len = sequence.length();
     for (int first = 0; first < len; first++) {
@@ -1047,11 +1024,6 @@ public abstract class CharMatcher implements Predicate<Character> {
    * }</pre>
    *
    * ... returns {@code "abacat"}.
-   */
-  /*
-   * CharSequence sequence is not mutated, so indices less than length are valid
-   * len should be @IndexOrHigh("sequence")
-   * last should be @IndexOrLow("sequence")
    */
   public String trimTrailingFrom(CharSequence sequence) {
     int len = sequence.length();
