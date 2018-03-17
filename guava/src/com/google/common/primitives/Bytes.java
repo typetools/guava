@@ -38,7 +38,6 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
 import org.checkerframework.common.value.qual.MinLen;
-import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code byte} primitives, that are not already found in
@@ -55,7 +54,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 // TODO(kevinb): how to prevent warning on UnsignedBytes when building GWT
 // javadoc?
 @GwtCompatible
-@AnnotatedFor("index")
 public final class Bytes {
   private Bytes() {}
 

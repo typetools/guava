@@ -25,7 +25,6 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.framework.qual.AnnotatedFor;
 import org.checkerframework.framework.qual.EnsuresQualifierIf;
 
 /**
@@ -35,7 +34,6 @@ import org.checkerframework.framework.qual.EnsuresQualifierIf;
  * @since 3.0
  */
 @GwtCompatible
-@AnnotatedFor("index")
 public final class Strings {
   private Strings() {}
 

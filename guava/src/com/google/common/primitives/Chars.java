@@ -42,7 +42,6 @@ import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
-import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code char} primitives, that are not already found in
@@ -58,7 +57,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @since 1.0
  */
 @GwtCompatible(emulated = true)
-@AnnotatedFor("index")
 public final class Chars {
   private Chars() {}
 

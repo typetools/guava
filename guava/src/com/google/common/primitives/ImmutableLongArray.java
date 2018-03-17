@@ -44,7 +44,6 @@ import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.dataflow.qual.Pure;
-import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * An immutable array of {@code long} values, with an API resembling {@link List}.
@@ -99,7 +98,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @Beta
 @GwtCompatible
 @Immutable
-@AnnotatedFor("index")
 public final class ImmutableLongArray implements Serializable {
   private static final ImmutableLongArray EMPTY = new ImmutableLongArray(new long[0]);
 

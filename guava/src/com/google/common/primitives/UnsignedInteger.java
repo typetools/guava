@@ -28,7 +28,6 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.common.value.qual.IntRange;
-import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * A wrapper class for unsigned {@code int} values, supporting arithmetic operations.
@@ -44,7 +43,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @since 11.0
  */
 @GwtCompatible(emulated = true)
-@AnnotatedFor("index")
 public final class UnsignedInteger extends Number implements Comparable<UnsignedInteger> {
   public static final UnsignedInteger ZERO = fromIntBits(0);
   public static final UnsignedInteger ONE = fromIntBits(1);

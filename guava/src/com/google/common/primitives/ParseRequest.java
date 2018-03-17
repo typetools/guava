@@ -15,13 +15,11 @@
 package com.google.common.primitives;
 
 import org.checkerframework.common.value.qual.IntRange;
-import org.checkerframework.framework.qual.AnnotatedFor;
 
 import com.google.common.annotations.GwtCompatible;
 
 /** A string to be parsed as a number and the radix to interpret it in. */
 @GwtCompatible
-@AnnotatedFor("index")
 final class ParseRequest {
   final String rawValue;
   final @IntRange(from=Character.MIN_RADIX,to=Character.MAX_RADIX) int radix;

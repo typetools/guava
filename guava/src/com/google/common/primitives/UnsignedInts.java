@@ -29,7 +29,6 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
-import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code int} primitives that interpret values as
@@ -54,7 +53,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @Beta
 @GwtCompatible
-@AnnotatedFor("index")
 public final class UnsignedInts {
   static final long INT_MASK = 0xffffffffL;
 

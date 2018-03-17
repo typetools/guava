@@ -28,7 +28,6 @@ import java.util.Comparator;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
-import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code long} primitives that interpret values as
@@ -55,7 +54,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @Beta
 @GwtCompatible
-@AnnotatedFor("index")
 public final class UnsignedLongs {
   private UnsignedLongs() {}
 

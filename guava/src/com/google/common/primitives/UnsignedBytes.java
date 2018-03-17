@@ -31,7 +31,6 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
-import org.checkerframework.framework.qual.AnnotatedFor;
 
 import sun.misc.Unsafe;
 
@@ -51,7 +50,6 @@ import sun.misc.Unsafe;
  * @since 1.0
  */
 @GwtIncompatible
-@AnnotatedFor("index")
 public final class UnsignedBytes {
   private UnsignedBytes() {}
 

@@ -25,7 +25,6 @@ import java.util.Comparator;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
-import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code byte} primitives that interpret values as signed. The
@@ -41,7 +40,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 // TODO(kevinb): how to prevent warning on UnsignedBytes when building GWT
 // javadoc?
 @GwtCompatible
-@AnnotatedFor("index")
 public final class SignedBytes {
   private SignedBytes() {}
 

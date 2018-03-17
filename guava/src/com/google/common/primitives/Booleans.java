@@ -33,7 +33,6 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
-import org.checkerframework.framework.qual.AnnotatedFor;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
@@ -53,7 +52,6 @@ import org.checkerframework.common.value.qual.MinLen;
  * @since 1.0
  */
 @GwtCompatible
-@AnnotatedFor("index")
 public final class Booleans {
   private Booleans() {}
 

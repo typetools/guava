@@ -25,7 +25,6 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.common.value.qual.IntRange;
-import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * A wrapper class for unsigned {@code long} values, supporting arithmetic operations.
@@ -42,7 +41,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @since 11.0
  */
 @GwtCompatible(serializable = true)
-@AnnotatedFor("index")
 public final class UnsignedLong extends Number implements Comparable<UnsignedLong>, Serializable {
 
   private static final long UNSIGNED_MASK = 0x7fffffffffffffffL;
