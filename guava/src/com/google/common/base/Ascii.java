@@ -557,7 +557,7 @@ public final class Ascii {
      *   seq.length > maxLength,
      *   therefore truncationLength <= seq.length
      */
-    "lowerbound:assignment.type.incompatible", "upperbound:argument.type.incompatible"// need annotation GTEqLengthOf
+    "lowerbound:assignment.type.incompatible", "upperbound:argument.type.incompatible"// https://github.com/kelloggm/checker-framework/issues/220
   }) 
   public static String truncate(CharSequence seq, @NonNegative int maxLength, String truncationIndicator) {
     checkNotNull(seq);
