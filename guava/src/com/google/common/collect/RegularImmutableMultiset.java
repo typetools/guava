@@ -26,8 +26,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * Implementation of {@link ImmutableMultiset} with zero or more elements.
  *
@@ -119,7 +117,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
 
   private final transient Multisets.ImmutableEntry<E>[] entries;
   @NullableDecl private final transient Multisets.ImmutableEntry<E>[] hashTable;
-  private final transient @NonNegative int size;
+  private final transient int size;
   private final transient int hashCode;
 
   @LazyInit private transient ImmutableSet<E> elementSet;
@@ -140,7 +138,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
   private static final class NonTerminalEntry<E> extends Multisets.ImmutableEntry<E> {
     private final Multisets.ImmutableEntry<E> nextInBucket;
 
-    NonTerminalEntry(E element, @NonNegative int count, ImmutableEntry<E> nextInBucket) {
+    NonTerminalEntry(E element, int count, ImmutableEntry<E> nextInBucket) {
       super(element, count);
       this.nextInBucket = nextInBucket;
     }
@@ -157,7 +155,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
   }
 
   @Override
-  public @NonNegative int count(@NullableDecl Object element) {
+  public int count(@NullableDecl Object element) {
     Multisets.ImmutableEntry<E>[] hashTable = this.hashTable;
     if (element == null || hashTable == null) {
       return 0;
@@ -175,7 +173,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return size;
   }
 

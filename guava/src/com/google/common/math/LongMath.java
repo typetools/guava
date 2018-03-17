@@ -33,10 +33,6 @@ import com.google.common.primitives.UnsignedLongs;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.index.qual.Positive;
-import org.checkerframework.common.value.qual.IntVal;
-
 /**
  * A class for arithmetic on values of type {@code long}. Where possible, methods are defined and
  * named analogously to their {@code BigInteger} counterparts.
@@ -67,7 +63,7 @@ public final class LongMath {
    * @since 20.0
    */
   @Beta
-  public static long ceilingPowerOfTwo(@Positive long x) {
+  public static long ceilingPowerOfTwo(long x) {
     checkPositive("x", x);
     if (x > MAX_SIGNED_POWER_OF_TWO) {
       throw new ArithmeticException("ceilingPowerOfTwo(" + x + ") is not representable as a long");
@@ -83,7 +79,7 @@ public final class LongMath {
    * @since 20.0
    */
   @Beta
-  public static long floorPowerOfTwo(@Positive long x) {
+  public static long floorPowerOfTwo(long x) {
     checkPositive("x", x);
 
     // Long.highestOneBit was buggy on GWT.  We've fixed it, but I'm not certain when the fix will
@@ -107,7 +103,7 @@ public final class LongMath {
    * than the straightforward ternary expression.
    */
   @VisibleForTesting
-  static @IntVal(value = {0,1}) int lessThanBranchFree(long x, long y) {
+  static int lessThanBranchFree(long x, long y) {
     // Returns the sign bit of x - y.
     return (int) (~~(x - y) >>> (Long.SIZE - 1));
   }
@@ -121,7 +117,7 @@ public final class LongMath {
    */
   @SuppressWarnings("fallthrough")
   // TODO(kevinb): remove after this warning is disabled globally
-  public static @NonNegative int log2(@Positive long x, RoundingMode mode) {
+  public static int log2(long x, RoundingMode mode) {
     checkPositive("x", x);
     switch (mode) {
       case UNNECESSARY:
@@ -163,7 +159,7 @@ public final class LongMath {
   @GwtIncompatible // TODO
   @SuppressWarnings("fallthrough")
   // TODO(kevinb): remove after this warning is disabled globally
-  public static @NonNegative int log10(@Positive long x, RoundingMode mode) {
+  public static int log10(long x, RoundingMode mode) {
     checkPositive("x", x);
     int logFloor = log10Floor(x);
     long floorPow = powersOf10[logFloor];
@@ -188,7 +184,7 @@ public final class LongMath {
   }
 
   @GwtIncompatible // TODO
-  static @NonNegative int log10Floor(@Positive long x) {
+  static int log10Floor(long x) {
     /*
      * Based on Hacker's Delight Fig. 11-5, the two-table-lookup, branch-free implementation.
      *
@@ -269,7 +265,7 @@ public final class LongMath {
    * @throws IllegalArgumentException if {@code k < 0}
    */
   @GwtIncompatible // TODO
-  public static long pow(long b, @NonNegative int k) {
+  public static long pow(long b, int k) {
     checkNonNegative("exponent", k);
     if (-2 <= b && b <= 2) {
       switch ((int) b) {
@@ -313,7 +309,7 @@ public final class LongMath {
    */
   @GwtIncompatible // TODO
   @SuppressWarnings("fallthrough")
-  public static @NonNegative long sqrt(@NonNegative long x, RoundingMode mode) {
+  public static long sqrt(long x, RoundingMode mode) {
     checkNonNegative("x", x);
     if (fitsInInt(x)) {
       return IntMath.sqrt((int) x, mode);
@@ -457,7 +453,7 @@ public final class LongMath {
    *     Remainder Operator</a>
    */
   @GwtIncompatible // TODO
-  public static int mod(long x, @Positive int m) {
+  public static int mod(long x, int m) {
     // Cast is safe because the result is guaranteed in the range [0, m)
     return (int) mod(x, (long) m);
   }
@@ -481,7 +477,7 @@ public final class LongMath {
    *     Remainder Operator</a>
    */
   @GwtIncompatible // TODO
-  public static long mod(long x, @Positive long m) {
+  public static long mod(long x, long m) {
     if (m <= 0) {
       throw new ArithmeticException("Modulus must be positive");
     }
@@ -495,7 +491,7 @@ public final class LongMath {
    *
    * @throws IllegalArgumentException if {@code a < 0} or {@code b < 0}
    */
-  public static long gcd(@NonNegative long a, @NonNegative long b) {
+  public static long gcd(long a, long b) {
     /*
      * The reason we require both arguments to be >= 0 is because otherwise, what do you return on
      * gcd(0, Long.MIN_VALUE)? BigInteger.gcd would return positive 2^63, but positive 2^63 isn't an
@@ -603,7 +599,7 @@ public final class LongMath {
    *     long} arithmetic
    */
   @GwtIncompatible // TODO
-  public static long checkedPow(long b, @NonNegative int k) {
+  public static long checkedPow(long b, int k) {
     checkNonNegative("exponent", k);
     if (b >= -2 & b <= 2) {
       switch ((int) b) {
@@ -717,7 +713,7 @@ public final class LongMath {
    * @since 20.0
    */
   @Beta
-  public static long saturatedPow(long b, @NonNegative int k) {
+  public static long saturatedPow(long b, int k) {
     checkNonNegative("exponent", k);
     if (b >= -2 & b <= 2) {
       switch ((int) b) {
@@ -774,7 +770,7 @@ public final class LongMath {
    * @throws IllegalArgumentException if {@code n < 0}
    */
   @GwtIncompatible // TODO
-  public static @Positive long factorial(@NonNegative int n) {
+  public static long factorial(int n) {
     checkNonNegative("n", n);
     return (n < factorials.length) ? factorials[n] : Long.MAX_VALUE;
   }
@@ -809,7 +805,7 @@ public final class LongMath {
    *
    * @throws IllegalArgumentException if {@code n < 0}, {@code k < 0}, or {@code k > n}
    */
-  public static @NonNegative long binomial(@NonNegative int n, @NonNegative int k) {
+  public static long binomial(int n, int k) {
     checkNonNegative("n", n);
     checkNonNegative("k", k);
     checkArgument(k <= n, "k (%s) > n (%s)", k, n);
@@ -1003,7 +999,7 @@ public final class LongMath {
    */
   @GwtIncompatible // TODO
   @Beta
-  public static boolean isPrime(@NonNegative long n) {
+  public static boolean isPrime(long n) {
     if (n < 2) {
       checkNonNegative("n", n);
       return false;

@@ -38,8 +38,6 @@ import java.util.Spliterator;
 import org.checkerframework.checker.nullness.compatqual.MonotonicNonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * Fixed-size {@link Table} implementation backed by a two-dimensional array.
  *
@@ -131,8 +129,8 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements
   private final ImmutableList<C> columnList;
 
   // TODO(jlevy): Add getters returning rowKeyToIndex and columnKeyToIndex?
-  private final ImmutableMap<R, @NonNegative Integer> rowKeyToIndex;
-  private final ImmutableMap<C, @NonNegative Integer> columnKeyToIndex;
+  private final ImmutableMap<R, Integer> rowKeyToIndex;
+  private final ImmutableMap<C, Integer> columnKeyToIndex;
   private final V[][] array;
 
   private ArrayTable(Iterable<? extends R> rowKeys, Iterable<? extends C> columnKeys) {
@@ -193,13 +191,13 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements
     abstract String getKeyRole();
 
     @NullableDecl
-    abstract V getValue(@NonNegative int index);
+    abstract V getValue(int index);
 
     @NullableDecl
-    abstract V setValue(@NonNegative int index, V newValue);
+    abstract V setValue(int index, V newValue);
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return keyIndex.size();
     }
 
@@ -208,7 +206,7 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements
       return keyIndex.isEmpty();
     }
 
-    Entry<K, V> getEntry(final @NonNegative int index) {
+    Entry<K, V> getEntry(final int index) {
       checkElementIndex(index, size());
       return new AbstractMapEntry<K, V>() {
         @Override
@@ -232,7 +230,7 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements
     Iterator<Entry<K, V>> entryIterator() {
       return new AbstractIndexedListIterator<Entry<K, V>>(size()) {
         @Override
-        protected Entry<K, V> get(final @NonNegative int index) {
+        protected Entry<K, V> get(final int index) {
           return getEntry(index);
         }
       };
@@ -309,7 +307,7 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements
    *     or equal to the number of allowed row keys, or {@code columnIndex} is greater than or equal
    *     to the number of allowed column keys
    */
-  public V at(@NonNegative int rowIndex, @NonNegative int columnIndex) {
+  public V at(int rowIndex, int columnIndex) {
     // In GWT array access never throws IndexOutOfBoundsException.
     checkElementIndex(rowIndex, rowList.size());
     checkElementIndex(columnIndex, columnList.size());
@@ -330,7 +328,7 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements
    *     to the number of allowed column keys
    */
   @CanIgnoreReturnValue
-  public V set(@NonNegative int rowIndex, @NonNegative int columnIndex, @NullableDecl V value) {
+  public V set(int rowIndex, int columnIndex, @NullableDecl V value) {
     // In GWT array access never throws IndexOutOfBoundsException.
     checkElementIndex(rowIndex, rowList.size());
     checkElementIndex(columnIndex, columnList.size());
@@ -508,7 +506,7 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements
   // TODO(jlevy): Add eraseRow and eraseColumn methods?
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return rowList.size() * columnList.size();
   }
 
@@ -532,7 +530,7 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements
   Iterator<Cell<R, C, V>> cellIterator() {
     return new AbstractIndexedListIterator<Cell<R, C, V>>(size()) {
       @Override
-      protected Cell<R, C, V> get(final @NonNegative int index) {
+      protected Cell<R, C, V> get(final int index) {
         return getCell(index);
       }
     };
@@ -544,10 +542,10 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements
         size(), Spliterator.ORDERED | Spliterator.NONNULL | Spliterator.DISTINCT, this::getCell);
   }
 
-  private Cell<R, C, V> getCell(final @NonNegative int index) {
+  private Cell<R, C, V> getCell(final int index) {
     return new Tables.AbstractCell<R, C, V>() {
-      final @NonNegative int rowIndex = index / columnList.size();
-      final @NonNegative int columnIndex = index % columnList.size();
+      final int rowIndex = index / columnList.size();
+      final int columnIndex = index % columnList.size();
 
       @Override
       public R getRowKey() {
@@ -566,7 +564,7 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements
     };
   }
 
-  private V getValue(@NonNegative int index) {
+  private V getValue(int index) {
     int rowIndex = index / columnList.size();
     int columnIndex = index % columnList.size();
     return at(rowIndex, columnIndex);
@@ -591,9 +589,9 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements
   }
 
   private class Column extends ArrayMap<R, V> {
-    final @NonNegative int columnIndex;
+    final int columnIndex;
 
-    Column(@NonNegative int columnIndex) {
+    Column(int columnIndex) {
       super(rowKeyToIndex);
       this.columnIndex = columnIndex;
     }
@@ -645,12 +643,12 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements
     }
 
     @Override
-    Map<R, V> getValue(@NonNegative int index) {
+    Map<R, V> getValue(int index) {
       return new Column(index);
     }
 
     @Override
-    Map<R, V> setValue(@NonNegative int index, Map<R, V> newValue) {
+    Map<R, V> setValue(int index, Map<R, V> newValue) {
       throw new UnsupportedOperationException();
     }
 
@@ -692,12 +690,12 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements
     }
 
     @Override
-    V getValue(@NonNegative int index) {
+    V getValue(int index) {
       return at(rowIndex, index);
     }
 
     @Override
-    V setValue(@NonNegative int index, V newValue) {
+    V setValue(int index, V newValue) {
       return set(rowIndex, index, newValue);
     }
   }
@@ -733,12 +731,12 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements
     }
 
     @Override
-    Map<C, V> getValue(@NonNegative int index) {
+    Map<C, V> getValue(int index) {
       return new Row(index);
     }
 
     @Override
-    Map<C, V> setValue(@NonNegative int index, Map<C, V> newValue) {
+    Map<C, V> setValue(int index, Map<C, V> newValue) {
       throw new UnsupportedOperationException();
     }
 
@@ -766,7 +764,7 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements
   Iterator<V> valuesIterator() {
     return new AbstractIndexedListIterator<V>(size()) {
       @Override
-      protected V get(@NonNegative int index) {
+      protected V get(int index) {
         return getValue(index);
       }
     };

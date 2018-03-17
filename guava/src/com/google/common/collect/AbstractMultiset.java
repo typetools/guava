@@ -16,7 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -73,7 +72,7 @@ abstract class AbstractMultiset<E> extends AbstractCollection<E> implements Mult
 
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int add(@NullableDecl E element, @NonNegative int occurrences) {
+  public int add(@NullableDecl E element, int occurrences) {
     throw new UnsupportedOperationException();
   }
 
@@ -85,19 +84,19 @@ abstract class AbstractMultiset<E> extends AbstractCollection<E> implements Mult
 
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int remove(@NullableDecl Object element, @NonNegative int occurrences) {
+  public int remove(@NullableDecl Object element, int occurrences) {
     throw new UnsupportedOperationException();
   }
 
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int setCount(@NullableDecl E element, @NonNegative int count) {
+  public int setCount(@NullableDecl E element, int count) {
     return setCountImpl(this, element, count);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public boolean setCount(@NullableDecl E element, @NonNegative int oldCount, @NonNegative int newCount) {
+  public boolean setCount(@NullableDecl E element, int oldCount, int newCount) {
     return setCountImpl(this, element, oldCount, newCount);
   }
 
@@ -192,7 +191,7 @@ abstract class AbstractMultiset<E> extends AbstractCollection<E> implements Mult
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return distinctElements();
     }
   }
@@ -203,7 +202,7 @@ abstract class AbstractMultiset<E> extends AbstractCollection<E> implements Mult
 
   abstract Iterator<Entry<E>> entryIterator();
 
-  abstract @NonNegative int distinctElements();
+  abstract int distinctElements();
 
   // Object methods
 

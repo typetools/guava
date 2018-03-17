@@ -20,9 +20,6 @@ import java.util.Comparator;
 import java.util.Spliterator;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * List returned by {@code ImmutableSortedSet.asList()} when the set isn't empty.
  *
@@ -52,7 +49,7 @@ final class ImmutableSortedAsList<E> extends RegularImmutableAsList<E>
   @GwtIncompatible // ImmutableSortedSet.indexOf
   // TODO(cpovirk): consider manual binary search under GWT to preserve O(log N) lookup
   @Override
-  public @GTENegativeOne int indexOf(@NullableDecl Object target) {
+  public int indexOf(@NullableDecl Object target) {
     int index = delegateCollection().indexOf(target);
 
     // TODO(kevinb): reconsider if it's really worth making feeble attempts at
@@ -65,7 +62,7 @@ final class ImmutableSortedAsList<E> extends RegularImmutableAsList<E>
 
   @GwtIncompatible // ImmutableSortedSet.indexOf
   @Override
-  public @GTENegativeOne int lastIndexOf(@NullableDecl Object target) {
+  public int lastIndexOf(@NullableDecl Object target) {
     return indexOf(target);
   }
 
@@ -82,7 +79,7 @@ final class ImmutableSortedAsList<E> extends RegularImmutableAsList<E>
    * sure there's any performance hit from our failure to override subListUnchecked under GWT
    */
   @Override
-  ImmutableList<E> subListUnchecked(@NonNegative int fromIndex, @NonNegative int toIndex) {
+  ImmutableList<E> subListUnchecked(int fromIndex, int toIndex) {
     ImmutableList<E> parentSubList = super.subListUnchecked(fromIndex, toIndex);
     return new RegularImmutableSortedSet<E>(parentSubList, comparator()).asList();
   }

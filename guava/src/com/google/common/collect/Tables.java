@@ -38,8 +38,6 @@ import java.util.function.BinaryOperator;
 import java.util.stream.Collector;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * Provides static methods that involve a {@code Table}.
  *
@@ -311,7 +309,7 @@ public final class Tables {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return original.size();
     }
 
@@ -438,7 +436,7 @@ public final class Tables {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return fromTable.size();
     }
 

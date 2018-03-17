@@ -16,9 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -205,8 +202,6 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * @since 3.0 (source-compatible since 2.0)
    */
   @SafeVarargs // For Eclipse. For internal javac we have disabled this pointless type of warning.
-  // array has at least 12 elements
-  @SuppressWarnings("upperbound:array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/182
   public static <E> ImmutableList<E> of(
       E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9, E e10, E e11, E e12, E... others) {
     checkArgument(
@@ -370,9 +365,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * Views the array as an immutable list. Copies if the specified range does not cover the complete
    * array. Does not check for nulls.
    */
-  // elements has at least one element
-  @SuppressWarnings("upperbound:array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/188
-  static <E> ImmutableList<E> asImmutableList(Object[] elements, @IndexOrHigh("#1") int length) {
+  static <E> ImmutableList<E> asImmutableList(Object[] elements, int length) {
     switch (length) {
       case 0:
         return of();
@@ -401,10 +394,10 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
   }
 
   @Override
-  public UnmodifiableListIterator<E> listIterator(@NonNegative int index) {
+  public UnmodifiableListIterator<E> listIterator(int index) {
     return new AbstractIndexedListIterator<E>(size(), index) {
       @Override
-      protected E get(@NonNegative int index) {
+      protected E get(int index) {
         return ImmutableList.this.get(index);
       }
     };
@@ -421,13 +414,13 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
   }
 
   @Override
-  public @GTENegativeOne int indexOf(@NullableDecl Object object) {
+  public int indexOf(@NullableDecl Object object) {
     return (object == null) ? -1 : Lists.indexOfImpl(this, object);
   }
 
   @Pure
   @Override
-  public @GTENegativeOne int lastIndexOf(@NullableDecl Object object) {
+  public int lastIndexOf(@NullableDecl Object object) {
     return (object == null) ? -1 : Lists.lastIndexOfImpl(this, object);
   }
 
@@ -444,7 +437,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * immutable list is returned.)
    */
   @Override
-  public ImmutableList<E> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
+  public ImmutableList<E> subList(int fromIndex, int toIndex) {
     checkPositionIndexes(fromIndex, toIndex, size());
     int length = toIndex - fromIndex;
     if (length == size()) {
@@ -462,32 +455,32 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * Called by the default implementation of {@link #subList} when {@code toIndex - fromIndex > 1},
    * after index validation has already been performed.
    */
-  ImmutableList<E> subListUnchecked(@NonNegative int fromIndex, @NonNegative int toIndex) {
+  ImmutableList<E> subListUnchecked(int fromIndex, int toIndex) {
     return new SubList(fromIndex, toIndex - fromIndex);
   }
 
   class SubList extends ImmutableList<E> {
-    final transient @NonNegative int offset;
-    final transient @NonNegative int length;
+    final transient int offset;
+    final transient int length;
 
-    SubList(@NonNegative int offset, @NonNegative int length) {
+    SubList(int offset, int length) {
       this.offset = offset;
       this.length = length;
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return length;
     }
 
     @Override
-    public E get(@NonNegative int index) {
+    public E get(int index) {
       checkElementIndex(index, length);
       return ImmutableList.this.get(index + offset);
     }
 
     @Override
-    public ImmutableList<E> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
+    public ImmutableList<E> subList(int fromIndex, int toIndex) {
       checkPositionIndexes(fromIndex, toIndex, length);
       return ImmutableList.this.subList(fromIndex + offset, toIndex + offset);
     }
@@ -589,7 +582,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
   }
 
   @Override
-  @NonNegative int copyIntoArray(Object[] dst, @IndexOrHigh("#1") int offset) {
+  int copyIntoArray(Object[] dst, int offset) {
     // this loop is faster for RandomAccess instances, which ImmutableLists are
     int size = size();
     for (int i = 0; i < size; i++) {
@@ -616,11 +609,11 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
       this.forwardList = backingList;
     }
 
-    private @NonNegative int reverseIndex(@NonNegative int index) {
+    private int reverseIndex(int index) {
       return (size() - 1) - index;
     }
 
-    private @NonNegative int reversePosition(@NonNegative int index) {
+    private int reversePosition(int index) {
       return size() - index;
     }
 
@@ -635,31 +628,31 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
     }
 
     @Override
-    public @GTENegativeOne int indexOf(@NullableDecl Object object) {
+    public int indexOf(@NullableDecl Object object) {
       int index = forwardList.lastIndexOf(object);
       return (index >= 0) ? reverseIndex(index) : -1;
     }
 
     @Override
-    public @GTENegativeOne int lastIndexOf(@NullableDecl Object object) {
+    public int lastIndexOf(@NullableDecl Object object) {
       int index = forwardList.indexOf(object);
       return (index >= 0) ? reverseIndex(index) : -1;
     }
 
     @Override
-    public ImmutableList<E> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
+    public ImmutableList<E> subList(int fromIndex, int toIndex) {
       checkPositionIndexes(fromIndex, toIndex, size());
       return forwardList.subList(reversePosition(toIndex), reversePosition(fromIndex)).reverse();
     }
 
     @Override
-    public E get(@NonNegative int index) {
+    public E get(int index) {
       checkElementIndex(index, size());
       return forwardList.get(reverseIndex(index));
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return forwardList.size();
     }
 
@@ -735,7 +728,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * @since 23.1
    */
   @Beta
-  public static <E> Builder<E> builderWithExpectedSize(@NonNegative int expectedSize) {
+  public static <E> Builder<E> builderWithExpectedSize(int expectedSize) {
     checkNonnegative(expectedSize, "expectedSize");
     return new ImmutableList.Builder<E>(expectedSize);
   }

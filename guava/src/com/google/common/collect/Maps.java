@@ -16,7 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -333,7 +332,7 @@ public final class Maps {
    * Returns a capacity that is sufficient to keep the map from being resized as long as it grows no
    * larger than expectedSize and the load factor is ≥ its default (0.75).
    */
-  static @NonNegative int capacity(@NonNegative int expectedSize) {
+  static int capacity(int expectedSize) {
     if (expectedSize < 3) {
       checkNonnegative(expectedSize, "expectedSize");
       return expectedSize + 1;
@@ -904,7 +903,7 @@ public final class Maps {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return backingSet().size();
     }
 
@@ -1112,7 +1111,7 @@ public final class Maps {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return set.size();
     }
 
@@ -2044,7 +2043,7 @@ public final class Maps {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return fromMap.size();
     }
 
@@ -3148,7 +3147,7 @@ public final class Maps {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return filteredDelegate.size();
     }
 
@@ -3559,7 +3558,7 @@ public final class Maps {
 
   abstract static class IteratorBasedAbstractMap<K, V> extends AbstractMap<K, V> {
     @Override
-    public abstract @NonNegative int size();
+    public abstract int size();
 
     abstract Iterator<Entry<K, V>> entryIterator();
 
@@ -3746,7 +3745,7 @@ public final class Maps {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return map().size();
     }
 
@@ -3978,7 +3977,7 @@ public final class Maps {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return map().size();
     }
 
@@ -4002,7 +4001,7 @@ public final class Maps {
     abstract Map<K, V> map();
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return map().size();
     }
 
@@ -4258,8 +4257,8 @@ public final class Maps {
   }
 
   /** Returns a map from the ith element of list to i. */
-  static <E> ImmutableMap<E, @NonNegative Integer> indexMap(Collection<E> list) {
-    ImmutableMap.Builder<E, @NonNegative Integer> builder = new ImmutableMap.Builder<>(list.size());
+  static <E> ImmutableMap<E, Integer> indexMap(Collection<E> list) {
+    ImmutableMap.Builder<E, Integer> builder = new ImmutableMap.Builder<>(list.size());
     int i = 0;
     for (E e : list) {
       builder.put(e, i++);

@@ -16,7 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -69,7 +68,7 @@ public final class ArrayListMultimap<K, V>
   // Default from ArrayList
   private static final int DEFAULT_VALUES_PER_KEY = 3;
 
-  @VisibleForTesting transient @NonNegative int expectedValuesPerKey;
+  @VisibleForTesting transient int expectedValuesPerKey;
 
   /**
    * Creates a new, empty {@code ArrayListMultimap} with the default initial capacities.
@@ -93,7 +92,7 @@ public final class ArrayListMultimap<K, V>
    * @throws IllegalArgumentException if {@code expectedKeys} or {@code expectedValuesPerKey} is
    *     negative
    */
-  public static <K, V> ArrayListMultimap<K, V> create(@NonNegative int expectedKeys, @NonNegative int expectedValuesPerKey) {
+  public static <K, V> ArrayListMultimap<K, V> create(int expectedKeys, int expectedValuesPerKey) {
     return new ArrayListMultimap<>(expectedKeys, expectedValuesPerKey);
   }
 
@@ -113,7 +112,7 @@ public final class ArrayListMultimap<K, V>
     this(12, DEFAULT_VALUES_PER_KEY);
   }
 
-  private ArrayListMultimap(@NonNegative int expectedKeys, @NonNegative int expectedValuesPerKey) {
+  private ArrayListMultimap(int expectedKeys, int expectedValuesPerKey) {
     super(Platform.<K, Collection<V>>newHashMapWithExpectedSize(expectedKeys));
     checkNonnegative(expectedValuesPerKey, "expectedValuesPerKey");
     this.expectedValuesPerKey = expectedValuesPerKey;
@@ -201,5 +200,5 @@ public List<V> removeAll(@org.checkerframework.checker.nullness.qual.Nullable Ob
 
 @Pure
 @Override
-public @NonNegative int size() { return super.size(); }
+public int size() { return super.size(); }
 }

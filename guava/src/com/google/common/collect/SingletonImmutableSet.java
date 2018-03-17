@@ -16,8 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -59,7 +57,7 @@ final class SingletonImmutableSet<E> extends ImmutableSet<E> {
 
   @Pure
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return 1;
   }
 
@@ -85,7 +83,7 @@ final class SingletonImmutableSet<E> extends ImmutableSet<E> {
   }
 
   @Override
-  @NonNegative int copyIntoArray(Object[] dst, @IndexOrHigh("#1") int offset) {
+  int copyIntoArray(Object[] dst, int offset) {
     dst[offset] = element;
     return offset + 1;
   }

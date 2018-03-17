@@ -33,8 +33,6 @@ import java.util.TreeMap;
 import org.checkerframework.checker.nullness.compatqual.MonotonicNonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * An implementation of {@link RangeSet} backed by a {@link TreeMap}.
  *
@@ -431,7 +429,7 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       if (upperBoundWindow.equals(Range.all())) {
         return rangesByLowerBound.size();
       }
@@ -622,7 +620,7 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return Iterators.size(entryIterator());
     }
 
@@ -853,7 +851,7 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return Iterators.size(entryIterator());
     }
   }

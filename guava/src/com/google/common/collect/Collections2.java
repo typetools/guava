@@ -16,8 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -43,7 +41,6 @@ import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Provides static methods for working with {@code Collection} instances.
@@ -226,7 +223,7 @@ public final class Collections2 {
 
     @Pure
     @Override
-    public @NonNegative int size() {
+    public int size() {
       int size = 0;
       for (E e : unfiltered) {
         if (predicate.apply(e)) {
@@ -320,7 +317,7 @@ public final class Collections2 {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return fromCollection.size();
     }
   }
@@ -364,7 +361,7 @@ public final class Collections2 {
   }
 
   /** Returns best-effort-sized StringBuilder based on the given collection size. */
-  static StringBuilder newStringBuilderForCollection(@NonNegative int size) {
+  static StringBuilder newStringBuilderForCollection(int size) {
     checkNonnegative(size, "size");
     return new StringBuilder((int) Math.min(size * 8L, Ints.MAX_POWER_OF_TWO));
   }
@@ -457,7 +454,7 @@ public final class Collections2 {
   private static final class OrderedPermutationCollection<E> extends AbstractCollection<List<E>> {
     final ImmutableList<E> inputList;
     final Comparator<? super E> comparator;
-    final @NonNegative int size;
+    final int size;
 
     OrderedPermutationCollection(Iterable<E> input, Comparator<? super E> comparator) {
       this.inputList = ImmutableList.sortedCopyOf(comparator, input);
@@ -474,9 +471,7 @@ public final class Collections2 {
      *       increased by a factor of (n choose r).
      * </ul>
      */
-    // Both arguments to saturatedMultiply are NonNegative
-    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/187
-    private static <E> @NonNegative int calculateSize(
+    private static <E> int calculateSize(
         List<E> sortedInputList, Comparator<? super E> comparator) {
       int permutations = 1;
       int n = 1;
@@ -498,7 +493,7 @@ public final class Collections2 {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return size;
     }
 
@@ -560,7 +555,7 @@ public final class Collections2 {
       Collections.reverse(nextPermutation.subList(j + 1, n));
     }
 
-    @GTENegativeOne int findNextJ() {
+    int findNextJ() {
       for (int k = nextPermutation.size() - 2; k >= 0; k--) {
         if (comparator.compare(nextPermutation.get(k), nextPermutation.get(k + 1)) < 0) {
           return k;
@@ -569,7 +564,7 @@ public final class Collections2 {
       return -1;
     }
 
-    @NonNegative int findNextL(@NonNegative int j) {
+    int findNextL(int j) {
       E ak = nextPermutation.get(j);
       for (int l = nextPermutation.size() - 1; l > j; l--) {
         if (comparator.compare(ak, nextPermutation.get(l)) < 0) {
@@ -610,7 +605,7 @@ public final class Collections2 {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return IntMath.factorial(inputList.size());
     }
 

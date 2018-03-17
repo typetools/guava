@@ -16,7 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -294,7 +293,7 @@ public final class Sets {
    *     without resizing
    * @throws IllegalArgumentException if {@code expectedSize} is negative
    */
-  public static <E> HashSet<E> newHashSetWithExpectedSize(@NonNegative int expectedSize) {
+  public static <E> HashSet<E> newHashSetWithExpectedSize(int expectedSize) {
     return new HashSet<E>(Maps.capacity(expectedSize));
   }
 
@@ -384,7 +383,7 @@ public final class Sets {
    * @throws IllegalArgumentException if {@code expectedSize} is negative
    * @since 11.0
    */
-  public static <E> LinkedHashSet<E> newLinkedHashSetWithExpectedSize(@NonNegative int expectedSize) {
+  public static <E> LinkedHashSet<E> newLinkedHashSetWithExpectedSize(int expectedSize) {
     return new LinkedHashSet<E>(Maps.capacity(expectedSize));
   }
 
@@ -735,7 +734,7 @@ public final class Sets {
     return new SetView<E>() {
       @Pure
       @Override
-      public @NonNegative int size() {
+      public int size() {
         int size = set1.size();
         for (E e : set2) {
           if (!set1.contains(e)) {
@@ -863,7 +862,7 @@ public final class Sets {
       }
 
       @Override
-      public @NonNegative int size() {
+      public int size() {
         int size = 0;
         for (E e : set1) {
           if (set2.contains(e)) {
@@ -934,7 +933,7 @@ public final class Sets {
       }
 
       @Override
-      public @NonNegative int size() {
+      public int size() {
         int size = 0;
         for (E e : set1) {
           if (!set2.contains(e)) {
@@ -998,7 +997,7 @@ public final class Sets {
       }
 
       @Override
-      public @NonNegative int size() {
+      public int size() {
         int size = 0;
         for (E e : set1) {
           if (!set2.contains(e)) {
@@ -1409,7 +1408,7 @@ public final class Sets {
       ImmutableList<List<E>> listAxes =
           new ImmutableList<List<E>>() {
             @Override
-            public @NonNegative int size() {
+            public int size() {
               return axes.size();
             }
 
@@ -1532,7 +1531,7 @@ public final class Sets {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return Integer.bitCount(mask);
     }
 
@@ -1544,7 +1543,7 @@ public final class Sets {
   }
 
   private static final class PowerSet<E> extends AbstractSet<Set<E>> {
-    final ImmutableMap<E, @NonNegative Integer> inputSet;
+    final ImmutableMap<E, Integer> inputSet;
 
     PowerSet(Set<E> input) {
       this.inputSet = Maps.indexMap(input);
@@ -1553,9 +1552,7 @@ public final class Sets {
     }
 
     @Override
-    // inputSet has at most 30 elements
-    @SuppressWarnings("lowerbound:return.type.incompatible") // ImmutableMap has at most 30 elements
-    public @NonNegative int size() {
+    public int size() {
       return 1 << inputSet.size();
     }
 
@@ -1633,8 +1630,8 @@ public final class Sets {
    * @since 23.0
    */
   @Beta
-  public static <E> Set<Set<E>> combinations(Set<E> set, final @NonNegative int size) {
-    final ImmutableMap<E, @NonNegative Integer> index = Maps.indexMap(set);
+  public static <E> Set<Set<E>> combinations(Set<E> set, final int size) {
+    final ImmutableMap<E, Integer> index = Maps.indexMap(set);
     checkNonnegative(size, "size");
     checkArgument(size <= index.size(), "size (%s) must be <= set.size() (%s)", size, index.size());
     if (size == 0) {
@@ -1655,8 +1652,6 @@ public final class Sets {
       @Override
       public Iterator<Set<E>> iterator() {
         return new AbstractIterator<Set<E>>() {
-          // index.size() is NonNegative
-          @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/184
           final BitSet bits = new BitSet(index.size());
 
           @Override
@@ -1664,7 +1659,7 @@ public final class Sets {
             if (bits.isEmpty()) {
               bits.set(0, size);
             } else {
-              @NonNegative int firstSetBit = bits.nextSetBit(0);
+              int firstSetBit = bits.nextSetBit(0);
               int bitToFlip = bits.nextClearBit(firstSetBit);
 
               if (bitToFlip == index.size()) {
@@ -1713,7 +1708,7 @@ public final class Sets {
               }
 
               @Override
-              public @NonNegative int size() {
+              public int size() {
                 return size;
               }
             };
@@ -1722,7 +1717,7 @@ public final class Sets {
       }
 
       @Override
-      public @NonNegative int size() {
+      public int size() {
         return IntMath.binomial(index.size(), size);
       }
 

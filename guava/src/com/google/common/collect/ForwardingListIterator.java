@@ -16,8 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 import com.google.common.annotations.GwtCompatible;
@@ -62,7 +60,7 @@ public abstract class ForwardingListIterator<E> extends ForwardingIterator<E>
   }
 
   @Override
-  public @NonNegative int nextIndex() {
+  public int nextIndex() {
     return delegate().nextIndex();
   }
 
@@ -73,7 +71,7 @@ public abstract class ForwardingListIterator<E> extends ForwardingIterator<E>
   }
 
   @Override
-  public @GTENegativeOne int previousIndex() {
+  public int previousIndex() {
     return delegate().previousIndex();
   }
 

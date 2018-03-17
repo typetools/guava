@@ -21,9 +21,6 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.framework.qual.AnnotatedFor;
-
 /**
  * An {@link OutputStream} that maintains a hash of the data written to it.
  *
@@ -31,7 +28,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @since 16.0
  */
 @Beta
-@AnnotatedFor("index")
 public final class HashingOutputStream extends FilterOutputStream {
   private final Hasher hasher;
 
@@ -57,7 +53,7 @@ public final class HashingOutputStream extends FilterOutputStream {
   }
 
   @Override
-  public void write(byte[] bytes, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int len) throws IOException {
+  public void write(byte[] bytes, int off, int len) throws IOException {
     hasher.putBytes(bytes, off, len);
     out.write(bytes, off, len);
   }

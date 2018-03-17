@@ -16,8 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -56,7 +54,6 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.compatqual.MonotonicNonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Synchronized collection views. The returned synchronized collection views are serializable if the
@@ -239,7 +236,7 @@ final class Synchronized {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       synchronized (mutex) {
         return delegate().size();
       }
@@ -382,21 +379,21 @@ final class Synchronized {
     }
 
     @Override
-    public void add(@NonNegative int index, E element) {
+    public void add(int index, E element) {
       synchronized (mutex) {
         delegate().add(index, element);
       }
     }
 
     @Override
-    public boolean addAll(@NonNegative int index, Collection<? extends E> c) {
+    public boolean addAll(int index, Collection<? extends E> c) {
       synchronized (mutex) {
         return delegate().addAll(index, c);
       }
     }
 
     @Override
-    public E get(@NonNegative int index) {
+    public E get(int index) {
       synchronized (mutex) {
         return delegate().get(index);
       }
@@ -404,7 +401,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public @GTENegativeOne int indexOf(@org.checkerframework.checker.nullness.qual.Nullable Object o) {
+    public int indexOf(@org.checkerframework.checker.nullness.qual.Nullable Object o) {
       synchronized (mutex) {
         return delegate().indexOf(o);
       }
@@ -412,7 +409,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public @GTENegativeOne int lastIndexOf(@org.checkerframework.checker.nullness.qual.Nullable Object o) {
+    public int lastIndexOf(@org.checkerframework.checker.nullness.qual.Nullable Object o) {
       synchronized (mutex) {
         return delegate().lastIndexOf(o);
       }
@@ -424,19 +421,19 @@ final class Synchronized {
     }
 
     @Override
-    public ListIterator<E> listIterator(@NonNegative int index) {
+    public ListIterator<E> listIterator(int index) {
       return delegate().listIterator(index); // manually synchronized
     }
 
     @Override
-    public E remove(@NonNegative int index) {
+    public E remove(int index) {
       synchronized (mutex) {
         return delegate().remove(index);
       }
     }
 
     @Override
-    public E set(@NonNegative int index, E element) {
+    public E set(int index, E element) {
       synchronized (mutex) {
         return delegate().set(index, element);
       }
@@ -459,7 +456,7 @@ final class Synchronized {
     }
 
     @Override
-    public List<E> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
+    public List<E> subList(int fromIndex, int toIndex) {
       synchronized (mutex) {
         return list(delegate().subList(fromIndex, toIndex), mutex);
       }
@@ -518,35 +515,35 @@ final class Synchronized {
     }
 
     @Override
-    public @NonNegative int count(@org.checkerframework.checker.nullness.qual.Nullable Object o) {
+    public int count(@org.checkerframework.checker.nullness.qual.Nullable Object o) {
       synchronized (mutex) {
         return delegate().count(o);
       }
     }
 
     @Override
-    public @NonNegative int add(E e, @NonNegative int n) {
+    public int add(E e, int n) {
       synchronized (mutex) {
         return delegate().add(e, n);
       }
     }
 
     @Override
-    public @NonNegative int remove(@org.checkerframework.checker.nullness.qual.Nullable Object o, @NonNegative int n) {
+    public int remove(@org.checkerframework.checker.nullness.qual.Nullable Object o, int n) {
       synchronized (mutex) {
         return delegate().remove(o, n);
       }
     }
 
     @Override
-    public @NonNegative int setCount(E element, @NonNegative int count) {
+    public int setCount(E element, int count) {
       synchronized (mutex) {
         return delegate().setCount(element, count);
       }
     }
 
     @Override
-    public boolean setCount(E element, @NonNegative int oldCount, @NonNegative int newCount) {
+    public boolean setCount(E element, int oldCount, int newCount) {
       synchronized (mutex) {
         return delegate().setCount(element, oldCount, newCount);
       }
@@ -623,7 +620,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public @NonNegative int size() {
+    public int size() {
       synchronized (mutex) {
         return delegate().size();
       }
@@ -1247,7 +1244,7 @@ final class Synchronized {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       synchronized (mutex) {
         return delegate().size();
       }
@@ -2124,7 +2121,7 @@ final class Synchronized {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       synchronized (mutex) {
         return delegate().size();
       }

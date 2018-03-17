@@ -41,8 +41,6 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * A striped {@code Lock/Semaphore/ReadWriteLock}. This offers the underlying lock striping similar
  * to that of {@code ConcurrentHashMap} in a reusable form, and extends it for semaphores and
@@ -413,7 +411,7 @@ public abstract class Striped<L> {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return array.length;
     }
   }
@@ -476,7 +474,7 @@ public abstract class Striped<L> {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return size;
     }
 
@@ -523,7 +521,7 @@ public abstract class Striped<L> {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return size;
     }
   }

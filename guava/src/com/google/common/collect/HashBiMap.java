@@ -14,7 +14,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -76,7 +75,7 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
    * @param expectedSize the expected number of entries
    * @throws IllegalArgumentException if the specified expected size is negative
    */
-  public static <K, V> HashBiMap<K, V> create(@NonNegative int expectedSize) {
+  public static <K, V> HashBiMap<K, V> create(int expectedSize) {
     return new HashBiMap<>(expectedSize);
   }
 
@@ -113,15 +112,15 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
   private transient BiEntry<K, V>[] hashTableVToK;
   @NullableDecl private transient BiEntry<K, V> firstInKeyInsertionOrder;
   @NullableDecl private transient BiEntry<K, V> lastInKeyInsertionOrder;
-  private transient @NonNegative int size;
+  private transient int size;
   private transient int mask;
   private transient int modCount;
 
-  private HashBiMap(@NonNegative int expectedSize) {
+  private HashBiMap(int expectedSize) {
     init(expectedSize);
   }
 
-  private void init(@NonNegative int expectedSize) {
+  private void init(int expectedSize) {
     checkNonnegative(expectedSize, "expectedSize");
     int tableSize = Hashing.closedTableSize(expectedSize, LOAD_FACTOR);
     this.hashTableKToV = createTable(tableSize);
@@ -403,7 +402,7 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return size;
   }
 
@@ -572,7 +571,7 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return size;
     }
 

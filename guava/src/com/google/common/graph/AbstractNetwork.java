@@ -34,8 +34,6 @@ import java.util.Optional;
 import java.util.Set;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * This class provides a skeletal implementation of {@link Network}. It is recommended to extend
  * this class rather than implement {@link Network} directly.
@@ -80,7 +78,7 @@ public abstract class AbstractNetwork<N, E> implements Network<N, E> {
           }
 
           @Override
-          public @NonNegative int size() {
+          public int size() {
             return AbstractNetwork.this.edges().size();
           }
 

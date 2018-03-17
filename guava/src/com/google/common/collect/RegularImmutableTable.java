@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.Set;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * An implementation of {@link ImmutableTable} holding an arbitrary number of cells.
  *
@@ -36,7 +34,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 abstract class RegularImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
   RegularImmutableTable() {}
 
-  abstract Cell<R, C, V> getCell(@NonNegative int iterationIndex);
+  abstract Cell<R, C, V> getCell(int iterationIndex);
 
   @Override
   final ImmutableSet<Cell<R, C, V>> createCellSet() {
@@ -46,12 +44,12 @@ abstract class RegularImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
   @WeakOuter
   private final class CellSet extends IndexedImmutableSet<Cell<R, C, V>> {
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return RegularImmutableTable.this.size();
     }
 
     @Override
-    Cell<R, C, V> get(@NonNegative int index) {
+    Cell<R, C, V> get(int index) {
       return getCell(index);
     }
 
@@ -71,7 +69,7 @@ abstract class RegularImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
     }
   }
 
-  abstract V getValue(@NonNegative int iterationIndex);
+  abstract V getValue(int iterationIndex);
 
   @Override
   final ImmutableCollection<V> createValues() {
@@ -81,12 +79,12 @@ abstract class RegularImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
   @WeakOuter
   private final class Values extends ImmutableList<V> {
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return RegularImmutableTable.this.size();
     }
 
     @Override
-    public V get(@NonNegative int index) {
+    public V get(int index) {
       return getValue(index);
     }
 

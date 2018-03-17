@@ -20,9 +20,6 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Function;
 import java.util.ListIterator;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * An iterator that transforms a backing list iterator; for internal use. This avoids the object
  * overhead of constructing a {@link Function} for internal methods.
@@ -51,12 +48,12 @@ abstract class TransformedListIterator<F, T> extends TransformedIterator<F, T>
   }
 
   @Override
-  public final @NonNegative int nextIndex() {
+  public final int nextIndex() {
     return backingIterator().nextIndex();
   }
 
   @Override
-  public final @GTENegativeOne int previousIndex() {
+  public final int previousIndex() {
     return backingIterator().previousIndex();
   }
 

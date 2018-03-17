@@ -50,8 +50,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.checkerframework.checker.nullness.compatqual.MonotonicNonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * The concurrent hash map implementation built by {@link MapMaker}.
  *
@@ -2334,7 +2332,7 @@ class MapMakerInternalMap<
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     Segment<K, V, E, S>[] segments = this.segments;
     long sum = 0;
     for (int i = 0; i < segments.length; ++i) {
@@ -2698,7 +2696,7 @@ class MapMakerInternalMap<
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return MapMakerInternalMap.this.size();
     }
 
@@ -2732,7 +2730,7 @@ class MapMakerInternalMap<
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return MapMakerInternalMap.this.size();
     }
 
@@ -2799,7 +2797,7 @@ class MapMakerInternalMap<
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return MapMakerInternalMap.this.size();
     }
 

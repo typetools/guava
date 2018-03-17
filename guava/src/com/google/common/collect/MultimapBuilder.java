@@ -36,8 +36,6 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * A builder for a multimap implementation that allows customization of the backing map and value
  * collection implementations used in a particular multimap.
@@ -86,7 +84,7 @@ public abstract class MultimapBuilder<K0, V0> {
    *
    * @throws IllegalArgumentException if {@code expectedKeys < 0}
    */
-  public static MultimapBuilderWithKeys<Object> hashKeys(final @NonNegative int expectedKeys) {
+  public static MultimapBuilderWithKeys<Object> hashKeys(final int expectedKeys) {
     checkNonnegative(expectedKeys, "expectedKeys");
     return new MultimapBuilderWithKeys<Object>() {
       @Override
@@ -117,8 +115,7 @@ public abstract class MultimapBuilder<K0, V0> {
    * multimap, save that if all values associated with a key are removed and then the key is added
    * back into the multimap, that key will come last in the key iteration order.
    */
-  // javadoc does not specify NonNegative
-  public static MultimapBuilderWithKeys<Object> linkedHashKeys(final @NonNegative int expectedKeys) {
+  public static MultimapBuilderWithKeys<Object> linkedHashKeys(final int expectedKeys) {
     checkNonnegative(expectedKeys, "expectedKeys");
     return new MultimapBuilderWithKeys<Object>() {
       @Override
@@ -186,9 +183,9 @@ public abstract class MultimapBuilder<K0, V0> {
   }
 
   private static final class ArrayListSupplier<V> implements Supplier<List<V>>, Serializable {
-    private final @NonNegative int expectedValuesPerKey;
+    private final int expectedValuesPerKey;
 
-    ArrayListSupplier(@NonNegative int expectedValuesPerKey) {
+    ArrayListSupplier(int expectedValuesPerKey) {
       this.expectedValuesPerKey = checkNonnegative(expectedValuesPerKey, "expectedValuesPerKey");
     }
 
@@ -215,9 +212,9 @@ public abstract class MultimapBuilder<K0, V0> {
   }
 
   private static final class HashSetSupplier<V> implements Supplier<Set<V>>, Serializable {
-    private final @NonNegative int expectedValuesPerKey;
+    private final int expectedValuesPerKey;
 
-    HashSetSupplier(@NonNegative int expectedValuesPerKey) {
+    HashSetSupplier(int expectedValuesPerKey) {
       this.expectedValuesPerKey = checkNonnegative(expectedValuesPerKey, "expectedValuesPerKey");
     }
 
@@ -228,9 +225,9 @@ public abstract class MultimapBuilder<K0, V0> {
   }
   
   private static final class LinkedHashSetSupplier<V> implements Supplier<Set<V>>, Serializable {
-    private final @NonNegative int expectedValuesPerKey;
+    private final int expectedValuesPerKey;
 
-    LinkedHashSetSupplier(@NonNegative int expectedValuesPerKey) {
+    LinkedHashSetSupplier(int expectedValuesPerKey) {
       this.expectedValuesPerKey = checkNonnegative(expectedValuesPerKey, "expectedValuesPerKey");
     }
 
@@ -293,7 +290,7 @@ public abstract class MultimapBuilder<K0, V0> {
      *
      * @throws IllegalArgumentException if {@code expectedValuesPerKey < 0}
      */
-    public ListMultimapBuilder<K0, Object> arrayListValues(final @NonNegative int expectedValuesPerKey) {
+    public ListMultimapBuilder<K0, Object> arrayListValues(final int expectedValuesPerKey) {
       checkNonnegative(expectedValuesPerKey, "expectedValuesPerKey");
       return new ListMultimapBuilder<K0, Object>() {
         @Override
@@ -327,7 +324,7 @@ public abstract class MultimapBuilder<K0, V0> {
      *
      * @throws IllegalArgumentException if {@code expectedValuesPerKey < 0}
      */
-    public SetMultimapBuilder<K0, Object> hashSetValues(final @NonNegative int expectedValuesPerKey) {
+    public SetMultimapBuilder<K0, Object> hashSetValues(final int expectedValuesPerKey) {
       checkNonnegative(expectedValuesPerKey, "expectedValuesPerKey");
       return new SetMultimapBuilder<K0, Object>() {
         @Override
@@ -350,7 +347,7 @@ public abstract class MultimapBuilder<K0, V0> {
      *
      * @throws IllegalArgumentException if {@code expectedValuesPerKey < 0}
      */
-    public SetMultimapBuilder<K0, Object> linkedHashSetValues(final @NonNegative int expectedValuesPerKey) {
+    public SetMultimapBuilder<K0, Object> linkedHashSetValues(final int expectedValuesPerKey) {
       checkNonnegative(expectedValuesPerKey, "expectedValuesPerKey");
       return new SetMultimapBuilder<K0, Object>() {
         @Override

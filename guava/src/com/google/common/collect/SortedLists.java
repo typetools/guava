@@ -25,9 +25,6 @@ import java.util.List;
 import java.util.RandomAccess;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * Static methods pertaining to sorted {@link List} instances.
  *
@@ -51,16 +48,16 @@ import org.checkerframework.checker.index.qual.NonNegative;
      */
     ANY_PRESENT {
       @Override
-      <E> @NonNegative int resultIndex(
-          Comparator<? super E> comparator, E key, List<? extends E> list, @NonNegative int foundIndex) {
+      <E> int resultIndex(
+          Comparator<? super E> comparator, E key, List<? extends E> list, int foundIndex) {
         return foundIndex;
       }
     },
     /** Return the index of the last list element that compares as equal to the key. */
     LAST_PRESENT {
       @Override
-      <E> @NonNegative int resultIndex(
-          Comparator<? super E> comparator, E key, List<? extends E> list, @NonNegative int foundIndex) {
+      <E> int resultIndex(
+          Comparator<? super E> comparator, E key, List<? extends E> list, int foundIndex) {
         // Of course, we have to use binary search to find the precise
         // breakpoint...
         int lower = foundIndex;
@@ -81,8 +78,8 @@ import org.checkerframework.checker.index.qual.NonNegative;
     /** Return the index of the first list element that compares as equal to the key. */
     FIRST_PRESENT {
       @Override
-      <E> @NonNegative int resultIndex(
-          Comparator<? super E> comparator, E key, List<? extends E> list, @NonNegative int foundIndex) {
+      <E> int resultIndex(
+          Comparator<? super E> comparator, E key, List<? extends E> list, int foundIndex) {
         // Of course, we have to use binary search to find the precise
         // breakpoint...
         int lower = 0;
@@ -107,8 +104,8 @@ import org.checkerframework.checker.index.qual.NonNegative;
      */
     FIRST_AFTER {
       @Override
-      public <E> @NonNegative int resultIndex(
-          Comparator<? super E> comparator, E key, List<? extends E> list, @NonNegative int foundIndex) {
+      public <E> int resultIndex(
+          Comparator<? super E> comparator, E key, List<? extends E> list, int foundIndex) {
         return LAST_PRESENT.resultIndex(comparator, key, list, foundIndex) + 1;
       }
     },
@@ -118,14 +115,14 @@ import org.checkerframework.checker.index.qual.NonNegative;
      */
     LAST_BEFORE {
       @Override
-      public <E> @GTENegativeOne int resultIndex(
-          Comparator<? super E> comparator, E key, List<? extends E> list, @NonNegative int foundIndex) {
+      public <E> int resultIndex(
+          Comparator<? super E> comparator, E key, List<? extends E> list, int foundIndex) {
         return FIRST_PRESENT.resultIndex(comparator, key, list, foundIndex) - 1;
       }
     };
 
-    abstract <E> @GTENegativeOne int resultIndex(
-        Comparator<? super E> comparator, E key, List<? extends E> list, @NonNegative int foundIndex);
+    abstract <E> int resultIndex(
+        Comparator<? super E> comparator, E key, List<? extends E> list, int foundIndex);
   }
 
   /**
@@ -138,7 +135,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
      */
     NEXT_LOWER {
       @Override
-      @GTENegativeOne int resultIndex(@NonNegative int higherIndex) {
+      int resultIndex(int higherIndex) {
         return higherIndex - 1;
       }
     },
@@ -148,7 +145,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
      */
     NEXT_HIGHER {
       @Override
-      public @NonNegative int resultIndex(@NonNegative int higherIndex) {
+      public int resultIndex(int higherIndex) {
         return higherIndex;
       }
     },
@@ -166,12 +163,12 @@ import org.checkerframework.checker.index.qual.NonNegative;
      */
     INVERTED_INSERTION_INDEX {
       @Override
-      public int resultIndex(@NonNegative int higherIndex) {
+      public int resultIndex(int higherIndex) {
         return ~higherIndex;
       }
     };
 
-    abstract int resultIndex(@NonNegative int higherIndex);
+    abstract int resultIndex(int higherIndex);
   }
 
   /**
@@ -196,12 +193,6 @@ import org.checkerframework.checker.index.qual.NonNegative;
    * <p>Equivalent to {@link #binarySearch(List, Function, Object, Comparator, KeyPresentBehavior,
    * KeyAbsentBehavior)} using {@link Ordering#natural}.
    */
-  /*
-   * INDEX: 
-   * if absentBehavior is INVERTED_INSERTION_INDEX, returns @LowerBoundUnknown
-   * if absentBehavior is NEXT_LOWER or presentBehavior is LAST_BEFORE, returns @GTENegativeOne
-   * otherwise returns @NonNegative
-   */
   public static <E, K extends Comparable> int binarySearch(
       List<E> list,
       Function<? super E, K> keyFunction,
@@ -218,12 +209,6 @@ import org.checkerframework.checker.index.qual.NonNegative;
    * <p>Equivalent to {@link #binarySearch(List, Object, Comparator, KeyPresentBehavior,
    * KeyAbsentBehavior)} using {@link Lists#transform(List, Function) Lists.transform(list,
    * keyFunction)}.
-   */
-  /*
-   * INDEX: 
-   * if absentBehavior is INVERTED_INSERTION_INDEX, returns @LowerBoundUnknown
-   * if absentBehavior is NEXT_LOWER or presentBehavior is LAST_BEFORE, returns @GTENegativeOne
-   * otherwise returns @NonNegative
    */
   public static <E, K> int binarySearch(
       List<E> list,
@@ -258,12 +243,6 @@ import org.checkerframework.checker.index.qual.NonNegative;
    *     equal to the key.
    * @return the index determined by the {@code KeyPresentBehavior}, if the key is in the list;
    *     otherwise the index determined by the {@code KeyAbsentBehavior}.
-   */
-  /*
-   * INDEX: 
-   * if absentBehavior is INVERTED_INSERTION_INDEX, returns @LowerBoundUnknown
-   * if absentBehavior is NEXT_LOWER or presentBehavior is LAST_BEFORE, returns @GTENegativeOne
-   * otherwise returns @NonNegative
    */
   public static <E> int binarySearch(
       List<? extends E> list,

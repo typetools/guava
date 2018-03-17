@@ -20,9 +20,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * An empty contiguous set.
  *
@@ -46,7 +43,7 @@ final class EmptyContiguousSet<C extends Comparable> extends ContiguousSet<C> {
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return 0;
   }
 
@@ -88,7 +85,7 @@ final class EmptyContiguousSet<C extends Comparable> extends ContiguousSet<C> {
 
   @GwtIncompatible // not used by GWT emulation
   @Override
-  @GTENegativeOne int indexOf(Object target) {
+  int indexOf(Object target) {
     return -1;
   }
 

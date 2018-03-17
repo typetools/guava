@@ -27,8 +27,6 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * Implementation for {@link FilteredMultimap#values()}.
  *
@@ -53,7 +51,7 @@ final class FilteredMultimapValues<K, V> extends AbstractCollection<V> {
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return multimap.size();
   }
 

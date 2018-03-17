@@ -33,9 +33,6 @@ import java.util.Arrays;
 import java.util.Locale;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.IndexOrLow;
-
 /**
  * Static utility methods pertaining to {@link InetAddress} instances.
  *
@@ -216,7 +213,7 @@ public final class InetAddresses {
 
     // Disregarding the endpoints, find "::" with nothing in between.
     // This indicates that a run of zeroes has been skipped.
-    @IndexOrLow("parts") int skipIndex = -1;
+    int skipIndex = -1;
     for (int i = 1; i < parts.length - 1; i++) {
       if (parts[i].length() == 0) {
         if (skipIndex >= 0) {
@@ -226,8 +223,8 @@ public final class InetAddresses {
       }
     }
 
-    @IndexOrHigh("parts") int partsHi; // Number of parts to copy from above/before the "::"
-    @IndexOrHigh("parts") int partsLo; // Number of parts to copy from below/after the "::"
+    int partsHi; // Number of parts to copy from above/before the "::"
+    int partsLo; // Number of parts to copy from below/after the "::"
     if (skipIndex >= 0) {
       // If we found a "::", then check if it also covers the endpoints.
       partsHi = skipIndex;
@@ -697,7 +694,6 @@ public final class InetAddresses {
    * @param ip {@link Inet6Address} to be examined for ISATAP address format
    * @return {@code true} if the argument is an ISATAP address
    */
-  @SuppressWarnings("cast.unsafe") // https://github.com/kelloggm/checker-framework/issues/149
   public static boolean isIsatapAddress(Inet6Address ip) {
 
     // If it's a Teredo address with the right port (41217, or 0xa101)
@@ -793,7 +789,6 @@ public final class InetAddresses {
    * @return {@code true} if the argument is a valid "mapped" address
    * @since 10.0
    */
-  @SuppressWarnings("cast.unsafe") // https://github.com/kelloggm/checker-framework/issues/149
   public static boolean isMappedIPv4Address(String ipString) {
     byte[] bytes = ipStringToBytes(ipString);
     if (bytes != null && bytes.length == 16) {
@@ -934,7 +929,6 @@ public final class InetAddresses {
    * @throws IllegalArgumentException if InetAddress is at the beginning of its range
    * @since 18.0
    */
-  @SuppressWarnings("cast.unsafe") // https://github.com/kelloggm/checker-framework/issues/149
   public static InetAddress decrement(InetAddress address) {
     byte[] addr = address.getAddress();
     int i = addr.length - 1;
@@ -958,7 +952,6 @@ public final class InetAddresses {
    * @throws IllegalArgumentException if InetAddress is at the end of its range
    * @since 10.0
    */
-  @SuppressWarnings("cast.unsafe") // https://github.com/kelloggm/checker-framework/issues/149
   public static InetAddress increment(InetAddress address) {
     byte[] addr = address.getAddress();
     int i = addr.length - 1;
@@ -981,7 +974,6 @@ public final class InetAddresses {
    *     ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff for IPv6
    * @since 10.0
    */
-  @SuppressWarnings("cast.unsafe") // https://github.com/kelloggm/checker-framework/issues/149
   public static boolean isMaximum(InetAddress address) {
     byte[] addr = address.getAddress();
     for (int i = 0; i < addr.length; i++) {

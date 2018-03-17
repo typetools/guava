@@ -28,8 +28,6 @@ import java.util.Spliterator;
 import org.checkerframework.checker.nullness.compatqual.MonotonicNonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * Skeletal, implementation-agnostic implementation of the {@link Table} interface.
  *
@@ -168,7 +166,7 @@ abstract class AbstractTable<R, C, V> implements Table<R, C, V> {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return AbstractTable.this.size();
     }
   }
@@ -221,7 +219,7 @@ abstract class AbstractTable<R, C, V> implements Table<R, C, V> {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return AbstractTable.this.size();
     }
   }

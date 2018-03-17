@@ -38,9 +38,6 @@ import java.util.stream.Collector;
 import org.checkerframework.checker.nullness.compatqual.MonotonicNonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * A {@link RangeSet} whose contents will never change, with many other important properties
  * detailed at {@link ImmutableCollection}.
@@ -154,7 +151,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
 
   @Override
   public boolean intersects(Range<C> otherRange) {
-    @NonNegative int ceilingIndex =
+    int ceilingIndex =
         SortedLists.binarySearch(
             ranges,
             Range.<C>lowerBoundFn(),
@@ -174,7 +171,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
 
   @Override
   public boolean encloses(Range<C> otherRange) {
-    @GTENegativeOne int index =
+    int index =
         SortedLists.binarySearch(
             ranges,
             Range.<C>lowerBoundFn(),
@@ -187,7 +184,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
 
   @Override
   public Range<C> rangeContaining(C value) {
-    @GTENegativeOne int index =
+    int index =
         SortedLists.binarySearch(
             ranges,
             Range.<C>lowerBoundFn(),
@@ -312,7 +309,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
     // True if the "positive" range set is empty or bounded above.
     private final boolean positiveBoundedAbove;
 
-    private final @NonNegative int size;
+    private final int size;
 
     ComplementRanges() {
       this.positiveBoundedBelow = ranges.get(0).hasLowerBound();
@@ -329,12 +326,12 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return size;
     }
 
     @Override
-    public Range<C> get(@NonNegative int index) {
+    public Range<C> get(int index) {
       checkElementIndex(index, size);
 
       Cut<C> lowerBound;
@@ -459,7 +456,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
     } else {
       return new ImmutableList<Range<C>>() {
         @Override
-        public @NonNegative int size() {
+        public int size() {
           return length;
         }
 
@@ -548,7 +545,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
     @MonotonicNonNullDecl private transient Integer size;
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       // racy single-check idiom
       Integer result = size;
       if (result == null) {
@@ -646,7 +643,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
     }
 
     @Override
-    @GTENegativeOne int indexOf(Object target) {
+    int indexOf(Object target) {
       if (contains(target)) {
         @SuppressWarnings("unchecked") // if it's contained, it's definitely a C
         C c = (C) target;

@@ -30,10 +30,6 @@ import java.util.List;
 import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.IndexFor;
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * An accumulator that selects the "top" {@code k} elements added to it, relative to a provided
  * comparator. "Top" can mean the greatest or the lowest elements, specified in the factory used to
@@ -64,7 +60,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
    *
    * @throws IllegalArgumentException if {@code k < 0}
    */
-  public static <T extends Comparable<? super T>> TopKSelector<T> least(@NonNegative int k) {
+  public static <T extends Comparable<? super T>> TopKSelector<T> least(int k) {
     return least(k, Ordering.natural());
   }
 
@@ -74,7 +70,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
    *
    * @throws IllegalArgumentException if {@code k < 0}
    */
-  public static <T> TopKSelector<T> least(@NonNegative int k, Comparator<? super T> comparator) {
+  public static <T> TopKSelector<T> least(int k, Comparator<? super T> comparator) {
     return new TopKSelector<T>(comparator, k);
   }
 
@@ -85,7 +81,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
    *
    * @throws IllegalArgumentException if {@code k < 0}
    */
-  public static <T extends Comparable<? super T>> TopKSelector<T> greatest(@NonNegative int k) {
+  public static <T extends Comparable<? super T>> TopKSelector<T> greatest(int k) {
     return greatest(k, Ordering.natural());
   }
 
@@ -95,11 +91,11 @@ import org.checkerframework.checker.index.qual.NonNegative;
    *
    * @throws IllegalArgumentException if {@code k < 0}
    */
-  public static <T> TopKSelector<T> greatest(@NonNegative int k, Comparator<? super T> comparator) {
+  public static <T> TopKSelector<T> greatest(int k, Comparator<? super T> comparator) {
     return new TopKSelector<T>(Ordering.from(comparator).reverse(), k);
   }
 
-  private final @NonNegative int k;
+  private final int k;
   private final Comparator<? super T> comparator;
 
   /*
@@ -108,7 +104,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
    * range [0, k) and ignore the remaining elements.
    */
   private final T[] buffer;
-  private @IndexOrHigh("buffer") int bufferSize;
+  private int bufferSize;
 
   /**
    * The largest of the lowest k elements we've seen so far relative to this comparator. If
@@ -116,7 +112,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
    */
   @NullableDecl private T threshold;
 
-  private TopKSelector(Comparator<? super T> comparator, @NonNegative int k) {
+  private TopKSelector(Comparator<? super T> comparator, int k) {
     this.comparator = checkNotNull(comparator, "comparator");
     this.k = k;
     checkArgument(k >= 0, "k must be nonnegative, was %s", k);
@@ -200,7 +196,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
    * pivotNewIndex, so that everything in [left, pivotNewIndex] is ≤ pivotValue and everything in
    * (pivotNewIndex, right] is greater than pivotValue.
    */
-  private int partition(@IndexOrHigh("buffer") int left, @IndexOrHigh("buffer") int right, @IndexFor("buffer") int pivotIndex) {
+  private int partition(int left, int right, int pivotIndex) {
     T pivotValue = buffer[pivotIndex];
     buffer[pivotIndex] = buffer[right];
 
@@ -216,7 +212,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
     return pivotNewIndex;
   }
 
-  private void swap(@IndexFor("buffer") int i, @IndexFor("buffer") int j) {
+  private void swap(int i, int j) {
     T tmp = buffer[i];
     buffer[i] = buffer[j];
     buffer[j] = tmp;

@@ -16,9 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.IndexFor;
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -44,10 +41,10 @@ final class RegularImmutableSet<E> extends ImmutableSet<E> {
   // the same elements in hashed positions (plus nulls)
   @VisibleForTesting final transient Object[] table;
   // 'and' with an int to get a valid table index.
-  private final transient @IndexFor("table") int mask;
+  private final transient int mask;
   private final transient int hashCode;
 
-  RegularImmutableSet(Object[] elements, int hashCode, Object[] table, @IndexFor("#3") int mask) {
+  RegularImmutableSet(Object[] elements, int hashCode, Object[] table, int mask) {
     this.elements = elements;
     this.table = table;
     this.mask = mask;
@@ -73,7 +70,7 @@ final class RegularImmutableSet<E> extends ImmutableSet<E> {
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return elements.length;
   }
 
@@ -88,7 +85,7 @@ final class RegularImmutableSet<E> extends ImmutableSet<E> {
   }
 
   @Override
-  @NonNegative int copyIntoArray(Object[] dst, @IndexOrHigh("#1") int offset) {
+  int copyIntoArray(Object[] dst, int offset) {
     System.arraycopy(elements, 0, dst, offset, elements.length);
     return offset + elements.length;
   }

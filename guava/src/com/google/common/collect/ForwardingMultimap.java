@@ -16,7 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -145,7 +144,7 @@ public abstract class ForwardingMultimap<K, V> extends ForwardingObject implemen
 
   @Pure
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return delegate().size();
   }
 

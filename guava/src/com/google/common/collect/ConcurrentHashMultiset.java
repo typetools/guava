@@ -16,7 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -143,7 +142,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    * @return the nonnegative number of occurrences of the element
    */
   @Override
-  public @NonNegative int count(@NullableDecl Object element) {
+  public int count(@NullableDecl Object element) {
     AtomicInteger existingCounter = Maps.safeGet(countMap, element);
     return (existingCounter == null) ? 0 : existingCounter.get();
   }
@@ -156,7 +155,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    */
   @Pure
   @Override
-  public @NonNegative int size() {
+  public int size() {
     long sum = 0L;
     for (AtomicInteger value : countMap.values()) {
       sum += value.get();
@@ -207,7 +206,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    */
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int add(E element, @NonNegative int occurrences) {
+  public int add(E element, int occurrences) {
     checkNotNull(element);
     if (occurrences == 0) {
       return count(element);
@@ -274,7 +273,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    */
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int remove(@NullableDecl Object element, @NonNegative int occurrences) {
+  public int remove(@NullableDecl Object element, int occurrences) {
     if (occurrences == 0) {
       return count(element);
     }
@@ -315,7 +314,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    * @throws IllegalArgumentException if {@code occurrences} is negative
    */
   @CanIgnoreReturnValue
-  public boolean removeExactly(@NullableDecl Object element, @NonNegative int occurrences) {
+  public boolean removeExactly(@NullableDecl Object element, int occurrences) {
     if (occurrences == 0) {
       return true;
     }
@@ -351,7 +350,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    */
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int setCount(E element, @NonNegative int count) {
+  public int setCount(E element, int count) {
     checkNotNull(element);
     checkNonnegative(count, "count");
     while (true) {
@@ -407,7 +406,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    */
   @CanIgnoreReturnValue
   @Override
-  public boolean setCount(E element, @NonNegative int expectedOldCount, @NonNegative int newCount) {
+  public boolean setCount(E element, int expectedOldCount, int newCount) {
     checkNotNull(element);
     checkNonnegative(expectedOldCount, "oldCount");
     checkNonnegative(newCount, "newCount");
@@ -496,7 +495,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
   }
 
   @Override
-  @NonNegative int distinctElements() {
+  int distinctElements() {
     return countMap.size();
   }
 
@@ -594,7 +593,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
 
   @Pure
   @Override
-  public @NonNegative int size() { return super.size(); }
+  public int size() { return super.size(); }
 
   @Pure
   @Override

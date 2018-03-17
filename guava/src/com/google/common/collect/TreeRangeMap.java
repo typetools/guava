@@ -39,8 +39,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * An implementation of {@code RangeMap} based on a {@code TreeMap}, supporting all optional
  * operations.
@@ -280,7 +278,7 @@ public final class TreeRangeMap<K extends Comparable, V> implements RangeMap<K, 
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return entriesByLowerBound.size();
     }
 
@@ -639,7 +637,7 @@ public final class TreeRangeMap<K extends Comparable, V> implements RangeMap<K, 
           }
 
           @Override
-          public @NonNegative int size() {
+          public int size() {
             return Iterators.size(iterator());
           }
 

@@ -19,8 +19,6 @@ import static com.google.common.hash.LittleEndianByteArray.load32;
 import static com.google.common.hash.LittleEndianByteArray.load64;
 import static java.lang.Long.rotateRight;
 
-import org.checkerframework.common.value.qual.MinLen;
-
 import com.google.common.annotations.VisibleForTesting;
 
 /**
@@ -100,7 +98,7 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
    * new arrays every time.
    */
   private static void weakHashLength32WithSeeds(
-      byte[] bytes, int offset, long seedA, long seedB, long @MinLen(2) [] output) {
+      byte[] bytes, int offset, long seedA, long seedB, long[] output) {
     long part1 = load64(bytes, offset);
     long part2 = load64(bytes, offset + 8);
     long part3 = load64(bytes, offset + 16);

@@ -16,8 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -342,7 +340,7 @@ public abstract class ImmutableCollection<E> extends AbstractCollection<E> imple
    * offset. Returns {@code offset + size()}.
    */
   @CanIgnoreReturnValue
-  @NonNegative int copyIntoArray(Object[] dst, @IndexOrHigh("#1") int offset) {
+  int copyIntoArray(Object[] dst, int offset) {
     for (E e : this) {
       dst[offset++] = e;
     }
@@ -362,7 +360,7 @@ public abstract class ImmutableCollection<E> extends AbstractCollection<E> imple
   public abstract static class Builder<E> {
     static final int DEFAULT_INITIAL_CAPACITY = 4;
 
-    static @NonNegative int expandedCapacity(@NonNegative int oldCapacity, @NonNegative int minCapacity) {
+    static int expandedCapacity(int oldCapacity, int minCapacity) {
       if (minCapacity < 0) {
         throw new AssertionError("cannot store more than MAX_VALUE elements");
       }

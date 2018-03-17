@@ -16,8 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -155,7 +153,7 @@ public final class Lists {
   }
 
   @VisibleForTesting
-  static @NonNegative int computeArrayListCapacity(@NonNegative int arraySize) {
+  static int computeArrayListCapacity(int arraySize) {
     checkNonnegative(arraySize, "arraySize");
 
     // TODO(kevinb): Figure out the right behavior, and document it
@@ -330,12 +328,12 @@ public final class Lists {
 
     @Pure
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return IntMath.saturatedAdd(rest.length, 1);
     }
 
     @Override
-    public E get(@NonNegative int index) {
+    public E get(int index) {
       // check explicitly so the IOOBE will have the right message
       checkElementIndex(index, size());
       return (index == 0) ? first : rest[index - 1];
@@ -359,12 +357,12 @@ public final class Lists {
 
     @Pure
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return IntMath.saturatedAdd(rest.length, 2);
     }
 
     @Override
-    public E get(@NonNegative int index) {
+    public E get(int index) {
       switch (index) {
         case 0:
           return first;
@@ -562,7 +560,7 @@ public final class Lists {
 
     @Pure
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return fromList.size();
     }
 
@@ -608,7 +606,7 @@ public final class Lists {
     }
 
     @Override
-    public T get(@NonNegative int index) {
+    public T get(int index) {
       return function.apply(fromList.get(index));
     }
 
@@ -618,7 +616,7 @@ public final class Lists {
     }
 
     @Override
-    public ListIterator<T> listIterator(@NonNegative int index) {
+    public ListIterator<T> listIterator(int index) {
       return new TransformedListIterator<F, T>(fromList.listIterator(index)) {
         @Override
         T transform(F from) {
@@ -646,7 +644,7 @@ public final class Lists {
 
     @Pure
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return fromList.size();
     }
 
@@ -668,7 +666,7 @@ public final class Lists {
    * @return a list of consecutive sublists
    * @throws IllegalArgumentException if {@code partitionSize} is nonpositive
    */
-  public static <T> List<List<T>> partition(List<T> list, @NonNegative int size) {
+  public static <T> List<List<T>> partition(List<T> list, int size) {
     checkNotNull(list);
     checkArgument(size > 0);
     return (list instanceof RandomAccess)
@@ -678,15 +676,15 @@ public final class Lists {
 
   private static class Partition<T> extends AbstractList<List<T>> {
     final List<T> list;
-    final @NonNegative int size;
+    final int size;
 
-    Partition(List<T> list, @NonNegative int size) {
+    Partition(List<T> list, int size) {
       this.list = list;
       this.size = size;
     }
 
     @Override
-    public List<T> get(@NonNegative int index) {
+    public List<T> get(int index) {
       checkElementIndex(index, size());
       int start = index * size;
       int end = Math.min(start + size, list.size());
@@ -695,7 +693,7 @@ public final class Lists {
 
     @Pure
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return IntMath.divide(list.size(), size, RoundingMode.CEILING);
     }
 
@@ -707,7 +705,7 @@ public final class Lists {
   }
 
   private static class RandomAccessPartition<T> extends Partition<T> implements RandomAccess {
-    RandomAccessPartition(List<T> list, @NonNegative int size) {
+    RandomAccessPartition(List<T> list, int size) {
       super(list, size);
     }
   }
@@ -745,17 +743,17 @@ public final class Lists {
     }
 
     @Override
-    public @GTENegativeOne int indexOf(@NullableDecl Object object) {
+    public int indexOf(@NullableDecl Object object) {
       return (object instanceof Character) ? string.indexOf((Character) object) : -1;
     }
 
     @Override
-    public @GTENegativeOne int lastIndexOf(@NullableDecl Object object) {
+    public int lastIndexOf(@NullableDecl Object object) {
       return (object instanceof Character) ? string.lastIndexOf((Character) object) : -1;
     }
 
     @Override
-    public ImmutableList<Character> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
+    public ImmutableList<Character> subList(int fromIndex, int toIndex) {
       checkPositionIndexes(fromIndex, toIndex, size()); // for GWT
       return charactersOf(string.substring(fromIndex, toIndex));
     }
@@ -766,13 +764,13 @@ public final class Lists {
     }
 
     @Override
-    public Character get(@NonNegative int index) {
+    public Character get(int index) {
       checkElementIndex(index, size()); // for GWT
       return string.charAt(index);
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return string.length();
     }
   }
@@ -785,13 +783,13 @@ public final class Lists {
     }
 
     @Override
-    public Character get(@NonNegative int index) {
+    public Character get(int index) {
       checkElementIndex(index, size()); // for GWT
       return sequence.charAt(index);
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return sequence.length();
     }
   }
@@ -830,20 +828,20 @@ public final class Lists {
       return forwardList;
     }
 
-    private @NonNegative int reverseIndex(@NonNegative int index) {
+    private int reverseIndex(int index) {
       int size = size();
       checkElementIndex(index, size);
       return (size - 1) - index;
     }
 
-    private @NonNegative int reversePosition(@NonNegative int index) {
+    private int reversePosition(int index) {
       int size = size();
       checkPositionIndex(index, size);
       return size - index;
     }
 
     @Override
-    public void add(@NonNegative int index, @NullableDecl T element) {
+    public void add(int index, @NullableDecl T element) {
       forwardList.add(reversePosition(index), element);
     }
 
@@ -853,32 +851,32 @@ public final class Lists {
     }
 
     @Override
-    public T remove(@NonNegative int index) {
+    public T remove(int index) {
       return forwardList.remove(reverseIndex(index));
     }
 
     @Override
-    protected void removeRange(@NonNegative int fromIndex, @NonNegative int toIndex) {
+    protected void removeRange(int fromIndex, int toIndex) {
       subList(fromIndex, toIndex).clear();
     }
 
     @Override
-    public T set(@NonNegative int index, @NullableDecl T element) {
+    public T set(int index, @NullableDecl T element) {
       return forwardList.set(reverseIndex(index), element);
     }
 
     @Override
-    public T get(@NonNegative int index) {
+    public T get(int index) {
       return forwardList.get(reverseIndex(index));
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return forwardList.size();
     }
 
     @Override
-    public List<T> subList(@NonNegative int fromIndex, @NonNegative int toIndex) {
+    public List<T> subList(int fromIndex, int toIndex) {
       checkPositionIndexes(fromIndex, toIndex, size());
       return reverse(forwardList.subList(reversePosition(toIndex), reversePosition(fromIndex)));
     }
@@ -889,7 +887,7 @@ public final class Lists {
     }
 
     @Override
-    public ListIterator<T> listIterator(@NonNegative int index) {
+    public ListIterator<T> listIterator(int index) {
       int start = reversePosition(index);
       final ListIterator<T> forwardIterator = forwardList.listIterator(start);
       return new ListIterator<T>() {
@@ -923,7 +921,7 @@ public final class Lists {
         }
 
         @Override
-        public @NonNegative int nextIndex() {
+        public int nextIndex() {
           return reversePosition(forwardIterator.nextIndex());
         }
 
@@ -937,7 +935,7 @@ public final class Lists {
         }
 
         @Override
-        public @GTENegativeOne int previousIndex() {
+        public int previousIndex() {
           return nextIndex() - 1;
         }
 
@@ -1003,7 +1001,7 @@ public final class Lists {
   }
 
   /** An implementation of {@link List#addAll(int, Collection)}. */
-  static <E> boolean addAllImpl(List<E> list, @NonNegative int index, Iterable<? extends E> elements) {
+  static <E> boolean addAllImpl(List<E> list, int index, Iterable<? extends E> elements) {
     boolean changed = false;
     ListIterator<E> listIterator = list.listIterator(index);
     for (E e : elements) {
@@ -1014,7 +1012,7 @@ public final class Lists {
   }
 
   /** An implementation of {@link List#indexOf(Object)}. */
-  static @GTENegativeOne int indexOfImpl(List<?> list, @NullableDecl Object element) {
+  static int indexOfImpl(List<?> list, @NullableDecl Object element) {
     if (list instanceof RandomAccess) {
       return indexOfRandomAccess(list, element);
     } else {
@@ -1028,7 +1026,7 @@ public final class Lists {
     }
   }
 
-  private static @GTENegativeOne int indexOfRandomAccess(List<?> list, @NullableDecl Object element) {
+  private static int indexOfRandomAccess(List<?> list, @NullableDecl Object element) {
     int size = list.size();
     if (element == null) {
       for (int i = 0; i < size; i++) {
@@ -1047,7 +1045,7 @@ public final class Lists {
   }
 
   /** An implementation of {@link List#lastIndexOf(Object)}. */
-  static @GTENegativeOne int lastIndexOfImpl(List<?> list, @NullableDecl Object element) {
+  static int lastIndexOfImpl(List<?> list, @NullableDecl Object element) {
     if (list instanceof RandomAccess) {
       return lastIndexOfRandomAccess(list, element);
     } else {
@@ -1061,7 +1059,7 @@ public final class Lists {
     }
   }
 
-  private static @GTENegativeOne int lastIndexOfRandomAccess(List<?> list, @NullableDecl Object element) {
+  private static int lastIndexOfRandomAccess(List<?> list, @NullableDecl Object element) {
     if (element == null) {
       for (int i = list.size() - 1; i >= 0; i--) {
         if (list.get(i) == null) {
@@ -1079,12 +1077,12 @@ public final class Lists {
   }
 
   /** Returns an implementation of {@link List#listIterator(int)}. */
-  static <E> ListIterator<E> listIteratorImpl(List<E> list, @NonNegative int index) {
+  static <E> ListIterator<E> listIteratorImpl(List<E> list, int index) {
     return new AbstractListWrapper<>(list).listIterator(index);
   }
 
   /** An implementation of {@link List#subList(int, int)}. */
-  static <E> List<E> subListImpl(final List<E> list, @NonNegative int fromIndex, @NonNegative int toIndex) {
+  static <E> List<E> subListImpl(final List<E> list, int fromIndex, int toIndex) {
     List<E> wrapper;
     if (list instanceof RandomAccess) {
       wrapper =
@@ -1118,27 +1116,27 @@ public final class Lists {
     }
 
     @Override
-    public void add(@NonNegative int index, E element) {
+    public void add(int index, E element) {
       backingList.add(index, element);
     }
 
     @Override
-    public boolean addAll(@NonNegative int index, Collection<? extends E> c) {
+    public boolean addAll(int index, Collection<? extends E> c) {
       return backingList.addAll(index, c);
     }
 
     @Override
-    public E get(@NonNegative int index) {
+    public E get(int index) {
       return backingList.get(index);
     }
 
     @Override
-    public E remove(@NonNegative int index) {
+    public E remove(int index) {
       return backingList.remove(index);
     }
 
     @Override
-    public E set(@NonNegative int index, E element) {
+    public E set(int index, E element) {
       return backingList.set(index, element);
     }
 
@@ -1148,7 +1146,7 @@ public final class Lists {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return backingList.size();
     }
   }

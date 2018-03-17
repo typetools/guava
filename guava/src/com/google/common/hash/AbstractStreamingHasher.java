@@ -20,8 +20,6 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-
 /**
  * A convenience base class for implementors of {@code Hasher}; handles accumulating data until an
  * entire "chunk" (of implementation-dependent length) is ready to be hashed.
@@ -93,8 +91,7 @@ abstract class AbstractStreamingHasher extends AbstractHasher {
   }
 
   @Override
-  //https://github.com/panacekcz/checker-framework/issues/5
-  public final Hasher putBytes(byte[] bytes, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int len) {
+  public final Hasher putBytes(byte[] bytes, int off, int len) {
     return putBytesInternal(ByteBuffer.wrap(bytes, off, len).order(ByteOrder.LITTLE_ENDIAN));
   }
 

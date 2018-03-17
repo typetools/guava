@@ -25,8 +25,6 @@ import java.util.AbstractSet;
 import java.util.Map;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * A class to represent the set of edges connecting an (implicit) origin node to a target node.
  *
@@ -55,7 +53,7 @@ final class EdgesConnecting<E> extends AbstractSet<E> {
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return getConnectingEdge() == null ? 0 : 1;
   }
 

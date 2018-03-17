@@ -32,8 +32,6 @@ import java.util.Map;
 import java.util.Set;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * A base implementation of {@link NetworkConnections} for directed networks.
  *
@@ -76,7 +74,7 @@ abstract class AbstractDirectedNetworkConnections<N, E> implements NetworkConnec
       }
 
       @Override
-      public @NonNegative int size() {
+      public int size() {
         return IntMath.saturatedAdd(inEdgeMap.size(), outEdgeMap.size() - selfLoopCount);
       }
 

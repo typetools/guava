@@ -16,8 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -49,7 +47,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.function.Consumer;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * An implementation of {@code ListMultimap} that supports deterministic iteration order for both
@@ -148,7 +145,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
   private static class KeyList<K, V> {
     Node<K, V> head;
     Node<K, V> tail;
-    @NonNegative int count;
+    int count;
 
     KeyList(Node<K, V> firstNode) {
       this.head = firstNode;
@@ -162,7 +159,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
   @NullableDecl private transient Node<K, V> head; // the head for all keys
   @NullableDecl private transient Node<K, V> tail; // the tail for all keys
   private transient Map<K, KeyList<K, V>> keyToKeyList;
-  private transient @NonNegative int size;
+  private transient int size;
 
   /*
    * Tracks modifications to keyToKeyList so that addition or removal of keys invalidates
@@ -183,7 +180,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
    * @param expectedKeys the expected number of distinct keys
    * @throws IllegalArgumentException if {@code expectedKeys} is negative
    */
-  public static <K, V> LinkedListMultimap<K, V> create(@NonNegative int expectedKeys) {
+  public static <K, V> LinkedListMultimap<K, V> create(int expectedKeys) {
     return new LinkedListMultimap<>(expectedKeys);
   }
 
@@ -203,7 +200,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
     this(12);
   }
 
-  private LinkedListMultimap(@NonNegative int expectedKeys) {
+  private LinkedListMultimap(int expectedKeys) {
     keyToKeyList = Platform.newHashMapWithExpectedSize(expectedKeys);
   }
 
@@ -316,13 +313,13 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
 
   /** An {@code Iterator} over all nodes. */
   private class NodeIterator implements ListIterator<Entry<K, V>> {
-    @NonNegative int nextIndex;
+    int nextIndex;
     @NullableDecl Node<K, V> next;
     @NullableDecl Node<K, V> current;
     @NullableDecl Node<K, V> previous;
     int expectedModCount = modCount;
 
-    NodeIterator(@NonNegative int index) {
+    NodeIterator(int index) {
       int size = size();
       checkPositionIndex(index, size);
       if (index >= (size / 2)) {
@@ -396,12 +393,12 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
-    public @NonNegative int nextIndex() {
+    public int nextIndex() {
       return nextIndex;
     }
 
     @Override
-    public @GTENegativeOne int previousIndex() {
+    public int previousIndex() {
       return nextIndex - 1;
     }
 
@@ -536,12 +533,12 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
-    public @NonNegative int nextIndex() {
+    public int nextIndex() {
       return nextIndex;
     }
 
     @Override
-    public @GTENegativeOne int previousIndex() {
+    public int previousIndex() {
       return nextIndex - 1;
     }
 
@@ -577,7 +574,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
 
   @Pure
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return size;
   }
 
@@ -694,7 +691,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
     return new AbstractSequentialList<V>() {
       @Pure
       @Override
-      public @NonNegative int size() {
+      public int size() {
         KeyList<K, V> keyList = keyToKeyList.get(key);
         return (keyList == null) ? 0 : keyList.count;
       }
@@ -711,7 +708,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
     @WeakOuter
     class KeySetImpl extends Sets.ImprovedAbstractSet<K> {
       @Override
-      public @NonNegative int size() {
+      public int size() {
         return keyToKeyList.size();
       }
 
@@ -758,7 +755,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
     @WeakOuter
     class ValuesImpl extends AbstractSequentialList<V> {
       @Override
-      public @NonNegative int size() {
+      public int size() {
         return size;
       }
 
@@ -808,7 +805,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
     @WeakOuter
     class EntriesImpl extends AbstractSequentialList<Entry<K, V>> {
       @Override
-      public @NonNegative int size() {
+      public int size() {
         return size;
       }
 

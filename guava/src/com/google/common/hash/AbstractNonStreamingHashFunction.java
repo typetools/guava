@@ -22,8 +22,6 @@ import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-
 /**
  * Skeleton implementation of {@link HashFunction}, appropriate for non-streaming algorithms. All
  * the hash computation done using {@linkplain #newHasher()} are delegated to the {@linkplain
@@ -92,8 +90,7 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
     }
 
     @Override
-    // https://github.com/panacekcz/checker-framework/issues/5
-    public Hasher putBytes(byte[] bytes, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int len) {
+    public Hasher putBytes(byte[] bytes, int off, int len) {
       stream.write(bytes, off, len);
       return this;
     }

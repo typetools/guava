@@ -24,8 +24,6 @@ import java.util.ListIterator;
 import java.util.RandomAccess;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * Implementation of {@link Lists#cartesianProduct(List)}.
  *
@@ -35,7 +33,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 final class CartesianList<E> extends AbstractList<List<E>> implements RandomAccess {
 
   private final transient ImmutableList<List<E>> axes;
-  private final transient @NonNegative int[] axesSizeProduct;
+  private final transient int[] axesSizeProduct;
 
   static <E> List<List<E>> create(List<? extends List<? extends E>> lists) {
     ImmutableList.Builder<List<E>> axesBuilder = new ImmutableList.Builder<>(lists.size());
@@ -64,22 +62,22 @@ final class CartesianList<E> extends AbstractList<List<E>> implements RandomAcce
     this.axesSizeProduct = axesSizeProduct;
   }
 
-  private @NonNegative int getAxisIndexForProductIndex(@NonNegative int index, @NonNegative int axis) {
+  private int getAxisIndexForProductIndex(int index, int axis) {
     return (index / axesSizeProduct[axis + 1]) % axes.get(axis).size();
   }
 
   @Override
-  public ImmutableList<E> get(final @NonNegative int index) {
+  public ImmutableList<E> get(final int index) {
     checkElementIndex(index, size());
     return new ImmutableList<E>() {
 
       @Override
-      public @NonNegative int size() {
+      public int size() {
         return axes.size();
       }
 
       @Override
-      public E get(@NonNegative int axis) {
+      public E get(int axis) {
         checkElementIndex(axis, size());
         int axisIndex = getAxisIndexForProductIndex(index, axis);
         return axes.get(axis).get(axisIndex);
@@ -93,7 +91,7 @@ final class CartesianList<E> extends AbstractList<List<E>> implements RandomAcce
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return axesSizeProduct[0];
   }
 

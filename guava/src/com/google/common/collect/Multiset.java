@@ -16,7 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -98,7 +97,7 @@ public interface Multiset<E> extends Collection<E> {
    * multiset, which is given by {@code entrySet().size()}.
    */
   @Override
-  @NonNegative int size();
+  int size();
 
   /**
    * Returns the number of occurrences of an element in this multiset (the <i>count</i> of the
@@ -113,7 +112,7 @@ public interface Multiset<E> extends Collection<E> {
    * @return the number of occurrences of the element in this multiset; possibly zero but never
    *     negative
    */
-  @NonNegative int count(@NullableDecl @CompatibleWith("E") Object element);
+  int count(@NullableDecl @CompatibleWith("E") Object element);
 
   // Bulk Operations
 
@@ -136,7 +135,7 @@ public interface Multiset<E> extends Collection<E> {
    *     return normally.
    */
   @CanIgnoreReturnValue
-  @NonNegative int add(@NullableDecl E element, @NonNegative int occurrences);
+  int add(@NullableDecl E element, int occurrences);
 
   /**
    * Adds a single occurrence of the specified element to this multiset.
@@ -174,7 +173,7 @@ public interface Multiset<E> extends Collection<E> {
    * @throws IllegalArgumentException if {@code occurrences} is negative
    */
   @CanIgnoreReturnValue
-  @NonNegative int remove(@NullableDecl @CompatibleWith("E") Object element, @NonNegative int occurrences);
+  int remove(@NullableDecl @CompatibleWith("E") Object element, int occurrences);
 
   /**
    * Removes a <i>single</i> occurrence of the specified element from this multiset, if present.
@@ -206,7 +205,7 @@ public interface Multiset<E> extends Collection<E> {
    *     zero instead.
    */
   @CanIgnoreReturnValue
-  @NonNegative int setCount(E element, @NonNegative int count);
+  int setCount(E element, int count);
 
   /**
    * Conditionally sets the count of an element to a new value, as described in {@link
@@ -225,7 +224,7 @@ public interface Multiset<E> extends Collection<E> {
    *     implementor may optionally return {@code true} instead.
    */
   @CanIgnoreReturnValue
-  boolean setCount(E element, @NonNegative int oldCount, @NonNegative int newCount);
+  boolean setCount(E element, int oldCount, int newCount);
 
   // Views
 
@@ -290,7 +289,7 @@ public interface Multiset<E> extends Collection<E> {
      *
      * @return the count of the element; never negative
      */
-    @NonNegative int getCount();
+    int getCount();
 
     /**
      * {@inheritDoc}

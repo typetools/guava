@@ -20,8 +20,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /** A {@code RegularImmutableTable} optimized for sparse data. */
 @GwtCompatible
 @Immutable(containerOf = {"R", "C", "V"})
@@ -112,12 +110,12 @@ final class SparseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V>
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return cellRowIndices.length;
   }
 
   @Override
-  Cell<R, C, V> getCell(@NonNegative int index) {
+  Cell<R, C, V> getCell(int index) {
     int rowIndex = cellRowIndices[index];
     Entry<R, ImmutableMap<C, V>> rowEntry = rowMap.entrySet().asList().get(rowIndex);
     ImmutableMap<C, V> row = rowEntry.getValue();
@@ -127,7 +125,7 @@ final class SparseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V>
   }
 
   @Override
-  V getValue(@NonNegative int index) {
+  V getValue(int index) {
     int rowIndex = cellRowIndices[index];
     ImmutableMap<C, V> row = rowMap.values().asList().get(rowIndex);
     int columnIndex = cellColumnInRowIndices[index];

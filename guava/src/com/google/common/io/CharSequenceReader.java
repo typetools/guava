@@ -23,8 +23,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.CharBuffer;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-
 /**
  * A {@link Reader} that reads the characters in a {@link CharSequence}. Like {@code StringReader},
  * but works with any {@link CharSequence}.
@@ -73,7 +71,7 @@ final class CharSequenceReader extends Reader {
   }
 
   @Override
-  public synchronized @GTENegativeOne int read() throws IOException {
+  public synchronized int read() throws IOException {
     checkOpen();
     return hasRemaining() ? seq.charAt(pos++) : -1;
   }

@@ -18,9 +18,6 @@ package com.google.common.collect;
 
 import static com.google.common.base.Preconditions.checkState;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.index.qual.Positive;
-
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
@@ -37,7 +34,7 @@ final class CollectPreconditions {
   }
 
   @CanIgnoreReturnValue
-  static @NonNegative int checkNonnegative(@NonNegative int value, String name) {
+  static int checkNonnegative(int value, String name) {
     if (value < 0) {
       throw new IllegalArgumentException(name + " cannot be negative but was: " + value);
     }
@@ -45,14 +42,14 @@ final class CollectPreconditions {
   }
 
   @CanIgnoreReturnValue
-  static @NonNegative long checkNonnegative(@NonNegative long value, String name) {
+  static long checkNonnegative(long value, String name) {
     if (value < 0) {
       throw new IllegalArgumentException(name + " cannot be negative but was: " + value);
     }
     return value;
   }
 
-  static void checkPositive(@Positive int value, String name) {
+  static void checkPositive(int value, String name) {
     if (value <= 0) {
       throw new IllegalArgumentException(name + " must be positive but was: " + value);
     }

@@ -31,8 +31,6 @@ import java.util.function.LongBinaryOperator;
 import java.util.function.LongUnaryOperator;
 import org.checkerframework.checker.nullness.compatqual.MonotonicNonNullDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * A map containing {@code long} values that can be atomically updated. While writes to a
  * traditional {@code Map} rely on {@code put(K, V)}, the typical mechanism for writing to this map
@@ -285,7 +283,7 @@ public final class AtomicLongMap<K> implements Serializable {
    * Returns the number of key-value mappings in this map. If the map contains more than {@code
    * Integer.MAX_VALUE} elements, returns {@code Integer.MAX_VALUE}.
    */
-  public @NonNegative int size() {
+  public int size() {
     return map.size();
   }
 

@@ -27,8 +27,6 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * {@code values()} implementation for {@link ImmutableMap}.
  *
@@ -44,7 +42,7 @@ final class ImmutableMapValues<K, V> extends ImmutableCollection<V> {
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return map.size();
   }
 

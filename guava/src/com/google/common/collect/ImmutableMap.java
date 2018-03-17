@@ -16,12 +16,9 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
-import org.checkerframework.framework.qual.Covariant;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -54,7 +51,6 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import org.checkerframework.checker.nullness.compatqual.MonotonicNonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A {@link Map} whose contents will never change, with many other important properties detailed at
@@ -70,7 +66,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
 @SuppressWarnings("serial") // we're overriding default serialization
-@Covariant({0, 1})
 public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
 
   /**
@@ -258,7 +253,7 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
   public static class Builder<K, V> {
     @MonotonicNonNullDecl Comparator<? super V> valueComparator;
     Entry<K, V>[] entries;
-    @IndexOrHigh("entries") int size;
+    int size;
     boolean entriesUsed;
 
     /**
@@ -270,7 +265,7 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    Builder(@NonNegative int initialCapacity) {
+    Builder(int initialCapacity) {
       this.entries = new Entry[initialCapacity];
       this.size = 0;
       this.entriesUsed = false;
@@ -817,7 +812,7 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
       extends IteratorBasedImmutableMap<K, ImmutableSet<V>> {
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return ImmutableMap.this.size();
     }
 

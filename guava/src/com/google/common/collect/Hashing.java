@@ -16,7 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -62,7 +61,7 @@ final class Hashing {
 
   private static final int MAX_TABLE_SIZE = Ints.MAX_POWER_OF_TWO;
 
-  static @Positive int closedTableSize(int expectedEntries, double loadFactor) {
+  static int closedTableSize(int expectedEntries, double loadFactor) {
     // Get the recommended table size.
     // Round down to the nearest power of 2.
     expectedEntries = Math.max(expectedEntries, 2);

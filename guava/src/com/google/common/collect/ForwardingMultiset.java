@@ -16,7 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -63,19 +62,19 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
   protected abstract Multiset<E> delegate();
 
   @Override
-  public @NonNegative int count(@org.checkerframework.checker.nullness.qual.Nullable Object element) {
+  public int count(@org.checkerframework.checker.nullness.qual.Nullable Object element) {
     return delegate().count(element);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int add(E element, @NonNegative int occurrences) {
+  public int add(E element, int occurrences) {
     return delegate().add(element, occurrences);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int remove(@org.checkerframework.checker.nullness.qual.Nullable Object element, @NonNegative int occurrences) {
+  public int remove(@org.checkerframework.checker.nullness.qual.Nullable Object element, int occurrences) {
     return delegate().remove(element, occurrences);
   }
 
@@ -105,13 +104,13 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
 
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int setCount(E element, @NonNegative int count) {
+  public int setCount(E element, int count) {
     return delegate().setCount(element, count);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public boolean setCount(E element, @NonNegative int oldCount, @NonNegative int newCount) {
+  public boolean setCount(E element, int oldCount, int newCount) {
     return delegate().setCount(element, oldCount, newCount);
   }
 
@@ -224,7 +223,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    *
    * @since 7.0
    */
-  protected @NonNegative int standardSetCount(E element, @NonNegative int count) {
+  protected int standardSetCount(E element, int count) {
     return Multisets.setCountImpl(this, element, count);
   }
 
@@ -235,7 +234,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    *
    * @since 7.0
    */
-  protected boolean standardSetCount(E element, @NonNegative int oldCount, @NonNegative int newCount) {
+  protected boolean standardSetCount(E element, int oldCount, int newCount) {
     return Multisets.setCountImpl(this, element, oldCount, newCount);
   }
 
@@ -284,7 +283,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    *
    * @since 7.0
    */
-  protected @NonNegative int standardSize() {
+  protected int standardSize() {
     return Multisets.linearTimeSizeImpl(this);
   }
 

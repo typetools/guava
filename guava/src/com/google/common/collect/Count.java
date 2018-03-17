@@ -18,8 +18,6 @@ import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * A mutable value of type {@code int}, for multisets to use in tracking counts of values.
  *
@@ -27,13 +25,13 @@ import org.checkerframework.checker.index.qual.NonNegative;
  */
 @GwtCompatible
 final class Count implements Serializable {
-  private @NonNegative int value;
+  private int value;
 
-  Count(@NonNegative int value) {
+  Count(int value) {
     this.value = value;
   }
 
-  public @NonNegative int get() {
+  public int get() {
     return value;
   }
 
@@ -41,15 +39,15 @@ final class Count implements Serializable {
     value += delta;
   }
 
-  public @NonNegative int addAndGet(int delta) {
+  public int addAndGet(int delta) {
     return value += delta;
   }
 
-  public void set(@NonNegative int newValue) {
+  public void set(int newValue) {
     value = newValue;
   }
 
-  public @NonNegative int getAndSet(@NonNegative int newValue) {
+  public int getAndSet(int newValue) {
     int result = value;
     value = newValue;
     return result;

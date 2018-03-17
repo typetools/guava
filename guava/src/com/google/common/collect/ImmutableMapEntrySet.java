@@ -25,8 +25,6 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * {@code entrySet()} implementation for {@link ImmutableMap}.
  *
@@ -85,7 +83,7 @@ abstract class ImmutableMapEntrySet<K, V> extends ImmutableSet<Entry<K, V>> {
   abstract ImmutableMap<K, V> map();
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return map().size();
   }
 

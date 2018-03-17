@@ -17,8 +17,6 @@ package com.google.common.collect;
 import com.google.common.annotations.GwtIncompatible;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * A descending wrapper around an {@code ImmutableSortedMultiset}
  *
@@ -34,7 +32,7 @@ final class DescendingImmutableSortedMultiset<E> extends ImmutableSortedMultiset
   }
 
   @Override
-  public @NonNegative int count(@NullableDecl Object element) {
+  public int count(@NullableDecl Object element) {
     return forward.count(element);
   }
 
@@ -49,7 +47,7 @@ final class DescendingImmutableSortedMultiset<E> extends ImmutableSortedMultiset
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return forward.size();
   }
 
@@ -59,7 +57,7 @@ final class DescendingImmutableSortedMultiset<E> extends ImmutableSortedMultiset
   }
 
   @Override
-  Entry<E> getEntry(@NonNegative int index) {
+  Entry<E> getEntry(int index) {
     return forward.entrySet().asList().reverse().get(index);
   }
 

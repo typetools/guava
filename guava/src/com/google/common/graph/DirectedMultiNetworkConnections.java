@@ -32,8 +32,6 @@ import java.util.Map;
 import java.util.Set;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * An implementation of {@link NetworkConnections} for directed networks with parallel edges.
  *
@@ -97,7 +95,7 @@ final class DirectedMultiNetworkConnections<N, E> extends AbstractDirectedNetwor
   public Set<E> edgesConnecting(final N node) {
     return new MultiEdgesConnecting<E>(outEdgeMap, node) {
       @Override
-      public @NonNegative int size() {
+      public int size() {
         return successorsMultiset().count(node);
       }
     };

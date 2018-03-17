@@ -25,9 +25,6 @@ import java.util.Map;
 import java.util.Set;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.framework.qual.AnnotatedFor;
-
 /**
  * A collection that associates an ordered pair of keys, called a row key and a column key, with a
  * single value. A table may be sparse, with only a small fraction of row key / column key pairs
@@ -56,7 +53,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @since 7.0
  */
 @GwtCompatible
-@AnnotatedFor("index")
 public interface Table<R, C, V> {
   // TODO(jlevy): Consider adding methods similar to ConcurrentMap methods.
 
@@ -108,7 +104,7 @@ public interface Table<R, C, V> {
   boolean isEmpty();
 
   /** Returns the number of row key / column key / value mappings in the table. */
-  @NonNegative int size();
+  int size();
 
   /**
    * Compares the specified object with this table for equality. Two tables are equal when their

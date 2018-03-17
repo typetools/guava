@@ -16,8 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -355,7 +353,7 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
       final Comparator<? super K> comparator,
       boolean sameComparator,
       Entry<K, V>[] entryArray,
-      @IndexOrHigh("#3") int size) {
+      int size) {
     switch (size) {
       case 0:
         return emptyMap(comparator);
@@ -584,7 +582,7 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
 
   @Pure
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return valueList.size();
   }
 

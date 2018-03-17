@@ -16,9 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -47,7 +44,7 @@ class RegularImmutableList<E> extends ImmutableList<E> {
 
   @Pure
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return array.length;
   }
 
@@ -57,7 +54,7 @@ class RegularImmutableList<E> extends ImmutableList<E> {
   }
 
   @Override
-  @NonNegative int copyIntoArray(Object[] dst, @IndexOrHigh("#1") int dstOff) {
+  int copyIntoArray(Object[] dst, int dstOff) {
     System.arraycopy(array, 0, dst, dstOff, array.length);
     return dstOff + array.length;
   }
@@ -65,13 +62,13 @@ class RegularImmutableList<E> extends ImmutableList<E> {
   // The fake cast to E is safe because the creation methods only allow E's
   @Override
   @SuppressWarnings("unchecked")
-  public E get(@NonNegative int index) {
+  public E get(int index) {
     return (E) array[index];
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public UnmodifiableListIterator<E> listIterator(@NonNegative int index) {
+  public UnmodifiableListIterator<E> listIterator(int index) {
     // for performance
     // The fake cast to E is safe because the creation methods only allow E's
     return (UnmodifiableListIterator<E>) Iterators.forArray(array, 0, array.length, index);
@@ -92,14 +89,14 @@ public boolean contains(@org.checkerframework.checker.nullness.qual.Nullable Obj
 public boolean equals(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.equals(arg0); }
 
 @Override
-public @GTENegativeOne int indexOf(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.indexOf(arg0); }
+public int indexOf(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.indexOf(arg0); }
 
 @Override
-public @GTENegativeOne int lastIndexOf(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.lastIndexOf(arg0); }
+public int lastIndexOf(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.lastIndexOf(arg0); }
 
 @SideEffectFree
 @Override
-public ImmutableList<E> subList(@NonNegative int arg0, @NonNegative int arg1) { return super.subList(arg0, arg1); }
+public ImmutableList<E> subList(int arg0, int arg1) { return super.subList(arg0, arg1); }
 
 @Pure
 @Override

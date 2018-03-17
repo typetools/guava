@@ -21,8 +21,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.annotations.GwtCompatible;
 import java.util.Map;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * An implementation of {@link ImmutableTable} that holds a single cell.
  *
@@ -63,7 +61,7 @@ class SingletonImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return 1;
   }
 

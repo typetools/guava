@@ -16,7 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -138,7 +137,7 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
           }
 
           @Override
-          public @NonNegative int getCount() {
+          public int getCount() {
             Count count = mapEntry.getValue();
             if (count == null || count.get() == 0) {
               Count frequency = backingMap.get(getElement());
@@ -177,7 +176,7 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
   }
 
   @Override
-  @NonNegative int distinctElements() {
+  int distinctElements() {
     return backingMap.size();
   }
 
@@ -185,7 +184,7 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
 
   @Pure
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return Ints.saturatedCast(size);
   }
 
@@ -241,7 +240,7 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
   }
 
   @Override
-  public @NonNegative int count(@NullableDecl Object element) {
+  public int count(@NullableDecl Object element) {
     Count frequency = Maps.safeGet(backingMap, element);
     return (frequency == null) ? 0 : frequency.get();
   }
@@ -256,7 +255,7 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
    */
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int add(@NullableDecl E element, @NonNegative int occurrences) {
+  public int add(@NullableDecl E element, int occurrences) {
     if (occurrences == 0) {
       return count(element);
     }
@@ -278,7 +277,7 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
 
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int remove(@NullableDecl Object element, @NonNegative int occurrences) {
+  public int remove(@NullableDecl Object element, int occurrences) {
     if (occurrences == 0) {
       return count(element);
     }
@@ -306,7 +305,7 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
   // Roughly a 33% performance improvement over AbstractMultiset.setCount().
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int setCount(@NullableDecl E element, @NonNegative int count) {
+  public int setCount(@NullableDecl E element, int count) {
     checkNonnegative(count, "count");
 
     Count existingCounter;
@@ -327,7 +326,7 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
     return oldCount;
   }
 
-  private static @NonNegative int getAndSet(@NullableDecl Count i, int count) {
+  private static int getAndSet(@NullableDecl Count i, int count) {
     if (i == null) {
       return 0;
     }

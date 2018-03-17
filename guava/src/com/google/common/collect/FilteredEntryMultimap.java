@@ -35,8 +35,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * Implementation of {@link Multimaps#filterEntries(Multimap, Predicate)}.
  *
@@ -64,7 +62,7 @@ class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V> implements Filt
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return entries().size();
   }
 
@@ -283,7 +281,7 @@ class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V> implements Filt
         }
 
         @Override
-        public @NonNegative int size() {
+        public int size() {
           return Iterators.size(iterator());
         }
       }
@@ -348,7 +346,7 @@ class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V> implements Filt
     }
 
     @Override
-    public @NonNegative int remove(@NullableDecl Object key, int occurrences) {
+    public int remove(@NullableDecl Object key, int occurrences) {
       checkNonnegative(occurrences, "occurrences");
       if (occurrences == 0) {
         return count(key);
@@ -388,7 +386,7 @@ class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V> implements Filt
         }
 
         @Override
-        public @NonNegative int size() {
+        public int size() {
           return FilteredEntryMultimap.this.keySet().size();
         }
 

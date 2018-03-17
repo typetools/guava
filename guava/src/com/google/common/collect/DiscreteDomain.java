@@ -26,8 +26,6 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * A descriptor for a <i>discrete</i> {@code Comparable} domain such as all {@link Integer}
  * instances. A discrete domain is one that supports the three basic operations: {@link #next},
@@ -76,7 +74,7 @@ public abstract class DiscreteDomain<C extends Comparable> {
     }
 
     @Override
-    Integer offset(Integer origin, @NonNegative long distance) {
+    Integer offset(Integer origin, long distance) {
       checkNonnegative(distance, "distance");
       return Ints.checkedCast(origin.longValue() + distance);
     }
@@ -137,7 +135,7 @@ public abstract class DiscreteDomain<C extends Comparable> {
     }
 
     @Override
-    Long offset(Long origin, @NonNegative long distance) {
+    Long offset(Long origin, long distance) {
       checkNonnegative(distance, "distance");
       long result = origin + distance;
       if (result < 0) {
@@ -211,7 +209,7 @@ public abstract class DiscreteDomain<C extends Comparable> {
     }
 
     @Override
-    BigInteger offset(BigInteger origin, @NonNegative long distance) {
+    BigInteger offset(BigInteger origin, long distance) {
       checkNonnegative(distance, "distance");
       return origin.add(BigInteger.valueOf(distance));
     }
@@ -249,7 +247,7 @@ public abstract class DiscreteDomain<C extends Comparable> {
    * Returns, conceptually, "origin + distance", or equivalently, the result of calling {@link
    * #next} on {@code origin} {@code distance} times.
    */
-  C offset(C origin, @NonNegative long distance) {
+  C offset(C origin, long distance) {
     checkNonnegative(distance, "distance");
     for (long i = 0; i < distance; i++) {
       origin = next(origin);

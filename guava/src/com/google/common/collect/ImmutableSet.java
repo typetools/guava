@@ -16,10 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.IndexFor;
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -98,8 +94,6 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * first specified. That is, if multiple elements are {@linkplain Object#equals equal}, all except
    * the first are ignored.
    */
-  // 2 is IndexOrHigh for varargs
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/typetools/checker-framework/issues/1635
   public static <E> ImmutableSet<E> of(E e1, E e2) {
     return construct(2, e1, e2);
   }
@@ -109,8 +103,6 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * first specified. That is, if multiple elements are {@linkplain Object#equals equal}, all except
    * the first are ignored.
    */
-  // 3 is IndexOrHigh for varargs
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/typetools/checker-framework/issues/1635
   public static <E> ImmutableSet<E> of(E e1, E e2, E e3) {
     return construct(3, e1, e2, e3);
   }
@@ -120,8 +112,6 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * first specified. That is, if multiple elements are {@linkplain Object#equals equal}, all except
    * the first are ignored.
    */
-  // 4 is IndexOrHigh for varargs
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/typetools/checker-framework/issues/1635
   public static <E> ImmutableSet<E> of(E e1, E e2, E e3, E e4) {
     return construct(4, e1, e2, e3, e4);
   }
@@ -131,8 +121,6 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * first specified. That is, if multiple elements are {@linkplain Object#equals equal}, all except
    * the first are ignored.
    */
-  // 5 is IndexOrHigh for varargs
-  @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/typetools/checker-framework/issues/1635
   public static <E> ImmutableSet<E> of(E e1, E e2, E e3, E e4, E e5) {
     return construct(5, e1, e2, e3, e4, e5);
   }
@@ -147,8 +135,6 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * @since 3.0 (source-compatible since 2.0)
    */
   @SafeVarargs // For Eclipse. For internal javac we have disabled this pointless type of warning.
-  // elements has at least 6 elements
-  @SuppressWarnings("upperbound:array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/182
   public static <E> ImmutableSet<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E... others) {
     checkArgument(
         others.length <= Integer.MAX_VALUE - 6,
@@ -179,10 +165,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    *
    * @throws NullPointerException if any of the first {@code n} elements of {@code elements} is null
    */
-  // elements has at least one element
-  @SuppressWarnings("upperbound:array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/188
-  // https://github.com/kelloggm/checker-framework/issues/181
-  private static <E> ImmutableSet<E> construct(@IndexOrHigh("#2") int n, Object... elements) {
+  private static <E> ImmutableSet<E> construct(int n, Object... elements) {
     switch (n) {
       case 0:
         return of();
@@ -339,7 +322,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
   }
 
   abstract static class Indexed<E> extends ImmutableSet<E> {
-    abstract E get(@IndexFor("this") int index);
+    abstract E get(int index);
 
     @Override
     public UnmodifiableIterator<E> iterator() {
@@ -369,7 +352,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
     ImmutableList<E> createAsList() {
       return new ImmutableAsList<E>() {
         @Override
-        public E get(@NonNegative int index) {
+        public E get(int index) {
           return Indexed.this.get(index);
         }
 
@@ -477,7 +460,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
       this(DEFAULT_INITIAL_CAPACITY);
     }
 
-    Builder(@NonNegative int capacity) {
+    Builder(int capacity) {
       impl = new RegularSetBuilderImpl<E>(capacity);
     }
 
@@ -627,7 +610,6 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
   private static final double DESIRED_LOAD_FACTOR = 0.7;
 
   // If the set has this many elements, it will "max out" the table size
-  @SuppressWarnings("cast.unsafe") // https://github.com/kelloggm/checker-framework/issues/149
   private static final int CUTOFF = (int) (MAX_TABLE_SIZE * DESIRED_LOAD_FACTOR);
 
   /**
@@ -636,7 +618,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * can hold setSize elements with the desired load factor. Always returns at least setSize + 2.
    */
   @VisibleForTesting
-  static @Positive int chooseTableSize(@NonNegative int setSize) {
+  static int chooseTableSize(int setSize) {
     setSize = Math.max(setSize, 2);
     // Correct the size for open addressing to match desired load factor.
     if (setSize < CUTOFF) {

@@ -16,8 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -164,7 +162,7 @@ public final class Iterators {
    * Returns the number of elements remaining in {@code iterator}. The iterator will be left
    * exhausted: its {@code hasNext()} method will return {@code false}.
    */
-  public static @NonNegative int size(Iterator<?> iterator) {
+  public static int size(Iterator<?> iterator) {
     long count = 0L;
     while (iterator.hasNext()) {
       iterator.next();
@@ -578,7 +576,7 @@ public final class Iterators {
    *     partitions
    * @throws IllegalArgumentException if {@code size} is nonpositive
    */
-  public static <T> UnmodifiableIterator<List<T>> partition(Iterator<T> iterator, @Positive int size) {
+  public static <T> UnmodifiableIterator<List<T>> partition(Iterator<T> iterator, int size) {
     return partitionImpl(iterator, size, false);
   }
 
@@ -596,12 +594,12 @@ public final class Iterators {
    *     partitions (the final iterable may have trailing null elements)
    * @throws IllegalArgumentException if {@code size} is nonpositive
    */
-  public static <T> UnmodifiableIterator<List<T>> paddedPartition(Iterator<T> iterator, @Positive int size) {
+  public static <T> UnmodifiableIterator<List<T>> paddedPartition(Iterator<T> iterator, int size) {
     return partitionImpl(iterator, size, true);
   }
 
   private static <T> UnmodifiableIterator<List<T>> partitionImpl(
-      final Iterator<T> iterator, final @Positive int size, final boolean pad) {
+      final Iterator<T> iterator, final int size, final boolean pad) {
     checkNotNull(iterator);
     checkArgument(size > 0);
     return new UnmodifiableIterator<List<T>>() {

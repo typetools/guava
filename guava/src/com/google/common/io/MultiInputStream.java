@@ -22,9 +22,6 @@ import java.io.InputStream;
 import java.util.Iterator;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * An {@link InputStream} that concatenates multiple substreams. At most one stream will be open at
  * a time.
@@ -68,7 +65,7 @@ final class MultiInputStream extends InputStream {
   }
 
   @Override
-  public @NonNegative int available() throws IOException {
+  public int available() throws IOException {
     if (in == null) {
       return 0;
     }
@@ -81,7 +78,7 @@ final class MultiInputStream extends InputStream {
   }
 
   @Override
-  public @GTENegativeOne int read() throws IOException {
+  public int read() throws IOException {
     while (in != null) {
       int result = in.read();
       if (result != -1) {

@@ -16,7 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -174,7 +173,7 @@ public interface Multimap<K, V> {
    * which is given by {@code keySet().size()} or {@code asMap().size()}. See the opening section of
    * the {@link Multimap} class documentation for clarification.
    */
-  @NonNegative int size();
+  int size();
 
   /**
    * Returns {@code true} if this multimap contains no key-value pairs. Equivalent to {@code size()

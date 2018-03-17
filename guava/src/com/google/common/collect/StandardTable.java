@@ -45,8 +45,6 @@ import java.util.Spliterators;
 import org.checkerframework.checker.nullness.compatqual.MonotonicNonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * {@link Table} implementation backed by a map that associates row keys with column key / value
  * secondary maps. This class provides rapid access to records by the row key alone or by both keys,
@@ -117,7 +115,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     int size = 0;
     for (Map<C, V> map : backingMap.values()) {
       size += map.size();
@@ -354,7 +352,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       Map<C, V> map = backingRowMap();
       return (map == null) ? 0 : map.size();
     }
@@ -485,7 +483,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public @NonNegative int size() {
+      public int size() {
         int size = 0;
         for (Map<C, V> map : backingMap.values()) {
           if (map.containsKey(columnKey)) {
@@ -645,7 +643,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return Iterators.size(iterator());
     }
 
@@ -802,7 +800,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public @NonNegative int size() {
+      public int size() {
         return backingMap.size();
       }
 
@@ -888,7 +886,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public @NonNegative int size() {
+      public int size() {
         return columnKeySet().size();
       }
 

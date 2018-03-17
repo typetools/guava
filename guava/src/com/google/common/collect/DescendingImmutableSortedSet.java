@@ -19,9 +19,6 @@ package com.google.common.collect;
 import com.google.common.annotations.GwtIncompatible;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * Skeletal implementation of {@link ImmutableSortedSet#descendingSet()}.
  *
@@ -42,7 +39,7 @@ final class DescendingImmutableSortedSet<E> extends ImmutableSortedSet<E> {
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return forward.size();
   }
 
@@ -106,7 +103,7 @@ final class DescendingImmutableSortedSet<E> extends ImmutableSortedSet<E> {
   }
 
   @Override
-  @GTENegativeOne int indexOf(@NullableDecl Object target) {
+  int indexOf(@NullableDecl Object target) {
     int index = forward.indexOf(target);
     if (index == -1) {
       return index;

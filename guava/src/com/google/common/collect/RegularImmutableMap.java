@@ -16,9 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.IndexFor;
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -77,7 +74,7 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
   // array of linked lists of entries
   private final transient ImmutableMapEntry<K, V>[] table;
   // 'and' with an int to get a table index
-  private final transient @IndexFor("table") int mask;
+  private final transient int mask;
 
   static <K, V> ImmutableMap<K, V> fromEntries(Entry<K, V>... entries) {
     return fromEntryArray(entries.length, entries);
@@ -88,7 +85,7 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
    * the entries in entryArray with its own entry objects (though they will have the same key/value
    * contents), and may take ownership of entryArray.
    */
-  static <K, V> ImmutableMap<K, V> fromEntryArray(@IndexOrHigh("#2") int n, Entry<K, V>[] entryArray) {
+  static <K, V> ImmutableMap<K, V> fromEntryArray(int n, Entry<K, V>[] entryArray) {
     checkPositionIndex(n, entryArray.length);
     if (n == 0) {
       return (RegularImmutableMap<K, V>) EMPTY;
@@ -199,7 +196,7 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return entries.length;
   }
 
@@ -242,7 +239,7 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return map.size();
     }
 
@@ -282,12 +279,12 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
     }
 
     @Override
-    public V get(@NonNegative int index) {
+    public V get(int index) {
       return map.entries[index].getValue();
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return map.size();
     }
 

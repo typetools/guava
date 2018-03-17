@@ -31,8 +31,6 @@ import java.util.AbstractSet;
 import java.util.Set;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * This class provides a skeletal implementation of {@link BaseGraph}.
  *
@@ -72,7 +70,7 @@ abstract class AbstractBaseGraph<N> implements BaseGraph<N> {
       }
 
       @Override
-      public @NonNegative int size() {
+      public int size() {
         return Ints.saturatedCast(edgeCount());
       }
 

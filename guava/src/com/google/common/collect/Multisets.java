@@ -16,7 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -177,7 +176,7 @@ public final class Multisets {
     }
 
     @Override
-    public @NonNegative int add(E element, @NonNegative int occurences) {
+    public int add(E element, int occurences) {
       throw new UnsupportedOperationException();
     }
 
@@ -192,7 +191,7 @@ public final class Multisets {
     }
 
     @Override
-    public @NonNegative int remove(@org.checkerframework.checker.nullness.qual.Nullable Object element, @NonNegative int occurrences) {
+    public int remove(@org.checkerframework.checker.nullness.qual.Nullable Object element, int occurrences) {
       throw new UnsupportedOperationException();
     }
 
@@ -212,12 +211,12 @@ public final class Multisets {
     }
 
     @Override
-    public @NonNegative int setCount(E element, @NonNegative int count) {
+    public int setCount(E element, int count) {
       throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean setCount(E element, @NonNegative int oldCount, @NonNegative int newCount) {
+    public boolean setCount(E element, int oldCount, int newCount) {
       throw new UnsupportedOperationException();
     }
 
@@ -249,15 +248,15 @@ public final class Multisets {
    * @param n the count to be associated with the returned entry
    * @throws IllegalArgumentException if {@code n} is negative
    */
-  public static <E> Multiset.Entry<E> immutableEntry(@NullableDecl E e, @NonNegative int n) {
+  public static <E> Multiset.Entry<E> immutableEntry(@NullableDecl E e, int n) {
     return new ImmutableEntry<E>(e, n);
   }
 
   static class ImmutableEntry<E> extends AbstractEntry<E> implements Serializable {
     @NullableDecl private final E element;
-    private final @NonNegative int count;
+    private final int count;
 
-    ImmutableEntry(@NullableDecl E element, @NonNegative int count) {
+    ImmutableEntry(@NullableDecl E element, int count) {
       this.element = element;
       this.count = count;
       checkNonnegative(count, "count");
@@ -270,7 +269,7 @@ public final class Multisets {
     }
 
     @Override
-    public final @NonNegative int getCount() {
+    public final int getCount() {
       return count;
     }
 
@@ -360,7 +359,7 @@ public final class Multisets {
     }
 
     @Override
-    public @NonNegative int count(@NullableDecl Object element) {
+    public int count(@NullableDecl Object element) {
       int count = unfiltered.count(element);
       if (count > 0) {
         @SuppressWarnings("unchecked") // element is equal to an E
@@ -371,14 +370,14 @@ public final class Multisets {
     }
 
     @Override
-    public @NonNegative int add(@NullableDecl E element, @NonNegative int occurrences) {
+    public int add(@NullableDecl E element, int occurrences) {
       checkArgument(
           predicate.apply(element), "Element %s does not match predicate %s", element, predicate);
       return unfiltered.add(element, occurrences);
     }
 
     @Override
-    public @NonNegative int remove(@NullableDecl Object element, @NonNegative int occurrences) {
+    public int remove(@NullableDecl Object element, int occurrences) {
       checkNonnegative(occurrences, "occurrences");
       if (occurrences == 0) {
         return count(element);
@@ -430,7 +429,7 @@ public final class Multisets {
       }
 
       @Override
-      public @NonNegative int count(Object element) {
+      public int count(Object element) {
         return Math.max(multiset1.count(element), multiset2.count(element));
       }
 
@@ -491,7 +490,7 @@ public final class Multisets {
 
     return new ViewMultiset<E>() {
       @Override
-      public @NonNegative int count(Object element) {
+      public int count(Object element) {
         int count1 = multiset1.count(element);
         return (count1 == 0) ? 0 : Math.min(count1, multiset2.count(element));
       }
@@ -559,13 +558,12 @@ public final class Multisets {
       }
 
       @Override
-      @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/187
-      public @NonNegative int size() {
+      public int size() {
         return IntMath.saturatedAdd(multiset1.size(), multiset2.size());
       }
 
       @Override
-      public @NonNegative int count(Object element) {
+      public int count(Object element) {
         return multiset1.count(element) + multiset2.count(element);
       }
 
@@ -627,7 +625,7 @@ public final class Multisets {
     // TODO(lowasser): consider making the entries live views
     return new ViewMultiset<E>() {
       @Override
-      public @NonNegative int count(@NullableDecl Object element) {
+      public int count(@NullableDecl Object element) {
         int count1 = multiset1.count(element);
         return (count1 == 0) ? 0 : Math.max(0, count1 - multiset2.count(element));
       }
@@ -675,7 +673,7 @@ public final class Multisets {
       }
 
       @Override
-      @NonNegative int distinctElements() {
+      int distinctElements() {
         return Iterators.size(entryIterator());
       }
     };
@@ -943,7 +941,7 @@ public final class Multisets {
   }
 
   /** An implementation of {@link Multiset#setCount(Object, int)}. */
-  static <E> @NonNegative int setCountImpl(Multiset<E> self, E element, @NonNegative int count) {
+  static <E> int setCountImpl(Multiset<E> self, E element, int count) {
     checkNonnegative(count, "count");
 
     int oldCount = self.count(element);
@@ -959,7 +957,7 @@ public final class Multisets {
   }
 
   /** An implementation of {@link Multiset#setCount(Object, int, int)}. */
-  static <E> boolean setCountImpl(Multiset<E> self, E element, @NonNegative int oldCount, @NonNegative int newCount) {
+  static <E> boolean setCountImpl(Multiset<E> self, E element, int oldCount, int newCount) {
     checkNonnegative(oldCount, "oldCount");
     checkNonnegative(newCount, "newCount");
 
@@ -1012,7 +1010,7 @@ public final class Multisets {
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return multiset().entrySet().size();
     }
   }
@@ -1128,7 +1126,7 @@ public final class Multisets {
   }
 
   /** An implementation of {@link Multiset#size}. */
-  static @NonNegative int linearTimeSizeImpl(Multiset<?> multiset) {
+  static int linearTimeSizeImpl(Multiset<?> multiset) {
     long size = 0;
     for (Entry<?> entry : multiset.entrySet()) {
       size += entry.getCount();

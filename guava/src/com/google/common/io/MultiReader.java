@@ -21,8 +21,6 @@ import java.io.Reader;
 import java.util.Iterator;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-
 /**
  * A {@link Reader} that concatenates multiple readers.
  *
@@ -48,7 +46,7 @@ class MultiReader extends Reader {
   }
 
   @Override
-  public @GTENegativeOne int read(@NullableDecl char cbuf[], int off, int len) throws IOException {
+  public int read(@NullableDecl char cbuf[], int off, int len) throws IOException {
     if (current == null) {
       return -1;
     }

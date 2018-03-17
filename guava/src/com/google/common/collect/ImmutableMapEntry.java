@@ -21,8 +21,6 @@ import static com.google.common.collect.CollectPreconditions.checkEntryNotNull;
 import com.google.common.annotations.GwtIncompatible;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * Implementation of {@code Entry} for {@link ImmutableMap} that adds extra methods to traverse hash
  * buckets for the key and the value. This allows reuse in {@link RegularImmutableMap} and {@link
@@ -41,7 +39,7 @@ class ImmutableMapEntry<K, V> extends ImmutableEntry<K, V> {
    * be upcast back to ImmutableMapEntry[] (or Object[], etc.), or allowed to escape the class.
    */
   @SuppressWarnings("unchecked") // Safe as long as the javadocs are followed
-  static <K, V> ImmutableMapEntry<K, V>[] createEntryArray(@NonNegative int size) {
+  static <K, V> ImmutableMapEntry<K, V>[] createEntryArray(int size) {
     return new ImmutableMapEntry[size];
   }
 

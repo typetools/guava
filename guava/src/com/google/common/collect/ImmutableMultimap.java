@@ -16,7 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -334,7 +333,7 @@ public abstract class ImmutableMultimap<K, V> extends AbstractMultimap<K, V>
   }
 
   final transient ImmutableMap<K, ? extends ImmutableCollection<V>> map;
-  final transient @NonNegative int size;
+  final transient int size;
 
   // These constants allow the deserialization code to set final fields. This
   // holder class makes sure they are not initialized unless an instance is
@@ -347,7 +346,7 @@ public abstract class ImmutableMultimap<K, V> extends AbstractMultimap<K, V>
         Serialization.getFieldSetter(ImmutableMultimap.class, "size");
   }
 
-  ImmutableMultimap(ImmutableMap<K, ? extends ImmutableCollection<V>> map, @NonNegative int size) {
+  ImmutableMultimap(ImmutableMap<K, ? extends ImmutableCollection<V>> map, int size) {
     this.map = map;
     this.size = size;
   }
@@ -486,7 +485,7 @@ public abstract class ImmutableMultimap<K, V> extends AbstractMultimap<K, V>
 
   @Pure
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return size;
   }
 
@@ -553,7 +552,7 @@ public abstract class ImmutableMultimap<K, V> extends AbstractMultimap<K, V>
 
     @Pure
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return multimap.size();
     }
 
@@ -641,7 +640,7 @@ public abstract class ImmutableMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
-    public @NonNegative int count(@NullableDecl Object element) {
+    public int count(@NullableDecl Object element) {
       Collection<V> values = map.get(element);
       return (values == null) ? 0 : values.size();
     }
@@ -652,7 +651,7 @@ public abstract class ImmutableMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return ImmutableMultimap.this.size();
     }
 
@@ -750,7 +749,7 @@ public abstract class ImmutableMultimap<K, V> extends AbstractMultimap<K, V>
 
     @Pure
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return multimap.size();
     }
 

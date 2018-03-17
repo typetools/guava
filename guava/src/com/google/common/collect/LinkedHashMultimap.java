@@ -16,7 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -100,7 +99,7 @@ public final class LinkedHashMultimap<K, V>
    * @throws IllegalArgumentException if {@code expectedKeys} or {@code expectedValuesPerKey} is
    *     negative
    */
-  public static <K, V> LinkedHashMultimap<K, V> create(@NonNegative int expectedKeys, @NonNegative int expectedValuesPerKey) {
+  public static <K, V> LinkedHashMultimap<K, V> create(int expectedKeys, int expectedValuesPerKey) {
     return new LinkedHashMultimap<>(
         Maps.capacity(expectedKeys), Maps.capacity(expectedValuesPerKey));
   }
@@ -221,10 +220,10 @@ public final class LinkedHashMultimap<K, V>
   private static final int DEFAULT_VALUE_SET_CAPACITY = 2;
   @VisibleForTesting static final double VALUE_SET_LOAD_FACTOR = 1.0;
 
-  @VisibleForTesting transient @NonNegative int valueSetCapacity = DEFAULT_VALUE_SET_CAPACITY;
+  @VisibleForTesting transient int valueSetCapacity = DEFAULT_VALUE_SET_CAPACITY;
   private transient ValueEntry<K, V> multimapHeaderEntry;
 
-  private LinkedHashMultimap(@NonNegative int keyCapacity, @NonNegative int valueSetCapacity) {
+  private LinkedHashMultimap(int keyCapacity, int valueSetCapacity) {
     super(Platform.<K, Collection<V>>newLinkedHashMapWithExpectedSize(keyCapacity));
     checkNonnegative(valueSetCapacity, "expectedValuesPerKey");
 
@@ -327,7 +326,7 @@ public final class LinkedHashMultimap<K, V>
 
     private final K key;
     @VisibleForTesting ValueEntry<K, V>[] hashTable;
-    private @NonNegative int size = 0;
+    private int size = 0;
     private int modCount = 0;
 
     // We use the set object itself as the end of the linked list, avoiding an unnecessary
@@ -335,7 +334,7 @@ public final class LinkedHashMultimap<K, V>
     private ValueSetLink<K, V> firstEntry;
     private ValueSetLink<K, V> lastEntry;
 
-    ValueSet(K key, @NonNegative int expectedValues) {
+    ValueSet(K key, int expectedValues) {
       this.key = key;
       this.firstEntry = this;
       this.lastEntry = this;
@@ -424,7 +423,7 @@ public final class LinkedHashMultimap<K, V>
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return size;
     }
 

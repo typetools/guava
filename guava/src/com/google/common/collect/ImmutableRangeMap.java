@@ -33,9 +33,6 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * A {@link RangeMap} whose contents will never change, with many other important properties
  * detailed at {@link ImmutableCollection}.
@@ -174,7 +171,7 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
   @Override
   @NullableDecl
   public V get(K key) {
-    @GTENegativeOne int index =
+    int index =
         SortedLists.binarySearch(
             ranges,
             Range.<K>lowerBoundFn(),
@@ -192,7 +189,7 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
   @Override
   @NullableDecl
   public Entry<Range<K>, V> getEntry(K key) {
-    @GTENegativeOne int index =
+    int index =
         SortedLists.binarySearch(
             ranges,
             Range.<K>lowerBoundFn(),
@@ -304,14 +301,14 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
     } else if (ranges.isEmpty() || range.encloses(span())) {
       return this;
     }
-    @NonNegative int lowerIndex =
+    int lowerIndex =
         SortedLists.binarySearch(
             ranges,
             Range.<K>upperBoundFn(),
             range.lowerBound,
             KeyPresentBehavior.FIRST_AFTER,
             KeyAbsentBehavior.NEXT_HIGHER);
-    @NonNegative int upperIndex =
+    int upperIndex =
         SortedLists.binarySearch(
             ranges,
             Range.<K>lowerBoundFn(),
@@ -326,7 +323,7 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
     ImmutableList<Range<K>> subRanges =
         new ImmutableList<Range<K>>() {
           @Override
-          public @NonNegative int size() {
+          public int size() {
             return len;
           }
 

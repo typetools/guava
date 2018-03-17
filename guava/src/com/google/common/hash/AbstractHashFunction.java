@@ -21,9 +21,6 @@ import com.google.errorprone.annotations.Immutable;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * Skeleton implementation of {@link HashFunction} in terms of {@link #newHasher()}.
  *
@@ -63,8 +60,7 @@ abstract class AbstractHashFunction implements HashFunction {
   }
 
   @Override
-  // https://github.com/panacekcz/checker-framework/issues/5
-  public HashCode hashBytes(byte[] input, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int len) {
+  public HashCode hashBytes(byte[] input, int off, int len) {
     checkPositionIndexes(off, off + len, input.length);
     return newHasher(len).putBytes(input, off, len).hash();
   }
@@ -75,7 +71,7 @@ abstract class AbstractHashFunction implements HashFunction {
   }
 
   @Override
-  public Hasher newHasher(@NonNegative int expectedInputSize) {
+  public Hasher newHasher(int expectedInputSize) {
     checkArgument(
         expectedInputSize >= 0, "expectedInputSize must be >= 0 but was %s", expectedInputSize);
     return newHasher();

@@ -35,8 +35,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 /**
  * An implementation of {@link GraphConnections} for directed graphs.
  *
@@ -123,7 +121,7 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
       }
 
       @Override
-      public @NonNegative int size() {
+      public int size() {
         return predecessorCount;
       }
 
@@ -155,7 +153,7 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
       }
 
       @Override
-      public @NonNegative int size() {
+      public int size() {
         return successorCount;
       }
 

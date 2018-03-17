@@ -22,7 +22,6 @@ import com.google.errorprone.annotations.Immutable;
 import com.google.j2objc.annotations.WeakOuter;
 import java.util.Map;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
-import org.checkerframework.checker.index.qual.NonNegative;
 
 /** A {@code RegularImmutableTable} optimized for dense data. */
 @GwtCompatible
@@ -34,21 +33,21 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
   private final ImmutableMap<C, ImmutableMap<R, V>> columnMap;
 
   @SuppressWarnings("Immutable") // We don't modify this after construction.
-  private final @NonNegative int[] rowCounts;
+  private final int[] rowCounts;
 
   @SuppressWarnings("Immutable") // We don't modify this after construction.
-  private final @NonNegative int[] columnCounts;
+  private final int[] columnCounts;
 
   @SuppressWarnings("Immutable") // We don't modify this after construction.
   private final V[][] values;
 
   // For each cell in iteration order, the index of that cell's row key in the row key list.
   @SuppressWarnings("Immutable") // We don't modify this after construction.
-  private final @NonNegative int[] cellRowIndices;
+  private final int[] cellRowIndices;
 
   // For each cell in iteration order, the index of that cell's column key in the column key list.
   @SuppressWarnings("Immutable") // We don't modify this after construction.
-  private final @NonNegative int[] cellColumnIndices;
+  private final int[] cellColumnIndices;
 
   DenseImmutableTable(
       ImmutableList<Cell<R, C, V>> cellList,
@@ -85,9 +84,9 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
 
   /** An immutable map implementation backed by an indexed nullable array. */
   private abstract static class ImmutableArrayMap<K, V> extends IteratorBasedImmutableMap<K, V> {
-    private final @NonNegative int size;
+    private final int size;
 
-    ImmutableArrayMap(@NonNegative int size) {
+    ImmutableArrayMap(int size) {
       this.size = size;
     }
 
@@ -98,12 +97,12 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
       return size == keyToIndex().size();
     }
 
-    K getKey(@NonNegative int index) {
+    K getKey(int index) {
       return keyToIndex().keySet().asList().get(index);
     }
 
     @NullableDecl
-    abstract V getValue(@NonNegative int keyIndex);
+    abstract V getValue(int keyIndex);
 
     @Override
     ImmutableSet<K> createKeySet() {
@@ -111,7 +110,7 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
     }
 
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return size;
     }
 
@@ -142,9 +141,9 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
   }
 
   private final class Row extends ImmutableArrayMap<C, V> {
-    private final @NonNegative int rowIndex;
+    private final int rowIndex;
 
-    Row(@NonNegative int rowIndex) {
+    Row(int rowIndex) {
       super(rowCounts[rowIndex]);
       this.rowIndex = rowIndex;
     }
@@ -155,7 +154,7 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
     }
 
     @Override
-    V getValue(@NonNegative int keyIndex) {
+    V getValue(int keyIndex) {
       return values[rowIndex][keyIndex];
     }
 
@@ -166,9 +165,9 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
   }
 
   private final class Column extends ImmutableArrayMap<R, V> {
-    private final @NonNegative int columnIndex;
+    private final int columnIndex;
 
-    Column(@NonNegative int columnIndex) {
+    Column(int columnIndex) {
       super(columnCounts[columnIndex]);
       this.columnIndex = columnIndex;
     }
@@ -179,7 +178,7 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
     }
 
     @Override
-    V getValue(@NonNegative int keyIndex) {
+    V getValue(int keyIndex) {
       return values[keyIndex][columnIndex];
     }
 
@@ -201,7 +200,7 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
     }
 
     @Override
-    ImmutableMap<C, V> getValue(@NonNegative int keyIndex) {
+    ImmutableMap<C, V> getValue(int keyIndex) {
       return new Row(keyIndex);
     }
 
@@ -223,7 +222,7 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
     }
 
     @Override
-    ImmutableMap<R, V> getValue(@NonNegative int keyIndex) {
+    ImmutableMap<R, V> getValue(int keyIndex) {
       return new Column(keyIndex);
     }
 
@@ -255,12 +254,12 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return cellRowIndices.length;
   }
 
   @Override
-  Cell<R, C, V> getCell(@NonNegative int index) {
+  Cell<R, C, V> getCell(int index) {
     int rowIndex = cellRowIndices[index];
     int columnIndex = cellColumnIndices[index];
     R rowKey = rowKeySet().asList().get(rowIndex);
@@ -270,7 +269,7 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
   }
 
   @Override
-  V getValue(@NonNegative int index) {
+  V getValue(int index) {
     return values[cellRowIndices[index]][cellColumnIndices[index]];
   }
 

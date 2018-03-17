@@ -14,8 +14,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.GTENegativeOne;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -89,9 +87,9 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
 
   private transient Class<E> type;
   private transient E[] enumConstants;
-  private transient @NonNegative int[] counts;
-  private transient @NonNegative int distinctElements;
-  private transient @NonNegative long size;
+  private transient int[] counts;
+  private transient int distinctElements;
+  private transient long size;
 
   /** Creates an empty {@code EnumMultiset}. */
   private EnumMultiset(Class<E> type) {
@@ -123,17 +121,17 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   }
 
   @Override
-  @NonNegative int distinctElements() {
+  int distinctElements() {
     return distinctElements;
   }
 
   @Override
-  public @NonNegative int size() {
+  public int size() {
     return Ints.saturatedCast(size);
   }
 
   @Override
-  public @NonNegative int count(@NullableDecl Object element) {
+  public int count(@NullableDecl Object element) {
     if (element == null || !isActuallyE(element)) {
       return 0;
     }
@@ -144,7 +142,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   // Modification Operations
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int add(E element, @NonNegative int occurrences) {
+  public int add(E element, int occurrences) {
     checkIsE(element);
     checkNonnegative(occurrences, "occurrences");
     if (occurrences == 0) {
@@ -165,7 +163,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   // Modification Operations
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int remove(@NullableDecl Object element, @NonNegative int occurrences) {
+  public int remove(@NullableDecl Object element, int occurrences) {
     if (element == null || !isActuallyE(element)) {
       return 0;
     }
@@ -192,7 +190,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   // Modification Operations
   @CanIgnoreReturnValue
   @Override
-  public @NonNegative int setCount(E element, @NonNegative int count) {
+  public int setCount(E element, int count) {
     checkIsE(element);
     checkNonnegative(count, "count");
     int index = element.ordinal();
@@ -215,10 +213,10 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   }
 
   abstract class Itr<T> implements Iterator<T> {
-    @NonNegative int index = 0;
-    @GTENegativeOne int toRemove = -1;
+    int index = 0;
+    int toRemove = -1;
 
-    abstract T output(@NonNegative int index);
+    abstract T output(int index);
 
     @Override
     public boolean hasNext() {
@@ -257,7 +255,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   Iterator<E> elementIterator() {
     return new Itr<E>() {
       @Override
-      E output(@NonNegative int index) {
+      E output(int index) {
         return enumConstants[index];
       }
     };
@@ -267,7 +265,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   Iterator<Entry<E>> entryIterator() {
     return new Itr<Entry<E>>() {
       @Override
-      Entry<E> output(final @NonNegative int index) {
+      Entry<E> output(final int index) {
         return new Multisets.AbstractEntry<E>() {
           @Override
           public E getElement() {
@@ -275,7 +273,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
           }
 
           @Override
-          public @NonNegative int getCount() {
+          public int getCount() {
             return counts[index];
           }
         };

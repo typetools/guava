@@ -16,8 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -126,7 +124,7 @@ public final class Iterables {
   }
 
   /** Returns the number of elements in {@code iterable}. */
-  public static @NonNegative int size(Iterable<?> iterable) {
+  public static int size(Iterable<?> iterable) {
     return (iterable instanceof Collection)
         ? ((Collection<?>) iterable).size()
         : Iterators.size(iterable.iterator());
@@ -515,7 +513,7 @@ public final class Iterables {
    *     into partitions
    * @throws IllegalArgumentException if {@code size} is nonpositive
    */
-  public static <T> Iterable<List<T>> partition(final Iterable<T> iterable, final @Positive int size) {
+  public static <T> Iterable<List<T>> partition(final Iterable<T> iterable, final int size) {
     checkNotNull(iterable);
     checkArgument(size > 0);
     return new FluentIterable<List<T>>() {
@@ -541,7 +539,7 @@ public final class Iterables {
    *     into partitions (the final iterable may have trailing null elements)
    * @throws IllegalArgumentException if {@code size} is nonpositive
    */
-  public static <T> Iterable<List<T>> paddedPartition(final Iterable<T> iterable, final @Positive int size) {
+  public static <T> Iterable<List<T>> paddedPartition(final Iterable<T> iterable, final int size) {
     checkNotNull(iterable);
     checkArgument(size > 0);
     return new FluentIterable<List<T>>() {

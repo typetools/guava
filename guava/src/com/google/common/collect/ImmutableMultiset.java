@@ -16,9 +16,6 @@
 
 package com.google.common.collect;
 
-import org.checkerframework.checker.index.qual.IndexFor;
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -290,7 +287,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
   @CanIgnoreReturnValue
   @Deprecated
   @Override
-  public final @NonNegative int add(E element, @NonNegative int occurrences) {
+  public final int add(E element, int occurrences) {
     throw new UnsupportedOperationException();
   }
 
@@ -303,7 +300,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
   @CanIgnoreReturnValue
   @Deprecated
   @Override
-  public final @NonNegative int remove(@org.checkerframework.checker.nullness.qual.Nullable Object element, @NonNegative int occurrences) {
+  public final int remove(@org.checkerframework.checker.nullness.qual.Nullable Object element, int occurrences) {
     throw new UnsupportedOperationException();
   }
 
@@ -316,7 +313,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
   @CanIgnoreReturnValue
   @Deprecated
   @Override
-  public final @NonNegative int setCount(E element, @NonNegative int count) {
+  public final int setCount(E element, int count) {
     throw new UnsupportedOperationException();
   }
 
@@ -329,13 +326,13 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
   @CanIgnoreReturnValue
   @Deprecated
   @Override
-  public final boolean setCount(E element, @NonNegative int oldCount, @NonNegative int newCount) {
+  public final boolean setCount(E element, int oldCount, int newCount) {
     throw new UnsupportedOperationException();
   }
 
   @GwtIncompatible // not present in emulated superclass
   @Override
-  @NonNegative int copyIntoArray(Object[] dst, @IndexOrHigh("#1") int offset) {
+  int copyIntoArray(Object[] dst, int offset) {
     for (Multiset.Entry<E> entry : entrySet()) {
       Arrays.fill(dst, offset, offset + entry.getCount(), entry.getElement());
       offset += entry.getCount();
@@ -378,7 +375,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
     return isEmpty() ? ImmutableSet.<Entry<E>>of() : new EntrySet();
   }
 
-  abstract Entry<E> getEntry(@IndexFor("this") int index);
+  abstract Entry<E> getEntry(int index);
 
   @WeakOuter
   private final class EntrySet extends IndexedImmutableSet<Entry<E>> {
@@ -388,13 +385,13 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
     }
 
     @Override
-    Entry<E> get(@IndexFor("this") int index) {
+    Entry<E> get(int index) {
       return getEntry(index);
     }
 
     @Pure
     @Override
-    public @NonNegative int size() {
+    public int size() {
       return elementSet().size();
     }
 
@@ -528,7 +525,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
      *     would result in more than {@link Integer#MAX_VALUE} occurrences of the element
      */
     @CanIgnoreReturnValue
-    public Builder<E> addCopies(E element, @NonNegative int occurrences) {
+    public Builder<E> addCopies(E element, int occurrences) {
       contents.add(checkNotNull(element), occurrences);
       return this;
     }
@@ -544,7 +541,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
      * @throws IllegalArgumentException if {@code count} is negative
      */
     @CanIgnoreReturnValue
-    public Builder<E> setCount(E element, @NonNegative int count) {
+    public Builder<E> setCount(E element, int count) {
       contents.setCount(checkNotNull(element), count);
       return this;
     }
