@@ -137,8 +137,6 @@ public final class Utf8 {
    * @param off the offset in the buffer of the first byte to read
    * @param len the number of bytes to read from the buffer
    */
-  //https://github.com/panacekcz/checker-framework/issues/5
-  // javadoc does not specify exceptions
   public static boolean isWellFormed(byte[] bytes, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value="#1", offset="#2-1") int len) {
     @IndexOrHigh("bytes") int end = off + len;
     checkPositionIndexes(off, end, bytes.length);
