@@ -517,7 +517,7 @@ public final class ImmutableDoubleArray implements Serializable {
   }
 
   /** Returns a new, mutable copy of this array's values, as a primitive {@code double[]}. */
-  public double [] toArray() {
+  public double[] toArray() {
     return Arrays.copyOfRange(array, start, end);
   }
 
