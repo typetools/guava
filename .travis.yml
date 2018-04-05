@@ -17,7 +17,7 @@ install: true
 # https://docs.travis-ci.com/user/common-build-problems/#Build-times-out-because-no-output-was-received
 # script: travis_wait 60 mvn -B verify -U -Dmaven.javadoc.skip=true -f $ROOT_POM
 # script: travis_wait 60 mvn -B verify -U -Dmaven.javadoc.skip=true -Dmaven.test.skip=true -Danimal.sniffer.skip=true -f $ROOT_POM
-script: cd guava && travis_wait 30 mvn package -Dmaven.test.skip=true -Danimal.sniffer.skip=true
+script: cd guava && travis_wait 40 mvn package -Dmaven.test.skip=true -Danimal.sniffer.skip=true
 
 after_success:
   - util/deploy_snapshot.sh
