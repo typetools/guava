@@ -548,7 +548,8 @@ public final class Ascii {
    */
   @SuppressWarnings({
     /*
-     * The parameter maxLength should be annotated @GTEqLengthOf("#3").
+     * The parameter maxLength should be annotated something like @GTEqLengthOf("#3").
+     * However, such annotation does not exist, so this property is not expressed. 
      * Lower bound validity:
      *   truncationIndicator.length <= maxLength,
      *   therefore truncationLength >= 0
