@@ -351,10 +351,10 @@ public final class Longs {
       @IntRange(from = -1, to = 36) byte [] result = new byte[128];
       Arrays.fill(result, (byte) -1);
       for (int i = 0; i <= 9; i++) {
-    	@SuppressWarnings({
+        @SuppressWarnings({
           "unused",
           "lessthan:cast.unsafe", // https://github.com/kelloggm/checker-framework/issues/222
-    	})
+        })
         byte _unused3 = result['0' + i] = (byte) i;
       }
       for (int i = 0; i <= 26; i++) {

@@ -133,8 +133,8 @@
           <!-- Because Index Checker warnings are suppressed during compilation, this additional phase
                runs the Index Checker on packages that are already annotated. -->
           <execution>
-          	<id>check-index</id>
-          	<phase>process-sources</phase>
+            <id>check-index</id>
+            <phase>process-sources</phase>
             <goals><goal>compile</goal></goals>
             <configuration>
               <annotationProcessors>
