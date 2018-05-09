@@ -27,6 +27,7 @@
     <checkerframework.extraargs></checkerframework.extraargs>
     <checkerframework.extraargs2></checkerframework.extraargs2>
     <check.index.phase>process-sources</check.index.phase>
+    <index.only.arg></index.only.arg>
   </properties>
   <dependencies>
     <dependency>
@@ -150,6 +151,7 @@
                 <arg>-AprintErrorStack</arg>
                 <arg>-proc:only</arg>
                 <arg>-AonlyDefs=^com\.google\.common\.(?:${checkerframework.index.packages})\.</arg>
+		<arg>${index.only.arg}</arg>
               </compilerArgs>
             </configuration>
           </execution>
