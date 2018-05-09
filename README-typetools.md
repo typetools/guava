@@ -58,7 +58,7 @@ Typechecking
 ------------
 
 Only the packages `com.google.common.primitives` and `com.google.common.base` are annotated by Index Checker annotations. 
-In order to get implicit annotations in class files, the Index Checker runs on all files during compilation, but warnings are suppressed. The index checker is run in another phase to typecheck just the two annotated packages. If there are errors, then the build fails.
+In order to get implicit annotations in class files, the Index Checker runs on all files during compilation, but warnings are suppressed. The Index Checker is run in another phase to typecheck just the two annotated packages. If there are errors, then the build fails.
 
 The Maven properties in guava/pom.xml can be used to change the behavior:
 
