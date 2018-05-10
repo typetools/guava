@@ -126,8 +126,8 @@
             <compilerArgs>
               <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
               <arg>${addtionalargs}</arg>
-	      <arg>${checkerframework.extraargs}</arg>
-	      <arg>${checkerframework.extraargs2}</arg>
+              <arg>${checkerframework.extraargs}</arg>
+              <arg>${checkerframework.extraargs2}</arg>
               <arg>-AsuppressWarnings=${checkerframework.suppress}</arg>
               <arg>-AuseDefaultsForUncheckedCode=source,bytecode</arg>
               <arg>-Awarns</arg>
@@ -151,7 +151,7 @@
                 <arg>-AprintErrorStack</arg>
                 <arg>-proc:only</arg>
                 <arg>-AonlyDefs=^com\.google\.common\.(?:${checkerframework.index.packages})\.</arg>
-		<arg>${index.only.arg}</arg>
+                <arg>${index.only.arg}</arg>
               </compilerArgs>
             </configuration>
           </execution>
