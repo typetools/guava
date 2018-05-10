@@ -245,9 +245,10 @@ public final class ImmutableLongArray implements Serializable {
      * ImmutableLongArray} will contain.
      */
     /*
-     * Calling ensureRoomFor(values.length) ensures that count is LTLengthOf(value="array", offset="values.length-1")
+     * Calling ensureRoomFor(values.length) ensures that count is @LTLengthOf(value="array", offset="values.length-1").
+     * That also implies that values.length is @LTLengthOf(value="array", offset="count-1")
      */
-    @SuppressWarnings("upperbound") // https://github.com/kelloggm/checker-framework/issues/176
+    @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/typetools/checker-framework/issues/1975 or https://github.com/typetools/checker-framework/issues/1976
     public Builder addAll(long[] values) {
       ensureRoomFor(values.length);
       System.arraycopy(values, 0, array, count, values.length);
@@ -274,13 +275,6 @@ public final class ImmutableLongArray implements Serializable {
      * ImmutableLongArray} will contain.
      */
     /*
-     * Calling ensureRoomFor(values.size()) ensures that count is LTLengthOf(value="array", offset="values.size()-1")
-     * Need ensures annotation for @LTLengthOf, for example @EnsuresLTLengthOf.
-     * ensureRoomFor should be
-     * @EnsuresLTLengthOf(expression="count", value="array", offset="#1 - 1")
-     * To typecheck, this code also needs a fix for:
-     *   https://github.com/kelloggm/checker-framework/issues/176
-     * 
      * Iterating through collection elements and incrementing separate index.
      * Incrementing count in a for-each loop of values means that count is increased by at most values.size()
      * To typecheck, this code also needs a fix for:
