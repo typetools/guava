@@ -23,10 +23,9 @@ import static com.google.common.primitives.UnsignedInts.toLong;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 import java.math.BigInteger;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
-
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.checkerframework.common.value.qual.IntRange;
 
 /**

@@ -21,9 +21,8 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.io.Serializable;
 import java.math.BigInteger;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
-
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.checkerframework.common.value.qual.IntRange;
 
 /**

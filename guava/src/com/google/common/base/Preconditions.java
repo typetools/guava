@@ -14,14 +14,12 @@
 
 package com.google.common.base;
 
+import com.google.common.annotations.GwtCompatible;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.framework.qual.AnnotatedFor;
-
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.VisibleForTesting;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static convenience methods that help a method or constructor check whether it was invoked

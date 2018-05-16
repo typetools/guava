@@ -25,13 +25,11 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.Comparator;
-
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
-
 import sun.misc.Unsafe;
 
 /**

@@ -18,7 +18,6 @@ import com.google.common.annotations.GwtIncompatible;
 import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /** A regex pattern implementation which is backed by the {@link Pattern}. */

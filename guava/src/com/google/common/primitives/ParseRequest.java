@@ -14,17 +14,17 @@
 
 package com.google.common.primitives;
 
-import org.checkerframework.common.value.qual.IntRange;
-
 import com.google.common.annotations.GwtCompatible;
+import org.checkerframework.common.value.qual.IntRange;
 
 /** A string to be parsed as a number and the radix to interpret it in. */
 @GwtCompatible
 final class ParseRequest {
   final String rawValue;
-  final @IntRange(from=Character.MIN_RADIX,to=Character.MAX_RADIX) int radix;
+  final @IntRange(from = Character.MIN_RADIX, to = Character.MAX_RADIX) int radix;
 
-  private ParseRequest(String rawValue, @IntRange(from=Character.MIN_RADIX,to=Character.MAX_RADIX) int radix) {
+  private ParseRequest(
+      String rawValue, @IntRange(from = Character.MIN_RADIX, to = Character.MAX_RADIX) int radix) {
     this.rawValue = rawValue;
     this.radix = radix;
   }

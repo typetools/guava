@@ -14,9 +14,8 @@
 
 package com.google.common.base;
 
-import org.checkerframework.checker.index.qual.NonNegative;
-
 import com.google.common.annotations.GwtCompatible;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * The subset of the {@link java.util.regex.Matcher} API which is used by this package, and also
