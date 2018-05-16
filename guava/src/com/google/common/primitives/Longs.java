@@ -260,11 +260,11 @@ public final class Longs {
    * @param arrays zero or more {@code long} arrays
    * @return a single array containing all the values from the source arrays, in order
    */
-  /* 
+  /*
    * New array has size that is sum of array lengths.
    * length is a sum of lengths of arrays.
    * pos is increased the same way as length, so pos points to a valid
-   * range of length array.length in result.   
+   * range of length array.length in result.
    */
   @SuppressWarnings("upperbound:argument.type.incompatible") // sum of lengths
   public static long[] concat(long[]... arrays) {
@@ -423,7 +423,7 @@ public final class Longs {
    */
   @Beta
   @NullableDecl
-  @SuppressWarnings("upperbound") // annotation inferred by contract doesn't propagate through checkNotNull 
+  @SuppressWarnings("upperbound") // annotation inferred by contract doesn't propagate through checkNotNull
   public static Long tryParse(String string, @Positive int radix) {
     if (checkNotNull(string).isEmpty()) {
       return null;

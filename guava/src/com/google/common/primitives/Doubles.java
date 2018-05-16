@@ -275,11 +275,11 @@ public final class Doubles {
    * @param arrays zero or more {@code double} arrays
    * @return a single array containing all the values from the source arrays, in order
    */
-  /* 
+  /*
    * New array has size that is sum of array lengths.
    * length is a sum of lengths of arrays.
    * pos is increased the same way as length, so pos points to a valid
-   * range of length array.length in result.   
+   * range of length array.length in result.
    */
   @SuppressWarnings("upperbound:argument.type.incompatible") // sum of lengths
   public static double[] concat(double[]... arrays) {

@@ -442,8 +442,8 @@ public final class UnsignedBytes {
      * Returns the Unsafe-using Comparator, or falls back to the pure-Java implementation if unable
      * to do so.
      */
-    /* 
-     * Code can throw an exception, but the code is safe because the exception is 
+    /*
+     * Code can throw an exception, but the code is safe because the exception is
      * caught by catch(Throwable).
      */
     @SuppressWarnings("upperbound:array.access.unsafe.high") // exception caught

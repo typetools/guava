@@ -308,7 +308,7 @@ public final class ImmutableIntArray implements Serializable {
     @SuppressWarnings(
         /*
          * count is @LTLengthOf(value="array",offset="values.length()-1"), which implies
-         * values.length() is @LTLengthOf(value="array",offset="count-1") 
+         * values.length() is @LTLengthOf(value="array",offset="count-1")
          */
         "upperbound:argument.type.incompatible" // LTLengthOf inversion
       )
@@ -319,18 +319,18 @@ public final class ImmutableIntArray implements Serializable {
       return this;
     }
 
-    /* 
+    /*
      * expandedCapacity(array.length, newCount) is at least newCount
      * newArray is at least as long as array
      * therefore, count is an index for newArray
-     * Possibly could be solved by combination of: 
+     * Possibly could be solved by combination of:
      *   https://github.com/kelloggm/checker-framework/issues/202
      *   https://github.com/kelloggm/checker-framework/issues/158
      */
     @SuppressWarnings({
       "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
       "contracts.postcondition.not.satisfied", // postcondition
-    }) 
+    })
     @EnsuresLTLengthOf(value="count", targetValue="array", offset="#1 - 1")
     private void ensureRoomFor(@NonNegative int numberToAdd) {
       int newCount = count + numberToAdd; // TODO(kevinb): check overflow now?
@@ -591,7 +591,7 @@ public final class ImmutableIntArray implements Serializable {
     }
 
     @Override
-    /* 
+    /*
      * Iterating through collection elements and incrementing separate index.
      * i is incremented in a for-each loop by that, and that has the same size as parent.array
      * therefore i is an index for parent.array

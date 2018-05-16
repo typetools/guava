@@ -499,7 +499,7 @@ public abstract class CharMatcher implements Predicate<Character> {
    * sequence. Returns a bogus matcher if the sequence contains supplementary characters.
    */
   /*
-   * The CharSequence is not mutated, therefore after checking its length, 
+   * The CharSequence is not mutated, therefore after checking its length,
    * accesses to lower indices are safe.
    */
   @SuppressWarnings("upperbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/188
@@ -923,7 +923,7 @@ public abstract class CharMatcher implements Predicate<Character> {
   /*
    * CharSequence sequence and replacement are not mutated, so indices less than length are valid.
    * replacementLen should be @IndexOrHigh("replacement")
-   * indexIn should return @IndexOrLow("#1") 
+   * indexIn should return @IndexOrLow("#1")
    */
   @SuppressWarnings({
     "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/188
@@ -1256,7 +1256,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     }
 
     /*
-     * If length() != 0, then sequence is MinLen(1), so 0 is LTLengthOf(sequence) 
+     * If length() != 0, then sequence is MinLen(1), so 0 is LTLengthOf(sequence)
      */
     @SuppressWarnings("return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/188
     @Override
@@ -1760,7 +1760,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/193 
+    @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/193
     public @IndexOrHigh("#1") int countIn(CharSequence sequence) {
       return sequence.length() - original.countIn(sequence);
     }

@@ -129,12 +129,12 @@ public enum CaseFormat {
   /** Enum values can override for performance reasons. */
   /*
    * j = wordBoundary.indexIn ensures that j is -1 or
-   * j >= 0 && j < s.length() 
+   * j >= 0 && j < s.length()
    */
   @SuppressWarnings({
     "upperbound:assignment.type.incompatible", "upperbound:compound.assignment.type.incompatible", // refinement on multiple assignments in expression
     "upperbound:argument.type.incompatible", // length of sequence with ArrayLenRange in offset
-  }) 
+  })
   String convert(CaseFormat format, String s) {
     // deal with camel conversion
     StringBuilder out = null;

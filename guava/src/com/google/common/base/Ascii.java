@@ -552,7 +552,7 @@ public final class Ascii {
   @SuppressWarnings({
     /*
      * The parameter maxLength should be annotated something like @GTEqLengthOf("#3").
-     * However, such annotation does not exist, so this property is not expressed. 
+     * However, such annotation does not exist, so this property is not expressed.
      * Lower bound validity:
      *   truncationIndicator.length <= maxLength,
      *   therefore truncationLength >= 0
@@ -562,7 +562,7 @@ public final class Ascii {
      *   therefore truncationLength <= seq.length
      */
     "lowerbound:assignment.type.incompatible", "upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/220
-  }) 
+  })
   public static String truncate(CharSequence seq, @NonNegative int maxLength, String truncationIndicator) {
     checkNotNull(seq);
 
