@@ -18,6 +18,8 @@ import static com.google.common.base.Strings.lenientFormat;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -473,7 +475,8 @@ public final class Verify {
    * @see Preconditions#checkNotNull Preconditions.checkNotNull()
    */
   @CanIgnoreReturnValue
-  public static <T> T verifyNotNull(@Nullable T reference) {
+  @EnsuresNonNull("#1")
+  public static <T extends @Nullable Object> @NonNull T verifyNotNull(@Nullable T reference) {
     return verifyNotNull(reference, "expected a non-null reference");
   }
 
@@ -493,7 +496,8 @@ public final class Verify {
    * @see Preconditions#checkNotNull Preconditions.checkNotNull()
    */
   @CanIgnoreReturnValue
-  public static <T> T verifyNotNull(
+  @EnsuresNonNull("#1")
+  public static <T extends @Nullable Object> @NonNull T verifyNotNull(
       @Nullable T reference,
       @Nullable String errorMessageTemplate,
       @Nullable Object @Nullable... errorMessageArgs) {
