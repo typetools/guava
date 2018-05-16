@@ -136,8 +136,9 @@
         </configuration>
         <executions>
           <!-- Runs the Index Checker on selected packages. -->
-          <!-- Because Index Checker warnings are suppressed during compilation, this additional phase
-               runs the Index Checker on packages that are already annotated. -->
+          <!-- Because Index Checker warnings are suppressed during regular compilation (when all
+               files are compiled), this additional phase runs the Index Checker on packages that
+               are already annotated, to ensure they type-check without warnings. -->
           <execution>
             <id>check-index</id>
             <phase>${check.index.phase}</phase>

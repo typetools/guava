@@ -813,9 +813,9 @@ public abstract class CharMatcher implements Predicate<Character> {
   @SuppressWarnings({
     /*
      * at entry to OUT, pos is IndexFor("string"),
-       * and after each pos++, it is checked against chars.length
-       * if equal, pos is not incremented anymore
-       * therefore both pos++ are safe
+     * and after each pos++, it is checked against chars.length
+     * if equal, pos is not incremented anymore
+     * therefore both pos++ are safe
      */
     "upperbound:compound.assignment.type.incompatible", // index incremented in nested loop with break
     "upperbound:array.access.unsafe.high", "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/204
@@ -921,7 +921,7 @@ public abstract class CharMatcher implements Predicate<Character> {
    * @return the new string
    */
   /*
-   * CharSequence sequence and replacemen are not mutated, so indices less than length are valid
+   * CharSequence sequence and replacement are not mutated, so indices less than length are valid.
    * replacementLen should be @IndexOrHigh("replacement")
    * indexIn should return @IndexOrLow("#1") 
    */
@@ -1468,10 +1468,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     }
 
     @Override
-    /*
-     * unsigned right shift on int
-     */
-    @SuppressWarnings("index:argument.type.incompatible") // unsigned right shift
+    @SuppressWarnings("index:argument.type.incompatible") // unsigned right shift on int
     public boolean matches(char c) {
       return TABLE.charAt((MULTIPLIER * c) >>> SHIFT) == c;
     }

@@ -52,10 +52,7 @@ public final class Utf8 {
    *     surrogates)
    */
   @SuppressWarnings({
-      /*
-       * unsigned right shift on int
-       */
-    "lowerbound:compound.assignment.type.incompatible", // unsigned right shift
+    "lowerbound:compound.assignment.type.incompatible", // unsigned right shift on int
   }) 
   public static @NonNegative int encodedLength(CharSequence sequence) {
     // Warning to maintainers: this implementation is highly optimized.
@@ -87,10 +84,7 @@ public final class Utf8 {
     return utf8Length;
   }
   @SuppressWarnings({
-      /*
-     * unsigned right shift on int
-     */
-    "lowerbound:compound.assignment.type.incompatible", // unsigned right shift
+    "lowerbound:compound.assignment.type.incompatible", // unsigned right shift on int
   }) 
   private static @NonNegative int encodedLengthGeneral(CharSequence sequence, @NonNegative/*!IndexFor("#1")*/ int start) {
     int utf16Length = sequence.length();
