@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.CollectPreconditions.checkNonnegative;
@@ -53,7 +54,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
 @SuppressWarnings("serial") // we're overriding default serialization
-public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements Set<E> {
+public abstract class ImmutableSet<E extends @NonNull Object> extends ImmutableCollection<E> implements Set<E> {
   static final int SPLITERATOR_CHARACTERISTICS =
       ImmutableCollection.SPLITERATOR_CHARACTERISTICS | Spliterator.DISTINCT;
 
@@ -451,7 +452,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    *
    * @since 2.0
    */
-  public static class Builder<E> extends ImmutableCollection.Builder<E> {
+  public static class Builder<E extends @NonNull Object> extends ImmutableCollection.Builder<E> {
     private SetBuilderImpl<E> impl;
     boolean forceCopy;
 

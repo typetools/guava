@@ -493,7 +493,7 @@ public final class Maps {
    *
    * @return a new, empty {@code IdentityHashMap}
    */
-  public static <K, V> IdentityHashMap<K, V> newIdentityHashMap() {
+  public static <K extends @Nullable Object, V extends @Nullable Object> IdentityHashMap<K, V> newIdentityHashMap() {
     return new IdentityHashMap<>();
   }
 
