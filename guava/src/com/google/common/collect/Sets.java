@@ -256,7 +256,7 @@ public final class Sets {
    *
    * <p>Overall, this method is not very useful and will likely be deprecated in the future.
    */
-  public static <E> HashSet<E> newHashSet(Iterable<? extends E> elements) {
+  public static <E extends @Nullable Object> HashSet<E> newHashSet(Iterable<? extends E> elements) {
     return (elements instanceof Collection)
         ? new HashSet<E>(Collections2.cast(elements))
         : newHashSet(elements.iterator());
@@ -292,7 +292,7 @@ public final class Sets {
    *     without resizing
    * @throws IllegalArgumentException if {@code expectedSize} is negative
    */
-  public static <E> HashSet<E> newHashSetWithExpectedSize(int expectedSize) {
+  public static <E extends @Nullable Object> HashSet<E> newHashSetWithExpectedSize(int expectedSize) {
     return new HashSet<E>(Maps.capacity(expectedSize));
   }
 

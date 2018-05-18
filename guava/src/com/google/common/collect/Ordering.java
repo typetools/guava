@@ -144,7 +144,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtCompatible
-public abstract class Ordering<T> implements Comparator<T> {
+public abstract class Ordering<T extends @Nullable Object> implements Comparator<T> {
   // Natural order
 
   /**
@@ -414,7 +414,7 @@ public abstract class Ordering<T> implements Comparator<T> {
   // type parameter <S> lets us avoid the extra <String> in statements like:
   // Ordering<String> o = Ordering.<String>natural().nullsFirst();
   @GwtCompatible(serializable = true)
-  public <S extends T> Ordering<S> nullsFirst() {
+  public <S extends T> Ordering<@Nullable S> nullsFirst() {
     return new NullsFirstOrdering<S>(this);
   }
 
@@ -427,7 +427,7 @@ public abstract class Ordering<T> implements Comparator<T> {
   // type parameter <S> lets us avoid the extra <String> in statements like:
   // Ordering<String> o = Ordering.<String>natural().nullsLast();
   @GwtCompatible(serializable = true)
-  public <S extends T> Ordering<S> nullsLast() {
+  public <S extends T> Ordering<@Nullable S> nullsLast() {
     return new NullsLastOrdering<S>(this);
   }
 
@@ -445,7 +445,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    * can omit the comparator if it is the natural order).
    */
   @GwtCompatible(serializable = true)
-  public <F> Ordering<F> onResultOf(Function<F, ? extends T> function) {
+  public <F extends @Nullable Object> Ordering<F> onResultOf(Function<F, ? extends T> function) {
     return new ByFunctionOrdering<>(function, this);
   }
 
@@ -491,7 +491,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    * @param comparators the comparators to try in order
    */
   @GwtCompatible(serializable = true)
-  public static <T> Ordering<T> compound(Iterable<? extends Comparator<? super T>> comparators) {
+  public static <T extends @Nullable Object > Ordering<T> compound(Iterable<? extends Comparator<? super T>> comparators) {
     return new CompoundOrdering<T>(comparators);
   }
 
