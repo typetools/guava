@@ -17,6 +17,7 @@ package com.google.common.util.concurrent;
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -64,7 +65,7 @@ import java.util.concurrent.TimeoutException;
 @CanIgnoreReturnValue
 @Deprecated
 @GwtCompatible
-public interface CheckedFuture<V, X extends Exception> extends ListenableFuture<V> {
+public interface CheckedFuture<V extends @Nullable Object, X extends Exception> extends ListenableFuture<V> {
 
   /**
    * Exception checking version of {@link Future#get()} that will translate {@link

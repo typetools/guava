@@ -18,6 +18,7 @@ import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Function;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
@@ -67,7 +68,7 @@ import java.util.concurrent.TimeoutException;
  */
 @Beta
 @GwtCompatible(emulated = true)
-public abstract class FluentFuture<V> extends GwtFluentFutureCatchingSpecialization<V> {
+public abstract class FluentFuture<V extends @Nullable Object> extends GwtFluentFutureCatchingSpecialization<V> {
   FluentFuture() {}
 
   /**

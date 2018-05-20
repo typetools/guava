@@ -17,6 +17,7 @@ package com.google.common.util.concurrent;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.concurrent.Executor;
 
 /**
@@ -31,7 +32,7 @@ import java.util.concurrent.Executor;
  */
 @CanIgnoreReturnValue // TODO(cpovirk): Consider being more strict.
 @GwtCompatible
-public abstract class ForwardingListenableFuture<V> extends ForwardingFuture<V>
+public abstract class ForwardingListenableFuture<V extends @Nullable Object> extends ForwardingFuture<V>
     implements ListenableFuture<V> {
 
   /** Constructor for use by subclasses. */
@@ -52,7 +53,7 @@ public abstract class ForwardingListenableFuture<V> extends ForwardingFuture<V>
    *
    * @since 9.0
    */
-  public abstract static class SimpleForwardingListenableFuture<V>
+  public abstract static class SimpleForwardingListenableFuture<V extends @Nullable Object>
       extends ForwardingListenableFuture<V> {
     private final ListenableFuture<V> delegate;
 
