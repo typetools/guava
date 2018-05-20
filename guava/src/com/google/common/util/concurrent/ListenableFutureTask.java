@@ -34,7 +34,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @since 1.0
  */
 @GwtIncompatible
-public class ListenableFutureTask<V> extends FutureTask<V> implements ListenableFuture<V> {
+public class ListenableFutureTask<V extends @Nullable Object> extends FutureTask<V> implements ListenableFuture<V> {
   // TODO(cpovirk): explore ways of making ListenableFutureTask final. There are some valid reasons
   // such as BoundedQueueExecutorService to allow extends but it would be nice to make it final to
   // avoid unintended usage.
@@ -49,7 +49,7 @@ public class ListenableFutureTask<V> extends FutureTask<V> implements Listenable
    * @param callable the callable task
    * @since 10.0
    */
-  public static <V> ListenableFutureTask<V> create(Callable<V> callable) {
+  public static <V extends @Nullable Object> ListenableFutureTask<V> create(Callable<V> callable) {
     return new ListenableFutureTask<V>(callable);
   }
 
@@ -63,7 +63,7 @@ public class ListenableFutureTask<V> extends FutureTask<V> implements Listenable
    *     ListenableFutureTask.create(runnable, null)}
    * @since 10.0
    */
-  public static <V> ListenableFutureTask<V> create(Runnable runnable, @Nullable V result) {
+  public static <V extends @Nullable Object> ListenableFutureTask<V> create(Runnable runnable, @Nullable V result) {
     return new ListenableFutureTask<V>(runnable, result);
   }
 
