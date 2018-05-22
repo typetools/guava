@@ -157,10 +157,10 @@
               </annotationProcessors>
               <compilerArgs>
                 <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
+                <arg>${index.only.arg}</arg>
                 <arg>-AprintErrorStack</arg>
                 <arg>-proc:only</arg>
                 <arg>-AonlyDefs=^com\.google\.common\.(?:${checkerframework.index.packages})\.</arg>
-                <arg>${index.only.arg}</arg>
               </compilerArgs>
             </configuration>
           </execution>
