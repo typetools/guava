@@ -1257,7 +1257,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     /*
      * If length() != 0, then sequence is MinLen(1), so 0 is LTLengthOf(sequence)
      */
-    @SuppressWarnings("return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/188
+    @SuppressWarnings("upperbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/188
     @Override
     public @IndexOrLow("#1") int indexIn(CharSequence sequence) {
       return (sequence.length() == 0) ? -1 : 0;
@@ -1266,7 +1266,7 @@ public abstract class CharMatcher implements Predicate<Character> {
     /*
      * If start != length(), then start is LTLengthOf(sequence)
      */
-    @SuppressWarnings("return.type.incompatible") // Refine index by comparison to length method
+    @SuppressWarnings("upperbound:return.type.incompatible") // Refine index by comparison to length method
     @Override
     public @IndexOrLow("#1") int indexIn(CharSequence sequence, @IndexOrHigh("#1") int start) {
       int length = sequence.length();
