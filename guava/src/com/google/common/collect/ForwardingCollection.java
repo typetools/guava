@@ -21,7 +21,7 @@ import com.google.common.base.Objects;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Collection;
 import java.util.Iterator;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -84,7 +84,7 @@ public abstract class ForwardingCollection<E> extends ForwardingObject implement
 
   @Pure
   @Override
-  public boolean contains(@org.checkerframework.checker.nullness.qual.Nullable Object object) {
+  public boolean contains(@Nullable Object object) {
     return delegate().contains(object);
   }
 
@@ -98,7 +98,7 @@ public abstract class ForwardingCollection<E> extends ForwardingObject implement
   @Override
   @SuppressWarnings("nullness")
   // Suppressed due to the annotations on ConcurrentMap
-  public boolean remove(@org.checkerframework.checker.nullness.qual.Nullable Object object) {
+  public boolean remove(@Nullable Object object) {
     return delegate().remove(object);
   }
 
@@ -132,7 +132,7 @@ public abstract class ForwardingCollection<E> extends ForwardingObject implement
   @Override
   @SuppressWarnings("nullness")
   // Suppressed due to annotations of toArray
-  public @org.checkerframework.checker.nullness.qual.Nullable Object[] toArray() {
+  public @Nullable Object[] toArray() {
     return delegate().toArray();
   }
 
@@ -150,7 +150,7 @@ public abstract class ForwardingCollection<E> extends ForwardingObject implement
    *
    * @since 7.0
    */
-  protected boolean standardContains(@NullableDecl Object object) {
+  protected boolean standardContains(@Nullable Object object) {
     return Iterators.contains(iterator(), object);
   }
 
@@ -182,7 +182,7 @@ public abstract class ForwardingCollection<E> extends ForwardingObject implement
    *
    * @since 7.0
    */
-  protected boolean standardRemove(@NullableDecl Object object) {
+  protected boolean standardRemove(@Nullable Object object) {
     Iterator<E> iterator = iterator();
     while (iterator.hasNext()) {
       if (Objects.equal(iterator.next(), object)) {

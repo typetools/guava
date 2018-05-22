@@ -40,7 +40,7 @@ import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -156,25 +156,25 @@ public final class LinkedHashMultimap<K, V>
   static final class ValueEntry<K, V> extends ImmutableEntry<K, V> implements ValueSetLink<K, V> {
     final int smearedValueHash;
 
-    @NullableDecl ValueEntry<K, V> nextInValueBucket;
+    @Nullable ValueEntry<K, V> nextInValueBucket;
 
-    @NullableDecl ValueSetLink<K, V> predecessorInValueSet;
-    @NullableDecl ValueSetLink<K, V> successorInValueSet;
+    @Nullable ValueSetLink<K, V> predecessorInValueSet;
+    @Nullable ValueSetLink<K, V> successorInValueSet;
 
-    @NullableDecl ValueEntry<K, V> predecessorInMultimap;
-    @NullableDecl ValueEntry<K, V> successorInMultimap;
+    @Nullable ValueEntry<K, V> predecessorInMultimap;
+    @Nullable ValueEntry<K, V> successorInMultimap;
 
     ValueEntry(
-        @NullableDecl K key,
-        @NullableDecl V value,
+        @Nullable K key,
+        @Nullable V value,
         int smearedValueHash,
-        @NullableDecl ValueEntry<K, V> nextInValueBucket) {
+        @Nullable ValueEntry<K, V> nextInValueBucket) {
       super(key, value);
       this.smearedValueHash = smearedValueHash;
       this.nextInValueBucket = nextInValueBucket;
     }
 
-    boolean matchesValue(@NullableDecl Object v, int smearedVHash) {
+    boolean matchesValue(@Nullable Object v, int smearedVHash) {
       return smearedValueHash == smearedVHash && Objects.equal(getValue(), v);
     }
 
@@ -266,7 +266,7 @@ public final class LinkedHashMultimap<K, V>
    */
   @CanIgnoreReturnValue
   @Override
-  public Set<V> replaceValues(@NullableDecl K key, Iterable<? extends V> values) {
+  public Set<V> replaceValues(@Nullable K key, Iterable<? extends V> values) {
     return super.replaceValues(key, values);
   }
 
@@ -373,7 +373,7 @@ public final class LinkedHashMultimap<K, V>
     public Iterator<V> iterator() {
       return new Iterator<V>() {
         ValueSetLink<K, V> nextEntry = firstEntry;
-        @NullableDecl ValueEntry<K, V> toRemove;
+        @Nullable ValueEntry<K, V> toRemove;
         int expectedModCount = modCount;
 
         private void checkForComodification() {
@@ -427,7 +427,7 @@ public final class LinkedHashMultimap<K, V>
     }
 
     @Override
-    public boolean contains(@NullableDecl Object o) {
+    public boolean contains(@Nullable Object o) {
       int smearedHash = Hashing.smearedHash(o);
       for (ValueEntry<K, V> entry = hashTable[smearedHash & mask()];
           entry != null;
@@ -440,7 +440,7 @@ public final class LinkedHashMultimap<K, V>
     }
 
     @Override
-    public boolean add(@NullableDecl V value) {
+    public boolean add(@Nullable V value) {
       int smearedHash = Hashing.smearedHash(value);
       int bucket = smearedHash & mask();
       ValueEntry<K, V> rowHead = hashTable[bucket];
@@ -481,7 +481,7 @@ public final class LinkedHashMultimap<K, V>
 
     @CanIgnoreReturnValue
     @Override
-    public boolean remove(@NullableDecl Object o) {
+    public boolean remove(@Nullable Object o) {
       int smearedHash = Hashing.smearedHash(o);
       int bucket = smearedHash & mask();
       ValueEntry<K, V> prev = null;
@@ -524,7 +524,7 @@ public final class LinkedHashMultimap<K, V>
   Iterator<Entry<K, V>> entryIterator() {
     return new Iterator<Entry<K, V>>() {
       ValueEntry<K, V> nextEntry = multimapHeaderEntry.successorInMultimap;
-      @NullableDecl ValueEntry<K, V> toRemove;
+      @Nullable ValueEntry<K, V> toRemove;
 
       @Override
       public boolean hasNext() {
@@ -618,8 +618,8 @@ public final class LinkedHashMultimap<K, V>
   private static final long serialVersionUID = 1;
 
 @Override
-public boolean equals(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.equals(arg0); }
+public boolean equals(@Nullable Object arg0) { return super.equals(arg0); }
 
 @Override
-public Set<V> removeAll(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.removeAll(arg0); }
+public Set<V> removeAll(@Nullable Object arg0) { return super.removeAll(arg0); }
 }

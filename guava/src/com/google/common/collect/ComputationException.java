@@ -17,7 +17,7 @@
 package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -30,7 +30,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @GwtCompatible
 public class ComputationException extends RuntimeException {
   /** Creates a new instance with the given cause. */
-  public ComputationException(@NullableDecl Throwable cause) {
+  public ComputationException(@Nullable Throwable cause) {
     super(cause);
   }
 

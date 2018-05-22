@@ -23,7 +23,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -61,7 +61,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
   protected abstract Multiset<E> delegate();
 
   @Override
-  public int count(@org.checkerframework.checker.nullness.qual.Nullable Object element) {
+  public int count(@Nullable Object element) {
     return delegate().count(element);
   }
 
@@ -73,7 +73,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
 
   @CanIgnoreReturnValue
   @Override
-  public int remove(@org.checkerframework.checker.nullness.qual.Nullable Object element, int occurrences) {
+  public int remove(@Nullable Object element, int occurrences) {
     return delegate().remove(element, occurrences);
   }
 
@@ -91,7 +91,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
 
   @Pure
   @Override
-  public boolean equals(@NullableDecl Object object) {
+  public boolean equals(@Nullable Object object) {
     return object == this || delegate().equals(object);
   }
 
@@ -120,7 +120,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    * @since 7.0
    */
   @Override
-  protected boolean standardContains(@NullableDecl Object object) {
+  protected boolean standardContains(@Nullable Object object) {
     return count(object) > 0;
   }
 
@@ -144,7 +144,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    * @since 7.0
    */
   @Beta
-  protected int standardCount(@NullableDecl Object object) {
+  protected int standardCount(@Nullable Object object) {
     for (Entry<?> entry : this.entrySet()) {
       if (Objects.equal(entry.getElement(), object)) {
         return entry.getCount();
@@ -293,7 +293,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    *
    * @since 7.0
    */
-  protected boolean standardEquals(@NullableDecl Object object) {
+  protected boolean standardEquals(@Nullable Object object) {
     return Multisets.equalsImpl(this, object);
   }
 

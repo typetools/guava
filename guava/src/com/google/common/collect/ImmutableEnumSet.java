@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Spliterator;
 import java.util.function.Consumer;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -89,7 +90,7 @@ final class ImmutableEnumSet<E extends Enum<E>> extends ImmutableSet<E> {
 
   @Pure
   @Override
-  public boolean contains(@org.checkerframework.checker.nullness.qual.Nullable Object object) {
+  public boolean contains(@Nullable Object object) {
     return delegate.contains(object);
   }
 
@@ -110,7 +111,7 @@ final class ImmutableEnumSet<E extends Enum<E>> extends ImmutableSet<E> {
 
   @Pure
   @Override
-  public boolean equals(@org.checkerframework.checker.nullness.qual.Nullable Object object) {
+  public boolean equals(@Nullable Object object) {
     if (object == this) {
       return true;
     }

@@ -41,7 +41,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.PolyLowerBound;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 
@@ -680,7 +680,7 @@ public final class Ints {
     }
 
     @Override
-    public boolean equals(@NullableDecl Object object) {
+    public boolean equals(@Nullable Object object) {
       if (object == this) {
         return true;
       }
@@ -743,8 +743,7 @@ public final class Ints {
    * @since 11.0
    */
   @Beta
-  @NullableDecl
-  public static Integer tryParse(String string) {
+  public static @Nullable Integer tryParse(String string) {
     return tryParse(string, 10);
   }
 
@@ -768,7 +767,7 @@ public final class Ints {
    * @since 19.0
    */
   @Beta
-  public static Integer tryParse(String string, @Positive int radix) {
+  public static @Nullable Integer tryParse(String string, int radix) {
     Long result = Longs.tryParse(string, radix);
     if (result == null || result.longValue() != result.intValue()) {
       return null;

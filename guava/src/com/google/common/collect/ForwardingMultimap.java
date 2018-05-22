@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -61,19 +61,19 @@ public abstract class ForwardingMultimap<K, V> extends ForwardingObject implemen
 
   @Pure
   @Override
-  public boolean containsEntry(@NullableDecl Object key, @NullableDecl Object value) {
+  public boolean containsEntry(@Nullable Object key, @Nullable Object value) {
     return delegate().containsEntry(key, value);
   }
 
   @Pure
   @Override
-  public boolean containsKey(@NullableDecl Object key) {
+  public boolean containsKey(@Nullable Object key) {
     return delegate().containsKey(key);
   }
 
   @Pure
   @Override
-  public boolean containsValue(@NullableDecl Object value) {
+  public boolean containsValue(@Nullable Object value) {
     return delegate().containsValue(value);
   }
 
@@ -84,7 +84,7 @@ public abstract class ForwardingMultimap<K, V> extends ForwardingObject implemen
   }
 
   @Override
-  public Collection<V> get(@NullableDecl K key) {
+  public Collection<V> get(@Nullable K key) {
     return delegate().get(key);
   }
 
@@ -125,13 +125,13 @@ public abstract class ForwardingMultimap<K, V> extends ForwardingObject implemen
 
   @CanIgnoreReturnValue
   @Override
-  public boolean remove(@NullableDecl Object key, @NullableDecl Object value) {
+  public boolean remove(@Nullable Object key, @Nullable Object value) {
     return delegate().remove(key, value);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public Collection<V> removeAll(@NullableDecl Object key) {
+  public Collection<V> removeAll(@Nullable Object key) {
     return delegate().removeAll(key);
   }
 
@@ -155,7 +155,7 @@ public abstract class ForwardingMultimap<K, V> extends ForwardingObject implemen
 
   @Pure
   @Override
-  public boolean equals(@NullableDecl Object object) {
+  public boolean equals(@Nullable Object object) {
     return object == this || delegate().equals(object);
   }
 

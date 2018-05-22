@@ -39,7 +39,7 @@ import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 
@@ -611,17 +611,13 @@ public final class Shorts {
     }
 
     @Override
-    public boolean contains(@NullableDecl Object target) {
+    public boolean contains(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Short) && Shorts.indexOf(array, (Short) target, start, end) != -1;
     }
 
     @Override
-    @SuppressWarnings({
-            "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-            "upperbound:return.type.incompatible" // custom coll. with size end-start
-    })
-    public @IndexOrLow("this") int indexOf(@NullableDecl Object target) {
+    public int indexOf(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Short) {
         int i = Shorts.indexOf(array, (Short) target, start, end);
@@ -633,11 +629,7 @@ public final class Shorts {
     }
 
     @Override
-    @SuppressWarnings({
-            "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-            "upperbound:return.type.incompatible" // custom coll. with size end-start
-    })
-    public @IndexOrLow("this") int lastIndexOf(@NullableDecl Object target) {
+    public int lastIndexOf(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Short) {
         int i = Shorts.lastIndexOf(array, (Short) target, start, end);
@@ -672,7 +664,7 @@ public final class Shorts {
     }
 
     @Override
-    public boolean equals(@NullableDecl Object object) {
+    public boolean equals(@Nullable Object object) {
       if (object == this) {
         return true;
       }

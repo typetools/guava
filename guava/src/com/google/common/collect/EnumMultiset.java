@@ -32,7 +32,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.ObjIntConsumer;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -98,7 +98,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
     this.counts = new int[enumConstants.length];
   }
 
-  private boolean isActuallyE(@NullableDecl Object o) {
+  private boolean isActuallyE(@Nullable Object o) {
     if (o instanceof Enum) {
       Enum<?> e = (Enum<?>) o;
       int index = e.ordinal();
@@ -112,7 +112,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
    * either a NullPointerException or a ClassCastException as appropriate.
    */
   @SuppressWarnings("unchecked")
-  void checkIsE(@NullableDecl Object element) {
+  void checkIsE(@Nullable Object element) {
     checkNotNull(element);
     if (!isActuallyE(element)) {
       throw new ClassCastException("Expected an " + type + " but got " + element);
@@ -130,7 +130,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   }
 
   @Override
-  public int count(@NullableDecl Object element) {
+  public int count(@Nullable Object element) {
     if (element == null || !isActuallyE(element)) {
       return 0;
     }
@@ -162,7 +162,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   // Modification Operations
   @CanIgnoreReturnValue
   @Override
-  public int remove(@NullableDecl Object element, int occurrences) {
+  public int remove(@Nullable Object element, int occurrences) {
     if (element == null || !isActuallyE(element)) {
       return 0;
     }
@@ -322,7 +322,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
 
 @Pure
 @Override
-public boolean contains(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.contains(arg0); }
+public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
 
 @Pure
 @Override

@@ -18,7 +18,7 @@ package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
 import java.util.Map;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -69,7 +69,7 @@ public interface MapDifference<K, V> {
    */
   @Pure
   @Override
-  boolean equals(@NullableDecl Object object);
+  boolean equals(@Nullable Object object);
 
   /**
    * Returns the hash code for this instance. This is defined as the hash code of
@@ -102,7 +102,7 @@ public interface MapDifference<K, V> {
      */
     @Pure
     @Override
-    boolean equals(@NullableDecl Object other);
+    boolean equals(@Nullable Object other);
 
     /**
      * The hash code equals the value {@code Arrays.asList(leftValue(), rightValue()).hashCode()}.

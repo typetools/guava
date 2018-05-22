@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -154,7 +154,7 @@ public final class Predicates {
    * Returns a predicate that evaluates to {@code true} if the object being tested {@code equals()}
    * the given target or both are null.
    */
-  public static <T> Predicate<T> equalTo(@NullableDecl T target) {
+  public static <T> Predicate<T> equalTo(@Nullable T target) {
     return (target == null) ? Predicates.<T>isNull() : new IsEqualToPredicate<T>(target);
   }
 
@@ -254,7 +254,7 @@ public final class Predicates {
     /** @see Predicates#alwaysTrue() */
     ALWAYS_TRUE {
       @Override
-      public boolean apply(@NullableDecl Object o) {
+      public boolean apply(@Nullable Object o) {
         return true;
       }
 
@@ -266,7 +266,7 @@ public final class Predicates {
     /** @see Predicates#alwaysFalse() */
     ALWAYS_FALSE {
       @Override
-      public boolean apply(@NullableDecl Object o) {
+      public boolean apply(@Nullable Object o) {
         return false;
       }
 
@@ -278,7 +278,7 @@ public final class Predicates {
     /** @see Predicates#isNull() */
     IS_NULL {
       @Override
-      public boolean apply(@NullableDecl Object o) {
+      public boolean apply(@Nullable Object o) {
         return o == null;
       }
 
@@ -290,7 +290,7 @@ public final class Predicates {
     /** @see Predicates#notNull() */
     NOT_NULL {
       @Override
-      public boolean apply(@NullableDecl Object o) {
+      public boolean apply(@Nullable Object o) {
         return o != null;
       }
 
@@ -315,7 +315,7 @@ public final class Predicates {
     }
 
     @Override
-    public boolean apply(@NullableDecl T t) {
+    public boolean apply(@Nullable T t) {
       return !predicate.apply(t);
     }
 
@@ -327,7 +327,7 @@ public final class Predicates {
 
     @Pure
     @Override
-    public boolean equals(@NullableDecl Object obj) {
+    public boolean equals(@Nullable Object obj) {
       if (obj instanceof NotPredicate) {
         NotPredicate<?> that = (NotPredicate<?>) obj;
         return predicate.equals(that.predicate);
@@ -353,7 +353,7 @@ public final class Predicates {
     }
 
     @Override
-    public boolean apply(@NullableDecl T t) {
+    public boolean apply(@Nullable T t) {
       // Avoid using the Iterator to avoid generating garbage (issue 820).
       for (int i = 0; i < components.size(); i++) {
         if (!components.get(i).apply(t)) {
@@ -372,7 +372,7 @@ public final class Predicates {
 
     @Pure
     @Override
-    public boolean equals(@NullableDecl Object obj) {
+    public boolean equals(@Nullable Object obj) {
       if (obj instanceof AndPredicate) {
         AndPredicate<?> that = (AndPredicate<?>) obj;
         return components.equals(that.components);
@@ -398,7 +398,7 @@ public final class Predicates {
     }
 
     @Override
-    public boolean apply(@NullableDecl T t) {
+    public boolean apply(@Nullable T t) {
       // Avoid using the Iterator to avoid generating garbage (issue 820).
       for (int i = 0; i < components.size(); i++) {
         if (components.get(i).apply(t)) {
@@ -417,7 +417,7 @@ public final class Predicates {
 
     @Pure
     @Override
-    public boolean equals(@NullableDecl Object obj) {
+    public boolean equals(@Nullable Object obj) {
       if (obj instanceof OrPredicate) {
         OrPredicate<?> that = (OrPredicate<?>) obj;
         return components.equals(that.components);
@@ -456,7 +456,7 @@ public final class Predicates {
     }
 
     @Override
-    public boolean apply(@org.checkerframework.checker.nullness.qual.Nullable T t) {
+    public boolean apply(@Nullable T t) {
       return target.equals(t);
     }
 
@@ -468,7 +468,7 @@ public final class Predicates {
 
     @Pure
     @Override
-    public boolean equals(@NullableDecl Object obj) {
+    public boolean equals(@Nullable Object obj) {
       if (obj instanceof IsEqualToPredicate) {
         IsEqualToPredicate<?> that = (IsEqualToPredicate<?>) obj;
         return target.equals(that.target);
@@ -495,7 +495,7 @@ public final class Predicates {
     }
 
     @Override
-    public boolean apply(@NullableDecl Object o) {
+    public boolean apply(@Nullable Object o) {
       return clazz.isInstance(o);
     }
 
@@ -507,7 +507,7 @@ public final class Predicates {
 
     @Pure
     @Override
-    public boolean equals(@NullableDecl Object obj) {
+    public boolean equals(@Nullable Object obj) {
       if (obj instanceof InstanceOfPredicate) {
         InstanceOfPredicate that = (InstanceOfPredicate) obj;
         return clazz == that.clazz;
@@ -544,7 +544,7 @@ public final class Predicates {
     }
 
     @Override
-    public boolean equals(@NullableDecl Object obj) {
+    public boolean equals(@Nullable Object obj) {
       if (obj instanceof SubtypeOfPredicate) {
         SubtypeOfPredicate that = (SubtypeOfPredicate) obj;
         return clazz == that.clazz;
@@ -569,7 +569,7 @@ public final class Predicates {
     }
 
     @Override
-    public boolean apply(@NullableDecl T t) {
+    public boolean apply(@Nullable T t) {
       try {
         return target.contains(t);
       } catch (NullPointerException | ClassCastException e) {
@@ -579,7 +579,7 @@ public final class Predicates {
 
     @Pure
     @Override
-    public boolean equals(@NullableDecl Object obj) {
+    public boolean equals(@Nullable Object obj) {
       if (obj instanceof InPredicate) {
         InPredicate<?> that = (InPredicate<?>) obj;
         return target.equals(that.target);
@@ -613,13 +613,13 @@ public final class Predicates {
     }
 
     @Override
-    public boolean apply(@NullableDecl A a) {
+    public boolean apply(@Nullable A a) {
       return p.apply(f.apply(a));
     }
 
     @Pure
     @Override
-    public boolean equals(@NullableDecl Object obj) {
+    public boolean equals(@Nullable Object obj) {
       if (obj instanceof CompositionPredicate) {
         CompositionPredicate<?, ?> that = (CompositionPredicate<?, ?>) obj;
         return f.equals(that.f) && p.equals(that.p);
@@ -666,7 +666,7 @@ public final class Predicates {
     }
 
     @Override
-    public boolean equals(@NullableDecl Object obj) {
+    public boolean equals(@Nullable Object obj) {
       if (obj instanceof ContainsPatternPredicate) {
         ContainsPatternPredicate that = (ContainsPatternPredicate) obj;
 

@@ -21,7 +21,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -52,7 +52,7 @@ public interface ListMultimap<K, V> extends Multimap<K, V> {
    * the {@link Multimap} interface.
    */
   @Override
-  List<V> get(@NullableDecl K key);
+  List<V> get(@Nullable K key);
 
   /**
    * {@inheritDoc}
@@ -63,7 +63,7 @@ public interface ListMultimap<K, V> extends Multimap<K, V> {
    */
   @CanIgnoreReturnValue
   @Override
-  List<V> removeAll(@NullableDecl Object key);
+  List<V> removeAll(@Nullable Object key);
 
   /**
    * {@inheritDoc}
@@ -97,5 +97,5 @@ public interface ListMultimap<K, V> extends Multimap<K, V> {
    */
   @Pure
   @Override
-  boolean equals(@NullableDecl Object obj);
+  boolean equals(@Nullable Object obj);
 }

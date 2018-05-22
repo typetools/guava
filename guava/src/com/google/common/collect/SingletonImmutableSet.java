@@ -19,6 +19,7 @@ package com.google.common.collect;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.concurrent.LazyInit;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -62,7 +63,7 @@ final class SingletonImmutableSet<E> extends ImmutableSet<E> {
 
   @Pure
   @Override
-  public boolean contains(@org.checkerframework.checker.nullness.qual.Nullable Object target) {
+  public boolean contains(@Nullable Object target) {
     return element.equals(target);
   }
 
@@ -111,5 +112,5 @@ final class SingletonImmutableSet<E> extends ImmutableSet<E> {
   }
 
 @Pure
-public boolean equals(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.equals(arg0); }
+public boolean equals(@Nullable Object arg0) { return super.equals(arg0); }
 }

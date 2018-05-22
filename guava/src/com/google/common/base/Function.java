@@ -16,7 +16,7 @@ package com.google.common.base;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -46,9 +46,9 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @FunctionalInterface
 public interface Function<F, T> extends java.util.function.Function<F, T> {
   @Override
-  @NullableDecl
+  @Nullable
   @CanIgnoreReturnValue // TODO(kevinb): remove this
-  T apply(@NullableDecl F input);
+  T apply(@Nullable F input);
 
   /**
    * <i>May</i> return {@code true} if {@code object} is a {@code Function} that behaves identically
@@ -63,5 +63,5 @@ public interface Function<F, T> extends java.util.function.Function<F, T> {
    */
   @Pure
   @Override
-  boolean equals(@NullableDecl Object object);
+  boolean equals(@Nullable Object object);
 }

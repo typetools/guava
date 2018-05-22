@@ -23,7 +23,7 @@ import com.google.common.annotations.GwtCompatible;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 import java.util.SortedMap;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -131,7 +131,7 @@ public abstract class ForwardingSortedMap<K, V> extends ForwardingMap<K, V>
    */
   @Override
   @Beta
-  protected boolean standardContainsKey(@NullableDecl Object key) {
+  protected boolean standardContainsKey(@Nullable Object key) {
     try {
       // any CCE will be caught
       @SuppressWarnings("unchecked")

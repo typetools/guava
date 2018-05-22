@@ -21,7 +21,7 @@ import java.io.Serializable;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.common.value.qual.ArrayLen;
 
 /**
@@ -186,7 +186,7 @@ public enum CaseFormat {
     }
 
     @Override
-    public boolean equals(@NullableDecl Object object) {
+    public boolean equals(@Nullable Object object) {
       if (object instanceof StringConverter) {
         StringConverter that = (StringConverter) object;
         return sourceFormat.equals(that.sourceFormat) && targetFormat.equals(that.targetFormat);

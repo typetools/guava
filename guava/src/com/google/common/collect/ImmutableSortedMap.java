@@ -39,7 +39,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -595,7 +595,7 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
   }
 
   @Override
-  public @org.checkerframework.checker.nullness.qual.Nullable V get(@NullableDecl Object key) {
+  public @Nullable V get(@Nullable Object key) {
     int index = keySet.indexOf(key);
     return (index == -1) ? null : valueList.get(index);
   }
@@ -660,7 +660,7 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
 
     @Pure
     @Override
-    public boolean contains(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.contains(arg0); }
+    public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
     }
     return isEmpty() ? ImmutableSet.<Entry<K, V>>of() : new EntrySet();
   }
@@ -961,5 +961,5 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
   private static final long serialVersionUID = 0;
 
 @Pure
-public boolean containsValue(@org.checkerframework.checker.nullness.qual.Nullable Object arg0) { return super.containsValue(arg0); }
+public boolean containsValue(@Nullable Object arg0) { return super.containsValue(arg0); }
 }
