@@ -617,7 +617,11 @@ public final class Shorts {
     }
 
     @Override
-    public int indexOf(@Nullable Object target) {
+    @SuppressWarnings({
+        "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
+        "upperbound:return.type.incompatible" // custom coll. with size end-start
+    })
+    public @IndexOrLow("this") int indexOf(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Short) {
         int i = Shorts.indexOf(array, (Short) target, start, end);
@@ -629,7 +633,11 @@ public final class Shorts {
     }
 
     @Override
-    public int lastIndexOf(@Nullable Object target) {
+    @SuppressWarnings({
+        "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
+        "upperbound:return.type.incompatible" // custom coll. with size end-start
+    })
+    public @IndexOrLow("this") int lastIndexOf(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Short) {
         int i = Shorts.lastIndexOf(array, (Short) target, start, end);
