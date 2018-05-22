@@ -131,7 +131,7 @@ public final class Utf8 {
    * @param len the number of bytes to read from the buffer
    */
   public static boolean isWellFormed(byte[] bytes, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
-    @IndexOrHigh("bytes") int end = off + len;
+    int end = off + len;
     checkPositionIndexes(off, end, bytes.length);
     // Look for the first non-ASCII character.
     for (int i = off; i < end; i++) {
