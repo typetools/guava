@@ -270,7 +270,7 @@ public final class Strings {
 
     // start substituting the arguments into the '%s' placeholders
     StringBuilder builder = new StringBuilder(template.length() + 16 * args.length);
-    int templateStart = 0;
+    @IndexOrHigh("template") int templateStart = 0;
     int i = 0;
     while (i < args.length) {
       int placeholderStart = template.indexOf("%s", templateStart);
