@@ -218,7 +218,7 @@ public final class Strings {
     checkNotNull(a);
     checkNotNull(b);
 
-    @IndexOrHigh({"a", "b"}) int maxSuffixLength = Math.min(a.length(), b.length());
+    int maxSuffixLength = Math.min(a.length(), b.length());
     @IndexOrHigh({"a", "b"}) int s = 0;
     while (s < maxSuffixLength && a.charAt(a.length() - s - 1) == b.charAt(b.length() - s - 1)) {
       s++;
