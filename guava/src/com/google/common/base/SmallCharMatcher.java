@@ -74,7 +74,7 @@ final class SmallCharMatcher extends NamedFastMatcher {
    */
   @VisibleForTesting
   @SuppressWarnings("lowerbound:assignment.type.incompatible") // bit operations
-  static @Positive int chooseTableSize(@IntRange(from=0, to=Character.MAX_VALUE) int setSize) {
+  static @Positive int chooseTableSize(@IntRange(from = 0, to = Character.MAX_VALUE) int setSize) {
     if (setSize == 1) {
       return 2;
     }

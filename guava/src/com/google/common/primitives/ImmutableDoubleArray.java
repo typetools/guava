@@ -334,7 +334,7 @@ public final class ImmutableDoubleArray implements Serializable {
       "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
       "contracts.postcondition.not.satisfied", // postcondition
     })
-    @EnsuresLTLengthOf(value="count", targetValue="array", offset="#1 - 1")
+    @EnsuresLTLengthOf(value = "count", targetValue = "array", offset = "#1 - 1")
     private void ensureRoomFor(@NonNegative int numberToAdd) {
       int newCount = count + numberToAdd; // TODO(kevinb): check overflow now?
       if (newCount > array.length) {

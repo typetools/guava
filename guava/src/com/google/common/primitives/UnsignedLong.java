@@ -121,7 +121,7 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
    *     Character#MAX_RADIX}
    */
   @CanIgnoreReturnValue
-  public static UnsignedLong valueOf(String string, @IntRange(from=Character.MIN_RADIX,to=Character.MAX_RADIX) int radix) {
+  public static UnsignedLong valueOf(String string, @IntRange(from = Character.MIN_RADIX, to = Character.MAX_RADIX) int radix) {
     return fromLongBits(UnsignedLongs.parseUnsignedLong(string, radix));
   }
 
@@ -259,7 +259,7 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
    * {@code radix < Character.MIN_RADIX} or {@code radix > Character.MAX_RADIX}, the radix {@code
    * 10} is used.
    */
-  public String toString(@IntRange(from=Character.MIN_RADIX,to=Character.MAX_RADIX) int radix) {
+  public String toString(@IntRange(from = Character.MIN_RADIX, to = Character.MAX_RADIX) int radix) {
     return UnsignedLongs.toString(value, radix);
   }
 }

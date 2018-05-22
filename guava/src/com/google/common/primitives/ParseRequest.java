@@ -36,7 +36,7 @@ final class ParseRequest {
 
     // Handle radix specifier if present
     String rawValue;
-    @IntRange(from=Character.MIN_RADIX,to=Character.MAX_RADIX) int radix;
+    @IntRange(from = Character.MIN_RADIX, to = Character.MAX_RADIX) int radix;
     char firstChar = stringValue.charAt(0);
     if (stringValue.startsWith("0x") || stringValue.startsWith("0X")) {
       rawValue = stringValue.substring(2);

@@ -57,7 +57,7 @@ public final class SignedBytes {
    * @throws IllegalArgumentException if {@code value} is greater than {@link Byte#MAX_VALUE} or
    *     less than {@link Byte#MIN_VALUE}
    */
-  public static byte checkedCast(@IntRange(from=Byte.MIN_VALUE, to = Byte.MAX_VALUE) long value) {
+  public static byte checkedCast(@IntRange(from = Byte.MIN_VALUE, to = Byte.MAX_VALUE) long value) {
     byte result = (byte) value;
     checkArgument(result == value, "Out of range: %s", value);
     return result;

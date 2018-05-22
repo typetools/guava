@@ -90,7 +90,7 @@ public final class UnsignedBytes {
    * @throws IllegalArgumentException if {@code value} is negative or greater than 255
    */
   @CanIgnoreReturnValue
-  public static byte checkedCast(@IntRange(from=0, to=255) long value) {
+  public static byte checkedCast(@IntRange(from = 0, to = 255) long value) {
     checkArgument(value >> Byte.SIZE == 0, "out of range: %s", value);
     return (byte) value;
   }

@@ -118,7 +118,7 @@ public final class Bytes {
    * @param target the array to search for as a sub-sequence of {@code array}
    */
   @SuppressWarnings("substringindex:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/206 https://github.com/kelloggm/checker-framework/issues/207 https://github.com/kelloggm/checker-framework/issues/208
-  public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset="#2.length - 1") int indexOf(byte[] array, byte[] target) {
+  public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset = "#2.length - 1") int indexOf(byte[] array, byte[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
     if (target.length == 0) {
@@ -273,7 +273,7 @@ public final class Bytes {
     @SuppressWarnings({
               "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
               "upperbound:return.type.incompatible"}) // custom coll. with size end-start
-    public @Positive @LTLengthOf(value = {"this","array"}, offset={"0","start - 1"}) int size() { // INDEX: Annotation on a public method refers to private member.
+    public @Positive @LTLengthOf(value = {"this","array"}, offset = {"0","start - 1"}) int size() { // INDEX: Annotation on a public method refers to private member.
       return end - start;
     }
 
@@ -283,7 +283,7 @@ public final class Bytes {
     }
 
     @Override
-    // array should be @LongerThanEq(value="this", offset="start")
+    // array should be @LongerThanEq(value="this", offset = "start")
     @SuppressWarnings("upperbound:array.access.unsafe.high") // custom coll. with size end-start
     public Byte get(@IndexFor("this") int index) {
       checkElementIndex(index, size());
@@ -329,7 +329,7 @@ public final class Bytes {
     }
 
     @Override
-    // array should be @LongerThanEq(value="this", offset="start")
+    // array should be @LongerThanEq(value="this", offset = "start")
     @SuppressWarnings("upperbound:array.access.unsafe.high") // custom coll. with size end-start
     public Byte set(@IndexFor("this") int index, Byte element) {
       checkElementIndex(index, size());
@@ -340,7 +340,7 @@ public final class Bytes {
     }
 
     @Override
-    // array should be @LongerThanEq(value="this", offset="start")
+    // array should be @LongerThanEq(value="this", offset = "start")
     @SuppressWarnings("upperbound:argument.type.incompatible") // custom coll. with size end-start
     public List<Byte> subList(@IndexOrHigh("this") int fromIndex, @IndexOrHigh("this") int toIndex) {
       int size = size();

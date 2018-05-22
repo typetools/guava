@@ -337,7 +337,7 @@ public final class UnsignedLongs {
    *     Long#parseLong(String)})
    */
   @CanIgnoreReturnValue
-  public static long parseUnsignedLong(String string, @IntRange(from=Character.MIN_RADIX,to=Character.MAX_RADIX) int radix) {
+  public static long parseUnsignedLong(String string, @IntRange(from = Character.MIN_RADIX, to = Character.MAX_RADIX) int radix) {
     checkNotNull(string);
     if (string.length() == 0) {
       throw new NumberFormatException("empty string");
@@ -419,7 +419,7 @@ public final class UnsignedLongs {
      * a number. Does not verify whether supplied radix is valid, passing an invalid radix will give
      * undefined results or an ArrayIndexOutOfBoundsException.
      */
-    static boolean overflowInParse(long current, int digit, @IntRange(from=Character.MIN_RADIX,to=Character.MAX_RADIX) int radix) {
+    static boolean overflowInParse(long current, int digit, @IntRange(from = Character.MIN_RADIX, to = Character.MAX_RADIX) int radix) {
       if (current >= 0) {
         if (current < maxValueDivs[radix]) {
           return false;
@@ -465,7 +465,7 @@ public final class UnsignedLongs {
     "lowerbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/193
     "lowerbound:array.access.unsafe.low", "lowerbound:compound.assignment.type.incompatible" // ulong converted to string is at most 64 chars
   })
-  public static String toString(long x, @IntRange(from=Character.MIN_RADIX,to=Character.MAX_RADIX) int radix) {
+  public static String toString(long x, @IntRange(from = Character.MIN_RADIX,to = Character.MAX_RADIX) int radix) {
     checkArgument(
         radix >= Character.MIN_RADIX && radix <= Character.MAX_RADIX,
         "radix (%s) must be between Character.MIN_RADIX and Character.MAX_RADIX",
