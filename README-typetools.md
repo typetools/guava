@@ -81,3 +81,7 @@ The Maven properties in guava/pom.xml can be used to change the behavior:
 - `checkerframework.checkers` defines which checkers are run during compilation
 - `checkerframework.suppress` defines warning keys suppressed during compilation
 - `checkerframework.index.packages` defines packages checked by the Index Checker 
+
+- `checkerframework.extraargs` defines additional argument passed to the checkers during compilation, for example `-Ashowchecks`.
+- `checkerframework.extraargs2` defines additional argument passed to the checkers during compilation, for example `-Aannotations`.
+- `index.only.arg` defines additional argument passed to the Index Checker, for example `-Ashowchecks`.
