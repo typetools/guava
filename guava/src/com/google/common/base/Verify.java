@@ -476,7 +476,7 @@ public final class Verify {
    */
   @CanIgnoreReturnValue
   @EnsuresNonNull("#1")
-  public static <T extends @Nullable Object> @NonNull T verifyNotNull(@Nullable T reference) {
+  public static <T> @NonNull T verifyNotNull(@NonNull T reference) {
     return verifyNotNull(reference, "expected a non-null reference");
   }
 
@@ -497,8 +497,8 @@ public final class Verify {
    */
   @CanIgnoreReturnValue
   @EnsuresNonNull("#1")
-  public static <T extends @Nullable Object> @NonNull T verifyNotNull(
-      @Nullable T reference,
+  public static <T> @NonNull T verifyNotNull(
+      @NonNull T reference,
       @Nullable String errorMessageTemplate,
       @Nullable Object @Nullable... errorMessageArgs) {
     verify(reference != null, errorMessageTemplate, errorMessageArgs);
