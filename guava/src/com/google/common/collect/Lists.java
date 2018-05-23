@@ -528,7 +528,6 @@ public final class Lists {
    * java.util.stream.Stream#map}. This method is not being deprecated, but we gently encourage you
    * to migrate to streams.
    */
-  @DefaultQualifier(value = Nullable.class, locations = TypeUseLocation.UPPER_BOUND)
   public static <F extends @Nullable Object, T extends @Nullable Object> List<T> transform(
       List<F> fromList, Function<? super F, ? extends T> function) {
     return (fromList instanceof RandomAccess)
