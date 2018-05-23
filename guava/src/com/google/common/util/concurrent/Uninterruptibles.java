@@ -189,7 +189,8 @@ public final class Uninterruptibles {
    * @throws CancellationException if the computation was cancelled
    */
   @CanIgnoreReturnValue
-  public static <V extends @Nullable Object> V getUninterruptibly(Future<V> future) throws ExecutionException {
+  public static <V extends @Nullable Object> V getUninterruptibly(Future<V> future)
+      throws ExecutionException {
     boolean interrupted = false;
     try {
       while (true) {

@@ -68,7 +68,8 @@ import java.util.concurrent.TimeoutException;
  */
 @Beta
 @GwtCompatible(emulated = true)
-public abstract class FluentFuture<V extends @Nullable Object> extends GwtFluentFutureCatchingSpecialization<V> {
+public abstract class FluentFuture<V extends @Nullable Object>
+    extends GwtFluentFutureCatchingSpecialization<V> {
   FluentFuture() {}
 
   /**

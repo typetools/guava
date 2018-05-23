@@ -189,8 +189,8 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
   // TODO(b/72241893): Remove by 2018-07
   @Deprecated
   @GwtIncompatible // TODO
-  public static <V extends @Nullable Object, X extends Exception> CheckedFuture<V, X> immediateCheckedFuture(
-      @Nullable V value) {
+  public static <V extends @Nullable Object, X extends Exception>
+  CheckedFuture<V, X> immediateCheckedFuture (@Nullable V value) {
     return new ImmediateSuccessfulCheckedFuture<>(value);
   }
 
@@ -201,7 +201,8 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    * returns {@code true}. Calling {@code get()} will immediately throw the provided {@code
    * Throwable} wrapped in an {@code ExecutionException}.
    */
-  public static <V extends @Nullable Object> ListenableFuture<V> immediateFailedFuture(Throwable throwable) {
+  public static <V extends @Nullable Object> ListenableFuture<V> immediateFailedFuture(
+      Throwable throwable) {
     checkNotNull(throwable);
     return new ImmediateFailedFuture<V>(throwable);
   }
@@ -627,7 +628,8 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    *     input's failure (if not)
    * @since 19.0 (in 11.0 as {@code transform})
    */
-  public static <I extends @Nullable Object, O extends @Nullable Object> ListenableFuture<O> transformAsync(
+  public static <I extends @Nullable Object, O extends @Nullable Object>
+  ListenableFuture<O> transformAsync(
       ListenableFuture<I> input,
       AsyncFunction<? super I, ? extends O> function,
       Executor executor) {
@@ -671,7 +673,8 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    */
   @Deprecated
   @DoNotCall
-  public static <I extends @Nullable Object, O extends @Nullable Object> ListenableFuture<O> transform(
+  public static <I extends @Nullable Object, O extends @Nullable Object>
+  ListenableFuture<O> transform(
       ListenableFuture<I> input, Function<? super I, ? extends O> function) {
     return AbstractTransformFuture.create(input, function, directExecutor());
   }
@@ -707,7 +710,8 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    * @return A future that holds result of the transformation.
    * @since 9.0 (in 2.0 as {@code compose})
    */
-  public static <I extends @Nullable Object, O extends @Nullable Object> ListenableFuture<O> transform(
+  public static <I extends @Nullable Object, O extends @Nullable Object>
+  ListenableFuture<O> transform(
       ListenableFuture<I> input, Function<? super I, ? extends O> function, Executor executor) {
     return AbstractTransformFuture.create(input, function, executor);
   }
@@ -790,7 +794,8 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    */
   @Beta
   @SafeVarargs
-  public static <V extends @Nullable Object> ListenableFuture<List<V>> allAsList(ListenableFuture<? extends V>... futures) {
+  public static <V extends @Nullable Object> ListenableFuture<List<V>> allAsList(
+      ListenableFuture<? extends V>... futures) {
     return new ListFuture<V>(ImmutableList.copyOf(futures), true);
   }
 
@@ -843,7 +848,8 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    * @since 20.0
    */
   @SafeVarargs
-  public static <V extends @Nullable Object> FutureCombiner<V> whenAllSucceed(ListenableFuture<? extends V>... futures) {
+  public static <V extends @Nullable Object> FutureCombiner<V> whenAllSucceed(
+      ListenableFuture<? extends V>... futures) {
     return new FutureCombiner<V>(true, ImmutableList.copyOf(futures));
   }
 

@@ -66,7 +66,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
 @SuppressWarnings("serial") // we're overriding default serialization
-public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull Object> implements Map<K, V>, Serializable {
+public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull Object>
+    implements Map<K, V>, Serializable {
 
   /**
    * Returns a {@link Collector} that accumulates elements into an {@code ImmutableMap} whose keys
