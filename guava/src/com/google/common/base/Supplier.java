@@ -40,7 +40,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @GwtCompatible
 @FunctionalInterface
-public interface Supplier<T extends @Nullable Object> extends java.util.function.Supplier<T> {
+public interface Supplier<T> extends java.util.function.Supplier<T> {
   /**
    * Retrieves an instance of the appropriate type. The returned object may or may not be a new
    * instance, depending on the implementation.
