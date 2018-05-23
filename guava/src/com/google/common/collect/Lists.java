@@ -85,7 +85,7 @@ public final class Lists {
    * directly, taking advantage of the new <a href="http://goo.gl/iz2Wi">"diamond" syntax</a>.
    */
   @GwtCompatible(serializable = true)
-  public static <E extends @Nullable Object> ArrayList<E> newArrayList() {
+  public static <E> ArrayList<E> newArrayList() {
     return new ArrayList<>();
   }
 
