@@ -21,6 +21,8 @@ import static com.google.common.base.Preconditions.checkPositionIndex;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.annotations.VisibleForTesting;
+import org.checkerframework.framework.qual.AnnotatedFor;
+
 import java.util.Arrays;
 import java.util.BitSet;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
@@ -67,6 +69,7 @@ import org.checkerframework.common.value.qual.IntVal;
  * @author Kevin Bourrillion
  * @since 1.0
  */
+@AnnotatedFor({"nullness"})
 @GwtCompatible(emulated = true)
 public abstract class CharMatcher implements Predicate<Character> {
   /*
