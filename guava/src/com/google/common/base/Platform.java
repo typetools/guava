@@ -14,6 +14,7 @@
 
 package com.google.common.base;
 
+import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import com.google.common.annotations.GwtCompatible;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
@@ -48,6 +49,15 @@ final class Platform {
     return matcher.precomputedInternal();
   }
 
+  /*
+   * Suppresses argument.type.incompatible for Optional.of method. Optional.of expects a non - null
+   * argument. In this case the argument is value returned from enumClass.cast. enumClass.cast will
+   * return null only in the case null is passed as an argument to it. In this case argument is the
+   * value returned by ref.get method where 'ref' is of type 'Reference.class' and it returns
+   * null only if the object to which this reference refers has been cleared or garbage collected
+   * which will not be the case during normal program execution.
+   */
+  @SuppressWarnings("argument.type.incompatible")
   static <T extends Enum<T>> Optional<T> getEnumIfPresent(Class<T> enumClass, String value) {
     WeakReference<? extends Enum<?>> ref = Enums.getEnumConstants(enumClass).get(value);
     return ref == null ? Optional.<T>absent() : Optional.of(enumClass.cast(ref.get()));
@@ -57,6 +67,7 @@ final class Platform {
     return String.format(Locale.ROOT, "%.4g", value);
   }
 
+  @EnsuresNonNullIf(result = false, expression = "#1")
   static boolean stringIsNullOrEmpty(@Nullable String string) {
     return string == null || string.isEmpty();
   }
@@ -65,7 +76,7 @@ final class Platform {
     return (string == null) ? "" : string;
   }
 
-  static String emptyToNull(@Nullable String string) {
+  static @Nullable String emptyToNull(@Nullable String string) {
     return stringIsNullOrEmpty(string) ? null : string;
   }
 
@@ -96,6 +107,9 @@ final class Platform {
     return new JdkPatternCompiler();
   }
 
+  @SuppressWarnings("nullness") // Missing annotated version of class java.util.logging.Level in
+  // annotated JDK for nullness.
+  // TODO (dilraj45): Update comments to contain link to pull requested Changes
   private static void logPatternCompilerError(ServiceConfigurationError e) {
     logger.log(Level.WARNING, "Error loading regex compiler, falling back to next option", e);
   }

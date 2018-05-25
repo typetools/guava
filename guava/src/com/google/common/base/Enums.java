@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Utility methods for working with {@link Enum} instances.
@@ -33,6 +34,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Steve McKay
  * @since 9.0
  */
+@AnnotatedFor({"nullness"})
 @GwtCompatible(emulated = true)
 public final class Enums {
 
@@ -74,6 +76,9 @@ public final class Enums {
       enumConstantCache = new WeakHashMap<>();
 
   @GwtIncompatible // java.lang.ref.WeakReference
+  @SuppressWarnings({"argument.type.incompatible", "iterating.over.nullable"})
+  // Missing annotated version of class java.util.EnumSet in annotated JDK for nullness
+  // TODO (dilraj45): Update comments to contain link to pull requested Changes
   private static <T extends Enum<T>> Map<String, WeakReference<? extends Enum<?>>> populateCache(
       Class<T> enumClass) {
     Map<String, WeakReference<? extends Enum<?>>> result = new HashMap<>();
