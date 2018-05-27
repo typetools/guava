@@ -133,6 +133,9 @@ public enum CaseFormat {
   @SuppressWarnings({
     "upperbound:assignment.type.incompatible", "upperbound:compound.assignment.type.incompatible", // refinement on multiple assignments in expression
     "upperbound:argument.type.incompatible", // length of sequence with ArrayLenRange in offset
+    "dereference.of.nullable" // Variable 'out' will never be dereferenced when it is null. If block
+    // with condition i == 0 allocates a non-null value to 'out' and is always executed prior to any
+    // statements that may dereference 'out', as per the flow of the method.
   })
   String convert(CaseFormat format, String s) {
     // deal with camel conversion

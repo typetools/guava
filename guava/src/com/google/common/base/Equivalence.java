@@ -20,6 +20,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.ForOverride;
 import java.io.Serializable;
 import java.util.function.BiPredicate;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -86,7 +87,7 @@ public abstract class Equivalence<T> implements BiPredicate<T, T> {
    * @since 10.0 (previously, subclasses would override equivalent())
    */
   @ForOverride
-  protected abstract boolean doEquivalent(T a, T b);
+  protected abstract boolean doEquivalent(@NonNull T a, @NonNull T b);
 
   /**
    * Returns a hash code for {@code t}.
@@ -122,7 +123,7 @@ public abstract class Equivalence<T> implements BiPredicate<T, T> {
    * @since 10.0 (previously, subclasses would override hash())
    */
   @ForOverride
-  protected abstract int doHash(T t);
+  protected abstract int doHash(@NonNull T t);
 
   /**
    * Returns a new equivalence relation for {@code F} which evaluates equivalence by first applying
