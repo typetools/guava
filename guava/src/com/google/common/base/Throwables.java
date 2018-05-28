@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -252,16 +253,20 @@ public final class Throwables {
    *
    * @throws IllegalArgumentException if there is a loop in the causal chain
    */
-  public static Throwable getRootCause(Throwable throwable) {
+  @SuppressWarnings("assignment.type.incompatible")
+  /*
+   * While looping over chain if getCause is to return a null value, then fast-pointer encounters it
+   * prior to slowPointer and it terminates the loop. Thus, slowPointer will never be null.
+   */
+  public static Throwable getRootCause(@NonNull Throwable throwable) {
     // Keep a second pointer that slowly walks the causal chain. If the fast pointer ever catches
     // the slower pointer, then there's a loop.
-    Throwable slowPointer = throwable;
+    @NonNull Throwable slowPointer = throwable;
     boolean advanceSlowPointer = false;
 
     Throwable cause;
     while ((cause = throwable.getCause()) != null) {
       throwable = cause;
-
       if (throwable == slowPointer) {
         throw new IllegalArgumentException("Loop in causal chain detected.", throwable);
       }
@@ -290,14 +295,19 @@ public final class Throwables {
    * @throws IllegalArgumentException if there is a loop in the causal chain
    */
   @Beta // TODO(kevinb): decide best return type
-  public static List<Throwable> getCausalChain(Throwable throwable) {
+  @SuppressWarnings("assignment.type.incompatible")
+  /*
+   * While looping over chain if getCause is to return a null value, then fast-pointer encounters it
+   * prior to slowPointer and it terminates the loop. Thus, slowPointer will never be null.
+   */
+  public static List<Throwable> getCausalChain(@NonNull Throwable throwable) {
     checkNotNull(throwable);
     List<Throwable> causes = new ArrayList<>(4);
     causes.add(throwable);
 
     // Keep a second pointer that slowly walks the causal chain. If the fast pointer ever catches
     // the slower pointer, then there's a loop.
-    Throwable slowPointer = throwable;
+    @NonNull Throwable slowPointer = throwable;
     boolean advanceSlowPointer = false;
 
     Throwable cause;
@@ -331,7 +341,7 @@ public final class Throwables {
    */
   @Beta
   @GwtIncompatible // Class.cast(Object)
-  public static <X extends Throwable> X getCauseAs(
+  public static <X extends Throwable> @Nullable X getCauseAs(
       Throwable throwable, Class<X> expectedCauseType) {
     try {
       return expectedCauseType.cast(throwable.getCause());
@@ -385,7 +395,7 @@ public final class Throwables {
   @Beta
   @GwtIncompatible // lazyStackTraceIsLazy, jlaStackTrace
   // TODO(cpovirk): Consider making this available under GWT (slow implementation only).
-  public static List<StackTraceElement> lazyStackTrace(Throwable throwable) {
+  public static List<@Nullable StackTraceElement> lazyStackTrace(Throwable throwable) {
     return lazyStackTraceIsLazy()
         ? jlaStackTrace(throwable)
         : unmodifiableList(asList(throwable.getStackTrace()));
@@ -404,7 +414,7 @@ public final class Throwables {
   }
 
   @GwtIncompatible // invokeAccessibleNonThrowingMethod
-  private static List<StackTraceElement> jlaStackTrace(final Throwable t) {
+  private static List<@Nullable StackTraceElement> jlaStackTrace(final Throwable t) {
     checkNotNull(t);
     /*
      * TODO(cpovirk): Consider optimizing iterator() to catch IOOBE instead of doing bounds checks.
@@ -412,9 +422,9 @@ public final class Throwables {
      * TODO(cpovirk): Consider the UnsignedBytes pattern if it performs faster and doesn't cause
      * AOSP grief.
      */
-    return new AbstractList<StackTraceElement>() {
+    return new AbstractList<@Nullable StackTraceElement>() {
       @Override
-      public StackTraceElement get(int n) {
+      public @Nullable StackTraceElement get(int n) {
         return (StackTraceElement)
             invokeAccessibleNonThrowingMethod(getStackTraceElementMethod, jla, t, n);
       }
@@ -427,7 +437,8 @@ public final class Throwables {
   }
 
   @GwtIncompatible // java.lang.reflect
-  private static Object invokeAccessibleNonThrowingMethod(
+  @SuppressWarnings("argument.type.incompatible") // propagate method is always throw an exception
+  private static @Nullable Object invokeAccessibleNonThrowingMethod(
       Method method, Object receiver, Object... params) {
     try {
       return method.invoke(receiver, params);
@@ -472,6 +483,11 @@ public final class Throwables {
    * AppEngine, and not present in non-Sun JDKs.
    */
   @GwtIncompatible // java.lang.reflect
+  @SuppressWarnings("argument.type.incompatible")
+  /*
+   * Suppressing conservatively issued warning. The method 'invoke' refers to the version that
+   * permits null as an argument
+   */
   private static @Nullable Object getJLA() {
     try {
       /*
@@ -511,6 +527,11 @@ public final class Throwables {
    * UnsupportedOperationException</a>.
    */
   @GwtIncompatible // java.lang.reflect
+  @SuppressWarnings("argument.type.incompatible")
+  /*
+   * Suppressing conservatively issued warning. The method 'invoke' here refers to version that
+   * permits null.
+   */
   private static @Nullable Method getSizeMethod() {
     try {
       Method getStackTraceDepth = getJlaMethod("getStackTraceDepth", Throwable.class);

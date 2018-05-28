@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -556,7 +557,12 @@ public final class Splitter {
        * offset is usually @LTEqLengthOf("toSplit")
        * offset > toSplit.length() can happen, but is immediately corrected to -1
        */
-      "upperbound:assignment.type.incompatible" // variable temporarily exceeds upper bound
+      "upperbound:assignment.type.incompatible", // variable temporarily exceeds upper bound
+      "return.type.incompatible" // cause of error: return value from endOfData which may return null
+      /*
+       * As per the documentation for AbstractIterator, If the endOfData is called during execution
+       * the return value will be ignored.
+       */
     })
     protected String computeNext() {
       /*

@@ -19,14 +19,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.annotations.GwtCompatible;
 import java.util.Collections;
 import java.util.Set;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /** Implementation of an {@link Optional} containing a reference. */
 @GwtCompatible
 final class Present<T> extends Optional<T> {
-  private final T reference;
+  @NonNull private final T reference;
 
-  Present(T reference) {
+  Present(@NonNull T reference) {
     this.reference = reference;
   }
 
@@ -36,12 +38,12 @@ final class Present<T> extends Optional<T> {
   }
 
   @Override
-  public T get() {
+  public @NonNull T get() {
     return reference;
   }
 
   @Override
-  public T or(T defaultValue) {
+  public @NonNull T or(@NonNull T defaultValue) {
     checkNotNull(defaultValue, "use Optional.orNull() instead of Optional.or(null)");
     return reference;
   }
@@ -53,7 +55,7 @@ final class Present<T> extends Optional<T> {
   }
 
   @Override
-  public T or(Supplier<? extends T> supplier) {
+  public @NonNull T or(Supplier<? extends T> supplier) {
     checkNotNull(supplier);
     return reference;
   }
@@ -64,12 +66,12 @@ final class Present<T> extends Optional<T> {
   }
 
   @Override
-  public Set<T> asSet() {
+  public Set<@NonNull T> asSet() {
     return Collections.singleton(reference);
   }
 
   @Override
-  public <V> Optional<V> transform(Function<? super T, V> function) {
+  public <V extends @NonNull Object> Optional<V> transform(Function<? super T, V> function) {
     return new Present<V>(
         checkNotNull(
             function.apply(reference),

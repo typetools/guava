@@ -15,6 +15,7 @@
 package com.google.common.base;
 
 import com.google.common.annotations.GwtIncompatible;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,7 +56,7 @@ final class JdkPattern extends CommonPattern implements Serializable {
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(@Nullable Object o) {
     if (!(o instanceof JdkPattern)) {
       return false;
     }
