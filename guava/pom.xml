@@ -23,6 +23,8 @@
     <checkerframework.suppress>index</checkerframework.suppress>
     <!-- Packages under com.google.common, that will be additionally checked by the Index Checker -->
     <checkerframework.index.packages>base|primitives</checkerframework.index.packages>
+    <!-- Packages under com.google.common, those are annotated for nullness checker-->
+    <checkerframework.nullness.packages>base</checkerframework.nullness.packages>
     <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
     <!-- Additional argument passed to the java compiler. Use to pass additional arguments to the checker framework. Example: -Ashowchecks -->
     <checkerframework.extraargs></checkerframework.extraargs>
@@ -32,6 +34,8 @@
     <check.index.phase>process-sources</check.index.phase>
     <!-- Additional argument passed to the Index Checker. Example: -Ashowchecks -->
     <index.only.arg></index.only.arg>
+    <!-- Additional argument passed to the Nullness Checker. -->
+    <nullness.only.arg></nullness.only.arg>
   </properties>
   <dependencies>
     <dependency>
@@ -157,6 +161,23 @@
                 <arg>-AprintErrorStack</arg>
                 <arg>-proc:only</arg>
                 <arg>-AonlyDefs=^com\.google\.common\.(?:${checkerframework.index.packages})\.</arg>
+              </compilerArgs>
+            </configuration>
+          </execution>
+          <!--- Running Nullness Checker on fully annotated packages and failing build in case
+          an exception is thrown by nullness checker-->
+          <execution>
+            <id>check-nullness</id>
+            <goals><goal>compile</goal></goals>
+            <configuration>
+              <annotationProcessors>
+                <annotationProcessor>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor>
+              </annotationProcessors>
+              <compilerArgs>
+                <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
+                <arg>-AprintErrorStack</arg>
+                <arg>${nullness.only.arg}</arg>
+                <arg>-AonlyDefs=^com\.google\.common\.(?:${checkerframework.nullness.packages})\.</arg>
               </compilerArgs>
             </configuration>
           </execution>
