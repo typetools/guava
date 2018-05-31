@@ -47,8 +47,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 public interface Function<F, T> extends java.util.function.Function<F, T> {
   @Override
   @CanIgnoreReturnValue // TODO(kevinb): remove this
-  @Nullable
-  T apply(@Nullable F input);
+  T apply(F input);
 
   /**
    * <i>May</i> return {@code true} if {@code object} is a {@code Function} that behaves identically

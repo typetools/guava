@@ -476,7 +476,8 @@ public abstract class FluentIterable<E> implements Iterable<E> {
    *
    * <p><b>{@code Stream} equivalent:</b> {@link Stream#map}.
    */
-  public final <T> FluentIterable<T> transform(Function<? super E, T> function) {
+  public final <T extends @Nullable Object> FluentIterable<T> transform(
+      Function<? super E, T> function) {
     return from(Iterables.transform(getDelegate(), function));
   }
 

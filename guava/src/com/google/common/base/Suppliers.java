@@ -122,6 +122,11 @@ public final class Suppliers {
     }
 
     @Override
+    @SuppressWarnings("return.type.incompatible")
+    /*
+     * This method is expected to be called only once and it ensures that variable 'value' is
+     * evaluated to delegate.get() before returning.
+     */
     public T get() {
       // A 2-field variant of Double Checked Locking.
       if (!initialized) {
@@ -149,7 +154,7 @@ public final class Suppliers {
 
   @VisibleForTesting
   static class NonSerializableMemoizingSupplier<T> implements Supplier<T> {
-    volatile Supplier<T> delegate;
+    @Nullable volatile Supplier<T> delegate;
     volatile boolean initialized;
     // "value" does not need to be volatile; visibility piggy-backs
     // on volatile read of "initialized".
@@ -160,6 +165,21 @@ public final class Suppliers {
     }
 
     @Override
+    @SuppressWarnings({
+      "dereference.of.nullable",
+      /*
+       * Cause of error dereference of possibly-null reference 'delegate'
+       * This method is expected to be called at most once. 'delegate' will always be null when an
+       * instance is constructed as it throws a NullPointerException in case a null argument is passed
+       * to constructor.
+       */
+      "return.type.incompatible"
+      /*
+       * This method is expected to be called only once and it ensures that variable 'value' is
+       * initialized with value evaluated by delegate.get() before returning.
+       */
+
+    })
     public T get() {
       // A 2-field variant of Double Checked Locking.
       if (!initialized) {
@@ -227,6 +247,12 @@ public final class Suppliers {
     }
 
     @Override
+    @SuppressWarnings("return.type.incompatible")
+    /*
+     * This method ensures that 'value' is always returned once it is initialized with value evaluated
+     * by delegate.get(). If block with nanos == 0 is evaluated first for special value 0 means
+     * "not yet initialized"
+     */
     public T get() {
       // Another variant of Double Checked Locking.
       //
@@ -263,14 +289,14 @@ public final class Suppliers {
   }
 
   /** Returns a supplier that always supplies {@code instance}. */
-  public static <T> Supplier<T> ofInstance(@Nullable T instance) {
+  public static <T> Supplier<T> ofInstance(T instance) {
     return new SupplierOfInstance<T>(instance);
   }
 
   private static class SupplierOfInstance<T> implements Supplier<T>, Serializable {
-    final @Nullable T instance;
+    final T instance;
 
-    SupplierOfInstance(@Nullable T instance) {
+    SupplierOfInstance(T instance) {
       this.instance = instance;
     }
 

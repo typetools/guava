@@ -41,6 +41,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.concurrent.locks.LockSupport;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -65,7 +66,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 @SuppressWarnings("ShortCircuitBoolean") // we use non-short circuiting comparisons intentionally
 @GwtCompatible(emulated = true)
 @ReflectionSupport(value = ReflectionSupport.Level.FULL)
-public abstract class AbstractFuture<V> extends FluentFuture<V> {
+public abstract class AbstractFuture<V extends @Nullable Object> extends FluentFuture<V> {
   // NOTE: Whenever both tests are cheap and functional, it's faster to use &, | instead of &&, ||
 
   private static final boolean GENERATE_CANCELLATION_CAUSES =
@@ -705,7 +706,7 @@ public abstract class AbstractFuture<V> extends FluentFuture<V> {
    * @return true if the attempt was accepted, completing the {@code Future}
    */
   @CanIgnoreReturnValue
-  protected boolean setException(Throwable throwable) {
+  protected boolean setException(@NonNull Throwable throwable) {
     Object valueToSet = new Failure(checkNotNull(throwable));
     if (ATOMIC_HELPER.casValue(this, null, valueToSet)) {
       complete(this);

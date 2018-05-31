@@ -160,7 +160,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    * getters just return the value. This {@code Future} can't be canceled or timed out and its
    * {@code isDone()} method always returns {@code true}.
    */
-  public static <V> ListenableFuture<V> immediateFuture(@Nullable V value) {
+  public static <V extends @Nullable Object> ListenableFuture<V> immediateFuture(@Nullable V value) {
     if (value == null) {
       // This cast is safe because null is assignable to V for all V (i.e. it is covariant)
       @SuppressWarnings({"unchecked", "rawtypes"})
@@ -189,8 +189,8 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
   // TODO(b/72241893): Remove by 2018-07
   @Deprecated
   @GwtIncompatible // TODO
-  public static <V, X extends Exception> CheckedFuture<V, X> immediateCheckedFuture(
-      @Nullable V value) {
+  public static <V extends @Nullable Object, X extends Exception>
+  CheckedFuture<V, X> immediateCheckedFuture (@Nullable V value) {
     return new ImmediateSuccessfulCheckedFuture<>(value);
   }
 
@@ -201,7 +201,8 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    * returns {@code true}. Calling {@code get()} will immediately throw the provided {@code
    * Throwable} wrapped in an {@code ExecutionException}.
    */
-  public static <V> ListenableFuture<V> immediateFailedFuture(Throwable throwable) {
+  public static <V extends @Nullable Object> ListenableFuture<V> immediateFailedFuture(
+      Throwable throwable) {
     checkNotNull(throwable);
     return new ImmediateFailedFuture<V>(throwable);
   }
@@ -212,7 +213,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    *
    * @since 14.0
    */
-  public static <V> ListenableFuture<V> immediateCancelledFuture() {
+  public static <V extends @Nullable Object> ListenableFuture<V> immediateCancelledFuture() {
     return new ImmediateCancelledFuture<V>();
   }
 
@@ -325,7 +326,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
   @Deprecated
   @DoNotCall
   @Partially.GwtIncompatible("AVAILABLE but requires exceptionType to be Throwable.class")
-  public static <V, X extends Throwable> ListenableFuture<V> catching(
+  public static <V extends @Nullable Object, X extends Throwable> ListenableFuture<V> catching(
       ListenableFuture<? extends V> input,
       Class<X> exceptionType,
       Function<? super X, ? extends V> fallback) {
@@ -371,7 +372,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    * @since 19.0
    */
   @Partially.GwtIncompatible("AVAILABLE but requires exceptionType to be Throwable.class")
-  public static <V, X extends Throwable> ListenableFuture<V> catching(
+  public static <V extends @Nullable Object, X extends Throwable> ListenableFuture<V> catching(
       ListenableFuture<? extends V> input,
       Class<X> exceptionType,
       Function<? super X, ? extends V> fallback,
@@ -446,7 +447,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
   @Deprecated
   @DoNotCall
   @Partially.GwtIncompatible("AVAILABLE but requires exceptionType to be Throwable.class")
-  public static <V, X extends Throwable> ListenableFuture<V> catchingAsync(
+  public static <V extends @Nullable Object, X extends Throwable> ListenableFuture<V> catchingAsync(
       ListenableFuture<? extends V> input,
       Class<X> exceptionType,
       AsyncFunction<? super X, ? extends V> fallback) {
@@ -514,7 +515,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    */
   @CanIgnoreReturnValue // TODO(kak): @CheckReturnValue
   @Partially.GwtIncompatible("AVAILABLE but requires exceptionType to be Throwable.class")
-  public static <V, X extends Throwable> ListenableFuture<V> catchingAsync(
+  public static <V extends @Nullable Object, X extends Throwable> ListenableFuture<V> catchingAsync(
       ListenableFuture<? extends V> input,
       Class<X> exceptionType,
       AsyncFunction<? super X, ? extends V> fallback,
@@ -586,7 +587,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    */
   @Deprecated
   @DoNotCall
-  public static <I, O> ListenableFuture<O> transformAsync(
+  public static <I extends @Nullable Object, O extends @Nullable Object> ListenableFuture<O> transformAsync(
       ListenableFuture<I> input, AsyncFunction<? super I, ? extends O> function) {
     return AbstractTransformFuture.create(input, function, directExecutor());
   }
@@ -627,7 +628,8 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    *     input's failure (if not)
    * @since 19.0 (in 11.0 as {@code transform})
    */
-  public static <I, O> ListenableFuture<O> transformAsync(
+  public static <I extends @Nullable Object, O extends @Nullable Object>
+  ListenableFuture<O> transformAsync(
       ListenableFuture<I> input,
       AsyncFunction<? super I, ? extends O> function,
       Executor executor) {
@@ -671,7 +673,8 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    */
   @Deprecated
   @DoNotCall
-  public static <I, O> ListenableFuture<O> transform(
+  public static <I extends @Nullable Object, O extends @Nullable Object>
+  ListenableFuture<O> transform(
       ListenableFuture<I> input, Function<? super I, ? extends O> function) {
     return AbstractTransformFuture.create(input, function, directExecutor());
   }
@@ -707,7 +710,8 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    * @return A future that holds result of the transformation.
    * @since 9.0 (in 2.0 as {@code compose})
    */
-  public static <I, O> ListenableFuture<O> transform(
+  public static <I extends @Nullable Object, O extends @Nullable Object>
+  ListenableFuture<O> transform(
       ListenableFuture<I> input, Function<? super I, ? extends O> function, Executor executor) {
     return AbstractTransformFuture.create(input, function, executor);
   }
@@ -790,7 +794,8 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    */
   @Beta
   @SafeVarargs
-  public static <V> ListenableFuture<List<V>> allAsList(ListenableFuture<? extends V>... futures) {
+  public static <V extends @Nullable Object> ListenableFuture<List<V>> allAsList(
+      ListenableFuture<? extends V>... futures) {
     return new ListFuture<V>(ImmutableList.copyOf(futures), true);
   }
 
@@ -808,7 +813,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    * @since 10.0
    */
   @Beta
-  public static <V> ListenableFuture<List<V>> allAsList(
+  public static <V extends @Nullable Object> ListenableFuture<List<V>> allAsList(
       Iterable<? extends ListenableFuture<? extends V>> futures) {
     return new ListFuture<V>(ImmutableList.copyOf(futures), true);
   }
@@ -843,7 +848,8 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    * @since 20.0
    */
   @SafeVarargs
-  public static <V> FutureCombiner<V> whenAllSucceed(ListenableFuture<? extends V>... futures) {
+  public static <V extends @Nullable Object> FutureCombiner<V> whenAllSucceed(
+      ListenableFuture<? extends V>... futures) {
     return new FutureCombiner<V>(true, ImmutableList.copyOf(futures));
   }
 
@@ -854,7 +860,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    *
    * @since 20.0
    */
-  public static <V> FutureCombiner<V> whenAllSucceed(
+  public static <V extends @Nullable Object> FutureCombiner<V> whenAllSucceed(
       Iterable<? extends ListenableFuture<? extends V>> futures) {
     return new FutureCombiner<V>(true, ImmutableList.copyOf(futures));
   }
@@ -1077,7 +1083,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    * @since 10.0
    */
   @Beta
-  public static <V> ListenableFuture<List<V>> successfulAsList(
+  public static <V extends @Nullable Object> ListenableFuture<List<V>> successfulAsList(
       Iterable<? extends ListenableFuture<? extends V>> futures) {
     return new ListFuture<V>(ImmutableList.copyOf(futures), false);
   }
@@ -1279,7 +1285,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    */
   @Deprecated
   @DoNotCall
-  public static <V> void addCallback(
+  public static <V extends @Nullable Object> void addCallback(
       ListenableFuture<V> future, FutureCallback<? super V> callback) {
     addCallback(future, callback, directExecutor());
   }
@@ -1322,7 +1328,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    * @param executor The executor to run {@code callback} when the future completes.
    * @since 10.0
    */
-  public static <V> void addCallback(
+  public static <V extends @Nullable Object> void addCallback(
       final ListenableFuture<V> future,
       final FutureCallback<? super V> callback,
       Executor executor) {
@@ -1382,7 +1388,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    */
   @CanIgnoreReturnValue
   // TODO(cpovirk): Consider calling getDone() in our own code.
-  public static <V> V getDone(Future<V> future) throws ExecutionException {
+  public static <V extends @Nullable Object> V getDone(Future<V> future) throws ExecutionException {
     /*
      * We throw IllegalStateException, since the call could succeed later. Perhaps we "should" throw
      * IllegalArgumentException, since the call could succeed with a different argument. Those
@@ -1532,7 +1538,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    * @since 10.0
    */
   @CanIgnoreReturnValue
-  public static <V> V getUnchecked(Future<V> future) {
+  public static <V extends @Nullable Object> V getUnchecked(Future<V> future) {
     checkNotNull(future);
     try {
       return getUninterruptibly(future);

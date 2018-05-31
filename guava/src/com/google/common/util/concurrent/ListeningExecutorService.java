@@ -15,6 +15,7 @@
 package com.google.common.util.concurrent;
 
 import com.google.common.annotations.GwtIncompatible;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -38,7 +39,7 @@ public interface ListeningExecutorService extends ExecutorService {
    * @throws RejectedExecutionException {@inheritDoc}
    */
   @Override
-  <T> ListenableFuture<T> submit(Callable<T> task);
+  <T extends @Nullable Object> ListenableFuture<T> submit(Callable<T> task);
 
   /**
    * @return a {@code ListenableFuture} representing pending completion of the task

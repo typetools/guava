@@ -61,6 +61,9 @@ public class Finalizer implements Runnable {
    *     either when the FinalizableReferenceQueue is no longer referenced anywhere, or when its
    *     close() method is called.
    */
+  @SuppressWarnings("argument.type.incompatible") // missing annotation in annotated-JDK
+  // TODO (dilraj45): Update comments with link to pull request for annotating newInstance method of
+  // class Constructor
   public static void startFinalizer(
       Class<?> finalizableReferenceClass,
       ReferenceQueue<Object> queue,

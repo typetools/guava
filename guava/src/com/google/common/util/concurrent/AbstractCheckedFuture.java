@@ -17,6 +17,7 @@ package com.google.common.util.concurrent;
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -40,7 +41,7 @@ import java.util.concurrent.TimeoutException;
 @Beta
 @Deprecated
 @GwtIncompatible
-public abstract class AbstractCheckedFuture<V, X extends Exception>
+public abstract class AbstractCheckedFuture<V extends @Nullable Object, X extends Exception>
     extends ForwardingListenableFuture.SimpleForwardingListenableFuture<V>
     implements CheckedFuture<V, X> {
   /** Constructs an {@code AbstractCheckedFuture} that wraps a delegate. */

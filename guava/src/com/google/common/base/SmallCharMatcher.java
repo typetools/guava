@@ -21,6 +21,7 @@ import java.util.BitSet;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * An immutable version of CharMatcher for smallish sets of characters that uses a hash table with
@@ -28,6 +29,7 @@ import org.checkerframework.common.value.qual.MinLen;
  *
  * @author Christopher Swenson
  */
+@AnnotatedFor({"nullness"})
 @GwtIncompatible // no precomputation is done in GWT
 final class SmallCharMatcher extends NamedFastMatcher {
   static final int MAX_SIZE = 1023;

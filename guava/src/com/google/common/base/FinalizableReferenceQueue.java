@@ -144,7 +144,7 @@ public class FinalizableReferenceQueue implements Closeable {
   }
 
   /** The actual reference queue that our background thread will poll. */
-  final ReferenceQueue<Object> queue;
+  final ReferenceQueue<@Nullable Object> queue;
 
   final PhantomReference<Object> frqRef;
 
@@ -152,6 +152,23 @@ public class FinalizableReferenceQueue implements Closeable {
   final boolean threadStarted;
 
   /** Constructs a new queue. */
+  @SuppressWarnings({
+    "assignment.type.incompatible",
+    /*
+     * Cause: Assignment of @UnderInitialization reference of PhantomReference to frqRef
+     * Referent that is being passed to constructor is reference to current object itself. As it
+     * itself is not yet initialized processor labels the returned object as @UnderInitialization
+     * reference to type PhantomReference. As all the required fields for instantiation of
+     * PhantomReference are already initialized before calling the constructor. Thus returned object
+     * can be assumed to be completely initialized.
+     */
+    "argument.type.incompatible"
+    /*
+     * Cause: Passing @UnderInitialization reference to current object to PhantomReference.
+     * All the fields required for instantiation of PhantomReference
+     * are already initialized before calling the constructor of PhantomReference.
+     */
+  })
   public FinalizableReferenceQueue() {
     // We could start the finalizer lazily, but I'd rather it blow up early.
     queue = new ReferenceQueue<>();
@@ -299,7 +316,12 @@ public class FinalizableReferenceQueue implements Closeable {
     }
 
     /** Gets URL for base of path containing Finalizer.class. */
-    @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/203
+    @SuppressWarnings({
+      "lowerbound:argument.type.incompatible",
+      // https://github.com/kelloggm/checker-framework/issues/203
+      "dereference.of.nullable"
+      // getClassLoader returns null only of if this object represents a primitive type or void
+    })
     URL getBaseUrl() throws IOException {
       // Find URL pointing to Finalizer.class file.
       String finalizerPath = FINALIZER_CLASS_NAME.replace('.', '/') + ".class";
@@ -318,6 +340,8 @@ public class FinalizableReferenceQueue implements Closeable {
     }
 
     /** Creates a class loader with the given base URL as its classpath. */
+    @SuppressWarnings("argument.type.incompatible") // Unannotated class URLClassLoader
+    // TODO (dilraj45): Add link to pull request for annotating URLCLassLoader
     URLClassLoader newLoader(URL base) {
       // We use the bootstrap class loader as the parent because Finalizer by design uses
       // only standard Java classes. That also means that FinalizableReferenceQueueTest

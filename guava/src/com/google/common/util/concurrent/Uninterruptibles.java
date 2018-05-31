@@ -21,6 +21,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CountDownLatch;
@@ -188,7 +189,8 @@ public final class Uninterruptibles {
    * @throws CancellationException if the computation was cancelled
    */
   @CanIgnoreReturnValue
-  public static <V> V getUninterruptibly(Future<V> future) throws ExecutionException {
+  public static <V extends @Nullable Object> V getUninterruptibly(Future<V> future)
+      throws ExecutionException {
     boolean interrupted = false;
     try {
       while (true) {

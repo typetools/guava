@@ -24,6 +24,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.framework.qual.EnsuresQualifierIf;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code String} or {@code CharSequence} instances.
@@ -31,6 +32,7 @@ import org.checkerframework.framework.qual.EnsuresQualifierIf;
  * @author Kevin Bourrillion
  * @since 3.0
  */
+@AnnotatedFor({"nullness"})
 @GwtCompatible
 public final class Strings {
   private Strings() {}

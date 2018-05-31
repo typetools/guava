@@ -73,6 +73,13 @@ abstract class AbstractIterator<T> implements Iterator<T> {
   }
 
   @Override
+  @SuppressWarnings("return.type.incompatible") // warning is being issued for difference in super
+  // bound for next and the expected return type. If type is qualified with @Nullable annotation
+  // during instantiation then there should be no discrepancy as both will have @Nullable as lower
+  // bound. While in case it is qualified to be @NonNull, result will always be allocated a non-null
+  // value for it is being called after hasNext method. Which ensures that next contains reference to
+  // next element. In case there is no next element hasNext returns false thus leading to exception:
+  // NoSuchElementException
   public final T next() {
     if (!hasNext()) {
       throw new NoSuchElementException();
