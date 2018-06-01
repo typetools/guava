@@ -122,6 +122,8 @@ public final class Suppliers {
     }
 
     @Override
+    @SuppressWarnings("return.type.incompatible") // This method is expected to be called only once
+    // and it ensures the variables is assigned value returned by delegate.get before returning
     public T get() {
       // A 2-field variant of Double Checked Locking.
       if (!initialized) {
@@ -149,7 +151,7 @@ public final class Suppliers {
 
   @VisibleForTesting
   static class NonSerializableMemoizingSupplier<T> implements Supplier<T> {
-    volatile Supplier<T> delegate;
+    @Nullable volatile Supplier<T> delegate;
     volatile boolean initialized;
     // "value" does not need to be volatile; visibility piggy-backs
     // on volatile read of "initialized".
@@ -160,6 +162,12 @@ public final class Suppliers {
     }
 
     @Override
+    @SuppressWarnings({
+      "dereference.of.nullable", // This method is expected to be called at most once. 'delegate'
+      // is ensured to be non-null when the object is constructed.
+      "return.type.incompatible" // This method ensures that variable 'value' is initialized with
+      // value evaluated by delegate.get() before returning.
+    })
     public T get() {
       // A 2-field variant of Double Checked Locking.
       if (!initialized) {
@@ -227,6 +235,9 @@ public final class Suppliers {
     }
 
     @Override
+    @SuppressWarnings("return.type.incompatible") // This method ensures that 'value' is always
+    // initialized before returning. 'If' block for nanos == 0 is evaluated prior to returning in
+    // case it is not initialized
     public T get() {
       // Another variant of Double Checked Locking.
       //
@@ -263,14 +274,14 @@ public final class Suppliers {
   }
 
   /** Returns a supplier that always supplies {@code instance}. */
-  public static <T> Supplier<T> ofInstance(@Nullable T instance) {
+  public static <T> Supplier<T> ofInstance(T instance) {
     return new SupplierOfInstance<T>(instance);
   }
 
   private static class SupplierOfInstance<T> implements Supplier<T>, Serializable {
-    final @Nullable T instance;
+    final T instance;
 
-    SupplierOfInstance(@Nullable T instance) {
+    SupplierOfInstance(T instance) {
       this.instance = instance;
     }
 

@@ -556,7 +556,9 @@ public final class Splitter {
        * offset is usually @LTEqLengthOf("toSplit")
        * offset > toSplit.length() can happen, but is immediately corrected to -1
        */
-      "upperbound:assignment.type.incompatible" // variable temporarily exceeds upper bound
+      "upperbound:assignment.type.incompatible", // variable temporarily exceeds upper bound
+      "return.type.incompatible" // If endOfData is called during execution return value is ignored
+      // by AbstractIterator
     })
     protected String computeNext() {
       /*

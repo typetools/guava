@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Static utility methods pertaining to {@code Predicate} instances.
@@ -315,7 +316,7 @@ public final class Predicates {
     }
 
     @Override
-    public boolean apply(@Nullable T t) {
+    public boolean apply(@NonNull T t) {
       return !predicate.apply(t);
     }
 
@@ -353,7 +354,7 @@ public final class Predicates {
     }
 
     @Override
-    public boolean apply(@Nullable T t) {
+    public boolean apply(@NonNull T t) {
       // Avoid using the Iterator to avoid generating garbage (issue 820).
       for (int i = 0; i < components.size(); i++) {
         if (!components.get(i).apply(t)) {
@@ -398,7 +399,7 @@ public final class Predicates {
     }
 
     @Override
-    public boolean apply(@Nullable T t) {
+    public boolean apply(@NonNull T t) {
       // Avoid using the Iterator to avoid generating garbage (issue 820).
       for (int i = 0; i < components.size(); i++) {
         if (components.get(i).apply(t)) {
@@ -449,9 +450,9 @@ public final class Predicates {
 
   /** @see Predicates#equalTo(Object) */
   private static class IsEqualToPredicate<T> implements Predicate<T>, Serializable {
-    private final T target;
+    @NonNull private final T target;
 
-    private IsEqualToPredicate(T target) {
+    private IsEqualToPredicate(@NonNull T target) {
       this.target = target;
     }
 
@@ -605,7 +606,7 @@ public final class Predicates {
   /** @see Predicates#compose(Predicate, Function) */
   private static class CompositionPredicate<A, B> implements Predicate<A>, Serializable {
     final Predicate<B> p;
-    final Function<A, ? extends B> f;
+    final Function<A, ? extends @NonNull B> f;
 
     private CompositionPredicate(Predicate<B> p, Function<A, ? extends B> f) {
       this.p = checkNotNull(p);
@@ -613,7 +614,7 @@ public final class Predicates {
     }
 
     @Override
-    public boolean apply(@Nullable A a) {
+    public boolean apply(A a) {
       return p.apply(f.apply(a));
     }
 
@@ -717,7 +718,7 @@ public final class Predicates {
     return defensiveCopy(Arrays.asList(array));
   }
 
-  static <T> List<T> defensiveCopy(Iterable<T> iterable) {
+  static <T extends @NonNull Object> List<T> defensiveCopy(Iterable<T> iterable) {
     ArrayList<T> list = new ArrayList<T>();
     for (T element : iterable) {
       list.add(checkNotNull(element));
