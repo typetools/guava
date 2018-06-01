@@ -21,7 +21,10 @@ import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Set;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * An immutable object that may contain a non-null reference to another object. Each instance of
@@ -79,8 +82,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Kevin Bourrillion
  * @since 10.0
  */
+@AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true)
-public abstract class Optional<T> implements Serializable {
+public abstract @NonNull class Optional<T> implements Serializable {
   /**
    * Returns an {@code Optional} instance with no contained reference.
    *
@@ -99,7 +103,7 @@ public abstract class Optional<T> implements Serializable {
    *
    * @throws NullPointerException if {@code reference} is null
    */
-  public static <T> Optional<T> of(T reference) {
+  public static <T> Optional<T> of(@NonNull T reference) {
     return new Present<T>(checkNotNull(reference));
   }
 
@@ -120,8 +124,10 @@ public abstract class Optional<T> implements Serializable {
    *
    * @since 21.0
    */
-  public static <T> @Nullable Optional<T> fromJavaUtil(
-      java.util.@Nullable Optional<T> javaUtilOptional) {
+  @SuppressWarnings("return.type.incompatible") // Known issue with behaviour of @PolyNull with
+  // ternary operator, see: https://github.com/typetools/checker-framework/issues/1170
+  public static <T> @PolyNull Optional<T> fromJavaUtil(
+      java.util.@PolyNull Optional<T> javaUtilOptional) {
     return (javaUtilOptional == null) ? null : fromNullable(javaUtilOptional.orElse(null));
   }
 
@@ -138,8 +144,10 @@ public abstract class Optional<T> implements Serializable {
    *
    * @since 21.0
    */
-  public static <T> java.util.@Nullable Optional<T> toJavaUtil(
-      @Nullable Optional<T> googleOptional) {
+  @SuppressWarnings("return.type.incompatible") // Known issue with behaviour of @PolyNull with
+  // ternary operator, see: https://github.com/typetools/checker-framework/issues/1170
+  public static <T> java.util.@PolyNull Optional<T> toJavaUtil(
+      @PolyNull Optional<T> googleOptional) {
     return googleOptional == null ? null : googleOptional.toJavaUtil();
   }
 
@@ -177,7 +185,7 @@ public abstract class Optional<T> implements Serializable {
    *     false}); depending on this <i>specific</i> exception type (over the more general {@link
    *     RuntimeException}) is discouraged
    */
-  public abstract T get();
+  public abstract @NonNull T get();
 
   /**
    * Returns the contained instance if it is present; {@code defaultValue} otherwise. If no default
@@ -215,7 +223,7 @@ public abstract class Optional<T> implements Serializable {
    * must be used instead). As a result, the value returned by this method is guaranteed non-null,
    * which is not the case for the {@code java.util} equivalent.
    */
-  public abstract T or(T defaultValue);
+  public abstract @NonNull T or(@NonNull T defaultValue);
 
   /**
    * Returns this {@code Optional} if it has a value present; {@code secondChoice} otherwise.
@@ -237,7 +245,7 @@ public abstract class Optional<T> implements Serializable {
    *     null}
    */
   @Beta
-  public abstract T or(Supplier<? extends T> supplier);
+  public abstract @NonNull T or(Supplier<? extends @NonNull T> supplier);
 
   /**
    * Returns the contained instance if it is present; {@code null} otherwise. If the instance is
@@ -269,7 +277,7 @@ public abstract class Optional<T> implements Serializable {
    *
    * @since 11.0
    */
-  public abstract Set<T> asSet();
+  public abstract Set<@NonNull T> asSet();
 
   /**
    * If the instance is present, it is transformed with the given {@link Function}; otherwise,
@@ -282,7 +290,7 @@ public abstract class Optional<T> implements Serializable {
    * @throws NullPointerException if the function returns {@code null}
    * @since 12.0
    */
-  public abstract <V> Optional<V> transform(Function<? super T, V> function);
+  public abstract <V extends @NonNull Object> Optional<V> transform(Function<? super T, V> function);
 
   /**
    * Returns {@code true} if {@code object} is an {@code Optional} instance, and either the
