@@ -136,13 +136,12 @@ public enum CaseFormat {
   })
   String convert(CaseFormat format, String s) {
     // deal with camel conversion
-    StringBuilder out = null;
+    StringBuilder out = new StringBuilder(s.length() + 4 * wordSeparator.length());
     @IndexOrHigh("s") int i = 0;
     @GTENegativeOne @LTEqLengthOf("s") int j = -1;
     while ((j = wordBoundary.indexIn(s, ++j)) != -1) {
       if (i == 0) {
         // include some extra space for separators
-        out = new StringBuilder(s.length() + 4 * wordSeparator.length());
         out.append(format.normalizeFirstWord(s.substring(i, j)));
       } else {
         out.append(format.normalizeWord(s.substring(i, j)));
