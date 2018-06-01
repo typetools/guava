@@ -23,7 +23,9 @@ import com.google.errorprone.annotations.concurrent.LazyInit;
 import java.io.Serializable;
 import java.util.Iterator;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 
 /**
  * A function from {@code A} to {@code B} with an associated <i>reverse</i> function from {@code B}
@@ -140,7 +142,7 @@ public abstract class Converter<A, B> implements Function<A, B> {
    * @return the converted instance; <b>must not</b> be null
    */
   @ForOverride
-  protected abstract B doForward(A a);
+  protected abstract @NonNull B doForward(@NonNull A a);
 
   /**
    * Returns a representation of {@code b} as an instance of type {@code A}. If {@code b} cannot be
@@ -155,7 +157,7 @@ public abstract class Converter<A, B> implements Function<A, B> {
    *     Function}.
    */
   @ForOverride
-  protected abstract A doBackward(B b);
+  protected abstract @NonNull A doBackward(@NonNull B b);
 
   // API (consumer-side) methods
 
@@ -165,12 +167,17 @@ public abstract class Converter<A, B> implements Function<A, B> {
    * @return the converted value; is null <i>if and only if</i> {@code a} is null
    */
   @CanIgnoreReturnValue
-  public final @Nullable B convert(@Nullable A a) {
+  public final @PolyNull B convert(@PolyNull A a) {
     return correctedDoForward(a);
   }
 
-  @Nullable
-  B correctedDoForward(@Nullable A a) {
+  @SuppressWarnings({
+    "return.type.incompatible",// Bug in handling of @PolyNull with ternary operator see:
+    // https://github.com/typetools/checker-framework/issues/1170
+    "argument.type.incompatible"// Setting handleNullAutomatically suspends automatic null handling
+    // and this method then expects argument to be non-null
+  })
+  @PolyNull B correctedDoForward(@PolyNull A a) {
     if (handleNullAutomatically) {
       // TODO(kevinb): we shouldn't be checking for a null result at runtime. Assert?
       return a == null ? null : checkNotNull(doForward(a));
@@ -179,8 +186,13 @@ public abstract class Converter<A, B> implements Function<A, B> {
     }
   }
 
-  @Nullable
-  A correctedDoBackward(@Nullable B b) {
+  @SuppressWarnings({
+    "return.type.incompatible", // Bug in handling of @PolyNull with ternary operator see:
+    // https://github.com/typetools/checker-framework/issues/1170
+    "argument.type.incompatible" // Setting handleNullAutomatically suspends automatic null handling
+    // and this method then expects argument to be non-null
+  })
+  @PolyNull A correctedDoBackward(@PolyNull B b) {
     if (handleNullAutomatically) {
       // TODO(kevinb): we shouldn't be checking for a null result at runtime. Assert?
       return b == null ? null : checkNotNull(doBackward(b));
@@ -255,24 +267,22 @@ public abstract class Converter<A, B> implements Function<A, B> {
      */
 
     @Override
-    protected A doForward(B b) {
+    protected @NonNull A doForward(@NonNull B b) {
       throw new AssertionError();
     }
 
     @Override
-    protected B doBackward(A a) {
+    protected @NonNull B doBackward(@NonNull A a) {
       throw new AssertionError();
     }
 
     @Override
-    @Nullable
-    A correctedDoForward(@Nullable B b) {
+    @PolyNull A correctedDoForward(@PolyNull B b) {
       return original.correctedDoBackward(b);
     }
 
     @Override
-    @Nullable
-    B correctedDoBackward(@Nullable A a) {
+    @PolyNull B correctedDoBackward(@PolyNull A a) {
       return original.correctedDoForward(a);
     }
 
@@ -337,24 +347,22 @@ public abstract class Converter<A, B> implements Function<A, B> {
      */
 
     @Override
-    protected C doForward(A a) {
+    protected @NonNull C doForward(@NonNull A a) {
       throw new AssertionError();
     }
 
     @Override
-    protected A doBackward(C c) {
+    protected @NonNull A doBackward(@NonNull C c) {
       throw new AssertionError();
     }
 
     @Override
-    @Nullable
-    C correctedDoForward(@Nullable A a) {
+    @PolyNull C correctedDoForward(@PolyNull A a) {
       return second.correctedDoForward(first.correctedDoForward(a));
     }
 
     @Override
-    @Nullable
-    A correctedDoBackward(@Nullable C c) {
+    @PolyNull A correctedDoBackward(@PolyNull C c) {
       return first.correctedDoBackward(second.correctedDoBackward(c));
     }
 
@@ -386,7 +394,16 @@ public abstract class Converter<A, B> implements Function<A, B> {
   @Deprecated
   @Override
   @CanIgnoreReturnValue
-  public final @Nullable B apply(@Nullable A a) {
+  @SuppressWarnings({
+    "override.return.invalid",
+    "override.param.invalid" // This method can return null value even if only type A is declared to
+    // be nullable and null is passed as an argument unlike the method it is overriding for which
+    // both type A and type B should be declared nullable in order to return a null value. Thus
+    // this method has been conservatively annotated with @PolyNull to avoid missing on the cases
+    // when this method might return null.
+    // TODO (dilraj45): Confirm its expected behaviour
+  })
+  public final @PolyNull B apply(@PolyNull A a) {
     return convert(a);
   }
 
@@ -423,30 +440,30 @@ public abstract class Converter<A, B> implements Function<A, B> {
    * @since 17.0
    */
   public static <A, B> Converter<A, B> from(
-      Function<? super A, ? extends B> forwardFunction,
-      Function<? super B, ? extends A> backwardFunction) {
+      Function<@NonNull ? super @NonNull A, ? extends @NonNull B> forwardFunction,
+      Function<@NonNull ? super @NonNull B, ? extends @NonNull A> backwardFunction) {
     return new FunctionBasedConverter<>(forwardFunction, backwardFunction);
   }
 
   private static final class FunctionBasedConverter<A, B> extends Converter<A, B>
       implements Serializable {
-    private final Function<? super A, ? extends B> forwardFunction;
-    private final Function<? super B, ? extends A> backwardFunction;
+    private final Function<@NonNull ? super @NonNull A, ? extends @NonNull B> forwardFunction;
+    private final Function<@NonNull ? super @NonNull B, ? extends @NonNull A> backwardFunction;
 
     private FunctionBasedConverter(
-        Function<? super A, ? extends B> forwardFunction,
-        Function<? super B, ? extends A> backwardFunction) {
+        Function<@NonNull ? super @NonNull A, ? extends @NonNull  B> forwardFunction,
+        Function<@NonNull ? super @NonNull B, ? extends @NonNull A> backwardFunction) {
       this.forwardFunction = checkNotNull(forwardFunction);
       this.backwardFunction = checkNotNull(backwardFunction);
     }
 
     @Override
-    protected B doForward(A a) {
+    protected @NonNull B doForward(@NonNull A a) {
       return forwardFunction.apply(a);
     }
 
     @Override
-    protected A doBackward(B b) {
+    protected @NonNull A doBackward(@NonNull B b) {
       return backwardFunction.apply(b);
     }
 
@@ -485,12 +502,12 @@ public abstract class Converter<A, B> implements Function<A, B> {
     static final IdentityConverter INSTANCE = new IdentityConverter();
 
     @Override
-    protected T doForward(T t) {
+    protected @NonNull T doForward(@NonNull T t) {
       return t;
     }
 
     @Override
-    protected T doBackward(T t) {
+    protected @NonNull T doBackward(@NonNull T t) {
       return t;
     }
 

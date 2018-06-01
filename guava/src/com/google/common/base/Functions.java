@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
 import java.util.Map;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -133,7 +134,7 @@ public final class Functions {
    * @return function that returns {@code map.get(a)} when {@code a} is a key, or {@code
    *     defaultValue} otherwise
    */
-  public static <K, V> Function<K, V> forMap(Map<K, ? extends V> map, @Nullable V defaultValue) {
+  public static <K, V> Function<K, V> forMap(Map<K, ? extends V> map, V defaultValue) {
     return new ForMapWithDefault<>(map, defaultValue);
   }
 
@@ -145,7 +146,8 @@ public final class Functions {
     }
 
     @Override
-    public @Nullable V apply(@Nullable K key) {
+    @SuppressWarnings("return.type.incompatible") // Method checkArgument ensures result to be non-null
+    public @NonNull V apply(K key) {
       @Nullable V result = map.get(key);
       checkArgument(result != null || map.containsKey(key), "Key '%s' not present in map", key);
       return result;
@@ -178,15 +180,17 @@ public final class Functions {
 
   private static class ForMapWithDefault<K, V> implements Function<K, V>, Serializable {
     final Map<K, ? extends V> map;
-    final @Nullable V defaultValue;
+    final V defaultValue;
 
-    ForMapWithDefault(Map<K, ? extends V> map, @Nullable V defaultValue) {
+    ForMapWithDefault(Map<K, ? extends V> map, V defaultValue) {
       this.map = checkNotNull(map);
       this.defaultValue = defaultValue;
     }
 
     @Override
-    public V apply(@Nullable K key) {
+    @SuppressWarnings("return.type.incompatible") // If 'result' is null; 'defaultValue' is returned
+    // and type of 'defaultValue` and return type is always same.
+    public V apply(K key) {
       V result = map.get(key);
       return (result != null || map.containsKey(key)) ? result : defaultValue;
     }
@@ -243,7 +247,7 @@ public final class Functions {
     }
 
     @Override
-    public C apply(@Nullable A a) {
+    public C apply(A a) {
       return g.apply(f.apply(a));
     }
 
@@ -294,7 +298,12 @@ public final class Functions {
     }
 
     @Override
-    public Boolean apply(@Nullable T t) {
+    @SuppressWarnings("override.param.invalid") // This method's behaviour deviates from the over-ridden
+    // method in respect that it throws a NullPointerException for null values. Thus its argument has
+    // been marked with @NonNull to depict the normal behaviour but is conflicting with over-ridden
+    // method which expects it to receive either @Nullable or @NonNull depending on the type of T
+    // TODO (dilraj45): could be a potential bug, confirm its expected behaviour
+    public Boolean apply(@NonNull T t) {
       return predicate.apply(t);
     }
 
@@ -331,14 +340,14 @@ public final class Functions {
    * @param value the constant value for the function to return
    * @return a function that always returns {@code value}
    */
-  public static <E> Function<Object, E> constant(@Nullable E value) {
+  public static <E> Function<Object, E> constant(E value) {
     return new ConstantFunction<E>(value);
   }
 
   private static class ConstantFunction<E> implements Function<Object, E>, Serializable {
-    private final @Nullable E value;
+    private final E value;
 
-    public ConstantFunction(@Nullable E value) {
+    public ConstantFunction(E value) {
       this.value = value;
     }
 
