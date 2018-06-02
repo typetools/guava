@@ -19,6 +19,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -41,7 +44,7 @@ public final class CharEscaperBuilder {
    */
   private static class CharArrayDecorator extends CharEscaper {
     private final char[][] replacements;
-    private final int replaceLength;
+    private final @LTEqLengthOf("replacements") int replaceLength;
 
     CharArrayDecorator(char[][] replacements) {
       this.replacements = replacements;
@@ -52,6 +55,7 @@ public final class CharEscaperBuilder {
      * Overriding escape method to be slightly faster for this decorator. We test the replacements
      * array directly, saving a method call.
      */
+    @SuppressWarnings("array.access.unsafe.low")//char types are non negative: https://github.com/kelloggm/checker-framework/issues/192
     @Override
     public String escape(String s) {
       int slen = s.length();
@@ -64,6 +68,7 @@ public final class CharEscaperBuilder {
       return s;
     }
 
+    @SuppressWarnings("array.access.unsafe.low")//char types are non negative: https://github.com/kelloggm/checker-framework/issues/192
     @Override
     protected char[] escape(char c) {
       return c < replaceLength ? replacements[c] : null;
@@ -108,9 +113,13 @@ public final class CharEscaperBuilder {
    *
    * @return a "sparse" array that holds the replacement mappings.
    */
+  @SuppressWarnings(value = {"array.length.negative",//int max is constant -1, max + 1 = 0 is non negative
+            "array.access.unsafe.low",//Character types are non negative: https://github.com/kelloggm/checker-framework/issues/192
+            "enhancedfor.type.incompatible",}//map is declared after result array
+          )
   public char[][] toArray() {
     char[][] result = new char[max + 1][];
-    for (Entry<Character, String> entry : map.entrySet()) {
+    for (Entry<@LTLengthOf("result") Character, String> entry : map.entrySet()) {
       result[entry.getKey()] = entry.getValue().toCharArray();
     }
     return result;
