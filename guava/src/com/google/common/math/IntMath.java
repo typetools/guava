@@ -32,6 +32,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.primitives.Ints;
 import org.checkerframework.checker.index.qual.*;
 import org.checkerframework.common.value.qual.IntRange;
+import org.checkerframework.common.value.qual.MinLen;
 
 import java.math.BigInteger;
 import java.math.RoundingMode;
@@ -186,7 +187,7 @@ public final class IntMath {
   }
 
   @SuppressWarnings(value = {"array.access.unsafe.low", "array.access.unsafe.high"})
-  /* method Integer.numberOfLeadingZeros() will always return a non negative value and range from 0 to 32
+  /* method Integer.numberOfLeadingZeros() always return a non negative value and range from 0 to 32
   *  as specified in documentation: https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html
   */
   private static @IndexFor(value = {"powersOf10","halfPowersOf10"}) int log10Floor(@NonNegative int x) {
@@ -208,7 +209,7 @@ public final class IntMath {
   // maxLog10ForLeadingZeros[i] == floor(log10(2^(Long.SIZE - i)))
   @SuppressWarnings("array.initializer.type.incompatible")//awaiting response
   @VisibleForTesting
-  static final @IndexFor("powersOf10") byte[] maxLog10ForLeadingZeros = {
+  static final @IndexFor("powersOf10") byte @MinLen(33)[] maxLog10ForLeadingZeros = {
     9, 9, 9, 8, 8, 8, 7, 7, 7, 6, 6, 6, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0,
     0
   };
