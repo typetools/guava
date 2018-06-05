@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
+import org.checkerframework.checker.index.qual.LengthOf;
 
 import java.util.Map;
 
@@ -48,7 +49,7 @@ public abstract class ArrayBasedCharEscaper extends CharEscaper {
   // The replacement array (see ArrayBasedEscaperMap).
   private final char[][] replacements;
   // The number of elements in the replacement array.
-  private final @LTEqLengthOf("replacements") int replacementsLength;
+  private final @LengthOf("replacements") int replacementsLength;
   // The first character in the safe range.
   private final char safeMin;
   // The last character in the safe range.
