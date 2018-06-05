@@ -27,6 +27,10 @@ import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.annotations.VisibleForTesting;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
@@ -332,7 +336,8 @@ public final class BigIntegerMath {
    *
    * @throws IllegalArgumentException if {@code n < 0}
    */
-  public static BigInteger factorial(int n) {
+  @SuppressWarnings("assigment.type.incompatible")//
+  public static BigInteger factorial(@NonNegative int n) {
     checkNonNegative("n", n);
 
     // If the factorial is small enough, just use LongMath to do it.
@@ -345,7 +350,7 @@ public final class BigIntegerMath {
     ArrayList<BigInteger> bignums = new ArrayList<>(approxSize);
 
     // Start from the pre-computed maximum long factorial.
-    int startingNumber = LongMath.factorials.length;
+    @Positive int startingNumber = LongMath.factorials.length;
     long product = LongMath.factorials[startingNumber - 1];
     // Strip off 2s from this value.
     int shift = Long.numberOfTrailingZeros(product);
@@ -416,12 +421,13 @@ public final class BigIntegerMath {
    *
    * @throws IllegalArgumentException if {@code n < 0}, {@code k < 0}, or {@code k > n}
    */
-  public static BigInteger binomial(int n, int k) {
+  public static BigInteger binomial(@NonNegative int n,@NonNegative int k) {
     checkNonNegative("n", n);
     checkNonNegative("k", k);
     checkArgument(k <= n, "k (%s) > n (%s)", k, n);
     if (k > (n >> 1)) {
-      k = n - k;
+      k = n
+              - k;
     }
     if (k < LongMath.biggestBinomials.length && n <= LongMath.biggestBinomials[k]) {
       return BigInteger.valueOf(LongMath.binomial(n, k));
