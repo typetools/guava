@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 
@@ -79,7 +80,7 @@ public final class CharEscaperBuilder {
   private final Map<Character, String> map;
 
   // The highest index we've seen so far.
-  private int max = -1;
+  private @GTENegativeOne int max = -1;
 
   /** Construct a new sparse array builder. */
   public CharEscaperBuilder() {
@@ -113,9 +114,8 @@ public final class CharEscaperBuilder {
    *
    * @return a "sparse" array that holds the replacement mappings.
    */
-  @SuppressWarnings(value = {"array.length.negative",//int max is constant -1, max + 1 = 0 is non negative
-            "array.access.unsafe.low",//Character types are non negative: https://github.com/kelloggm/checker-framework/issues/192
-            "enhancedfor.type.incompatible",}//map is declared after result array
+  @SuppressWarnings(value = {"array.access.unsafe.low",//Character types are non negative: https://github.com/kelloggm/checker-framework/issues/192
+            "enhancedfor.type.incompatible"}//map is declared after result array
           )
   public char[][] toArray() {
     char[][] result = new char[max + 1][];
