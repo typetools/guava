@@ -30,6 +30,9 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.primitives.UnsignedLongs;
+import org.checkerframework.checker.index.qual.*;
+import org.checkerframework.common.value.qual.MinLen;
+
 import java.math.BigInteger;
 import java.math.RoundingMode;
 
@@ -159,9 +162,9 @@ public final class LongMath {
   @GwtIncompatible // TODO
   @SuppressWarnings("fallthrough")
   // TODO(kevinb): remove after this warning is disabled globally
-  public static int log10(long x, RoundingMode mode) {
+  public static int log10(@Positive long x, RoundingMode mode) {
     checkPositive("x", x);
-    int logFloor = log10Floor(x);
+    @IndexFor(value = {"powersOf10", "halfPowersOf10"}) int logFloor = log10Floor(x);
     long floorPow = powersOf10[logFloor];
     switch (mode) {
       case UNNECESSARY:
@@ -183,8 +186,12 @@ public final class LongMath {
     }
   }
 
+  @SuppressWarnings(value = {"array.access.unsafe.low", "array.access.unsafe.high"})
+  /* method Integer.numberOfLeadingZeros() will always return a non negative value
+   * as specified in documentation: https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html
+   */
   @GwtIncompatible // TODO
-  static int log10Floor(long x) {
+  static @IndexFor(value = {"powersOf10", "halfPowersOf10"}) int log10Floor(long x) {
     /*
      * Based on Hacker's Delight Fig. 11-5, the two-table-lookup, branch-free implementation.
      *
@@ -192,7 +199,7 @@ public final class LongMath {
      * can narrow the possible floor(log10(x)) values to two. For example, if floor(log2(x)) is 6,
      * then 64 <= x < 128, so floor(log10(x)) is either 1 or 2.
      */
-    int y = maxLog10ForLeadingZeros[Long.numberOfLeadingZeros(x)];
+    @IndexFor("powersOf10") int y = maxLog10ForLeadingZeros[Long.numberOfLeadingZeros(x)];
     /*
      * y is the higher of the two possible values of floor(log10(x)). If x < 10^y, then we want the
      * lower of the two possible values, or y - 1, otherwise, we want y.
@@ -200,9 +207,10 @@ public final class LongMath {
     return y - lessThanBranchFree(x, powersOf10[y]);
   }
 
+  @SuppressWarnings("array.initializer.type.incompatible")//awaiting response
   // maxLog10ForLeadingZeros[i] == floor(log10(2^(Long.SIZE - i)))
   @VisibleForTesting
-  static final byte[] maxLog10ForLeadingZeros = {
+  static final @IndexFor("powersOf10") byte @MinLen(33)[] maxLog10ForLeadingZeros = {
     19, 18, 18, 18, 18, 17, 17, 17, 16, 16, 16, 15, 15, 15, 15, 14, 14, 14, 13, 13, 13, 12, 12, 12,
     12, 11, 11, 11, 10, 10, 10, 9, 9, 9, 9, 8, 8, 8, 7, 7, 7, 6, 6, 6, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3,
     3, 2, 2, 2, 1, 1, 1, 0, 0, 0
@@ -770,7 +778,7 @@ public final class LongMath {
    * @throws IllegalArgumentException if {@code n < 0}
    */
   @GwtIncompatible // TODO
-  public static long factorial(int n) {
+  public static long factorial(@NonNegative int n) {
     checkNonNegative("n", n);
     return (n < factorials.length) ? factorials[n] : Long.MAX_VALUE;
   }
@@ -805,7 +813,8 @@ public final class LongMath {
    *
    * @throws IllegalArgumentException if {@code n < 0}, {@code k < 0}, or {@code k > n}
    */
-  public static long binomial(int n, int k) {
+  @SuppressWarnings("compound.assignment.type.incompatible")//int result already assigned as @GTENegativeOne
+  public static long binomial(@IndexFor("factorials") int n,@LessThan("#1 + 1") @IndexFor("factorials") int k) {
     checkNonNegative("n", n);
     checkNonNegative("k", k);
     checkArgument(k <= n, "k (%s) > n (%s)", k, n);
@@ -824,7 +833,7 @@ public final class LongMath {
           return Long.MAX_VALUE;
         } else if (k < biggestSimpleBinomials.length && n <= biggestSimpleBinomials[k]) {
           // guaranteed not to overflow
-          long result = n--;
+          @GTENegativeOne long result = n--;
           for (int i = 2; i <= k; n--, i++) {
             result *= n;
             result /= i;
@@ -834,7 +843,7 @@ public final class LongMath {
           int nBits = LongMath.log2(n, RoundingMode.CEILING);
 
           long result = 1;
-          long numerator = n--;
+          @GTENegativeOne long numerator = n--;
           long denominator = 1;
 
           int numeratorBits = nBits;
@@ -1018,7 +1027,7 @@ public final class LongMath {
       return true;
     }
 
-    for (long[] baseSet : millerRabinBaseSets) {
+    for (long @MinLen(1)[] baseSet : millerRabinBaseSets) {
       if (n <= baseSet[0]) {
         for (int i = 1; i < baseSet.length; i++) {
           if (!MillerRabinTester.test(baseSet[i], n)) {
@@ -1038,7 +1047,7 @@ public final class LongMath {
    * NOTE: We could get slightly better bases that would be treated as unsigned, but benchmarks
    * showed negligible performance improvements.
    */
-  private static final long[][] millerRabinBaseSets = {
+  private static final long[] @MinLen(1)[] millerRabinBaseSets = {
     {291830, 126401071349994536L},
     {885594168, 725270293939359937L, 3569819667048198375L},
     {273919523040L, 15, 7363882082L, 992620450144556L},
