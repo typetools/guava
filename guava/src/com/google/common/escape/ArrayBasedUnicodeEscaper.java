@@ -20,8 +20,7 @@ import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import java.util.Map;
 
-import org.checkerframework.checker.index.qual.LTEqLengthOf;
-import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -49,7 +48,7 @@ public abstract class ArrayBasedUnicodeEscaper extends UnicodeEscaper {
   // The replacement array (see ArrayBasedEscaperMap).
   private final char[][] replacements;
   // The number of elements in the replacement array.
-  private final @LTEqLengthOf("replacements") int replacementsLength;
+  private final @LengthOf("replacements") int replacementsLength;
   // The first code point in the safe range.
   private final int safeMin;
   // The last code point in the safe range.
@@ -179,7 +178,7 @@ public abstract class ArrayBasedUnicodeEscaper extends UnicodeEscaper {
   /* Overridden for performance. */
   @SuppressWarnings("array.access.unsafe.low")//char types are non negative: https://github.com/kelloggm/checker-framework/issues/192
   @Override
-  protected final int nextEscapeIndex(CharSequence csq, int index, int end) {
+  protected final int nextEscapeIndex(CharSequence csq, @IndexFor("#1") int index, @IndexFor("#1") int end) {
     while (index < end) {
       char c = csq.charAt(index);
       if ((c < replacementsLength && replacements[c] != null)
