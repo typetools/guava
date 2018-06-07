@@ -218,7 +218,7 @@ public final class LongMath {
 
   @GwtIncompatible // TODO
   @VisibleForTesting
-  static final long[] powersOf10 = {
+  static final long @MinLen(10)[] powersOf10 = {
     1L,
     10L,
     100L,
