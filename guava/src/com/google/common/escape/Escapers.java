@@ -222,7 +222,9 @@ public final class Escapers {
     return (in == null) ? null : new String(in);
   }
 
-  @SuppressWarnings("array.access.unsafe.high")//length of output array is sum of lengths of hiChars and loChars array
+  @SuppressWarnings(value = {"array.access.unsafe.high",}//length of output array is sum of lengths of hiChars and loChars array
+          //"assigment.type.incompatible"}//
+          )
   /** Private helper to wrap a CharEscaper as a UnicodeEscaper. */
   private static UnicodeEscaper wrap(final CharEscaper escaper) {
     return new UnicodeEscaper() {
@@ -252,7 +254,7 @@ public final class Escapers {
         // Combine the characters and/or escaped sequences into a single array.
         int hiCount = hiChars != null ? hiChars.length : 1;
         int loCount = loChars != null ? loChars.length : 1;
-        char @MinLen(1)[] output = new char[hiCount + loCount];
+        char[] output = new char[hiCount + loCount];
         if (hiChars != null) {
           // TODO: Is this faster than System.arraycopy() for small arrays?
           for (int n = 0; n < hiChars.length; ++n) {
