@@ -276,14 +276,7 @@ public final class Bytes {
     }
 
     @Override
-<<<<<<< HEAD
-    @SuppressWarnings({
-              "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-              "upperbound:return.type.incompatible"}) // custom coll. with size end-start
-    public @Positive @LTLengthOf(value = {"this","array"}, offset = {"0","start - 1"}) int size() { // INDEX: Annotation on a public method refers to private member.
-=======
-    public @Positive @LTLengthOf(value = {"this","array"}, offset={"-1","start - 1"}) int size() { // INDEX: Annotation on a public method refers to private member.
->>>>>>> a23015a02... changes to annotations to take advantage of HSS
+    public @Positive @LTLengthOf(value = {"this","array"}, offset = {"-1","start - 1"}) int size() { // INDEX: Annotation on a public method refers to private member.
       return end - start;
     }
 
@@ -293,11 +286,6 @@ public final class Bytes {
     }
 
     @Override
-<<<<<<< HEAD
-    // array should be @LongerThanEq(value="this", offset = "start")
-    @SuppressWarnings("upperbound:array.access.unsafe.high") // custom coll. with size end-start
-=======
->>>>>>> a23015a02... changes to annotations to take advantage of HSS
     public Byte get(@IndexFor("this") int index) {
       checkElementIndex(index, size());
       return array[start + index];
@@ -338,11 +326,6 @@ public final class Bytes {
     }
 
     @Override
-<<<<<<< HEAD
-    // array should be @LongerThanEq(value="this", offset = "start")
-    @SuppressWarnings("upperbound:array.access.unsafe.high") // custom coll. with size end-start
-=======
->>>>>>> a23015a02... changes to annotations to take advantage of HSS
     public Byte set(@IndexFor("this") int index, Byte element) {
       checkElementIndex(index, size());
       byte oldValue = array[start + index];
@@ -352,14 +335,8 @@ public final class Bytes {
     }
 
     @Override
-<<<<<<< HEAD
-    // array should be @LongerThanEq(value="this", offset = "start")
-    @SuppressWarnings("upperbound:argument.type.incompatible") // custom coll. with size end-start
-    public List<Byte> subList(@IndexOrHigh("this") int fromIndex, @IndexOrHigh("this") int toIndex) {
-=======
     @SuppressWarnings("index") // needs https://github.com/kelloggm/checker-framework/issues/229
     public List<Byte> subList(@IndexOrHigh("this") @LessThan("#2") int fromIndex, @IndexOrHigh("this") int toIndex) {
->>>>>>> a23015a02... changes to annotations to take advantage of HSS
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);
       if (fromIndex == toIndex) {
