@@ -618,7 +618,7 @@ public final class Doubles {
 
     @Override
     @SuppressWarnings("index") // needs https://github.com/kelloggm/checker-framework/issues/229
-    public List<Double> subList(@IndexOrHigh("this") @LessThan("#2") int fromIndex, @IndexOrHigh("this") int toIndex) {
+    public List<Double> subList(@IndexOrHigh("this") int fromIndex, @IndexOrHigh("this") int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);
       if (fromIndex == toIndex) {
