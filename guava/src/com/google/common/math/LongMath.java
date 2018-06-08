@@ -31,6 +31,7 @@ import com.google.common.annotations.GwtIncompatible;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.primitives.UnsignedLongs;
 import org.checkerframework.checker.index.qual.*;
+import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 
 import java.math.BigInteger;
@@ -186,10 +187,13 @@ public final class LongMath {
     }
   }
 
-  @SuppressWarnings(value = {"array.access.unsafe.low", "array.access.unsafe.high"})
+  @SuppressWarnings(value = {"array.access.unsafe.low", "array.access.unsafe.high", "assignment.type.incompatible",
   /* method Integer.numberOfLeadingZeros() will always return a non negative value
    * as specified in documentation: https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html
    */
+  "return.type.incompatible"}//function log10Floor is checked manually to return a valid index value
+          //for powersOf10 and halfPowersOf10
+  )
   @GwtIncompatible // TODO
   static @IndexFor(value = {"powersOf10", "halfPowersOf10"}) int log10Floor(long x) {
     /*
@@ -207,10 +211,11 @@ public final class LongMath {
     return y - lessThanBranchFree(x, powersOf10[y]);
   }
 
-  @SuppressWarnings("array.initializer.type.incompatible")//awaiting response
   // maxLog10ForLeadingZeros[i] == floor(log10(2^(Long.SIZE - i)))
   @VisibleForTesting
-  static final @IndexFor("powersOf10") byte @MinLen(33)[] maxLog10ForLeadingZeros = {
+  @SuppressWarnings("array.initializer.type.incompatible")//maxLog10ForLeadingZeros[Long.numberOfLeadingZeros(x)] return 19 only
+  //x = LONG.MAX_VALUE + 1, since para x is required to be a positive value, this will not cause an error
+  static final @IntRange(from = 0, to = 19) byte @MinLen(64)[] maxLog10ForLeadingZeros = {
     19, 18, 18, 18, 18, 17, 17, 17, 16, 16, 16, 15, 15, 15, 15, 14, 14, 14, 13, 13, 13, 12, 12, 12,
     12, 11, 11, 11, 10, 10, 10, 9, 9, 9, 9, 8, 8, 8, 7, 7, 7, 6, 6, 6, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3,
     3, 2, 2, 2, 1, 1, 1, 0, 0, 0
@@ -218,7 +223,7 @@ public final class LongMath {
 
   @GwtIncompatible // TODO
   @VisibleForTesting
-  static final long @MinLen(10)[] powersOf10 = {
+  static final long @MinLen(19) [] powersOf10 = {
     1L,
     10L,
     100L,
@@ -243,7 +248,7 @@ public final class LongMath {
   // halfPowersOf10[i] = largest long less than 10^(i + 0.5)
   @GwtIncompatible // TODO
   @VisibleForTesting
-  static final long[] halfPowersOf10 = {
+  static final long @MinLen(19)[] halfPowersOf10 = {
     3L,
     31L,
     316L,
