@@ -177,7 +177,7 @@ public abstract class ArrayBasedUnicodeEscaper extends UnicodeEscaper {
 
   /* Overridden for performance. */
   @SuppressWarnings(value = {"array.access.unsafe.low",//char types are non negative: https://github.com/kelloggm/checker-framework/issues/192
-          "override.param.invalid"})//in discussion
+          "override.param.invalid", "override.return.invalid"})//in discussion
   @Override
   protected final int nextEscapeIndex(CharSequence csq, @IndexFor("#1") int index, @IndexFor("#1") int end) {
     while (index < end) {
