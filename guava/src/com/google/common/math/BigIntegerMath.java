@@ -27,9 +27,7 @@ import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.annotations.VisibleForTesting;
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.index.qual.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -59,7 +57,7 @@ public final class BigIntegerMath {
    * @since 20.0
    */
   @Beta
-  public static BigInteger ceilingPowerOfTwo(BigInteger x) {
+  public static BigInteger ceilingPowerOfTwo(@Positive BigInteger x) {
     return BigInteger.ZERO.setBit(log2(x, RoundingMode.CEILING));
   }
 
@@ -71,7 +69,7 @@ public final class BigIntegerMath {
    * @since 20.0
    */
   @Beta
-  public static BigInteger floorPowerOfTwo(BigInteger x) {
+  public static BigInteger floorPowerOfTwo(@Positive BigInteger x) {
     return BigInteger.ZERO.setBit(log2(x, RoundingMode.FLOOR));
   }
 
@@ -90,7 +88,7 @@ public final class BigIntegerMath {
    */
   @SuppressWarnings("fallthrough")
   // TODO(kevinb): remove after this warning is disabled globally
-  public static int log2(BigInteger x, RoundingMode mode) {
+  public static int log2(@Positive BigInteger x, RoundingMode mode) {
     checkPositive("x", checkNotNull(x));
     int logFloor = x.bitLength() - 1;
     switch (mode) {
@@ -148,8 +146,10 @@ public final class BigIntegerMath {
    *     is not a power of ten
    */
   @GwtIncompatible // TODO
-  @SuppressWarnings("fallthrough")
-  public static int log10(BigInteger x, RoundingMode mode) {
+  @SuppressWarnings(value = {"fallthrough",
+  "argument.type.incompatible"}//propose adding class BigInteger to statically-executable.astub
+  )
+  public static int log10(@Positive BigInteger x, RoundingMode mode) {
     checkPositive("x", x);
     if (fitsInLong(x)) {
       return LongMath.log10(x.longValue(), mode);
@@ -227,7 +227,7 @@ public final class BigIntegerMath {
    */
   @GwtIncompatible // TODO
   @SuppressWarnings("fallthrough")
-  public static BigInteger sqrt(BigInteger x, RoundingMode mode) {
+  public static BigInteger sqrt(@Positive BigInteger x, RoundingMode mode) {
     checkNonNegative("x", x);
     if (fitsInLong(x)) {
       return BigInteger.valueOf(LongMath.sqrt(x.longValue(), mode));
@@ -262,7 +262,7 @@ public final class BigIntegerMath {
   }
 
   @GwtIncompatible // TODO
-  private static BigInteger sqrtFloor(BigInteger x) {
+  private static BigInteger sqrtFloor(@Positive BigInteger x) {
     /*
      * Adapted from Hacker's Delight, Figure 11-1.
      *
@@ -336,7 +336,8 @@ public final class BigIntegerMath {
    *
    * @throws IllegalArgumentException if {@code n < 0}
    */
-  @SuppressWarnings("assigment.type.incompatible")//
+  @SuppressWarnings("assignment.type.incompatible")//if n is non negative, IntMath.log2() will return non negative
+  //therefore IntMath.divide() also return a non negative value( length of bigNums
   public static BigInteger factorial(@NonNegative int n) {
     checkNonNegative("n", n);
 
@@ -346,7 +347,7 @@ public final class BigIntegerMath {
     }
 
     // Pre-allocate space for our list of intermediate BigIntegers.
-    int approxSize = IntMath.divide(n * IntMath.log2(n, CEILING), Long.SIZE, CEILING);
+    @NonNegative int approxSize = IntMath.divide(n * IntMath.log2(n, CEILING), Long.SIZE, CEILING);
     ArrayList<BigInteger> bignums = new ArrayList<>(approxSize);
 
     // Start from the pre-computed maximum long factorial.
@@ -396,7 +397,7 @@ public final class BigIntegerMath {
     return listProduct(nums, 0, nums.size());
   }
 
-  static BigInteger listProduct(List<BigInteger> nums, int start, int end) {
+  static BigInteger listProduct(List<BigInteger> nums, @NonNegative int start, @NonNegative int end) {
     switch (end - start) {
       case 0:
         return BigInteger.ONE;
@@ -408,7 +409,7 @@ public final class BigIntegerMath {
         return nums.get(start).multiply(nums.get(start + 1)).multiply(nums.get(start + 2));
       default:
         // Otherwise, split the list in half and recursively do this.
-        int m = (end + start) >>> 1;
+        @NonNegative int m = (end + start) >>> 1;
         return listProduct(nums, start, m).multiply(listProduct(nums, m, end));
     }
   }
@@ -421,13 +422,13 @@ public final class BigIntegerMath {
    *
    * @throws IllegalArgumentException if {@code n < 0}, {@code k < 0}, or {@code k > n}
    */
-  public static BigInteger binomial(@NonNegative int n,@NonNegative int k) {
+  @SuppressWarnings("argument.type.incompatible")
+  public static BigInteger binomial(@NonNegative int n,@NonNegative @LessThan("#1 + 1") int k) {
     checkNonNegative("n", n);
     checkNonNegative("k", k);
     checkArgument(k <= n, "k (%s) > n (%s)", k, n);
     if (k > (n >> 1)) {
-      k = n
-              - k;
+      k = n - k;
     }
     if (k < LongMath.biggestBinomials.length && n <= LongMath.biggestBinomials[k]) {
       return BigInteger.valueOf(LongMath.binomial(n, k));

@@ -788,7 +788,7 @@ public final class LongMath {
     return (n < factorials.length) ? factorials[n] : Long.MAX_VALUE;
   }
 
-  static final long[] factorials = {
+  static final long @MinLen(1)[] factorials = {
     1L,
     1L,
     1L * 2,

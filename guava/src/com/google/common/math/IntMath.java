@@ -121,7 +121,7 @@ public final class IntMath {
    */
   @SuppressWarnings("fallthrough")
   // TODO(kevinb): remove after this warning is disabled globally
-  public static int log2(int x, RoundingMode mode) {
+  public static int log2(@Positive int x, RoundingMode mode) {
     checkPositive("x", x);
     switch (mode) {
       case UNNECESSARY:
@@ -186,10 +186,13 @@ public final class IntMath {
     }
   }
 
-  @SuppressWarnings(value = {"array.access.unsafe.low", "array.access.unsafe.high"})
+  @SuppressWarnings(value = {"array.access.unsafe.low", "array.access.unsafe.high",
   /* method Integer.numberOfLeadingZeros() always return a non negative value and range from 0 to 32
   *  as specified in documentation: https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html
   */
+  "return.type.incompatible"}//function log10Floor is checked manually to return a valid index value
+//for powersOf10 and halfPowersOf10
+  )
   private static @IndexFor(value = {"powersOf10","halfPowersOf10"}) int log10Floor(@NonNegative int x) {
     /*
      * Based on Hacker's Delight Fig. 11-5, the two-table-lookup, branch-free implementation.
