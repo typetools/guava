@@ -558,7 +558,7 @@ public final class Floats {
     }
 
     @Override
-    public boolean contains(Object target) {
+    public boolean contains(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Float) && Floats.indexOf(array, (Float) target, start, end) != -1;
     }
@@ -568,7 +568,7 @@ public final class Floats {
             "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
             "upperbound:return.type.incompatible" // custom coll. with size end-start
     })
-    public @IndexOrLow("this") int indexOf(Object target) {
+    public @IndexOrLow("this") int indexOf(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Float) {
         int i = Floats.indexOf(array, (Float) target, start, end);
@@ -584,7 +584,7 @@ public final class Floats {
             "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
             "upperbound:return.type.incompatible" // custom coll. with size end-start
     })
-    public @IndexOrLow("this") int lastIndexOf(Object target) {
+    public @IndexOrLow("this") int lastIndexOf(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Float) {
         int i = Floats.lastIndexOf(array, (Float) target, start, end);

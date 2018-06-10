@@ -573,7 +573,7 @@ public final class Doubles {
     }
 
     @Override
-    public boolean contains(Object target) {
+    public boolean contains(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Double)
           && Doubles.indexOf(array, (Double) target, start, end) != -1;
@@ -584,7 +584,7 @@ public final class Doubles {
             "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
             "upperbound:return.type.incompatible" // custom coll. with size end-start
     })
-    public @IndexOrLow("this") int indexOf(Object target) {
+    public @IndexOrLow("this") int indexOf(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Double) {
         int i = Doubles.indexOf(array, (Double) target, start, end);
@@ -600,7 +600,7 @@ public final class Doubles {
             "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
             "upperbound:return.type.incompatible" // custom coll. with size end-start
     })
-    public @IndexOrLow("this")int lastIndexOf(Object target) {
+    public @IndexOrLow("this")int lastIndexOf(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Double) {
         int i = Doubles.lastIndexOf(array, (Double) target, start, end);

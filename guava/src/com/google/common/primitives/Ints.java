@@ -619,7 +619,7 @@ public final class Ints {
     }
 
     @Override
-    public boolean contains(Object target) {
+    public boolean contains(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Integer) && Ints.indexOf(array, (Integer) target, start, end) != -1;
     }
@@ -629,7 +629,7 @@ public final class Ints {
             "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
             "upperbound:return.type.incompatible" // custom coll. with size end-start
     })
-    public @IndexOrLow("this") int indexOf(Object target) {
+    public @IndexOrLow("this") int indexOf(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Integer) {
         int i = Ints.indexOf(array, (Integer) target, start, end);
@@ -645,7 +645,7 @@ public final class Ints {
             "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
             "upperbound:return.type.incompatible" // custom coll. with size end-start
     })
-    public @IndexOrLow("this")int lastIndexOf(Object target) {
+    public @IndexOrLow("this")int lastIndexOf(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Integer) {
         int i = Ints.lastIndexOf(array, (Integer) target, start, end);

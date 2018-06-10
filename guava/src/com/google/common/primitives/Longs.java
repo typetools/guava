@@ -732,7 +732,7 @@ public final class Longs {
     }
 
     @Override
-    public boolean contains(Object target) {
+    public boolean contains(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Long) && Longs.indexOf(array, (Long) target, start, end) != -1;
     }
@@ -742,7 +742,7 @@ public final class Longs {
             "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
             "upperbound:return.type.incompatible" // custom coll. with size end-start
     })
-    public @IndexOrLow("this") int indexOf(Object target) {
+    public @IndexOrLow("this") int indexOf(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Long) {
         int i = Longs.indexOf(array, (Long) target, start, end);
@@ -758,7 +758,7 @@ public final class Longs {
             "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
             "upperbound:return.type.incompatible" // custom coll. with size end-start
     })
-    public @IndexOrLow("this") int lastIndexOf(Object target) {
+    public @IndexOrLow("this") int lastIndexOf(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Long) {
         int i = Longs.lastIndexOf(array, (Long) target, start, end);

@@ -17,6 +17,8 @@ package com.google.common.primitives;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.GwtIncompatible;
+import org.checkerframework.checker.nullness.qual.KeyFor;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -75,7 +77,7 @@ public final class Primitives {
    *
    * @since 3.0
    */
-  public static Set<Class<?>> allPrimitiveTypes() {
+  public static Set<@KeyFor("PRIMITIVE_TO_WRAPPER_TYPE") Class<?>> allPrimitiveTypes() {
     return PRIMITIVE_TO_WRAPPER_TYPE.keySet();
   }
 
@@ -84,7 +86,7 @@ public final class Primitives {
    *
    * @since 3.0
    */
-  public static Set<Class<?>> allWrapperTypes() {
+  public static Set<@KeyFor("WRAPPER_TO_PRIMITIVE_TYPE") Class<?>> allWrapperTypes() {
     return WRAPPER_TO_PRIMITIVE_TYPE.keySet();
   }
 

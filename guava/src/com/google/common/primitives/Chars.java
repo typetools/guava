@@ -563,7 +563,7 @@ public final class Chars {
     }
 
     @Override
-    public boolean contains(Object target) {
+    public boolean contains(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Character)
           && Chars.indexOf(array, (Character) target, start, end) != -1;
@@ -574,7 +574,7 @@ public final class Chars {
             "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
             "upperbound:return.type.incompatible" // custom coll. with size end-start
     })
-    public @IndexOrLow("this") int indexOf(Object target) {
+    public @IndexOrLow("this") int indexOf(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Character) {
         int i = Chars.indexOf(array, (Character) target, start, end);
@@ -590,7 +590,7 @@ public final class Chars {
             "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
             "upperbound:return.type.incompatible" // custom coll. with size end-start
     })
-    public @IndexOrLow("this") int lastIndexOf(Object target) {
+    public @IndexOrLow("this") int lastIndexOf(@Nullable Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Character) {
         int i = Chars.lastIndexOf(array, (Character) target, start, end);
