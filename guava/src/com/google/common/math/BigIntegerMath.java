@@ -19,9 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.math.MathPreconditions.checkNonNegative;
 import static com.google.common.math.MathPreconditions.checkPositive;
 import static com.google.common.math.MathPreconditions.checkRoundingUnnecessary;
-import static java.math.RoundingMode.CEILING;
-import static java.math.RoundingMode.FLOOR;
-import static java.math.RoundingMode.HALF_EVEN;
+import static java.math.RoundingMode.*;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
@@ -226,8 +224,10 @@ public final class BigIntegerMath {
    *     sqrt(x)} is not an integer
    */
   @GwtIncompatible // TODO
-  @SuppressWarnings("fallthrough")
-  public static BigInteger sqrt(@Positive BigInteger x, RoundingMode mode) {
+  @SuppressWarnings(value = {"fallthrough",
+          "argument.type.incompatible"}//return 0 when para x = 0, will not throw an error
+          )
+  public static BigInteger sqrt(@NonNegative BigInteger x, RoundingMode mode) {
     checkNonNegative("x", x);
     if (fitsInLong(x)) {
       return BigInteger.valueOf(LongMath.sqrt(x.longValue(), mode));
