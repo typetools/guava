@@ -18,6 +18,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
+import org.checkerframework.checker.index.qual.*;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * An {@link Escaper} that converts literal text into a format safe for inclusion in a particular
@@ -77,7 +79,7 @@ public abstract class UnicodeEscaper extends Escaper {
    * @param cp the Unicode code point to escape if necessary
    * @return the replacement characters, or {@code null} if no escaping was needed
    */
-  protected abstract char[] escape(int cp);
+  protected abstract char[] escape(@NonNegative int cp);
 
   /**
    * Returns the escaped form of a given literal string.
@@ -97,11 +99,12 @@ public abstract class UnicodeEscaper extends Escaper {
    * @throws NullPointerException if {@code string} is null
    * @throws IllegalArgumentException if invalid surrogate characters are encountered
    */
+  @SuppressWarnings(value = {"assignment.type.incompatible", "argument.type.incompatible"})//for now
   @Override
   public String escape(String string) {
     checkNotNull(string);
-    int end = string.length();
-    int index = nextEscapeIndex(string, 0, end);
+    @LengthOf("string") int end = string.length();
+    @LessThan("end") int index = nextEscapeIndex(string, 0, end);
     return index == end ? string : escapeSlow(string, index);
   }
 
@@ -127,7 +130,7 @@ public abstract class UnicodeEscaper extends Escaper {
    * @throws IllegalArgumentException if the scanned sub-sequence of {@code csq} contains invalid
    *     surrogate pairs
    */
-  protected int nextEscapeIndex(CharSequence csq, int start, int end) {
+  protected @NonNegative int nextEscapeIndex(CharSequence csq, @IndexFor("#1") int start, @IndexFor("#1") int end) {
     int index = start;
     while (index < end) {
       int cp = codePointAt(csq, index, end);
@@ -154,13 +157,14 @@ public abstract class UnicodeEscaper extends Escaper {
    * @throws NullPointerException if {@code string} is null
    * @throws IllegalArgumentException if invalid surrogate characters are encountered
    */
-  protected final String escapeSlow(String s, int index) {
+  @SuppressWarnings(value = {"assignment.type.incompatible", "argument.type.incompatible"})//for now
+  protected final String escapeSlow(String s, @IndexOrHigh("#1") int index) {
     int end = s.length();
 
     // Get a destination buffer and setup some loop variables.
     char[] dest = Platform.charBufferFromThreadLocal();
-    int destIndex = 0;
-    int unescapedChunkStart = 0;
+    @NonNegative @LTLengthOf(value = "dest", offset = "(index - unescapedChunkStart) - 1") int destIndex = 0;
+    @NonNegative @LTLengthOf("s") int unescapedChunkStart = 0;
 
     while (index < end) {
       int cp = codePointAt(s, index, end);
@@ -242,7 +246,7 @@ public abstract class UnicodeEscaper extends Escaper {
    * @return the Unicode code point for the given index or the negated value of the trailing high
    *     surrogate character at the end of the sequence
    */
-  protected static int codePointAt(CharSequence seq, int index, int end) {
+  protected static int codePointAt(CharSequence seq, @IndexFor("#1") int index, @IndexFor("#1") int end) {
     checkNotNull(seq);
     if (index < end) {
       char c1 = seq.charAt(index++);
@@ -289,7 +293,7 @@ public abstract class UnicodeEscaper extends Escaper {
    * Helper method to grow the character buffer as needed, this only happens once in a while so it's
    * ok if it's in a method call. If the index passed in is 0 then no copying will be done.
    */
-  private static char[] growBuffer(char[] dest, int index, int size) {
+  private static char[] growBuffer(char[] dest, @LessThan("#2") @LTEqLengthOf("#1") int index, int size) {
     if (size < 0) { // overflow - should be OutOfMemoryError but GWT/j2cl don't support it
       throw new AssertionError("Cannot increase internal buffer any further");
     }
