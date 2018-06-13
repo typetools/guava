@@ -18,8 +18,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
-import org.checkerframework.checker.index.qual.*;
-import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LengthOf;
+import org.checkerframework.checker.index.qual.LessThan;
+import org.checkerframework.checker.index.qual.NonNegative;
+
+
+
 
 /**
  * An {@link Escaper} that converts literal text into a format safe for inclusion in a particular
@@ -246,7 +254,7 @@ public abstract class UnicodeEscaper extends Escaper {
    * @return the Unicode code point for the given index or the negated value of the trailing high
    *     surrogate character at the end of the sequence
    */
-  protected static int codePointAt(CharSequence seq, @IndexOrHigh("#1") int index, @IndexFor("#1") int end) {
+  protected static int codePointAt(CharSequence seq, @IndexFor("#1") int index, @IndexOrHigh("#1") int end) {
     checkNotNull(seq);
     if (index < end) {
       char c1 = seq.charAt(index++);
