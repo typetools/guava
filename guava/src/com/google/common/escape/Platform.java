@@ -35,6 +35,8 @@ final class Platform {
    * 1024 characters. If we grow past this we don't put it back in the threadlocal, we just keep
    * going and grow as needed.
    */
+  @SuppressWarnings("nullness:type.argument.type.incompatible") // initialValue returns non-null, refer
+  // to note on ThreadLocal
   private static final ThreadLocal<char[]> DEST_TL =
       new ThreadLocal<char[]>() {
         @Override

@@ -44,7 +44,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 @GwtCompatible
 public abstract class ArrayBasedUnicodeEscaper extends UnicodeEscaper {
   // The replacement array (see ArrayBasedEscaperMap).
-  private final char[][] replacements;
+  private final char[] @Nullable [] replacements;
   // The number of elements in the replacement array.
   private final int replacementsLength;
   // The first code point in the safe range.
@@ -159,7 +159,7 @@ public abstract class ArrayBasedUnicodeEscaper extends UnicodeEscaper {
    * {@link #escapeUnsafe} is called.
    */
   @Override
-  protected final char[] escape(int cp) {
+  protected final char @Nullable [] escape(int cp) {
     if (cp < replacementsLength) {
       char[] chars = replacements[cp];
       if (chars != null) {
@@ -199,5 +199,5 @@ public abstract class ArrayBasedUnicodeEscaper extends UnicodeEscaper {
    * @param cp the Unicode code point to escape
    * @return the replacement characters, or {@code null} if no escaping was required
    */
-  protected abstract char[] escapeUnsafe(int cp);
+  protected abstract char @Nullable [] escapeUnsafe(int cp);
 }
