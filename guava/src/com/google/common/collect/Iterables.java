@@ -72,8 +72,7 @@ public final class Iterables {
   private Iterables() {}
 
   /** Returns an unmodifiable view of {@code iterable}. */
-  public static <T extends @Nullable Object> Iterable<T> unmodifiableIterable(
-      final Iterable<? extends T> iterable) {
+  public static <T> Iterable<T> unmodifiableIterable(final Iterable<? extends T> iterable) {
     checkNotNull(iterable);
     if (iterable instanceof UnmodifiableIterable || iterable instanceof ImmutableCollection) {
       @SuppressWarnings("unchecked") // Since it's unmodifiable, the covariant cast is safe
@@ -422,8 +421,7 @@ public final class Iterables {
    * <p><b>Java 8 users:</b> The {@code Stream} equivalent of this method is {@code Stream.concat(a,
    * b)}.
    */
-  public static <T extends @Nullable Object> Iterable<T> concat(
-      Iterable<? extends T> a, Iterable<? extends T> b) {
+  public static <T> Iterable<T> concat(Iterable<? extends T> a, Iterable<? extends T> b) {
     return FluentIterable.concat(a, b);
   }
 
@@ -697,7 +695,7 @@ public final class Iterables {
    *
    * <p><b>{@code Stream} equivalent:</b> {@link Stream#map}
    */
-  public static <F extends @Nullable Object, T extends @Nullable Object> Iterable<T> transform(
+  public static <F, T> Iterable<T> transform(
       final Iterable<F> fromIterable, final Function<? super F, ? extends T> function) {
     checkNotNull(fromIterable);
     checkNotNull(function);
@@ -784,8 +782,7 @@ public final class Iterables {
    * @return the first element of {@code iterable} or the default value
    * @since 7.0
    */
-  public static <T extends @Nullable Object> @PolyNull T getFirst(
-      Iterable<? extends T> iterable, @PolyNull T defaultValue) {
+  public static <T> @PolyNull T getFirst(Iterable<? extends T> iterable, @PolyNull T defaultValue) {
     return Iterators.getNext(iterable.iterator(), defaultValue);
   }
 

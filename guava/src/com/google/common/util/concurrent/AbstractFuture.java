@@ -66,7 +66,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 @SuppressWarnings("ShortCircuitBoolean") // we use non-short circuiting comparisons intentionally
 @GwtCompatible(emulated = true)
 @ReflectionSupport(value = ReflectionSupport.Level.FULL)
-public abstract class AbstractFuture<V extends @Nullable Object> extends FluentFuture<V> {
+public abstract class AbstractFuture<V> extends FluentFuture<V> {
   // NOTE: Whenever both tests are cheap and functional, it's faster to use &, | instead of &&, ||
 
   private static final boolean GENERATE_CANCELLATION_CAUSES =

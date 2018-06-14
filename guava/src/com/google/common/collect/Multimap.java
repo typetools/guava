@@ -162,7 +162,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @GwtCompatible
 @AnnotatedFor({"nullness"})
-public interface Multimap<K extends @Nullable Object, V extends @Nullable Object> {
+public interface Multimap<K, V> {
   // Query Operations
 
   /**

@@ -144,7 +144,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtCompatible
-public abstract class Ordering<T extends @Nullable Object> implements Comparator<T> {
+public abstract class Ordering<T> implements Comparator<T> {
   // Natural order
 
   /**
@@ -445,7 +445,7 @@ public abstract class Ordering<T extends @Nullable Object> implements Comparator
    * can omit the comparator if it is the natural order).
    */
   @GwtCompatible(serializable = true)
-  public <F extends @Nullable Object> Ordering<F> onResultOf(Function<F, ? extends T> function) {
+  public <F> Ordering<F> onResultOf(Function<F, ? extends T> function) {
     return new ByFunctionOrdering<>(function, this);
   }
 
@@ -491,7 +491,7 @@ public abstract class Ordering<T extends @Nullable Object> implements Comparator
    * @param comparators the comparators to try in order
    */
   @GwtCompatible(serializable = true)
-  public static <T extends @Nullable Object > Ordering<T> compound(Iterable<? extends Comparator<? super T>> comparators) {
+  public static <T> Ordering<T> compound(Iterable<? extends Comparator<? super T>> comparators) {
     return new CompoundOrdering<T>(comparators);
   }
 

@@ -39,7 +39,7 @@ public interface ListeningExecutorService extends ExecutorService {
    * @throws RejectedExecutionException {@inheritDoc}
    */
   @Override
-  <T extends @Nullable Object> ListenableFuture<T> submit(Callable<T> task);
+  <T> ListenableFuture<T> submit(Callable<T> task);
 
   /**
    * @return a {@code ListenableFuture} representing pending completion of the task

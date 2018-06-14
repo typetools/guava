@@ -99,7 +99,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @since 1.0
  */
 @GwtCompatible
-public interface ListenableFuture<V extends @Nullable Object> extends Future<V> {
+public interface ListenableFuture<V> extends Future<V> {
   /**
    * Registers a listener to be {@linkplain Executor#execute(Runnable) run} on the given executor.
    * The listener will run when the {@code Future}'s computation is {@linkplain Future#isDone()

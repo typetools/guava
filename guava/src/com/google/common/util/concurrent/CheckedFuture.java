@@ -65,7 +65,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 @CanIgnoreReturnValue
 @Deprecated
 @GwtCompatible
-public interface CheckedFuture<V extends @Nullable Object, X extends Exception> extends ListenableFuture<V> {
+public interface CheckedFuture<V, X extends Exception> extends ListenableFuture<V> {
 
   /**
    * Exception checking version of {@link Future#get()} that will translate {@link

@@ -41,7 +41,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 @Beta
 @Deprecated
 @GwtIncompatible
-public abstract class AbstractCheckedFuture<V extends @Nullable Object, X extends Exception>
+public abstract class AbstractCheckedFuture<V, X extends Exception>
     extends ForwardingListenableFuture.SimpleForwardingListenableFuture<V>
     implements CheckedFuture<V, X> {
   /** Constructs an {@code AbstractCheckedFuture} that wraps a delegate. */

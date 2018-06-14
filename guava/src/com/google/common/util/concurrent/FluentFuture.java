@@ -68,8 +68,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  */
 @Beta
 @GwtCompatible(emulated = true)
-public abstract class FluentFuture<V extends @Nullable Object>
-    extends GwtFluentFutureCatchingSpecialization<V> {
+public abstract class FluentFuture<V> extends GwtFluentFutureCatchingSpecialization<V> {
   FluentFuture() {}
 
   /**
