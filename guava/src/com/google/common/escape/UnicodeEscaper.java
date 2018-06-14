@@ -26,9 +26,6 @@ import org.checkerframework.checker.index.qual.LengthOf;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 
-
-
-
 /**
  * An {@link Escaper} that converts literal text into a format safe for inclusion in a particular
  * context (such as an XML document). Typically (but not always), the inverse process of
@@ -138,8 +135,9 @@ public abstract class UnicodeEscaper extends Escaper {
    * @throws IllegalArgumentException if the scanned sub-sequence of {@code csq} contains invalid
    *     surrogate pairs
    */
-  protected @NonNegative int nextEscapeIndex(CharSequence csq, @IndexFor("#1") int start, @IndexFor("#1") int end) {
-    int index = start;
+  @SuppressWarnings("compound.assignment.type.incompatible")//in discussion
+  protected @IndexOrHigh("#1") int nextEscapeIndex(CharSequence csq, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
+    @IndexOrHigh("#1") int index = start;
     while (index < end) {
       int cp = codePointAt(csq, index, end);
       if (cp < 0 || escape(cp) != null) {
@@ -167,12 +165,12 @@ public abstract class UnicodeEscaper extends Escaper {
    */
   @SuppressWarnings(value = {"assignment.type.incompatible", "argument.type.incompatible"})//for now
   protected final String escapeSlow(String s, @IndexOrHigh("#1") int index) {
-    int end = s.length();
+    @LengthOf("s") int end = s.length();
 
     // Get a destination buffer and setup some loop variables.
     char[] dest = Platform.charBufferFromThreadLocal();
-    @NonNegative @LTLengthOf(value = "dest", offset = "(index - unescapedChunkStart) - 1") int destIndex = 0;
-    @NonNegative @LTLengthOf("s") int unescapedChunkStart = 0;
+    int destIndex = 0;
+    int unescapedChunkStart = 0;
 
     while (index < end) {
       int cp = codePointAt(s, index, end);
@@ -256,14 +254,15 @@ public abstract class UnicodeEscaper extends Escaper {
    */
   protected static int codePointAt(CharSequence seq, @IndexFor("#1") int index, @IndexOrHigh("#1") int end) {
     checkNotNull(seq);
-    if (index < end) {
-      char c1 = seq.charAt(index++);
+    @IndexOrHigh("seq") int indexInternal = index;
+    if (indexInternal < end) {
+      char c1 = seq.charAt(indexInternal++);
       if (c1 < Character.MIN_HIGH_SURROGATE || c1 > Character.MAX_LOW_SURROGATE) {
         // Fast path (first test is probably all we need to do)
         return c1;
       } else if (c1 <= Character.MAX_HIGH_SURROGATE) {
         // If the high surrogate was the last character, return its inverse
-        if (index == end) {
+        if (indexInternal == end) {
           return -c1;
         }
         // Otherwise look for the low surrogate following it
