@@ -16,8 +16,8 @@ package com.google.common.util.concurrent;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.concurrent.Future;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Computes a value, possibly asynchronously. For an example usage and more information, see {@link

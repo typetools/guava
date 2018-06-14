@@ -14,7 +14,6 @@
 
 package com.google.common.base;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.checkerframework.framework.qual.AnnotatedFor;
