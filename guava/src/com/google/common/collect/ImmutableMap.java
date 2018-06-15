@@ -82,7 +82,8 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
    * @since 21.0
    */
   @Beta
-  public static <T, K, V> Collector<T, ?, ImmutableMap<K, V>> toImmutableMap(
+  public static <T extends Object, K extends Object, V extends Object>
+  Collector<T, ?, ImmutableMap<K, V>> toImmutableMap(
       Function<? super T, ? extends K> keyFunction,
       Function<? super T, ? extends V> valueFunction) {
     return CollectCollectors.toImmutableMap(keyFunction, valueFunction);
@@ -99,7 +100,7 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
    * @since 21.0
    */
   @Beta
-  public static <T extends @NonNull Object, K extends @NonNull Object, V extends @NonNull Object>
+  public static <T extends Object, K extends Object, V extends Object>
     Collector<T, ?, ImmutableMap<K, V>> toImmutableMap(
       Function<? super T, ? extends K> keyFunction,
       Function<? super T, ? extends V> valueFunction,
