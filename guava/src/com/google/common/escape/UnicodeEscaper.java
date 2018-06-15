@@ -21,10 +21,10 @@ import com.google.common.annotations.GwtCompatible;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
-import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.LengthOf;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.SameLen;
 
 /**
  * An {@link Escaper} that converts literal text into a format safe for inclusion in a particular
@@ -163,25 +163,30 @@ public abstract class UnicodeEscaper extends Escaper {
    * @throws NullPointerException if {@code string} is null
    * @throws IllegalArgumentException if invalid surrogate characters are encountered
    */
-  @SuppressWarnings(value = {"assignment.type.incompatible", "argument.type.incompatible"})//for now
+  @SuppressWarnings(value = {"assignment.type.incompatible",//use of indexInternal = index cause this.
+          "argument.type.incompatible"//(203,64): escaped.length is length of escaped, so it should be already
+          //inferred as @LTEqLengthOf("escaped")
+  })
   protected final String escapeSlow(String s, @IndexOrHigh("#1") int index) {
     @LengthOf("s") int end = s.length();
 
     // Get a destination buffer and setup some loop variables.
     char[] dest = Platform.charBufferFromThreadLocal();
-    int destIndex = 0;
-    int unescapedChunkStart = 0;
+    @IndexOrHigh(value = {"s", "dest"}) int destIndex = 0;
+    int destIndexInternal = destIndex;
+    @IndexFor("s") int indexInternal = index;
+    @IndexOrHigh("s") int unescapedChunkStart = 0;
 
-    while (index < end) {
-      int cp = codePointAt(s, index, end);
+    while (indexInternal < end) {
+      int cp = codePointAt(s, indexInternal, end);
       if (cp < 0) {
         throw new IllegalArgumentException("Trailing high surrogate at end of input");
       }
       // It is possible for this to return null because nextEscapeIndex() may
       // (for performance reasons) yield some false positives but it must never
       // give false negatives.
-      char[] escaped = escape(cp);
-      int nextIndex = index + (Character.isSupplementaryCodePoint(cp) ? 2 : 1);
+      char @SameLen("dest")[] escaped = escape(cp);
+      @IndexOrHigh("s") int nextIndex = indexInternal + (Character.isSupplementaryCodePoint(cp) ? 2 : 1);
       if (escaped != null) {
         int charsSkipped = index - unescapedChunkStart;
 
@@ -195,11 +200,11 @@ public abstract class UnicodeEscaper extends Escaper {
         // If we have skipped any characters, we need to copy them now.
         if (charsSkipped > 0) {
           s.getChars(unescapedChunkStart, index, dest, destIndex);
-          destIndex += charsSkipped;
+          destIndexInternal += charsSkipped;
         }
         if (escaped.length > 0) {
           System.arraycopy(escaped, 0, dest, destIndex, escaped.length);
-          destIndex += escaped.length;
+          destIndexInternal += escaped.length;
         }
         // If we dealt with an escaped character, reset the unescaped range.
         unescapedChunkStart = nextIndex;
@@ -216,7 +221,7 @@ public abstract class UnicodeEscaper extends Escaper {
         dest = growBuffer(dest, destIndex, endIndex);
       }
       s.getChars(unescapedChunkStart, end, dest, destIndex);
-      destIndex = endIndex;
+      destIndexInternal = endIndex;
     }
     return new String(dest, 0, destIndex);
   }
