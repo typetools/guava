@@ -40,7 +40,6 @@ import java.util.SortedSet;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.stream.Collector;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -54,7 +53,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
 @SuppressWarnings("serial") // we're overriding default serialization
-public abstract class ImmutableSet<E extends @NonNull Object>
+public abstract class ImmutableSet<E extends Object>
     extends ImmutableCollection<E> implements Set<E> {
   static final int SPLITERATOR_CHARACTERISTICS =
       ImmutableCollection.SPLITERATOR_CHARACTERISTICS | Spliterator.DISTINCT;
@@ -453,7 +452,7 @@ public abstract class ImmutableSet<E extends @NonNull Object>
    *
    * @since 2.0
    */
-  public static class Builder<E extends @NonNull Object> extends ImmutableCollection.Builder<E> {
+  public static class Builder<E extends Object> extends ImmutableCollection.Builder<E> {
     private SetBuilderImpl<E> impl;
     boolean forceCopy;
 
