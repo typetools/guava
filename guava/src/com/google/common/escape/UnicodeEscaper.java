@@ -104,12 +104,11 @@ public abstract class UnicodeEscaper extends Escaper {
    * @throws NullPointerException if {@code string} is null
    * @throws IllegalArgumentException if invalid surrogate characters are encountered
    */
-  @SuppressWarnings(value = {"assignment.type.incompatible", "argument.type.incompatible"})//for now
   @Override
   public String escape(String string) {
     checkNotNull(string);
     @LengthOf("string") int end = string.length();
-    @LessThan("end") int index = nextEscapeIndex(string, 0, end);
+    @IndexOrHigh("string") int index = nextEscapeIndex(string, 0, end);
     return index == end ? string : escapeSlow(string, index);
   }
 
