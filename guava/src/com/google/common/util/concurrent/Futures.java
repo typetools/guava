@@ -189,7 +189,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
   // TODO(b/72241893): Remove by 2018-07
   @Deprecated
   @GwtIncompatible // TODO
-  public static <V, X extends Exception> CheckedFuture<V, X> immediateCheckedFuture (
+  public static <V, X extends Exception> CheckedFuture<V, X> immediateCheckedFuture(
       @Nullable V value) {
     return new ImmediateSuccessfulCheckedFuture<>(value);
   }
