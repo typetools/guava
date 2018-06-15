@@ -135,7 +135,7 @@ public abstract class UnicodeEscaper extends Escaper {
    * @throws IllegalArgumentException if the scanned sub-sequence of {@code csq} contains invalid
    *     surrogate pairs
    */
-  @SuppressWarnings("compound.assignment.type.incompatible")//index += index += Character.isSupplementaryCodePoint(cp) ? 2 : 1 occurs
+  @SuppressWarnings("compound.assignment.type.incompatible")//index += Character.isSupplementaryCodePoint(cp) ? 2 : 1 occurs
   //only if escape(cp) == null( cp is not supplementaryCodePoint)
   protected @IndexOrHigh("#1") int nextEscapeIndex(CharSequence csq, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     @IndexOrHigh("#1") int index = start;
@@ -301,7 +301,9 @@ public abstract class UnicodeEscaper extends Escaper {
    * Helper method to grow the character buffer as needed, this only happens once in a while so it's
    * ok if it's in a method call. If the index passed in is 0 then no copying will be done.
    */
-  private static char[] growBuffer(char[] dest, @LessThan("#3") @LTEqLengthOf("#1") int index, int size) {
+  @SuppressWarnings("argument.type.incompatible")//upper bound checker does not infer size
+  //as size of the array. Issue: https://github.com/typetools/checker-framework/issues/2029
+  private static char[] growBuffer(char[] dest, @LTEqLengthOf("#1") @LessThan("#3 + 1") int index, int size) {
     if (size < 0) { // overflow - should be OutOfMemoryError but GWT/j2cl don't support it
       throw new AssertionError("Cannot increase internal buffer any further");
     }
