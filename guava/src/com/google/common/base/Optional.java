@@ -284,7 +284,7 @@ public abstract class Optional<T> implements Serializable {
    * @throws NullPointerException if the function returns {@code null}
    * @since 12.0
    */
-  public abstract <V extends Object> Optional<V> transform(Function<? super T, V> function);
+  public abstract <V extends @NonNull Object> Optional<V> transform(Function<? super T, V> function);
 
   /**
    * Returns {@code true} if {@code object} is an {@code Optional} instance, and either the

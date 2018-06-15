@@ -46,6 +46,7 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -65,7 +66,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
 @SuppressWarnings("serial") // we're overriding default serialization
-public abstract class ImmutableMap<K extends Object, V extends Object>
+public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull Object>
     implements Map<K, V>, Serializable {
 
   /**
@@ -81,7 +82,7 @@ public abstract class ImmutableMap<K extends Object, V extends Object>
    * @since 21.0
    */
   @Beta
-  public static <T extends Object, K extends Object, V extends Object>
+  public static <T extends @NonNull Object, K extends @NonNull Object, V extends @NonNull Object>
   Collector<T, ?, ImmutableMap<K, V>> toImmutableMap(
       Function<? super T, ? extends K> keyFunction,
       Function<? super T, ? extends V> valueFunction) {
@@ -99,7 +100,7 @@ public abstract class ImmutableMap<K extends Object, V extends Object>
    * @since 21.0
    */
   @Beta
-  public static <T extends Object, K extends Object, V extends Object>
+  public static <T extends @NonNull Object, K extends @NonNull Object, V extends @NonNull Object>
     Collector<T, ?, ImmutableMap<K, V>> toImmutableMap(
       Function<? super T, ? extends K> keyFunction,
       Function<? super T, ? extends V> valueFunction,
