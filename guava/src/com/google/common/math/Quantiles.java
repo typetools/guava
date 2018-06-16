@@ -684,7 +684,7 @@ public final class Quantiles {
   }
 
   /** Swaps the values at {@code i} and {@code j} in {@code array}. */
-  private static void swap(double[] array, int i, int j) {
+  private static void swap(double[] array, @IndexFor("#1") int i, @IndexFor("#1") int j) {
     double temp = array[i];
     array[i] = array[j];
     array[j] = temp;
