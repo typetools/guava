@@ -922,8 +922,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T reference,
-      @Nullable Object errorMessage) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T reference, @Nullable Object errorMessage) {
     if (reference == null) {
       throw new NullPointerException(String.valueOf(errorMessage));
     }
@@ -947,8 +947,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T reference,
-      @Nullable String errorMessageTemplate, Object @Nullable... errorMessageArgs) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T reference, @Nullable String errorMessageTemplate, Object @Nullable... errorMessageArgs) {
     if (reference == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, errorMessageArgs));
     }
@@ -964,8 +964,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, char p1) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, char p1) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1));
     }
@@ -981,8 +981,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, int p1) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, int p1) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1));
     }
@@ -998,8 +998,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, long p1) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, long p1) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1));
     }
@@ -1015,8 +1015,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, @Nullable Object p1) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, @Nullable Object p1) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1));
     }
@@ -1032,8 +1032,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, char p1, char p2) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, char p1, char p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1049,8 +1049,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, char p1, int p2) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, char p1, int p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1066,8 +1066,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, char p1, long p2) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, char p1, long p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1083,8 +1083,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, char p1, @Nullable Object p2) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, char p1, @Nullable Object p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1100,8 +1100,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, int p1, char p2) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, int p1, char p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1117,8 +1117,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, int p1, int p2) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, int p1, int p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1134,8 +1134,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull( T obj,
-      @Nullable String errorMessageTemplate, int p1, long p2) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, int p1, long p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1151,8 +1151,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, int p1, @Nullable Object p2) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, int p1, @Nullable Object p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1168,8 +1168,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, long p1, char p2) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, long p1, char p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1185,8 +1185,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, long p1, int p2) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, long p1, int p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1202,8 +1202,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, long p1, long p2) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, long p1, long p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1219,8 +1219,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, long p1, @Nullable Object p2) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, long p1, @Nullable Object p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1236,8 +1236,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, @Nullable Object p1, char p2) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, @Nullable Object p1, char p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1253,8 +1253,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, @Nullable Object p1, int p2) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, @Nullable Object p1, int p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1270,8 +1270,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, @Nullable Object p1, long p2) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, @Nullable Object p1, long p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1287,8 +1287,8 @@ public final class Preconditions {
    */
   @CanIgnoreReturnValue
   @Pure
-  public static <T extends @NonNull Object> T checkNotNull(T obj,
-      @Nullable String errorMessageTemplate, @Nullable Object p1, @Nullable Object p2) {
+  public static <T extends @NonNull Object> T checkNotNull(
+      T obj, @Nullable String errorMessageTemplate, @Nullable Object p1, @Nullable Object p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
