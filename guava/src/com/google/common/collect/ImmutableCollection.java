@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Predicate;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -162,7 +163,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @SuppressWarnings("serial") // we're overriding default serialization
 // TODO(kevinb): I think we should push everything down to "BaseImmutableCollection" or something,
 // just to do everything we can to emphasize the "practically an interface" nature of this class.
-public abstract class ImmutableCollection<E> extends AbstractCollection<E> implements Serializable {
+public abstract class ImmutableCollection<E extends @NonNull Object>
+    extends AbstractCollection<E> implements Serializable {
   /*
    * We expect SIZED (and SUBSIZED, if applicable) to be added by the spliterator factory methods.
    * These are properties of the collection as a whole; SIZED and SUBSIZED are more properties of
@@ -185,6 +187,8 @@ public abstract class ImmutableCollection<E> extends AbstractCollection<E> imple
   private static final Object[] EMPTY_ARRAY = {};
 
   @Override
+  @SuppressWarnings("nullness:override.return.invalid") // Suppressed due to annotations of toArray.
+  // refer to note on toArray
   public final @Nullable Object[] toArray() {
     int size = size();
     if (size == 0) {
@@ -197,7 +201,9 @@ public abstract class ImmutableCollection<E> extends AbstractCollection<E> imple
 
   @CanIgnoreReturnValue
   @Override
-  public final <T> @Nullable T[] toArray(T[] other) {
+  @SuppressWarnings({"nullness:override.param.invalid", "nullness:override.return.invalid"})
+  // Suppressed due to annotations of toArray, refer to note on toArray
+  public final <T> @Nullable T[] toArray(@Nullable T[] other) {
     checkNotNull(other);
     int size = size();
     if (other.length < size) {
@@ -336,7 +342,7 @@ public abstract class ImmutableCollection<E> extends AbstractCollection<E> imple
    * offset. Returns {@code offset + size()}.
    */
   @CanIgnoreReturnValue
-  int copyIntoArray(Object[] dst, int offset) {
+  int copyIntoArray(@Nullable Object[] dst, int offset) {
     for (E e : this) {
       dst[offset++] = e;
     }
@@ -353,7 +359,7 @@ public abstract class ImmutableCollection<E> extends AbstractCollection<E> imple
    *
    * @since 10.0
    */
-  public abstract static class Builder<E> {
+  public abstract static class Builder<E extends @NonNull Object> {
     static final int DEFAULT_INITIAL_CAPACITY = 4;
 
     static int expandedCapacity(int oldCapacity, int minCapacity) {
