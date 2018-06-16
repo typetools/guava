@@ -521,7 +521,8 @@ public final class Quantiles {
    * ({@code required}, {@code to}] are greater than or equal to that value. Therefore, the value at
    * {@code required} is the value which would appear at that index in the sorted dataset.
    */
-  private static void selectInPlace(int required, double[] array, int from, int to) {
+  @SuppressWarnings("assignment.type.incompatible")//in discussion
+  private static void selectInPlace(int required, double[] array, @IndexFor("#2") int from, @IndexFor("#2") int to) {
     // If we are looking for the least element in the range, we can just do a linear search for it.
     // (We will hit this whenever we are doing quantile interpolation: our first selection finds
     // the lower value, our second one finds the upper value by looking for the next least element.)
@@ -541,12 +542,13 @@ public final class Quantiles {
     // Let's play quickselect! We'll repeatedly partition the range [from, to] containing the
     // required element, as long as it has more than one element.
     while (to > from) {
-      int partitionPoint = partition(array, from, to);
+      @IndexFor("array") int partitionPoint = partition(array, from, to);
+      @Positive @LTLengthOf(value = "array", offset = "1") int partitionPointInternal = partitionPoint;
       if (partitionPoint >= required) {
-        to = partitionPoint - 1;
+        to = partitionPointInternal - 1;
       }
       if (partitionPoint <= required) {
-        from = partitionPoint + 1;
+        from = partitionPointInternal + 1;
       }
     }
   }
@@ -559,14 +561,14 @@ public final class Quantiles {
    * equal to the value at {@code ret} and the values with indexes in ({@code ret}, {@code to}] are
    * greater than or equal to that.
    */
-  private static int partition(double[] array, int from, int to) {
+  private static @IndexFor("#1") int partition(double[] array, @IndexFor("#1") int from, @IndexFor("#1") int to) {
     // Select a pivot, and move it to the start of the slice i.e. to index from.
     movePivotToStartOfSlice(array, from, to);
     double pivot = array[from];
 
     // Move all elements with indexes in (from, to] which are greater than the pivot to the end of
     // the array. Keep track of where those elements begin.
-    int partitionPoint = to;
+    @Positive int partitionPoint = to;
     for (int i = to; i > from; i--) {
       if (array[i] > pivot) {
         swap(array, partitionPoint, i);
@@ -587,7 +589,7 @@ public final class Quantiles {
    * necessary) that that pivot value appears at the start of the slice i.e. at {@code from}.
    * Expects that {@code from} is strictly less than {@code to}.
    */
-  private static void movePivotToStartOfSlice(double[] array, int from, int to) {
+  private static void movePivotToStartOfSlice(double[] array, @IndexFor("#1") int from, @IndexFor("#1") int to) {
     int mid = (from + to) >>> 1;
     // We want to make a swap such that either array[to] <= array[from] <= array[mid], or
     // array[mid] <= array[from] <= array[to]. We know that from < to, so we know mid < to
