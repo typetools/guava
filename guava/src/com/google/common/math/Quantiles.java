@@ -29,6 +29,7 @@ import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.common.value.qual.MinLen;
 import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.HashMap;
@@ -281,7 +282,7 @@ public final class Quantiles {
      */
     @SuppressWarnings("assignment.type.incompatible")
     //Since index and (dataset.length - 1) are non-negative ints, numerator is also non negative int
-    public double computeInPlace(double... dataset) {
+    public double computeInPlace(double @MinLen(1)... dataset) {
       checkArgument(dataset.length > 0, "Cannot calculate quantiles of an empty dataset");
       if (containsNaN(dataset)) {
         return NaN;
