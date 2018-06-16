@@ -654,7 +654,7 @@ public final class Quantiles {
    * minimizes the size of the subranges from which the remaining selections must be done.
    */
   private static int chooseNextSelection(
-      int[] allRequired, int requiredFrom, int requiredTo, int from, int to) {
+      int[] allRequired, @IndexFor("#1") int requiredFrom, @IndexFor("#1") int requiredTo, int from, int to) {
     if (requiredFrom == requiredTo) {
       return requiredFrom; // only one thing to choose, so choose it
     }
@@ -668,10 +668,10 @@ public final class Quantiles {
     // lowest respectively). If centerFloor is in allRequired, we will definitely find it. If not,
     // but centerFloor + 1 is, we'll definitely find that. The closest value to the true (unrounded)
     // center will be at either low or high.
-    int low = requiredFrom;
-    int high = requiredTo;
+    @IndexFor("allRequired") int low = requiredFrom;
+    @IndexFor("allRequired") int high = requiredTo;
     while (high > low + 1) {
-      int mid = (low + high) >>> 1;
+      @IndexFor("allRequired") int mid = (low + high) >>> 1;
       if (allRequired[mid] > centerFloor) {
         high = mid;
       } else if (allRequired[mid] < centerFloor) {
