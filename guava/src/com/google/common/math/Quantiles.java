@@ -25,6 +25,10 @@ import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
 import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.HashMap;
@@ -151,7 +155,7 @@ public final class Quantiles {
    * @param scale the scale for the quantiles to be calculated, i.e. the q of the q-quantiles, which
    *     must be positive
    */
-  public static Scale scale(int scale) {
+  public static Scale scale(@Positive int scale) {
     return new Scale(scale);
   }
 
@@ -161,11 +165,12 @@ public final class Quantiles {
    *
    * @since 20.0
    */
+  //add in documentation that scale is positive( because of the checkArgument() call)
   public static final class Scale {
 
-    private final int scale;
+    private final @Positive int scale;
 
-    private Scale(int scale) {
+    private Scale(@Positive int scale) {
       checkArgument(scale > 0, "Quantile scale must be positive");
       this.scale = scale;
     }
@@ -175,7 +180,7 @@ public final class Quantiles {
      *
      * @param index the quantile index, which must be in the inclusive range [0, q] for q-quantiles
      */
-    public ScaleAndIndex index(int index) {
+    public ScaleAndIndex index(@NonNegative int index) {
       return new ScaleAndIndex(scale, index);
     }
 
@@ -212,10 +217,10 @@ public final class Quantiles {
    */
   public static final class ScaleAndIndex {
 
-    private final int scale;
-    private final int index;
+    private final @Positive int scale;
+    private final @NonNegative int index;
 
-    private ScaleAndIndex(int scale, int index) {
+    private ScaleAndIndex(@Positive int scale,@NonNegative int index) {
       checkIndex(index, scale);
       this.scale = scale;
       this.index = index;
@@ -274,6 +279,8 @@ public final class Quantiles {
      *     be arbitrarily reordered by this method call
      * @return the quantile value
      */
+    @SuppressWarnings("assignment.type.incompatible")
+    //Since index and (dataset.length - 1) are non-negative ints, numerator is also non negative int
     public double computeInPlace(double... dataset) {
       checkArgument(dataset.length > 0, "Cannot calculate quantiles of an empty dataset");
       if (containsNaN(dataset)) {
@@ -287,11 +294,11 @@ public final class Quantiles {
 
       // Since index and (dataset.length - 1) are non-negative ints, their product can be expressed
       // as a long, without risk of overflow:
-      long numerator = (long) index * (dataset.length - 1);
+      @NonNegative long numerator = (long) index * (dataset.length - 1);
       // Since scale is a positive int, index is in [0, scale], and (dataset.length - 1) is a
       // non-negative int, we can do long-arithmetic on index * (dataset.length - 1) / scale to get
       // a rounded ratio and a remainder which can be expressed as ints, without risk of overflow:
-      int quotient = (int) LongMath.divide(numerator, scale, RoundingMode.DOWN);
+      @NonNegative @LTLengthOf(value = "dataset", offset = "1") int quotient = (int) LongMath.divide(numerator, scale, RoundingMode.DOWN);
       int remainder = (int) (numerator - (long) quotient * scale);
       selectInPlace(quotient, dataset, 0, dataset.length - 1);
       if (remainder == 0) {
