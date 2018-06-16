@@ -62,7 +62,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
 @SuppressWarnings("serial") // we're overriding default serialization
-public abstract class ImmutableList<E> extends ImmutableCollection<E>
+public abstract class ImmutableList<E extends @NonNull Object> extends ImmutableCollection<E>
     implements List<E>, RandomAccess {
 
   /**
