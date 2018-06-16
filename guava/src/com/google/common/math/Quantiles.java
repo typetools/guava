@@ -29,6 +29,7 @@ import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.common.value.qual.MinLen;
 import java.math.RoundingMode;
 import java.util.Collection;
@@ -521,7 +522,6 @@ public final class Quantiles {
    * ({@code required}, {@code to}] are greater than or equal to that value. Therefore, the value at
    * {@code required} is the value which would appear at that index in the sorted dataset.
    */
-  @SuppressWarnings("assignment.type.incompatible")//in discussion
   private static void selectInPlace(int required, double[] array, @IndexFor("#2") int from, @IndexFor("#2") int to) {
     // If we are looking for the least element in the range, we can just do a linear search for it.
     // (We will hit this whenever we are doing quantile interpolation: our first selection finds
@@ -543,12 +543,14 @@ public final class Quantiles {
     // required element, as long as it has more than one element.
     while (to > from) {
       @IndexFor("array") int partitionPoint = partition(array, from, to);
-      @Positive @LTLengthOf(value = "array", offset = "1") int partitionPointInternal = partitionPoint;
+      int fromInternal = from;
+      int toInternal = to;
+      int partitionPointInternal = partitionPoint;
       if (partitionPoint >= required) {
-        to = partitionPointInternal - 1;
+        toInternal = partitionPointInternal - 1;
       }
       if (partitionPoint <= required) {
-        from = partitionPointInternal + 1;
+        fromInternal = partitionPointInternal + 1;
       }
     }
   }
@@ -568,11 +570,12 @@ public final class Quantiles {
 
     // Move all elements with indexes in (from, to] which are greater than the pivot to the end of
     // the array. Keep track of where those elements begin.
-    @Positive int partitionPoint = to;
+    @IndexFor("array") int partitionPoint = to;
+    @GTENegativeOne int partitionPointInternal = partitionPoint;
     for (int i = to; i > from; i--) {
       if (array[i] > pivot) {
         swap(array, partitionPoint, i);
-        partitionPoint--;
+        partitionPointInternal--;
       }
     }
 
