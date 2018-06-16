@@ -30,6 +30,7 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -42,8 +43,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
-public abstract class ImmutableBiMap<K, V> extends ImmutableBiMapFauxverideShim<K, V>
-    implements BiMap<K, V> {
+public abstract class ImmutableBiMap<K extends @NonNull Object, V extends @NonNull Object>
+    extends ImmutableBiMapFauxverideShim<K, V> implements BiMap<K, V> {
 
   /**
    * Returns a {@link Collector} that accumulates elements into an {@code ImmutableBiMap} whose keys
@@ -58,7 +59,8 @@ public abstract class ImmutableBiMap<K, V> extends ImmutableBiMapFauxverideShim<
    * @since 21.0
    */
   @Beta
-  public static <T, K, V> Collector<T, ?, ImmutableBiMap<K, V>> toImmutableBiMap(
+  public static <T extends @NonNull Object, K extends @NonNull Object, V extends @NonNull Object>
+  Collector<T, ?, ImmutableBiMap<K, V>> toImmutableBiMap(
       Function<? super T, ? extends K> keyFunction,
       Function<? super T, ? extends V> valueFunction) {
     return CollectCollectors.toImmutableBiMap(keyFunction, valueFunction);
@@ -67,12 +69,13 @@ public abstract class ImmutableBiMap<K, V> extends ImmutableBiMapFauxverideShim<
   /** Returns the empty bimap. */
   // Casting to any type is safe because the set will never hold any elements.
   @SuppressWarnings("unchecked")
-  public static <K, V> ImmutableBiMap<K, V> of() {
+  public static <K extends @NonNull Object, V extends @NonNull Object> ImmutableBiMap<K, V> of() {
     return (ImmutableBiMap<K, V>) RegularImmutableBiMap.EMPTY;
   }
 
   /** Returns an immutable bimap containing a single entry. */
-  public static <K, V> ImmutableBiMap<K, V> of(K k1, V v1) {
+  public static <K extends @NonNull Object, V extends @NonNull Object> ImmutableBiMap<K, V> of(
+      K k1, V v1) {
     return new SingletonImmutableBiMap<>(k1, v1);
   }
 
@@ -81,7 +84,8 @@ public abstract class ImmutableBiMap<K, V> extends ImmutableBiMapFauxverideShim<
    *
    * @throws IllegalArgumentException if duplicate keys or values are added
    */
-  public static <K, V> ImmutableBiMap<K, V> of(K k1, V v1, K k2, V v2) {
+  public static <K extends @NonNull Object, V extends @NonNull Object> ImmutableBiMap<K, V> of(
+      K k1, V v1, K k2, V v2) {
     return RegularImmutableBiMap.fromEntries(entryOf(k1, v1), entryOf(k2, v2));
   }
 
@@ -90,7 +94,8 @@ public abstract class ImmutableBiMap<K, V> extends ImmutableBiMapFauxverideShim<
    *
    * @throws IllegalArgumentException if duplicate keys or values are added
    */
-  public static <K, V> ImmutableBiMap<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3) {
+  public static <K extends @NonNull Object, V extends @NonNull Object> ImmutableBiMap<K, V> of(
+      K k1, V v1, K k2, V v2, K k3, V v3) {
     return RegularImmutableBiMap.fromEntries(entryOf(k1, v1), entryOf(k2, v2), entryOf(k3, v3));
   }
 
@@ -99,7 +104,8 @@ public abstract class ImmutableBiMap<K, V> extends ImmutableBiMapFauxverideShim<
    *
    * @throws IllegalArgumentException if duplicate keys or values are added
    */
-  public static <K, V> ImmutableBiMap<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4) {
+  public static <K extends @NonNull Object, V extends @NonNull Object> ImmutableBiMap<K, V> of(
+      K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4) {
     return RegularImmutableBiMap.fromEntries(
         entryOf(k1, v1), entryOf(k2, v2), entryOf(k3, v3), entryOf(k4, v4));
   }
@@ -109,7 +115,7 @@ public abstract class ImmutableBiMap<K, V> extends ImmutableBiMapFauxverideShim<
    *
    * @throws IllegalArgumentException if duplicate keys or values are added
    */
-  public static <K, V> ImmutableBiMap<K, V> of(
+  public static <K extends @NonNull Object, V extends @NonNull Object> ImmutableBiMap<K, V> of(
       K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5) {
     return RegularImmutableBiMap.fromEntries(
         entryOf(k1, v1), entryOf(k2, v2), entryOf(k3, v3), entryOf(k4, v4), entryOf(k5, v5));
@@ -121,7 +127,7 @@ public abstract class ImmutableBiMap<K, V> extends ImmutableBiMapFauxverideShim<
    * Returns a new builder. The generated builder is equivalent to the builder created by the {@link
    * Builder} constructor.
    */
-  public static <K, V> Builder<K, V> builder() {
+  public static <K extends @NonNull Object, V extends @NonNull Object> Builder<K, V> builder() {
     return new Builder<>();
   }
 
@@ -138,7 +144,8 @@ public abstract class ImmutableBiMap<K, V> extends ImmutableBiMapFauxverideShim<
    * @since 23.1
    */
   @Beta
-  public static <K, V> Builder<K, V> builderWithExpectedSize(int expectedSize) {
+  public static <K extends @NonNull Object, V extends @NonNull Object> Builder<K, V>
+  builderWithExpectedSize(int expectedSize) {
     checkNonnegative(expectedSize, "expectedSize");
     return new Builder<>(expectedSize);
   }
@@ -171,7 +178,8 @@ public abstract class ImmutableBiMap<K, V> extends ImmutableBiMapFauxverideShim<
    *
    * @since 2.0
    */
-  public static final class Builder<K, V> extends ImmutableMap.Builder<K, V> {
+  public static final class Builder<K extends @NonNull Object, V extends @NonNull Object>
+      extends ImmutableMap.Builder<K, V> {
 
     /**
      * Creates a new builder. The returned builder is equivalent to the builder generated by {@link
@@ -268,6 +276,8 @@ public abstract class ImmutableBiMap<K, V> extends ImmutableBiMapFauxverideShim<
      * @throws IllegalArgumentException if duplicate keys or values were added
      */
     @Override
+    @SuppressWarnings({"nullness:dereference.of.nullable", "nullness:argument.type.incompatible"})
+    // All the values in array 'entries' with index less than 'size' are non-null.
     public ImmutableBiMap<K, V> build() {
       switch (size) {
         case 0:
@@ -299,6 +309,8 @@ public abstract class ImmutableBiMap<K, V> extends ImmutableBiMapFauxverideShim<
 
     @Override
     @VisibleForTesting
+    @SuppressWarnings({"nullness:dereference.of.nullable", "nullness:argument.type.incompatible"})
+    // All the values in array 'entries' with index less than 'size' are non-null.
     ImmutableBiMap<K, V> buildJdkBacked() {
       checkState(
           valueComparator == null,
@@ -331,7 +343,8 @@ public abstract class ImmutableBiMap<K, V> extends ImmutableBiMapFauxverideShim<
    *     key
    * @throws NullPointerException if any key or value in {@code map} is null
    */
-  public static <K, V> ImmutableBiMap<K, V> copyOf(Map<? extends K, ? extends V> map) {
+  public static <K extends @NonNull Object, V extends @NonNull Object> ImmutableBiMap<K, V> copyOf(
+      Map<? extends K, ? extends V> map) {
     if (map instanceof ImmutableBiMap) {
       @SuppressWarnings("unchecked") // safe since map is not writable
       ImmutableBiMap<K, V> bimap = (ImmutableBiMap<K, V>) map;
@@ -354,7 +367,7 @@ public abstract class ImmutableBiMap<K, V> extends ImmutableBiMapFauxverideShim<
    * @since 19.0
    */
   @Beta
-  public static <K, V> ImmutableBiMap<K, V> copyOf(
+  public static <K extends @NonNull Object, V extends @NonNull Object> ImmutableBiMap<K, V> copyOf(
       Iterable<? extends Entry<? extends K, ? extends V>> entries) {
     @SuppressWarnings("unchecked") // we'll only be using getKey and getValue, which are covariant
     Entry<K, V>[] entryArray = (Entry<K, V>[]) Iterables.toArray(entries, EMPTY_ENTRY_ARRAY);

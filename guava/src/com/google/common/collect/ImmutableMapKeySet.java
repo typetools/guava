@@ -24,6 +24,7 @@ import com.google.j2objc.annotations.Weak;
 import java.io.Serializable;
 import java.util.Spliterator;
 import java.util.function.Consumer;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -33,7 +34,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Kevin Bourrillion
  */
 @GwtCompatible(emulated = true)
-final class ImmutableMapKeySet<K, V> extends IndexedImmutableSet<K> {
+final class ImmutableMapKeySet<K extends @NonNull Object, V extends @NonNull Object>
+    extends IndexedImmutableSet<K> {
   @Weak private final ImmutableMap<K, V> map;
 
   ImmutableMapKeySet(ImmutableMap<K, V> map) {
@@ -83,7 +85,7 @@ final class ImmutableMapKeySet<K, V> extends IndexedImmutableSet<K> {
   }
 
   @GwtIncompatible // serialization
-  private static class KeySetSerializedForm<K> implements Serializable {
+  private static class KeySetSerializedForm<K extends @NonNull Object> implements Serializable {
     final ImmutableMap<K, ?> map;
 
     KeySetSerializedForm(ImmutableMap<K, ?> map) {

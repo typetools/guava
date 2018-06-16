@@ -20,6 +20,7 @@ import com.google.common.annotations.GwtIncompatible;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collector;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * "Overrides" the {@link ImmutableMap} static methods that lack {@link ImmutableBiMap} equivalents
@@ -29,7 +30,8 @@ import java.util.stream.Collector;
  * @author Louis Wasserman
  */
 @GwtIncompatible
-abstract class ImmutableBiMapFauxverideShim<K, V> extends ImmutableMap<K, V> {
+abstract class ImmutableBiMapFauxverideShim<K extends @NonNull Object, V extends @NonNull Object>
+    extends ImmutableMap<K, V> {
   /**
    * Not supported. Use {@link ImmutableBiMap#toImmutableBiMap} instead. This method exists only to
    * hide {@link ImmutableMap#toImmutableMap(Function, Function)} from consumers of {@code
@@ -39,7 +41,8 @@ abstract class ImmutableBiMapFauxverideShim<K, V> extends ImmutableMap<K, V> {
    * @deprecated Use {@link ImmutableBiMap#toImmutableBiMap}.
    */
   @Deprecated
-  public static <T, K, V> Collector<T, ?, ImmutableMap<K, V>> toImmutableMap(
+  public static <T extends @NonNull Object, K extends @NonNull Object, V extends @NonNull Object>
+  Collector<T, ?, ImmutableMap<K, V>> toImmutableMap(
       Function<? super T, ? extends K> keyFunction,
       Function<? super T, ? extends V> valueFunction) {
     throw new UnsupportedOperationException();
@@ -54,7 +57,8 @@ abstract class ImmutableBiMapFauxverideShim<K, V> extends ImmutableMap<K, V> {
    * @deprecated
    */
   @Deprecated
-  public static <T, K, V> Collector<T, ?, ImmutableMap<K, V>> toImmutableMap(
+  public static <T extends @NonNull Object, K extends @NonNull Object, V extends @NonNull Object>
+  Collector<T, ?, ImmutableMap<K, V>> toImmutableMap(
       Function<? super T, ? extends K> keyFunction,
       Function<? super T, ? extends V> valueFunction,
       BinaryOperator<V> mergeFunction) {
