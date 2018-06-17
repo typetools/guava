@@ -1391,7 +1391,8 @@ public final class Preconditions {
    * @throws IllegalArgumentException if {@code size} is negative
    */
   @CanIgnoreReturnValue
-  public static @NonNegative int checkElementIndex(@NonNegative int index, @NonNegative int size, @Nullable String desc) {
+  public static @NonNegative int checkElementIndex(
+      @NonNegative int index, @NonNegative int size, @Nullable String desc) {
     // Carefully optimized for execution by hotspot (explanatory comment above)
     if (index < 0 || index >= size) {
       throw new IndexOutOfBoundsException(badElementIndex(index, size, desc));
