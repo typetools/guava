@@ -31,6 +31,7 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.stream.Collector;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -54,7 +55,7 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
    * @since 23.1
    */
   @Beta
-  public static <T, K extends Comparable<? super K>, V>
+  public static <T extends @NonNull Object, K extends Comparable<? super K>, V extends @NonNull Object>
       Collector<T, ?, ImmutableRangeMap<K, V>> toImmutableRangeMap(
           Function<? super T, Range<K>> keyFunction,
           Function<? super T, ? extends V> valueFunction) {
@@ -63,17 +64,18 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
 
   /** Returns an empty immutable range map. */
   @SuppressWarnings("unchecked")
-  public static <K extends Comparable<?>, V> ImmutableRangeMap<K, V> of() {
+  public static <K extends Comparable<?>, V extends @NonNull Object> ImmutableRangeMap<K, V> of() {
     return (ImmutableRangeMap<K, V>) EMPTY;
   }
 
   /** Returns an immutable range map mapping a single range to a single value. */
-  public static <K extends Comparable<?>, V> ImmutableRangeMap<K, V> of(Range<K> range, V value) {
+  public static <K extends Comparable<?>, V extends @NonNull Object> ImmutableRangeMap<K, V> of(
+      Range<K> range, V value) {
     return new ImmutableRangeMap<>(ImmutableList.of(range), ImmutableList.of(value));
   }
 
   @SuppressWarnings("unchecked")
-  public static <K extends Comparable<?>, V> ImmutableRangeMap<K, V> copyOf(
+  public static <K extends Comparable<?>, V extends @NonNull Object> ImmutableRangeMap<K, V> copyOf(
       RangeMap<K, ? extends V> rangeMap) {
     if (rangeMap instanceof ImmutableRangeMap) {
       return (ImmutableRangeMap<K, V>) rangeMap;
@@ -89,7 +91,7 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
   }
 
   /** Returns a new builder for an immutable range map. */
-  public static <K extends Comparable<?>, V> Builder<K, V> builder() {
+  public static <K extends Comparable<?>, V extends @NonNull Object> Builder<K, V> builder() {
     return new Builder<>();
   }
 
@@ -98,7 +100,7 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
    *
    * @since 14.0
    */
-  public static final class Builder<K extends Comparable<?>, V> {
+  public static final class Builder<K extends Comparable<?>, V extends @NonNull Object> {
     private final List<Entry<Range<K>, V>> entries;
 
     public Builder() {
@@ -376,7 +378,8 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
    * This class is used to serialize ImmutableRangeMap instances. Serializes the {@link
    * #asMapOfRanges()} form.
    */
-  private static class SerializedForm<K extends Comparable<?>, V> implements Serializable {
+  private static class SerializedForm<K extends Comparable<?>, V extends @NonNull Object>
+      implements Serializable {
 
     private final ImmutableMap<Range<K>, V> mapOfRanges;
 
