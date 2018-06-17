@@ -20,6 +20,7 @@ import com.google.common.annotations.GwtIncompatible;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collector;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * "Overrides" the {@link ImmutableMap} static methods that lack {@link ImmutableSortedMap}
@@ -29,7 +30,8 @@ import java.util.stream.Collector;
  * @author Chris Povirk
  */
 @GwtIncompatible
-abstract class ImmutableSortedMapFauxverideShim<K, V> extends ImmutableMap<K, V> {
+abstract class ImmutableSortedMapFauxverideShim<K extends @NonNull Object, V extends @NonNull Object>
+    extends ImmutableMap<K, V> {
   /**
    * Not supported. Use {@link ImmutableSortedMap#toImmutableSortedMap}, which offers better
    * type-safety, instead. This method exists only to hide {@link ImmutableMap#toImmutableMap} from
@@ -39,7 +41,8 @@ abstract class ImmutableSortedMapFauxverideShim<K, V> extends ImmutableMap<K, V>
    * @deprecated Use {@link ImmutableSortedMap#toImmutableSortedMap}.
    */
   @Deprecated
-  public static <T, K, V> Collector<T, ?, ImmutableMap<K, V>> toImmutableMap(
+  public static <T extends @NonNull Object, K extends @NonNull Object, V extends @NonNull Object>
+  Collector<T, ?, ImmutableMap<K, V>> toImmutableMap(
       Function<? super T, ? extends K> keyFunction,
       Function<? super T, ? extends V> valueFunction) {
     throw new UnsupportedOperationException();
@@ -54,7 +57,8 @@ abstract class ImmutableSortedMapFauxverideShim<K, V> extends ImmutableMap<K, V>
    * @deprecated Use {@link ImmutableSortedMap#toImmutableSortedMap}.
    */
   @Deprecated
-  public static <T, K, V> Collector<T, ?, ImmutableMap<K, V>> toImmutableMap(
+  public static <T extends @NonNull Object, K extends @NonNull Object, V extends @NonNull Object>
+  Collector<T, ?, ImmutableMap<K, V>> toImmutableMap(
       Function<? super T, ? extends K> keyFunction,
       Function<? super T, ? extends V> valueFunction,
       BinaryOperator<V> mergeFunction) {
@@ -70,7 +74,8 @@ abstract class ImmutableSortedMapFauxverideShim<K, V> extends ImmutableMap<K, V>
    * @deprecated Use {@link ImmutableSortedMap#naturalOrder}, which offers better type-safety.
    */
   @Deprecated
-  public static <K, V> ImmutableSortedMap.Builder<K, V> builder() {
+  public static <K extends @NonNull Object, V extends @NonNull Object>
+  ImmutableSortedMap.Builder<K, V> builder() {
     throw new UnsupportedOperationException();
   }
 
@@ -81,7 +86,8 @@ abstract class ImmutableSortedMapFauxverideShim<K, V> extends ImmutableMap<K, V>
    * @deprecated Not supported for ImmutableSortedMap.
    */
   @Deprecated
-  public static <K, V> ImmutableSortedMap.Builder<K, V> builderWithExpectedSize(int expectedSize) {
+  public static <K extends @NonNull Object, V extends @NonNull Object>
+  ImmutableSortedMap.Builder<K, V> builderWithExpectedSize(int expectedSize) {
     throw new UnsupportedOperationException();
   }
 
@@ -95,7 +101,8 @@ abstract class ImmutableSortedMapFauxverideShim<K, V> extends ImmutableMap<K, V>
    *     ImmutableSortedMap#of(Comparable, Object)}.</b>
    */
   @Deprecated
-  public static <K, V> ImmutableSortedMap<K, V> of(K k1, V v1) {
+  public static <K extends @NonNull Object, V extends @NonNull Object> ImmutableSortedMap<K, V> of(
+      K k1, V v1) {
     throw new UnsupportedOperationException();
   }
 
@@ -109,7 +116,8 @@ abstract class ImmutableSortedMapFauxverideShim<K, V> extends ImmutableMap<K, V>
    *     ImmutableSortedMap#of(Comparable, Object, Comparable, Object)}.</b>
    */
   @Deprecated
-  public static <K, V> ImmutableSortedMap<K, V> of(K k1, V v1, K k2, V v2) {
+  public static <K extends @NonNull Object, V extends @NonNull Object> ImmutableSortedMap<K, V> of(
+      K k1, V v1, K k2, V v2) {
     throw new UnsupportedOperationException();
   }
 
@@ -123,7 +131,8 @@ abstract class ImmutableSortedMapFauxverideShim<K, V> extends ImmutableMap<K, V>
    *     ImmutableSortedMap#of(Comparable, Object, Comparable, Object, Comparable, Object)}.</b>
    */
   @Deprecated
-  public static <K, V> ImmutableSortedMap<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3) {
+  public static <K extends @NonNull Object, V extends @NonNull Object> ImmutableSortedMap<K, V> of(
+      K k1, V v1, K k2, V v2, K k3, V v3) {
     throw new UnsupportedOperationException();
   }
 
@@ -138,7 +147,8 @@ abstract class ImmutableSortedMapFauxverideShim<K, V> extends ImmutableMap<K, V>
    *     Comparable, Object)}.</b>
    */
   @Deprecated
-  public static <K, V> ImmutableSortedMap<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4) {
+  public static <K extends @NonNull Object, V extends @NonNull Object> ImmutableSortedMap<K, V> of(
+      K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4) {
     throw new UnsupportedOperationException();
   }
 
@@ -153,7 +163,7 @@ abstract class ImmutableSortedMapFauxverideShim<K, V> extends ImmutableMap<K, V>
    *     Comparable, Object, Comparable, Object)}.</b>
    */
   @Deprecated
-  public static <K, V> ImmutableSortedMap<K, V> of(
+  public static <K extends @NonNull Object, V extends @NonNull Object> ImmutableSortedMap<K, V> of(
       K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5) {
     throw new UnsupportedOperationException();
   }
