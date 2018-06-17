@@ -19,6 +19,7 @@ package com.google.common.collect;
 import static com.google.common.collect.CollectPreconditions.checkEntryNotNull;
 
 import com.google.common.annotations.GwtIncompatible;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -33,13 +34,15 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Louis Wasserman
  */
 @GwtIncompatible // unnecessary
-class ImmutableMapEntry<K, V> extends ImmutableEntry<K, V> {
+class ImmutableMapEntry<K extends @NonNull Object, V extends @NonNull Object>
+    extends ImmutableEntry<K, V> {
   /**
    * Creates an {@code ImmutableMapEntry} array to hold parameterized entries. The result must never
    * be upcast back to ImmutableMapEntry[] (or Object[], etc.), or allowed to escape the class.
    */
   @SuppressWarnings("unchecked") // Safe as long as the javadocs are followed
-  static <K, V> ImmutableMapEntry<K, V>[] createEntryArray(int size) {
+  static <K extends @NonNull Object, V extends @NonNull Object>
+  ImmutableMapEntry<K, V>[] createEntryArray(int size) {
     return new ImmutableMapEntry[size];
   }
 
@@ -71,7 +74,8 @@ class ImmutableMapEntry<K, V> extends ImmutableEntry<K, V> {
     return true;
   }
 
-  static class NonTerminalImmutableMapEntry<K, V> extends ImmutableMapEntry<K, V> {
+  static class NonTerminalImmutableMapEntry<K extends @NonNull Object, V extends @NonNull Object>
+      extends ImmutableMapEntry<K, V> {
     private final transient ImmutableMapEntry<K, V> nextInKeyBucket;
 
     NonTerminalImmutableMapEntry(K key, V value, ImmutableMapEntry<K, V> nextInKeyBucket) {
@@ -90,7 +94,7 @@ class ImmutableMapEntry<K, V> extends ImmutableEntry<K, V> {
     }
   }
 
-  static final class NonTerminalImmutableBiMapEntry<K, V>
+  static final class NonTerminalImmutableBiMapEntry<K extends @NonNull Object, V extends @NonNull Object>
       extends NonTerminalImmutableMapEntry<K, V> {
     private final transient ImmutableMapEntry<K, V> nextInValueBucket;
 
