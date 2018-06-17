@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.util.Map.Entry;
 import java.util.Spliterator;
 import java.util.function.Consumer;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -32,8 +33,10 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Kevin Bourrillion
  */
 @GwtCompatible(emulated = true)
-abstract class ImmutableMapEntrySet<K, V> extends ImmutableSet<Entry<K, V>> {
-  static final class RegularEntrySet<K, V> extends ImmutableMapEntrySet<K, V> {
+abstract class ImmutableMapEntrySet<K extends @NonNull Object, V extends @NonNull Object>
+    extends ImmutableSet<Entry<K, V>> {
+  static final class RegularEntrySet<K extends @NonNull Object, V extends @NonNull Object>
+      extends ImmutableMapEntrySet<K, V> {
     @Weak private final transient ImmutableMap<K, V> map;
     private final transient ImmutableList<Entry<K, V>> entries;
 
@@ -53,7 +56,7 @@ abstract class ImmutableMapEntrySet<K, V> extends ImmutableSet<Entry<K, V>> {
 
     @Override
     @GwtIncompatible("not used in GWT")
-    int copyIntoArray(Object[] dst, int offset) {
+    int copyIntoArray(@Nullable Object[] dst, int offset) {
       return entries.copyIntoArray(dst, offset);
     }
 
@@ -120,7 +123,8 @@ abstract class ImmutableMapEntrySet<K, V> extends ImmutableSet<Entry<K, V>> {
   }
 
   @GwtIncompatible // serialization
-  private static class EntrySetSerializedForm<K, V> implements Serializable {
+  private static class EntrySetSerializedForm<K extends @NonNull Object, V extends @NonNull Object>
+      implements Serializable {
     final ImmutableMap<K, V> map;
 
     EntrySetSerializedForm(ImmutableMap<K, V> map) {
