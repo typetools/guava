@@ -26,23 +26,23 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true)
 class ImmutableEntry<K, V> extends AbstractMapEntry<K, V> implements Serializable {
-  final @Nullable K key;
-  final @Nullable V value;
+  final K key;
+  final V value;
 
-  ImmutableEntry(@Nullable K key, @Nullable V value) {
+  ImmutableEntry(K key, V value) {
     this.key = key;
     this.value = value;
   }
 
   @Pure
   @Override
-  public final @Nullable K getKey() {
+  public final K getKey() {
     return key;
   }
 
   @Pure
   @Override
-  public final @Nullable V getValue() {
+  public final V getValue() {
     return value;
   }
 
