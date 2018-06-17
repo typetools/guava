@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collector;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -183,7 +184,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
   }
 
   @Override
-  public Range<C> rangeContaining(C value) {
+  public @Nullable Range<C> rangeContaining(C value) {
     int index =
         SortedLists.binarySearch(
             ranges,
@@ -300,7 +301,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
     return new RegularImmutableSortedSet<>(ranges.reverse(), Range.<C>rangeLexOrdering().reverse());
   }
 
-  @LazyInit private transient ImmutableRangeSet<C> complement;
+  @LazyInit private transient @MonotonicNonNull ImmutableRangeSet<C> complement;
 
   private final class ComplementRanges extends ImmutableList<Range<C>> {
     // True if the "positive" range set is empty or bounded below.
@@ -629,6 +630,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
     }
 
     @Override
+    @EnsuresNonNullIf(expression="#1", result=true)
     public boolean contains(@Nullable Object o) {
       if (o == null) {
         return false;
@@ -643,7 +645,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
     }
 
     @Override
-    int indexOf(Object target) {
+    int indexOf(@Nullable Object target) {
       if (contains(target)) {
         @SuppressWarnings("unchecked") // if it's contained, it's definitely a C
         C c = (C) target;
