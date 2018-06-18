@@ -25,6 +25,9 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 /** @see com.google.common.collect.Maps#immutableEntry(Object, Object) */
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true)
+// ImmutableEntry does not necessitate the type of key-value to be restricted to @NonNull. It can be
+// instantiated either with @NonNull type for key-value as in ImmutableXXX classes or with @Nullable
+// type for key-value for classes like HashBiMap.BiEntry and LinkedHashMultimap.ValueEntry
 class ImmutableEntry<K, V> extends AbstractMapEntry<K, V> implements Serializable {
   final K key;
   final V value;
