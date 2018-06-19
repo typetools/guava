@@ -21,9 +21,7 @@ import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Set;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.nullness.qual.PolyNull;
 
 /**
  * An immutable object that may contain a non-null reference to another object. Each instance of
@@ -101,7 +99,7 @@ public abstract class Optional<T> implements Serializable {
    *
    * @throws NullPointerException if {@code reference} is null
    */
-  public static <T> Optional<T> of(@NonNull T reference) {
+  public static <T> Optional<T> of(T reference) {
     return new Present<T>(checkNotNull(reference));
   }
 
@@ -122,8 +120,8 @@ public abstract class Optional<T> implements Serializable {
    *
    * @since 21.0
    */
-  public static <T> @PolyNull Optional<T> fromJavaUtil(
-      java.util.@PolyNull Optional<T> javaUtilOptional) {
+  public static <T> @Nullable Optional<T> fromJavaUtil(
+      java.util.@Nullable Optional<T> javaUtilOptional) {
     return (javaUtilOptional == null) ? null : fromNullable(javaUtilOptional.orElse(null));
   }
 
@@ -140,8 +138,8 @@ public abstract class Optional<T> implements Serializable {
    *
    * @since 21.0
    */
-  public static <T> java.util.@PolyNull Optional<T> toJavaUtil(
-      @PolyNull Optional<T> googleOptional) {
+  public static <T> java.util.@Nullable Optional<T> toJavaUtil(
+      @Nullable Optional<T> googleOptional) {
     return googleOptional == null ? null : googleOptional.toJavaUtil();
   }
 
@@ -179,7 +177,7 @@ public abstract class Optional<T> implements Serializable {
    *     false}); depending on this <i>specific</i> exception type (over the more general {@link
    *     RuntimeException}) is discouraged
    */
-  public abstract @NonNull T get();
+  public abstract T get();
 
   /**
    * Returns the contained instance if it is present; {@code defaultValue} otherwise. If no default
@@ -239,7 +237,7 @@ public abstract class Optional<T> implements Serializable {
    *     null}
    */
   @Beta
-  public abstract @NonNull T or(Supplier<? extends @NonNull T> supplier);
+  public abstract T or(Supplier<? extends T> supplier);
 
   /**
    * Returns the contained instance if it is present; {@code null} otherwise. If the instance is
@@ -271,7 +269,7 @@ public abstract class Optional<T> implements Serializable {
    *
    * @since 11.0
    */
-  public abstract Set<@NonNull T> asSet();
+  public abstract Set<T> asSet();
 
   /**
    * If the instance is present, it is transformed with the given {@link Function}; otherwise,
@@ -284,7 +282,7 @@ public abstract class Optional<T> implements Serializable {
    * @throws NullPointerException if the function returns {@code null}
    * @since 12.0
    */
-  public abstract <V extends @NonNull Object> Optional<V> transform(Function<? super T, V> function);
+  public abstract <V> Optional<V> transform(Function<? super T, V> function);
 
   /**
    * Returns {@code true} if {@code object} is an {@code Optional} instance, and either the
