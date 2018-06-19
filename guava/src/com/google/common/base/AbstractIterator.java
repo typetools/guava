@@ -73,8 +73,8 @@ abstract class AbstractIterator<T> implements Iterator<T> {
   }
 
   @Override
-  @SuppressWarnings("return.type.incompatible") // hasNext method ensures variable 'next' always
-  // refers to next element of type 'T' before assigning it to 'result'.
+  @SuppressWarnings("nullness:return.type.incompatible") // hasNext method ensures variable 'next'
+  // always refers to next element of type 'T' before assigning it to 'result'.
   public final T next() {
     if (!hasNext()) {
       throw new NoSuchElementException();
