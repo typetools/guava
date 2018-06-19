@@ -49,9 +49,9 @@ final class Platform {
     return matcher.precomputedInternal();
   }
 
-  @SuppressWarnings("argument.type.incompatible") //ref.get returns null in case the object that it
-  // refers to is cleared or garbage collected which is unlikely during normal program execution.
-  // Optional.of always return a non-null value for non-null argument.
+  @SuppressWarnings("nullness:argument.type.incompatible") // ref.get returns null in case the object
+  // that it refers to is cleared or garbage collected which is unlikely during normal program
+  // execution. Optional.of always return a non-null value for non-null argument.
   static <T extends Enum<T>> Optional<T> getEnumIfPresent(Class<T> enumClass, String value) {
     WeakReference<? extends Enum<?>> ref = Enums.getEnumConstants(enumClass).get(value);
     return ref == null ? Optional.<T>absent() : Optional.of(enumClass.cast(ref.get()));
@@ -101,8 +101,8 @@ final class Platform {
     return new JdkPatternCompiler();
   }
 
-  @SuppressWarnings("nullness") // Missing annotated version of class java.util.logging.Level in
-  // annotated JDK for nullness. Link to pull requested changes
+  @SuppressWarnings("nullness:argument.type.incompatible") // Missing annotated version of class
+  // java.util.logging.Level in annotated JDK for nullness. Link to pull requested changes
   // https://github.com/typetools/checker-framework/pull/2007
   private static void logPatternCompilerError(ServiceConfigurationError e) {
     logger.log(Level.WARNING, "Error loading regex compiler, falling back to next option", e);

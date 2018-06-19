@@ -124,8 +124,8 @@ public abstract @NonNull class Optional<T> implements Serializable {
    *
    * @since 21.0
    */
-  @SuppressWarnings("return.type.incompatible") // Known issue with behaviour of @PolyNull with
-  // ternary operator, see: https://github.com/typetools/checker-framework/issues/1170
+  @SuppressWarnings("nullness:return.type.incompatible") // Known issue with behaviour of @PolyNull
+  // with ternary operator, see: https://github.com/typetools/checker-framework/issues/1170
   public static <T> @PolyNull Optional<T> fromJavaUtil(
       java.util.@PolyNull Optional<T> javaUtilOptional) {
     return (javaUtilOptional == null) ? null : fromNullable(javaUtilOptional.orElse(null));
@@ -144,8 +144,8 @@ public abstract @NonNull class Optional<T> implements Serializable {
    *
    * @since 21.0
    */
-  @SuppressWarnings("return.type.incompatible") // Known issue with behaviour of @PolyNull with
-  // ternary operator, see: https://github.com/typetools/checker-framework/issues/1170
+  @SuppressWarnings("nullness:return.type.incompatible") // Known issue with behaviour of @PolyNull
+  // with ternary operator, see: https://github.com/typetools/checker-framework/issues/1170
   public static <T> java.util.@PolyNull Optional<T> toJavaUtil(
       @PolyNull Optional<T> googleOptional) {
     return googleOptional == null ? null : googleOptional.toJavaUtil();

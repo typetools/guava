@@ -59,9 +59,9 @@ final class Absent<T> extends Optional<T> {
   }
 
   @Override
-  @SuppressWarnings("contracts.precondition.override.invalid") // This method throws an exception
-  // when passed a supplier that returns null unlike its overridden method, therefore, it has been
-  // conservatively annotated with @RequiresNonNull
+  @SuppressWarnings("nullness:contracts.precondition.override.invalid") // This method throws an
+  // exception when passed a supplier that returns null unlike its overridden method, therefore, it
+  // has been conservatively annotated with @RequiresNonNull
   @RequiresNonNull("#1.get()")
   public @NonNull T or(Supplier<? extends T> supplier) {
     return checkNotNull(

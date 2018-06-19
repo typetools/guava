@@ -76,9 +76,12 @@ public final class Enums {
       enumConstantCache = new WeakHashMap<>();
 
   @GwtIncompatible // java.lang.ref.WeakReference
-  @SuppressWarnings({"argument.type.incompatible", "iterating.over.nullable"})// Missing annotated
-  // version of class java.util.EnumSet in annotated JDK for nullness. Link to pull requested changes
-  // https://github.com/typetools/checker-framework/pull/2006
+  @SuppressWarnings({
+      "nullness:argument.type.incompatible",
+      "nullness:iterating.over.nullable",
+      "keyfor:argument.type.incompatible"
+  }) // Missing annotated version of class java.util.EnumSet in annotated JDK for nullness. Link to
+  // pull requested changes https://github.com/typetools/checker-framework/pull/2006
   private static <T extends Enum<T>> Map<String, WeakReference<? extends Enum<?>>> populateCache(
       Class<T> enumClass) {
     Map<String, WeakReference<? extends Enum<?>>> result = new HashMap<>();
