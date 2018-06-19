@@ -14,7 +14,6 @@
 
 package com.google.common.base;
 
-import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import com.google.common.annotations.GwtCompatible;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
@@ -24,6 +23,7 @@ import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -61,7 +61,7 @@ final class Platform {
     return String.format(Locale.ROOT, "%.4g", value);
   }
 
-  @EnsuresNonNullIf(result = false, expression = "#1")
+  @EnsuresNonNullIf(expression = "#1", result=false)
   static boolean stringIsNullOrEmpty(@Nullable String string) {
     return string == null || string.isEmpty();
   }
