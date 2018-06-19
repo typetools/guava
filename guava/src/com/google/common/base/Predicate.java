@@ -16,6 +16,7 @@ package com.google.common.base;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -62,7 +63,7 @@ public interface Predicate<T> extends java.util.function.Predicate<T> {
    *     arguments
    */
   @CanIgnoreReturnValue
-  boolean apply(@Nullable T input);
+  boolean apply(@NonNull T input);
 
   /**
    * Indicates whether another object is equal to this predicate.
@@ -79,7 +80,8 @@ public interface Predicate<T> extends java.util.function.Predicate<T> {
   boolean equals(@Nullable Object object);
 
   @Override
-  default boolean test(@Nullable T input) {
+  @SuppressWarnings("nullness:override.param.invalid") // Throws NullPointerException if input is null
+  default boolean test(@NonNull T input) {
     return apply(input);
   }
 }
