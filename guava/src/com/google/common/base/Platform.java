@@ -61,7 +61,7 @@ final class Platform {
     return String.format(Locale.ROOT, "%.4g", value);
   }
 
-  @EnsuresNonNullIf(expression = "#1", result=false)
+  @EnsuresNonNullIf(expression = "#1", result = false)
   static boolean stringIsNullOrEmpty(@Nullable String string) {
     return string == null || string.isEmpty();
   }
