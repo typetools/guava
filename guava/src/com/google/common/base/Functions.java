@@ -146,8 +146,9 @@ public final class Functions {
     }
 
     @Override
-    @SuppressWarnings("return.type.incompatible") // Method checkArgument ensures result to be non-null
-    public @NonNull V apply(K key) {
+    @SuppressWarnings("nullness:return.type.incompatible") // Method checkArgument ensures result to
+    // be of type V
+    public V apply(K key) {
       @Nullable V result = map.get(key);
       checkArgument(result != null || map.containsKey(key), "Key '%s' not present in map", key);
       return result;
@@ -188,8 +189,8 @@ public final class Functions {
     }
 
     @Override
-    @SuppressWarnings("return.type.incompatible") // If 'result' is null; 'defaultValue' is returned
-    // and type of 'defaultValue` and return type is always same.
+    @SuppressWarnings("nullness:return.type.incompatible") // Ternary operator ensures the value
+    // returned to be of type V
     public V apply(K key) {
       V result = map.get(key);
       return (result != null || map.containsKey(key)) ? result : defaultValue;
@@ -298,11 +299,8 @@ public final class Functions {
     }
 
     @Override
-    @SuppressWarnings("override.param.invalid") // This method's behaviour deviates from the over-ridden
-    // method in respect that it throws a NullPointerException for null values. Thus its argument has
-    // been marked with @NonNull to depict the normal behaviour but is conflicting with over-ridden
-    // method which expects it to receive either @Nullable or @NonNull depending on the type of T
-    // TODO (dilraj45): could be a potential bug, confirm its expected behaviour
+    @SuppressWarnings("nullness:override.param.invalid") // This method's behaviour deviates from
+    // the over-ridden method in respect that it throws a NullPointerException for null arguments
     public Boolean apply(@NonNull T t) {
       return predicate.apply(t);
     }

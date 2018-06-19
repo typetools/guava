@@ -25,7 +25,6 @@ import java.util.Iterator;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.nullness.qual.PolyNull;
 
 /**
  * A function from {@code A} to {@code B} with an associated <i>reverse</i> function from {@code B}
@@ -167,17 +166,17 @@ public abstract class Converter<A, B> implements Function<A, B> {
    * @return the converted value; is null <i>if and only if</i> {@code a} is null
    */
   @CanIgnoreReturnValue
-  public final @PolyNull B convert(@PolyNull A a) {
+  public final B convert(A a) {
     return correctedDoForward(a);
   }
 
   @SuppressWarnings({
-    "return.type.incompatible",// Bug in handling of @PolyNull with ternary operator see:
-    // https://github.com/typetools/checker-framework/issues/1170
-    "argument.type.incompatible"// Setting handleNullAutomatically suspends automatic null handling
-    // and this method then expects argument to be non-null
+    "nullness:return.type.incompatible", // Returns null only if type of A and B is declared to be
+    // @Nullable
+    "nullness:argument.type.incompatible" // Setting handleNullAutomatically suspends automatic null
+    // handling and this method then expects argument to be non-null
   })
-  @PolyNull B correctedDoForward(@PolyNull A a) {
+  B correctedDoForward(A a) {
     if (handleNullAutomatically) {
       // TODO(kevinb): we shouldn't be checking for a null result at runtime. Assert?
       return a == null ? null : checkNotNull(doForward(a));
@@ -187,12 +186,12 @@ public abstract class Converter<A, B> implements Function<A, B> {
   }
 
   @SuppressWarnings({
-    "return.type.incompatible", // Bug in handling of @PolyNull with ternary operator see:
-    // https://github.com/typetools/checker-framework/issues/1170
-    "argument.type.incompatible" // Setting handleNullAutomatically suspends automatic null handling
-    // and this method then expects argument to be non-null
+    "nullness:return.type.incompatible", // Returns null only if type of A and B is declared to be
+    // @Nullable
+    "nullness:argument.type.incompatible" // Setting handleNullAutomatically suspends automatic null
+    // handling and this method then expects argument to be non-null
   })
-  @PolyNull A correctedDoBackward(@PolyNull B b) {
+   A correctedDoBackward(B b) {
     if (handleNullAutomatically) {
       // TODO(kevinb): we shouldn't be checking for a null result at runtime. Assert?
       return b == null ? null : checkNotNull(doBackward(b));
@@ -277,12 +276,12 @@ public abstract class Converter<A, B> implements Function<A, B> {
     }
 
     @Override
-    @PolyNull A correctedDoForward(@PolyNull B b) {
+    A correctedDoForward(B b) {
       return original.correctedDoBackward(b);
     }
 
     @Override
-    @PolyNull B correctedDoBackward(@PolyNull A a) {
+    B correctedDoBackward(A a) {
       return original.correctedDoForward(a);
     }
 
@@ -357,12 +356,12 @@ public abstract class Converter<A, B> implements Function<A, B> {
     }
 
     @Override
-    @PolyNull C correctedDoForward(@PolyNull A a) {
+    C correctedDoForward(A a) {
       return second.correctedDoForward(first.correctedDoForward(a));
     }
 
     @Override
-    @PolyNull A correctedDoBackward(@PolyNull C c) {
+    A correctedDoBackward(C c) {
       return first.correctedDoBackward(second.correctedDoBackward(c));
     }
 
@@ -394,16 +393,7 @@ public abstract class Converter<A, B> implements Function<A, B> {
   @Deprecated
   @Override
   @CanIgnoreReturnValue
-  @SuppressWarnings({
-    "override.return.invalid",
-    "override.param.invalid" // This method can return null value even if only type A is declared to
-    // be nullable and null is passed as an argument unlike the method it is overriding for which
-    // both type A and type B should be declared nullable in order to return a null value. Thus
-    // this method has been conservatively annotated with @PolyNull to avoid missing on the cases
-    // when this method might return null.
-    // TODO (dilraj45): Confirm its expected behaviour
-  })
-  public final @PolyNull B apply(@PolyNull A a) {
+  public final B apply(A a) {
     return convert(a);
   }
 
