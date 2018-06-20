@@ -25,11 +25,8 @@ import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
-import org.checkerframework.checker.index.qual.IndexFor;
-import org.checkerframework.checker.index.qual.LTLengthOf;
-import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.index.qual.Positive;
-import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.*;
+import org.checkerframework.common.value.qual.ArrayLenRange;
 import org.checkerframework.common.value.qual.MinLen;
 import java.math.RoundingMode;
 import java.util.Collection;
@@ -389,7 +386,7 @@ public final class Quantiles {
      * @return an unmodifiable map of results: the keys will be the specified quantile indexes, and
      *     the values the corresponding quantile values
      */
-    public Map<Integer, Double> computeInPlace(double... dataset) {
+    public Map<Integer, Double> computeInPlace(double @MinLen(1)... dataset) {
       checkArgument(dataset.length > 0, "Cannot calculate quantiles of an empty dataset");
       if (containsNaN(dataset)) {
         Map<Integer, Double> nanMap = new HashMap<>();
@@ -408,7 +405,7 @@ public final class Quantiles {
       int[] remainders = new int[indexes.length];
       // The indexes to select. In the worst case, we'll need one each side of each quantile.
       int[] requiredSelections = new int[indexes.length * 2];
-      int requiredSelectionsCount = 0;
+      @IndexFor("requiredSelections") int requiredSelectionsCount = 0;
       for (int i = 0; i < indexes.length; i++) {
         // Since index and (dataset.length - 1) are non-negative ints, their product can be
         // expressed as a long, without risk of overflow:
@@ -433,13 +430,14 @@ public final class Quantiles {
           requiredSelections, 0, requiredSelectionsCount - 1, dataset, 0, dataset.length - 1);
       Map<Integer, Double> ret = new HashMap<>();
       for (int i = 0; i < indexes.length; i++) {
-        int quotient = quotients[i];
+        @IndexFor("dataset") int quotient = quotients[i];
+        @NonNegative @LTLengthOf(value = "dataset", offset = "1")  int quotientInternal = quotient;
         int remainder = remainders[i];
         if (remainder == 0) {
           ret.put(indexes[i], dataset[quotient]);
         } else {
           ret.put(
-              indexes[i], interpolate(dataset[quotient], dataset[quotient + 1], remainder, scale));
+              indexes[i], interpolate(dataset[quotient], dataset[quotientInternal + 1], remainder, scale));
         }
       }
       return unmodifiableMap(ret);
@@ -563,19 +561,19 @@ public final class Quantiles {
    * equal to the value at {@code ret} and the values with indexes in ({@code ret}, {@code to}] are
    * greater than or equal to that.
    */
-  private static @IndexFor("#1") int partition(double[] array, @IndexFor("#1") int from, @IndexFor("#1") int to) {
+  private static int partition(double[] array, @IndexFor("#1") int from, @IndexFor("#1") int to) {
     // Select a pivot, and move it to the start of the slice i.e. to index from.
     movePivotToStartOfSlice(array, from, to);
     double pivot = array[from];
 
     // Move all elements with indexes in (from, to] which are greater than the pivot to the end of
     // the array. Keep track of where those elements begin.
-    @IndexFor("array") int partitionPoint = to;
-    @GTENegativeOne int partitionPointInternal = partitionPoint;
+    int partitionPoint = to;
+    @GTENegativeOne int partionPointInternal = partitionPoint;
     for (int i = to; i > from; i--) {
       if (array[i] > pivot) {
         swap(array, partitionPoint, i);
-        partitionPointInternal--;
+        partionPointInternal--;
       }
     }
 
@@ -617,11 +615,12 @@ public final class Quantiles {
    * indexes must be sorted in the array and must all be in the range [{@code from}, {@code to}].
    */
   private static void selectAllInPlace(
-      int[] allRequired, int requiredFrom, int requiredTo, double[] array, int from, int to) {
+      @IndexFor("#4") int[] allRequired, @IndexFor("#1") int requiredFrom, @IndexFor("#1") int requiredTo, double[] array, @IndexFor("#4") int from, @IndexFor("#4") int to) {
     // Choose the first selection to do...
     int requiredChosen = chooseNextSelection(allRequired, requiredFrom, requiredTo, from, to);
-    int required = allRequired[requiredChosen];
-
+    @NonNegative int required = allRequired[requiredChosen];
+    @Positive @LTLengthOf(value = "array", offset = "-1") int requiredLow = required ;
+    @NonNegative @LTLengthOf(value = "array", offset = "1") int requiredHigh = required ;
     // ...do the first selection...
     selectInPlace(required, array, from, to);
 
@@ -631,7 +630,7 @@ public final class Quantiles {
       requiredBelow--; // skip duplicates of required in the range below
     }
     if (requiredBelow >= requiredFrom) {
-      selectAllInPlace(allRequired, requiredFrom, requiredBelow, array, from, required - 1);
+      selectAllInPlace(allRequired, requiredFrom, requiredBelow, array, from, requiredLow - 1);
     }
 
     // ...and then recursively perform the selections in the range above.
@@ -640,7 +639,7 @@ public final class Quantiles {
       requiredAbove++; // skip duplicates of required in the range above
     }
     if (requiredAbove <= requiredTo) {
-      selectAllInPlace(allRequired, requiredAbove, requiredTo, array, required + 1, to);
+      selectAllInPlace(allRequired, requiredAbove, requiredTo, array, requiredHigh + 1, to);
     }
   }
 
@@ -653,7 +652,7 @@ public final class Quantiles {
    * value closest to the center of the range first is the most efficient strategy because it
    * minimizes the size of the subranges from which the remaining selections must be done.
    */
-  private static int chooseNextSelection(
+  private static @IndexFor("#1") int chooseNextSelection(
       int[] allRequired, @IndexFor("#1") int requiredFrom, @IndexFor("#1") int requiredTo, int from, int to) {
     if (requiredFrom == requiredTo) {
       return requiredFrom; // only one thing to choose, so choose it
