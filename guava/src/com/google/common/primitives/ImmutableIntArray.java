@@ -564,7 +564,7 @@ public final class ImmutableIntArray implements Serializable {
     }
 
     @Override
-    public boolean contains(Object target) {
+    public boolean contains(@Nullable Object target) {
       return indexOf(target) >= 0;
     }
 

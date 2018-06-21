@@ -446,8 +446,8 @@ public final class UnsignedBytes {
      */
     @SuppressWarnings({
       "upperbound:array.access.unsafe.high", // exception caught
-      "accessing.nullable" // Access known to be unsafe; falls back to the pure-Java implementation
-      // in case an exception is thrown
+      "nullness:accessing.nullable" // Access known to be unsafe; falls back to the pure-Java
+      // implementation in case an exception is thrown
     })
     static Comparator<byte[]> getBestComparator() {
       try {
