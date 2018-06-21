@@ -61,8 +61,8 @@ public class Finalizer implements Runnable {
    *     either when the FinalizableReferenceQueue is no longer referenced anywhere, or when its
    *     close() method is called.
    */
-  @SuppressWarnings("argument.type.incompatible") // Suppressing conservatively issued warnings.
-  // Please refer to: https://github.com/typetools/checker-framework/issues/1365
+  @SuppressWarnings("nullness:argument.type.incompatible") // Suppressing conservatively issued
+  // warning for newInstance. Refer to https://github.com/typetools/checker-framework/issues/1365
   public static void startFinalizer(
       Class<?> finalizableReferenceClass,
       ReferenceQueue<Object> queue,

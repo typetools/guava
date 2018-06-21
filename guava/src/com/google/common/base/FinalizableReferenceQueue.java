@@ -153,8 +153,8 @@ public class FinalizableReferenceQueue implements Closeable {
 
   /** Constructs a new queue. */
   @SuppressWarnings({
-    "assignment.type.incompatible",
-    "argument.type.incompatible"
+    "nullness:assignment.type.incompatible",
+    "nullness:argument.type.incompatible"
   }) // All the fields required for instantiation of PhantomReference are already initialized before
   // calling the constructor of PhantomReference.
   public FinalizableReferenceQueue() {
@@ -307,8 +307,8 @@ public class FinalizableReferenceQueue implements Closeable {
     @SuppressWarnings({
         "lowerbound:argument.type.incompatible",
         // https://github.com/kelloggm/checker-framework/issues/203
-        "dereference.of.nullable" // getClassLoader returns null only of if this object represents a
-        // primitive type or void
+        "nullness:dereference.of.nullable" // getClassLoader returns null only of if this object
+        // represents a primitive type or void
     })
     URL getBaseUrl() throws IOException {
       // Find URL pointing to Finalizer.class file.
@@ -328,7 +328,7 @@ public class FinalizableReferenceQueue implements Closeable {
     }
 
     /** Creates a class loader with the given base URL as its classpath. */
-    @SuppressWarnings("argument.type.incompatible") // Missing annotations for class URLClassLoader
+    @SuppressWarnings("nullness:argument.type.incompatible") // Missing annotations for URLClassLoader
     // Link for the pull requested changes: https://github.com/typetools/checker-framework/pull/2016
     URLClassLoader newLoader(URL base) {
       // We use the bootstrap class loader as the parent because Finalizer by design uses
