@@ -18,11 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
-import org.checkerframework.checker.index.qual.LTEqLengthOf;
-import org.checkerframework.checker.index.qual.LTLengthOf;
-import org.checkerframework.checker.index.qual.LengthOf;
-import org.checkerframework.checker.index.qual.LessThan;
-import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.*;
 
 /**
  * An object that converts literal text into a format safe for inclusion in a particular context
@@ -98,17 +94,18 @@ public abstract class CharEscaper extends Escaper {
    * @return the escaped form of {@code string}
    * @throws NullPointerException if {@code string} is null
    */
-  @SuppressWarnings("assignment.type.incompatible")//suggest to infer 0 as same as @LessThan("size + 1")
-  protected final String escapeSlow(String s, @NonNegative int index) {
+
+  @SuppressWarnings(value = {"assignment.type.incompatible",//constant 0 is still less than length of the s array
+          "argument.type.incompatible",//int rlen is assigned as length of the r array
+  })
+  protected final String escapeSlow(String s, @IndexFor("#1") int index) {
     @LengthOf("s") int slen = s.length();
 
     // Get a destination buffer and setup some loop variables.
     char[] dest = Platform.charBufferFromThreadLocal();
     @LengthOf("dest") int destSize = dest.length;
-    int destSizeInternally = destSize;
-    @LessThan("destSizeInternally") @LTEqLengthOf("dest") int destIndex = 0;
-    int destIndexInternally = destIndex;
-    @LTEqLengthOf("s") int lastEscape = 0;
+    @LTLengthOf(value = {"s","dest"}) int destIndex = 0;
+    @LTLengthOf("s") int lastEscape = 0;
 
     // Loop through the rest of the string, replacing when needed into the
     // destination buffer, which gets grown as needed as well.
@@ -122,7 +119,7 @@ public abstract class CharEscaper extends Escaper {
         continue;
       }
 
-      @LTLengthOf(value = {"r", "dest"}, offset = {"-1", "destIndex - 1"}) int rlen = r.length;
+      @LengthOf("r") int rlen = r.length;
       int charsSkipped = index - lastEscape;
 
       // This is the size needed to add the replacement, not the full size
@@ -130,20 +127,20 @@ public abstract class CharEscaper extends Escaper {
       // when we do grow, grow enough to avoid excessive growing. Grow.
       int sizeNeeded = destIndex + charsSkipped + rlen;
       if (destSize < sizeNeeded) {
-        destSizeInternally = sizeNeeded + DEST_PAD_MULTIPLIER * (slen - index);
-        dest = growBuffer(dest, destIndex, destSizeInternally);
+        destSize = sizeNeeded + DEST_PAD_MULTIPLIER * (slen - index);
+        dest = growBuffer(dest, destIndex, destSize);
       }
 
       // If we have skipped any characters, we need to copy them now.
       if (charsSkipped > 0) {
         s.getChars(lastEscape, index, dest, destIndex);
-        destIndexInternally += charsSkipped;
+        destIndex += charsSkipped;
       }
 
       // Copy the replacement string into the dest buffer as needed.
       if (rlen > 0) {
         System.arraycopy(r, 0, dest, destIndex, rlen);
-        destIndexInternally += rlen;
+        destIndex += rlen;
       }
       lastEscape = index + 1;
     }
@@ -158,7 +155,7 @@ public abstract class CharEscaper extends Escaper {
         dest = growBuffer(dest, destIndex, sizeNeeded);
       }
       s.getChars(lastEscape, slen, dest, destIndex);
-      destIndexInternally = sizeNeeded;
+      destIndex = sizeNeeded;
     }
     return new String(dest, 0, destIndex);
   }
