@@ -122,8 +122,8 @@ public final class Suppliers {
     }
 
     @Override
-    @SuppressWarnings("return.type.incompatible") // This method is expected to be called only once
-    // and it ensures the variables is assigned value returned by delegate.get before returning
+    @SuppressWarnings("nullness:return.type.incompatible") // delegate.get ensures that 'value' is
+    // always initialized to value with type T.
     public T get() {
       // A 2-field variant of Double Checked Locking.
       if (!initialized) {
@@ -163,10 +163,10 @@ public final class Suppliers {
 
     @Override
     @SuppressWarnings({
-      "dereference.of.nullable", // This method is expected to be called at most once. 'delegate'
+      "nullness:dereference.of.nullable", // delegate.get method is called at most once. 'delegate'
       // is ensured to be non-null when the object is constructed.
-      "return.type.incompatible" // This method ensures that variable 'value' is initialized with
-      // value evaluated by delegate.get() before returning.
+      "nullness:return.type.incompatible" // delegate.get ensures that 'value' is always initialized
+      // to value with type T.
     })
     public T get() {
       // A 2-field variant of Double Checked Locking.
@@ -235,9 +235,9 @@ public final class Suppliers {
     }
 
     @Override
-    @SuppressWarnings("return.type.incompatible") // This method ensures that 'value' is always
-    // initialized before returning. 'If' block for nanos == 0 is evaluated prior to returning in
-    // case it is not initialized
+    @SuppressWarnings("nullness:return.type.incompatible") // This method ensures that 'value' is
+    // always initialized before returning. 'If' block for nanos == 0 is evaluated prior to returning
+    // in case it is not initialized
     public T get() {
       // Another variant of Double Checked Locking.
       //

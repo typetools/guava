@@ -15,11 +15,11 @@
 package com.google.common.base;
 
 import com.google.common.annotations.GwtIncompatible;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /** A regex pattern implementation which is backed by the {@link Pattern}. */
 @GwtIncompatible

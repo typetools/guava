@@ -25,10 +25,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Static utility methods pertaining to {@code Predicate} instances.
@@ -457,7 +457,7 @@ public final class Predicates {
     }
 
     @Override
-    public boolean apply(@Nullable T t) {
+    public boolean apply(T t) {
       return target.equals(t);
     }
 
@@ -570,7 +570,7 @@ public final class Predicates {
     }
 
     @Override
-    public boolean apply(@Nullable T t) {
+    public boolean apply(T t) {
       try {
         return target.contains(t);
       } catch (NullPointerException | ClassCastException e) {

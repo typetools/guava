@@ -60,7 +60,7 @@ final class Present<T> extends Optional<T> {
   }
 
   @Override
-  public T orNull() {
+  public @NonNull T orNull() {
     return reference;
   }
 

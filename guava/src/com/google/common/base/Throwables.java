@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -253,12 +252,12 @@ public final class Throwables {
    *
    * @throws IllegalArgumentException if there is a loop in the causal chain
    */
-  @SuppressWarnings("assignment.type.incompatible") // slowPointer will never be null. Fast-pointer
-  // encounters null prior to slowPointer and terminates the loop.
-  public static Throwable getRootCause(@NonNull Throwable throwable) {
+  @SuppressWarnings("nullness:dereference.of.nullable") // slowPointer will never be null. Fast
+  // pointer encounters null prior to slowPointer and terminates the loop.
+  public static Throwable getRootCause(Throwable throwable) {
     // Keep a second pointer that slowly walks the causal chain. If the fast pointer ever catches
     // the slower pointer, then there's a loop.
-    @NonNull Throwable slowPointer = throwable;
+    Throwable slowPointer = throwable;
     boolean advanceSlowPointer = false;
 
     Throwable cause;
@@ -293,16 +292,16 @@ public final class Throwables {
    * @throws IllegalArgumentException if there is a loop in the causal chain
    */
   @Beta // TODO(kevinb): decide best return type
-  @SuppressWarnings("assignment.type.incompatible") // slowPointer will never be null. Fast-pointer
-  // encounters null prior to slowPointer and terminates the loop.
-  public static List<Throwable> getCausalChain(@NonNull Throwable throwable) {
+  @SuppressWarnings("nullness:dereference.of.nullable") // slowPointer will never be null. Fast
+  // pointer encounters null prior to slowPointer and terminates the loop.
+  public static List<Throwable> getCausalChain(Throwable throwable) {
     checkNotNull(throwable);
     List<Throwable> causes = new ArrayList<>(4);
     causes.add(throwable);
 
     // Keep a second pointer that slowly walks the causal chain. If the fast pointer ever catches
     // the slower pointer, then there's a loop.
-    @NonNull Throwable slowPointer = throwable;
+    Throwable slowPointer = throwable;
     boolean advanceSlowPointer = false;
 
     Throwable cause;
@@ -432,7 +431,8 @@ public final class Throwables {
   }
 
   @GwtIncompatible // java.lang.reflect
-  @SuppressWarnings("argument.type.incompatible") // propagate method always throw a RuntimeException
+  // todo (dilraj45): Method e.getCause can return null and passing a null value to propagate throws
+  // a NullPointerException. Potential Bug, confirm its behaviour.
   private static @Nullable Object invokeAccessibleNonThrowingMethod(
       Method method, Object receiver, Object... params) {
     try {
@@ -478,8 +478,8 @@ public final class Throwables {
    * AppEngine, and not present in non-Sun JDKs.
    */
   @GwtIncompatible // java.lang.reflect
-  @SuppressWarnings("argument.type.incompatible") // Suppressing conservatilvely issued warning. The
-  // method 'invoke' here refers to the version that permits null as an argument
+  @SuppressWarnings("nullness:argument.type.incompatible") // Suppressing conservatively issued
+  // warning. The method 'invoke' here refers to the version that permits null as an argument.
   private static @Nullable Object getJLA() {
     try {
       /*
@@ -519,8 +519,8 @@ public final class Throwables {
    * UnsupportedOperationException</a>.
    */
   @GwtIncompatible // java.lang.reflect
-  @SuppressWarnings("argument.type.incompatible") // Suppressing conservatively issued warning. The
-  // method 'invoke' here refers to version that permits null as an argument.
+  @SuppressWarnings("nullness:argument.type.incompatible") // Suppressing conservatively issued
+  // warning. The method 'invoke' here refers to version that permits null as an argument.
   private static @Nullable Method getSizeMethod() {
     try {
       Method getStackTraceDepth = getJlaMethod("getStackTraceDepth", Throwable.class);
