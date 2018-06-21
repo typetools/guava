@@ -25,6 +25,12 @@ import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.common.value.qual.MinLen;
 import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.HashMap;
@@ -151,7 +157,7 @@ public final class Quantiles {
    * @param scale the scale for the quantiles to be calculated, i.e. the q of the q-quantiles, which
    *     must be positive
    */
-  public static Scale scale(int scale) {
+  public static Scale scale(@Positive int scale) {
     return new Scale(scale);
   }
 
@@ -161,11 +167,12 @@ public final class Quantiles {
    *
    * @since 20.0
    */
+  //add in documentation that scale is positive( because of the checkArgument() call)
   public static final class Scale {
 
-    private final int scale;
+    private final @Positive int scale;
 
-    private Scale(int scale) {
+    private Scale(@Positive int scale) {
       checkArgument(scale > 0, "Quantile scale must be positive");
       this.scale = scale;
     }
@@ -175,7 +182,7 @@ public final class Quantiles {
      *
      * @param index the quantile index, which must be in the inclusive range [0, q] for q-quantiles
      */
-    public ScaleAndIndex index(int index) {
+    public ScaleAndIndex index(@NonNegative int index) {
       return new ScaleAndIndex(scale, index);
     }
 
@@ -212,10 +219,10 @@ public final class Quantiles {
    */
   public static final class ScaleAndIndex {
 
-    private final int scale;
-    private final int index;
+    private final @Positive int scale;
+    private final @NonNegative int index;
 
-    private ScaleAndIndex(int scale, int index) {
+    private ScaleAndIndex(@Positive int scale,@NonNegative int index) {
       checkIndex(index, scale);
       this.scale = scale;
       this.index = index;
@@ -274,7 +281,9 @@ public final class Quantiles {
      *     be arbitrarily reordered by this method call
      * @return the quantile value
      */
-    public double computeInPlace(double... dataset) {
+    @SuppressWarnings("assignment.type.incompatible")
+    //Since index and (dataset.length - 1) are non-negative ints, numerator is also non negative int
+    public double computeInPlace(double @MinLen(1)... dataset) {
       checkArgument(dataset.length > 0, "Cannot calculate quantiles of an empty dataset");
       if (containsNaN(dataset)) {
         return NaN;
@@ -287,11 +296,11 @@ public final class Quantiles {
 
       // Since index and (dataset.length - 1) are non-negative ints, their product can be expressed
       // as a long, without risk of overflow:
-      long numerator = (long) index * (dataset.length - 1);
+      @NonNegative long numerator = (long) index * (dataset.length - 1);
       // Since scale is a positive int, index is in [0, scale], and (dataset.length - 1) is a
       // non-negative int, we can do long-arithmetic on index * (dataset.length - 1) / scale to get
       // a rounded ratio and a remainder which can be expressed as ints, without risk of overflow:
-      int quotient = (int) LongMath.divide(numerator, scale, RoundingMode.DOWN);
+      @NonNegative @LTLengthOf(value = "dataset", offset = "1") int quotient = (int) LongMath.divide(numerator, scale, RoundingMode.DOWN);
       int remainder = (int) (numerator - (long) quotient * scale);
       selectInPlace(quotient, dataset, 0, dataset.length - 1);
       if (remainder == 0) {
@@ -513,7 +522,7 @@ public final class Quantiles {
    * ({@code required}, {@code to}] are greater than or equal to that value. Therefore, the value at
    * {@code required} is the value which would appear at that index in the sorted dataset.
    */
-  private static void selectInPlace(int required, double[] array, int from, int to) {
+  private static void selectInPlace(int required, double[] array, @IndexFor("#2") int from, @IndexFor("#2") int to) {
     // If we are looking for the least element in the range, we can just do a linear search for it.
     // (We will hit this whenever we are doing quantile interpolation: our first selection finds
     // the lower value, our second one finds the upper value by looking for the next least element.)
@@ -533,12 +542,15 @@ public final class Quantiles {
     // Let's play quickselect! We'll repeatedly partition the range [from, to] containing the
     // required element, as long as it has more than one element.
     while (to > from) {
-      int partitionPoint = partition(array, from, to);
+      @IndexFor("array") int partitionPoint = partition(array, from, to);
+      int fromInternal = from;
+      int toInternal = to;
+      int partitionPointInternal = partitionPoint;
       if (partitionPoint >= required) {
-        to = partitionPoint - 1;
+        toInternal = partitionPointInternal - 1;
       }
       if (partitionPoint <= required) {
-        from = partitionPoint + 1;
+        fromInternal = partitionPointInternal + 1;
       }
     }
   }
@@ -551,18 +563,19 @@ public final class Quantiles {
    * equal to the value at {@code ret} and the values with indexes in ({@code ret}, {@code to}] are
    * greater than or equal to that.
    */
-  private static int partition(double[] array, int from, int to) {
+  private static @IndexFor("#1") int partition(double[] array, @IndexFor("#1") int from, @IndexFor("#1") int to) {
     // Select a pivot, and move it to the start of the slice i.e. to index from.
     movePivotToStartOfSlice(array, from, to);
     double pivot = array[from];
 
     // Move all elements with indexes in (from, to] which are greater than the pivot to the end of
     // the array. Keep track of where those elements begin.
-    int partitionPoint = to;
+    @IndexFor("array") int partitionPoint = to;
+    @GTENegativeOne int partitionPointInternal = partitionPoint;
     for (int i = to; i > from; i--) {
       if (array[i] > pivot) {
         swap(array, partitionPoint, i);
-        partitionPoint--;
+        partitionPointInternal--;
       }
     }
 
@@ -579,7 +592,7 @@ public final class Quantiles {
    * necessary) that that pivot value appears at the start of the slice i.e. at {@code from}.
    * Expects that {@code from} is strictly less than {@code to}.
    */
-  private static void movePivotToStartOfSlice(double[] array, int from, int to) {
+  private static void movePivotToStartOfSlice(double[] array, @IndexFor("#1") int from, @IndexFor("#1") int to) {
     int mid = (from + to) >>> 1;
     // We want to make a swap such that either array[to] <= array[from] <= array[mid], or
     // array[mid] <= array[from] <= array[to]. We know that from < to, so we know mid < to
@@ -641,7 +654,7 @@ public final class Quantiles {
    * minimizes the size of the subranges from which the remaining selections must be done.
    */
   private static int chooseNextSelection(
-      int[] allRequired, int requiredFrom, int requiredTo, int from, int to) {
+      int[] allRequired, @IndexFor("#1") int requiredFrom, @IndexFor("#1") int requiredTo, int from, int to) {
     if (requiredFrom == requiredTo) {
       return requiredFrom; // only one thing to choose, so choose it
     }
@@ -655,10 +668,10 @@ public final class Quantiles {
     // lowest respectively). If centerFloor is in allRequired, we will definitely find it. If not,
     // but centerFloor + 1 is, we'll definitely find that. The closest value to the true (unrounded)
     // center will be at either low or high.
-    int low = requiredFrom;
-    int high = requiredTo;
+    @IndexFor("allRequired") int low = requiredFrom;
+    @IndexFor("allRequired") int high = requiredTo;
     while (high > low + 1) {
-      int mid = (low + high) >>> 1;
+      @IndexFor("allRequired") int mid = (low + high) >>> 1;
       if (allRequired[mid] > centerFloor) {
         high = mid;
       } else if (allRequired[mid] < centerFloor) {
@@ -677,7 +690,7 @@ public final class Quantiles {
   }
 
   /** Swaps the values at {@code i} and {@code j} in {@code array}. */
-  private static void swap(double[] array, int i, int j) {
+  private static void swap(double[] array, @IndexFor("#1") int i, @IndexFor("#1") int j) {
     double temp = array[i];
     array[i] = array[j];
     array[j] = temp;

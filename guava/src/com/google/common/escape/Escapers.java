@@ -21,7 +21,10 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * Static utility methods pertaining to {@link Escaper} instances.
@@ -211,7 +214,7 @@ public final class Escapers {
    * @param cp the Unicode code point to escape if necessary
    * @return the replacement string, or {@code null} if no escaping was needed
    */
-  public static String computeReplacement(UnicodeEscaper escaper, int cp) {
+  public static String computeReplacement(UnicodeEscaper escaper,@NonNegative int cp) {
     return stringOrNull(escaper.escape(cp));
   }
 
@@ -219,6 +222,9 @@ public final class Escapers {
     return (in == null) ? null : new String(in);
   }
 
+  @SuppressWarnings(value = {"array.access.unsafe.high",}//length of output array is sum of lengths of hiChars and loChars array
+          //"assigment.type.incompatible"}//
+          )
   /** Private helper to wrap a CharEscaper as a UnicodeEscaper. */
   private static UnicodeEscaper wrap(final CharEscaper escaper) {
     return new UnicodeEscaper() {
@@ -232,7 +238,7 @@ public final class Escapers {
         // Note: This code path is horribly slow and typically allocates 4 new
         // char[] each time it is invoked. However this avoids any
         // synchronization issues and makes the escaper thread safe.
-        char[] surrogateChars = new char[2];
+        char @MinLen(2)[] surrogateChars = new char[2];
         Character.toChars(cp, surrogateChars, 0);
         char[] hiChars = escaper.escape(surrogateChars[0]);
         char[] loChars = escaper.escape(surrogateChars[1]);
