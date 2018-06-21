@@ -40,7 +40,6 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -782,7 +781,7 @@ public final class Iterables {
    * @return the first element of {@code iterable} or the default value
    * @since 7.0
    */
-  public static <T> @PolyNull T getFirst(Iterable<? extends T> iterable, @PolyNull T defaultValue) {
+  public static <T> @Nullable T getFirst(Iterable<? extends T> iterable, @Nullable T defaultValue) {
     return Iterators.getNext(iterable.iterator(), defaultValue);
   }
 
