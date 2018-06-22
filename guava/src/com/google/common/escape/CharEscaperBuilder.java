@@ -19,10 +19,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Simple helper class to build a "sparse" array of objects based on the indexes that were added to
