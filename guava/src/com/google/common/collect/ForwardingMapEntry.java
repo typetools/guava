@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -50,7 +51,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtCompatible
-@SuppressWarnings("nullness:generic.argument")
 public abstract class ForwardingMapEntry<K, V> extends ForwardingObject implements Map.Entry<K, V> {
   /** Constructor for use by subclasses. */
   protected ForwardingMapEntry() {}
@@ -94,6 +94,7 @@ public abstract class ForwardingMapEntry<K, V> extends ForwardingObject implemen
    *
    * @since 7.0
    */
+  @Pure
   protected boolean standardEquals(@Nullable Object object) {
     if (object instanceof Entry) {
       Entry<?, ?> that = (Entry<?, ?>) object;
@@ -110,6 +111,7 @@ public abstract class ForwardingMapEntry<K, V> extends ForwardingObject implemen
    *
    * @since 7.0
    */
+  @Pure
   protected int standardHashCode() {
     K k = getKey();
     V v = getValue();
@@ -124,6 +126,7 @@ public abstract class ForwardingMapEntry<K, V> extends ForwardingObject implemen
    * @since 7.0
    */
   @Beta
+  @SideEffectFree
   protected String standardToString() {
     return getKey() + "=" + getValue();
   }

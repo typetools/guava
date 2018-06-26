@@ -89,6 +89,7 @@ public abstract class ForwardingSet<E> extends ForwardingCollection<E> implement
    *
    * @since 7.0
    */
+  @Pure
   protected boolean standardEquals(@Nullable Object object) {
     return Sets.equalsImpl(this, object);
   }
@@ -99,6 +100,7 @@ public abstract class ForwardingSet<E> extends ForwardingCollection<E> implement
    *
    * @since 7.0
    */
+  @Pure
   protected int standardHashCode() {
     return Sets.hashCodeImpl(this);
   }

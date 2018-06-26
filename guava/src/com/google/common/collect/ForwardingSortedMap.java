@@ -23,7 +23,9 @@ import com.google.common.annotations.GwtCompatible;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 import java.util.SortedMap;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -54,7 +56,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtCompatible
-@SuppressWarnings("nullness:generic.argument")
 public abstract class ForwardingSortedMap<K, V> extends ForwardingMap<K, V>
     implements SortedMap<K, V> {
   // TODO(lowasser): identify places where thread safety is actually lost
@@ -71,26 +72,31 @@ public abstract class ForwardingSortedMap<K, V> extends ForwardingMap<K, V>
     return delegate().comparator();
   }
 
+  @SideEffectFree
   @Override
   public K firstKey() {
     return delegate().firstKey();
   }
 
+  @SideEffectFree
   @Override
   public SortedMap<K, V> headMap(K toKey) {
     return delegate().headMap(toKey);
   }
 
+  @SideEffectFree
   @Override
   public K lastKey() {
     return delegate().lastKey();
   }
 
+  @SideEffectFree
   @Override
   public SortedMap<K, V> subMap(K fromKey, K toKey) {
     return delegate().subMap(fromKey, toKey);
   }
 
+  @SideEffectFree
   @Override
   public SortedMap<K, V> tailMap(K fromKey) {
     return delegate().tailMap(fromKey);
@@ -131,6 +137,9 @@ public abstract class ForwardingSortedMap<K, V> extends ForwardingMap<K, V>
    */
   @Override
   @Beta
+  @Pure
+  @SuppressWarnings("nullness:argument.type.incompatible") // Catches NullPointerException if thrown
+  // and returns false
   protected boolean standardContainsKey(@Nullable Object key) {
     try {
       // any CCE will be caught
@@ -150,8 +159,9 @@ public abstract class ForwardingSortedMap<K, V> extends ForwardingMap<K, V>
    *
    * @since 7.0
    */
+  @SideEffectFree
   @Beta
-  protected SortedMap<K, V> standardSubMap(K fromKey, K toKey) {
+  protected SortedMap<K, V> standardSubMap(@NonNull K fromKey, @NonNull K toKey) {
     checkArgument(unsafeCompare(fromKey, toKey) <= 0, "fromKey must be <= toKey");
     return tailMap(fromKey).headMap(toKey);
   }

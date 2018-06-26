@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * A collection that associates an ordered pair of keys, called a row key and a column key, with a
@@ -64,6 +65,7 @@ public interface Table<R, C, V> {
    * @param rowKey key of row to search for
    * @param columnKey key of column to search for
    */
+  @Pure
   boolean contains(
       @Nullable @CompatibleWith("R") Object rowKey,
       @Nullable @CompatibleWith("C") Object columnKey);
@@ -73,6 +75,7 @@ public interface Table<R, C, V> {
    *
    * @param rowKey key of row to search for
    */
+  @Pure
   boolean containsRow(@Nullable @CompatibleWith("R") Object rowKey);
 
   /**
@@ -80,6 +83,7 @@ public interface Table<R, C, V> {
    *
    * @param columnKey key of column to search for
    */
+  @Pure
   boolean containsColumn(@Nullable @CompatibleWith("C") Object columnKey);
 
   /**
@@ -87,6 +91,7 @@ public interface Table<R, C, V> {
    *
    * @param value value to search for
    */
+  @Pure
   boolean containsValue(@Nullable @CompatibleWith("V") Object value);
 
   /**
@@ -96,20 +101,23 @@ public interface Table<R, C, V> {
    * @param rowKey key of row to search for
    * @param columnKey key of column to search for
    */
-  V get(
+  @Nullable V get(
       @Nullable @CompatibleWith("R") Object rowKey,
       @Nullable @CompatibleWith("C") Object columnKey);
 
   /** Returns {@code true} if the table contains no mappings. */
+  @Pure
   boolean isEmpty();
 
   /** Returns the number of row key / column key / value mappings in the table. */
+  @Pure
   int size();
 
   /**
    * Compares the specified object with this table for equality. Two tables are equal when their
    * cell views, as returned by {@link #cellSet}, are equal.
    */
+  @Pure
   @Override
   boolean equals(@Nullable Object obj);
 
@@ -117,6 +125,7 @@ public interface Table<R, C, V> {
    * Returns the hash code for this table. The hash code of a table is defined as the hash code of
    * its cell view, as returned by {@link #cellSet}.
    */
+  @Pure
   @Override
   int hashCode();
 
@@ -252,11 +261,9 @@ public interface Table<R, C, V> {
    */
   interface Cell<R, C, V> {
     /** Returns the row key of this cell. */
-    @Nullable
     R getRowKey();
 
     /** Returns the column key of this cell. */
-    @Nullable
     C getColumnKey();
 
     /** Returns the value of this cell. */
@@ -267,6 +274,7 @@ public interface Table<R, C, V> {
      * Compares the specified object with this cell for equality. Two cells are equal when they have
      * equal row keys, column keys, and values.
      */
+    @Pure
     @Override
     boolean equals(@Nullable Object obj);
 
@@ -276,6 +284,7 @@ public interface Table<R, C, V> {
      * <p>The hash code of a table cell is equal to {@link Objects#hashCode}{@code (e.getRowKey(),
      * e.getColumnKey(), e.getValue())}.
      */
+    @Pure
     @Override
     int hashCode();
   }

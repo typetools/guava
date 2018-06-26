@@ -38,7 +38,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtCompatible
-@SuppressWarnings("nullness:generic.argument")
 public abstract class ForwardingIterator<T> extends ForwardingObject implements Iterator<T> {
 
   /** Constructor for use by subclasses. */

@@ -55,7 +55,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtCompatible
-@SuppressWarnings("nullness:generic.argument")
 public abstract class ForwardingList<E> extends ForwardingCollection<E> implements List<E> {
   // TODO(lowasser): identify places where thread safety is actually lost
 
@@ -76,6 +75,7 @@ public abstract class ForwardingList<E> extends ForwardingCollection<E> implemen
     return delegate().addAll(index, elements);
   }
 
+  @Pure
   @Override
   public E get(int index) {
     return delegate().get(index);
@@ -163,6 +163,7 @@ public abstract class ForwardingList<E> extends ForwardingCollection<E> implemen
    *
    * @since 7.0
    */
+  @Pure
   protected int standardIndexOf(@Nullable Object element) {
     return Lists.indexOfImpl(this, element);
   }
@@ -174,6 +175,7 @@ public abstract class ForwardingList<E> extends ForwardingCollection<E> implemen
    *
    * @since 7.0
    */
+  @Pure
   protected int standardLastIndexOf(@Nullable Object element) {
     return Lists.lastIndexOfImpl(this, element);
   }
@@ -220,6 +222,7 @@ public abstract class ForwardingList<E> extends ForwardingCollection<E> implemen
    * @since 7.0
    */
   @Beta
+  @SideEffectFree
   protected List<E> standardSubList(int fromIndex, int toIndex) {
     return Lists.subListImpl(this, fromIndex, toIndex);
   }
@@ -232,6 +235,7 @@ public abstract class ForwardingList<E> extends ForwardingCollection<E> implemen
    * @since 7.0
    */
   @Beta
+  @Pure
   protected boolean standardEquals(@Nullable Object object) {
     return Lists.equalsImpl(this, object);
   }
@@ -244,6 +248,7 @@ public abstract class ForwardingList<E> extends ForwardingCollection<E> implemen
    * @since 7.0
    */
   @Beta
+  @Pure
   protected int standardHashCode() {
     return Lists.hashCodeImpl(this);
   }

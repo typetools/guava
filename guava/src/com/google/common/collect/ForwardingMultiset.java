@@ -23,6 +23,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -60,6 +61,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
   @Override
   protected abstract Multiset<E> delegate();
 
+  @Pure
   @Override
   public int count(@Nullable Object element) {
     return delegate().count(element);
@@ -67,7 +69,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
 
   @CanIgnoreReturnValue
   @Override
-  public int add(E element, int occurrences) {
+  public int add(@NonNull E element, int occurrences) {
     return delegate().add(element, occurrences);
   }
 
@@ -103,13 +105,13 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
 
   @CanIgnoreReturnValue
   @Override
-  public int setCount(E element, int count) {
+  public int setCount(@NonNull E element, int count) {
     return delegate().setCount(element, count);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public boolean setCount(E element, int oldCount, int newCount) {
+  public boolean setCount(@NonNull E element, int oldCount, int newCount) {
     return delegate().setCount(element, oldCount, newCount);
   }
 
@@ -119,6 +121,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    *
    * @since 7.0
    */
+  @Pure
   @Override
   protected boolean standardContains(@Nullable Object object) {
     return count(object) > 0;
@@ -143,6 +146,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    *
    * @since 7.0
    */
+  @Pure
   @Beta
   protected int standardCount(@Nullable Object object) {
     for (Entry<?> entry : this.entrySet()) {
@@ -160,7 +164,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    *
    * @since 7.0
    */
-  protected boolean standardAdd(E element) {
+  protected boolean standardAdd(@NonNull E element) {
     add(element, 1);
     return true;
   }
@@ -174,7 +178,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    */
   @Beta
   @Override
-  protected boolean standardAddAll(Collection<? extends E> elementsToAdd) {
+  protected boolean standardAddAll(Collection<? extends @NonNull E> elementsToAdd) {
     return Multisets.addAllImpl(this, elementsToAdd);
   }
 
@@ -186,7 +190,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    * @since 7.0
    */
   @Override
-  protected boolean standardRemove(Object element) {
+  protected boolean standardRemove(@Nullable Object element) {
     return remove(element, 1) > 0;
   }
 
@@ -222,7 +226,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    *
    * @since 7.0
    */
-  protected int standardSetCount(E element, int count) {
+  protected int standardSetCount(@NonNull E element, int count) {
     return Multisets.setCountImpl(this, element, count);
   }
 
@@ -233,7 +237,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    *
    * @since 7.0
    */
-  protected boolean standardSetCount(E element, int oldCount, int newCount) {
+  protected boolean standardSetCount(@NonNull E element, int oldCount, int newCount) {
     return Multisets.setCountImpl(this, element, oldCount, newCount);
   }
 
@@ -282,6 +286,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    *
    * @since 7.0
    */
+  @Pure
   protected int standardSize() {
     return Multisets.linearTimeSizeImpl(this);
   }
@@ -293,6 +298,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    *
    * @since 7.0
    */
+  @Pure
   protected boolean standardEquals(@Nullable Object object) {
     return Multisets.equalsImpl(this, object);
   }
@@ -304,6 +310,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    *
    * @since 7.0
    */
+  @Pure
   protected int standardHashCode() {
     return entrySet().hashCode();
   }
@@ -315,6 +322,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> impl
    *
    * @since 7.0
    */
+  @SideEffectFree
   @Override
   protected String standardToString() {
     return entrySet().toString();

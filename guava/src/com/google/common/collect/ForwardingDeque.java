@@ -20,6 +20,7 @@ import com.google.common.annotations.GwtIncompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Deque;
 import java.util.Iterator;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A deque which forwards all its method calls to another deque. Subclasses should override one or
@@ -85,24 +86,24 @@ public abstract class ForwardingDeque<E> extends ForwardingQueue<E> implements D
   }
 
   @Override
-  public E peekFirst() {
+  public @Nullable E peekFirst() {
     return delegate().peekFirst();
   }
 
   @Override
-  public E peekLast() {
+  public @Nullable E peekLast() {
     return delegate().peekLast();
   }
 
   @CanIgnoreReturnValue // TODO(cpovirk): Consider removing this?
   @Override
-  public E pollFirst() {
+  public @Nullable E pollFirst() {
     return delegate().pollFirst();
   }
 
   @CanIgnoreReturnValue // TODO(cpovirk): Consider removing this?
   @Override
-  public E pollLast() {
+  public @Nullable E pollLast() {
     return delegate().pollLast();
   }
 

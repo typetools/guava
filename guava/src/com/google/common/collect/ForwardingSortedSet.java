@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.SortedSet;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -101,7 +102,7 @@ public abstract class ForwardingSortedSet<E> extends ForwardingSet<E> implements
 
   // unsafe, but worst case is a CCE is thrown, which callers will be expecting
   @SuppressWarnings("unchecked")
-  private int unsafeCompare(@Nullable Object o1, @Nullable Object o2) {
+  private int unsafeCompare(Object o1, Object o2) {
     Comparator<? super E> comparator = comparator();
     return (comparator == null)
         ? ((Comparable<Object>) o1).compareTo(o2)
@@ -117,6 +118,9 @@ public abstract class ForwardingSortedSet<E> extends ForwardingSet<E> implements
    */
   @Override
   @Beta
+  @Pure
+  @SuppressWarnings("nullness:argument.type.incompatible") // Catches NullPointerException, if thrown
+  // and returns false
   protected boolean standardContains(@Nullable Object object) {
     try {
       // any ClassCastExceptions are caught
@@ -138,6 +142,8 @@ public abstract class ForwardingSortedSet<E> extends ForwardingSet<E> implements
    */
   @Override
   @Beta
+  @SuppressWarnings("nullness:argument.type.incompatible") // Catches NullPointerException, if thrown
+  // and returns false
   protected boolean standardRemove(@Nullable Object object) {
     try {
       // any ClassCastExceptions are caught
@@ -165,6 +171,7 @@ public abstract class ForwardingSortedSet<E> extends ForwardingSet<E> implements
    * @since 7.0
    */
   @Beta
+  @SideEffectFree
   protected SortedSet<E> standardSubSet(E fromElement, E toElement) {
     return tailSet(fromElement).headSet(toElement);
   }

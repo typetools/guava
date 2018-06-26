@@ -59,7 +59,7 @@ public abstract class ForwardingSortedSetMultimap<K, V> extends ForwardingSetMul
   }
 
   @Override
-  public Comparator<? super V> valueComparator() {
+  public @Nullable Comparator<? super V> valueComparator() {
     return delegate().valueComparator();
   }
 }

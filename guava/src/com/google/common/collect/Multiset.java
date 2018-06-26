@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.ObjIntConsumer;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -96,6 +97,7 @@ public interface Multiset<E> extends Collection<E> {
    * multiset, which is given by {@code entrySet().size()}.
    */
   @Override
+  @Pure
   int size();
 
   /**
@@ -111,6 +113,7 @@ public interface Multiset<E> extends Collection<E> {
    * @return the number of occurrences of the element in this multiset; possibly zero but never
    *     negative
    */
+  @Pure
   int count(@Nullable @CompatibleWith("E") Object element);
 
   // Bulk Operations
@@ -134,7 +137,7 @@ public interface Multiset<E> extends Collection<E> {
    *     return normally.
    */
   @CanIgnoreReturnValue
-  int add(@Nullable E element, int occurrences);
+  int add(@NonNull E element, int occurrences);
 
   /**
    * Adds a single occurrence of the specified element to this multiset.
@@ -157,7 +160,9 @@ public interface Multiset<E> extends Collection<E> {
    */
   @CanIgnoreReturnValue
   @Override
-  boolean add(E element);
+  @SuppressWarnings("nullness:override.param.invalid") // This implementation does not permit null
+  // elements
+  boolean add(@NonNull E element);
 
   /**
    * Removes a number of occurrences of the specified element from this multiset. If the multiset
@@ -204,7 +209,7 @@ public interface Multiset<E> extends Collection<E> {
    *     zero instead.
    */
   @CanIgnoreReturnValue
-  int setCount(E element, int count);
+  int setCount(@NonNull E element, int count);
 
   /**
    * Conditionally sets the count of an element to a new value, as described in {@link
@@ -223,7 +228,7 @@ public interface Multiset<E> extends Collection<E> {
    *     implementor may optionally return {@code true} instead.
    */
   @CanIgnoreReturnValue
-  boolean setCount(E element, int oldCount, int newCount);
+  boolean setCount(@NonNull E element, int oldCount, int newCount);
 
   // Views
 

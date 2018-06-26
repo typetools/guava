@@ -59,7 +59,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtCompatible
-@SuppressWarnings("nullness:generic.argument")
 public abstract class ForwardingMap<K, V> extends ForwardingObject implements Map<K, V> {
   // TODO(lowasser): identify places where thread safety is actually lost
 
@@ -83,8 +82,6 @@ public abstract class ForwardingMap<K, V> extends ForwardingObject implements Ma
 
   @CanIgnoreReturnValue
   @Override
-  @SuppressWarnings("nullness")
-  // Suppressed due to annotations on remove in Java.Map
   public @Nullable V remove(@Nullable Object object) {
     return delegate().remove(object);
   }
@@ -96,27 +93,25 @@ public abstract class ForwardingMap<K, V> extends ForwardingObject implements Ma
 
   @Pure
   @Override
-  @SuppressWarnings("nullness") // Suppressed due to annotations on containsKey in Java.Map
   public boolean containsKey(@Nullable Object key) {
     return delegate().containsKey(key);
   }
 
   @Pure
   @Override
-  @SuppressWarnings("nullness") // Suppressed due to annotations on containsValue in Java.Map
   public boolean containsValue(@Nullable Object value) {
     return delegate().containsValue(value);
   }
 
+  @Pure
   @Override
-  @SuppressWarnings("nullness") // Suppressed due to annotations on get in Java.Map
-  public V get(@Nullable Object key) {
+  public @Nullable V get(@Nullable Object key) {
     return delegate().get(key);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public V put(K key, V value) {
+  public @Nullable V put(K key, V value) {
     return delegate().put(key, value);
   }
 
@@ -177,7 +172,7 @@ public abstract class ForwardingMap<K, V> extends ForwardingObject implements Ma
    * @since 7.0
    */
   @Beta
-  protected V standardRemove(@Nullable Object key) {
+  protected @Nullable V standardRemove(@Nullable Object key) {
     Iterator<Entry<K, V>> entryIterator = entrySet().iterator();
     while (entryIterator.hasNext()) {
       Entry<K, V> entry = entryIterator.next();
@@ -226,6 +221,7 @@ public abstract class ForwardingMap<K, V> extends ForwardingObject implements Ma
    * @since 7.0
    */
   @Beta
+  @Pure
   protected boolean standardContainsKey(@Nullable Object key) {
     return Maps.containsKeyImpl(this, key);
   }
@@ -254,6 +250,7 @@ public abstract class ForwardingMap<K, V> extends ForwardingObject implements Ma
    *
    * @since 7.0
    */
+  @Pure
   protected boolean standardContainsValue(@Nullable Object value) {
     return Maps.containsValueImpl(this, value);
   }
@@ -285,6 +282,7 @@ public abstract class ForwardingMap<K, V> extends ForwardingObject implements Ma
    *
    * @since 7.0
    */
+  @Pure
   protected boolean standardIsEmpty() {
     return !entrySet().iterator().hasNext();
   }
@@ -296,6 +294,7 @@ public abstract class ForwardingMap<K, V> extends ForwardingObject implements Ma
    *
    * @since 7.0
    */
+  @Pure
   protected boolean standardEquals(@Nullable Object object) {
     return Maps.equalsImpl(this, object);
   }
@@ -307,6 +306,7 @@ public abstract class ForwardingMap<K, V> extends ForwardingObject implements Ma
    *
    * @since 7.0
    */
+  @Pure
   protected int standardHashCode() {
     return Sets.hashCodeImpl(entrySet());
   }
@@ -318,6 +318,7 @@ public abstract class ForwardingMap<K, V> extends ForwardingObject implements Ma
    *
    * @since 7.0
    */
+  @SideEffectFree
   protected String standardToString() {
     return Maps.toStringImpl(this);
   }
