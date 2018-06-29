@@ -213,6 +213,8 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
     }
 
     @Override
+    @SuppressWarnings("nullness:dereference.of.nullable") // Safe because of if-statement with
+    // condition occurrencesLeft == 0
     public E next() {
       if (occurrencesLeft == 0) {
         currentEntry = entryIterator.next();
@@ -224,6 +226,8 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
     }
 
     @Override
+    @SuppressWarnings("nullness:dereference.of.nullable") // checkRemove throws an exception if
+    // currentEntry is null and there is no more entry to remove.
     public void remove() {
       checkRemove(canRemove);
       int frequency = currentEntry.getValue().get();
@@ -254,7 +258,7 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
    */
   @CanIgnoreReturnValue
   @Override
-  public int add(@Nullable E element, int occurrences) {
+  public int add(E element, int occurrences) {
     if (occurrences == 0) {
       return count(element);
     }
@@ -304,7 +308,7 @@ abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implement
   // Roughly a 33% performance improvement over AbstractMultiset.setCount().
   @CanIgnoreReturnValue
   @Override
-  public int setCount(@Nullable E element, int count) {
+  public int setCount(E element, int count) {
     checkNonnegative(count, "count");
 
     Count existingCounter;

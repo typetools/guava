@@ -86,7 +86,9 @@ abstract class AbstractSortedSetMultimap<K, V> extends AbstractSetMultimap<K, V>
    * Multimap} interface.
    */
   @Override
-  public SortedSet<V> get(@Nullable K key) {
+  @SuppressWarnings("nullness:override.param.invalid") // Please refer to note on 'get' method in
+  // AbstractMapBasedMultimap
+  public SortedSet<V> get(K key) {
     return (SortedSet<V>) super.get(key);
   }
 
@@ -115,7 +117,7 @@ abstract class AbstractSortedSetMultimap<K, V> extends AbstractSetMultimap<K, V>
    */
   @CanIgnoreReturnValue
   @Override
-  public SortedSet<V> replaceValues(@Nullable K key, Iterable<? extends V> values) {
+  public SortedSet<V> replaceValues(K key, Iterable<? extends V> values) {
     return (SortedSet<V>) super.replaceValues(key, values);
   }
 

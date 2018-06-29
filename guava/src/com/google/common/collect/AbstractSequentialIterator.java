@@ -18,6 +18,7 @@ package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
 import java.util.NoSuchElementException;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -59,6 +60,7 @@ public abstract class AbstractSequentialIterator<T> extends UnmodifiableIterator
   protected abstract T computeNext(T previous);
 
   @Override
+  @EnsuresNonNullIf(expression = "nextOrNull", result = true)
   public final boolean hasNext() {
     return nextOrNull != null;
   }

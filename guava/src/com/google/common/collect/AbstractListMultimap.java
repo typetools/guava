@@ -75,7 +75,9 @@ abstract class AbstractListMultimap<K, V> extends AbstractMapBasedMultimap<K, V>
    * Multimap} interface.
    */
   @Override
-  public List<V> get(@Nullable K key) {
+  @SuppressWarnings("nullness:override.param.invalid") // Please refer to note on 'get' method in
+  // AbstractMapBasedMultimap
+  public List<V> get(K key) {
     return (List<V>) super.get(key);
   }
 
@@ -101,7 +103,7 @@ abstract class AbstractListMultimap<K, V> extends AbstractMapBasedMultimap<K, V>
    */
   @CanIgnoreReturnValue
   @Override
-  public List<V> replaceValues(@Nullable K key, Iterable<? extends V> values) {
+  public List<V> replaceValues(K key, Iterable<? extends V> values) {
     return (List<V>) super.replaceValues(key, values);
   }
 
@@ -114,7 +116,7 @@ abstract class AbstractListMultimap<K, V> extends AbstractMapBasedMultimap<K, V>
    */
   @CanIgnoreReturnValue
   @Override
-  public boolean put(@Nullable K key, @Nullable V value) {
+  public boolean put(K key, V value) {
     return super.put(key, value);
   }
 

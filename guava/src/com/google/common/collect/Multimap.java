@@ -216,7 +216,7 @@ public interface Multimap<K, V> {
    *     multimap already contained the key-value pair and doesn't allow duplicates
    */
   @CanIgnoreReturnValue
-  boolean put(@Nullable K key, @Nullable V value);
+  boolean put(K key, V value);
 
   /**
    * Removes a single key-value pair with the key {@code key} and the value {@code value} from this
@@ -246,7 +246,7 @@ public interface Multimap<K, V> {
    * @return {@code true} if the multimap changed
    */
   @CanIgnoreReturnValue
-  boolean putAll(@Nullable K key, Iterable<? extends V> values);
+  boolean putAll(K key, Iterable<? extends V> values);
 
   /**
    * Stores all key-value pairs of {@code multimap} in this multimap, in the order returned by
@@ -267,7 +267,7 @@ public interface Multimap<K, V> {
    *     no effect on the multimap.
    */
   @CanIgnoreReturnValue
-  Collection<V> replaceValues(@Nullable K key, Iterable<? extends V> values);
+  Collection<V> replaceValues(K key, Iterable<? extends V> values);
 
   /**
    * Removes all values associated with the key {@code key}.

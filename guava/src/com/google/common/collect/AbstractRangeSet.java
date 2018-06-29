@@ -32,7 +32,7 @@ abstract class AbstractRangeSet<C extends Comparable> implements RangeSet<C> {
   }
 
   @Override
-  public abstract Range<C> rangeContaining(C value);
+  public abstract @Nullable Range<C> rangeContaining(C value);
 
   @Override
   public boolean isEmpty() {

@@ -119,7 +119,7 @@ public abstract class AbstractIterator<T> extends UnmodifiableIterator<T> {
    *     simple statement {@code return endOfData();}
    */
   @CanIgnoreReturnValue
-  protected final T endOfData() {
+  protected final @Nullable T endOfData() {
     state = State.DONE;
     return null;
   }
@@ -150,6 +150,7 @@ public abstract class AbstractIterator<T> extends UnmodifiableIterator<T> {
 
   @CanIgnoreReturnValue // TODO(kak): Should we remove this?
   @Override
+  @SuppressWarnings("nullness:return.type.incompatible") // hasNext ensures the type of next to be T
   public final T next() {
     if (!hasNext()) {
       throw new NoSuchElementException();
@@ -167,6 +168,7 @@ public abstract class AbstractIterator<T> extends UnmodifiableIterator<T> {
    * <p>Implementations of {@code AbstractIterator} that wish to expose this functionality should
    * implement {@code PeekingIterator}.
    */
+  @SuppressWarnings("nullness:return.type.incompatible") // hasNext ensures the type of next to be T
   public final T peek() {
     if (!hasNext()) {
       throw new NoSuchElementException();

@@ -64,14 +64,14 @@ abstract class AbstractMultiset<E> extends AbstractCollection<E> implements Mult
   // Modification Operations
   @CanIgnoreReturnValue
   @Override
-  public final boolean add(@Nullable E element) {
+  public final boolean add(E element) {
     add(element, 1);
     return true;
   }
 
   @CanIgnoreReturnValue
   @Override
-  public int add(@Nullable E element, int occurrences) {
+  public int add(E element, int occurrences) {
     throw new UnsupportedOperationException();
   }
 
@@ -89,13 +89,13 @@ abstract class AbstractMultiset<E> extends AbstractCollection<E> implements Mult
 
   @CanIgnoreReturnValue
   @Override
-  public int setCount(@Nullable E element, int count) {
+  public int setCount(E element, int count) {
     return setCountImpl(this, element, count);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public boolean setCount(@Nullable E element, int oldCount, int newCount) {
+  public boolean setCount(E element, int oldCount, int newCount) {
     return setCountImpl(this, element, oldCount, newCount);
   }
 
