@@ -267,7 +267,6 @@ public interface Table<R, C, V> {
     C getColumnKey();
 
     /** Returns the value of this cell. */
-    @Nullable
     V getValue();
 
     /**
