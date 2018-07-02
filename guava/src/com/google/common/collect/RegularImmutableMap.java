@@ -30,6 +30,7 @@ import com.google.j2objc.annotations.Weak;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -44,7 +45,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
-final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
+final class RegularImmutableMap<K extends @NonNull Object, V extends @NonNull Object>
+    extends ImmutableMap<K, V> {
   @SuppressWarnings("unchecked")
   static final ImmutableMap<Object, Object> EMPTY =
       new RegularImmutableMap<>((Entry<Object, Object>[]) ImmutableMap.EMPTY_ENTRY_ARRAY, null, 0);
@@ -71,11 +73,12 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
   // entries in insertion order
   @VisibleForTesting final transient Entry<K, V>[] entries;
   // array of linked lists of entries
-  private final transient ImmutableMapEntry<K, V>[] table;
+  private final transient ImmutableMapEntry<K, V> @Nullable [] table;
   // 'and' with an int to get a table index
   private final transient int mask;
 
-  static <K, V> ImmutableMap<K, V> fromEntries(Entry<K, V>... entries) {
+  static <K extends @NonNull Object, V extends @NonNull Object> ImmutableMap<K, V> fromEntries(
+      Entry<K, V>... entries) {
     return fromEntryArray(entries.length, entries);
   }
 
@@ -84,7 +87,8 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
    * the entries in entryArray with its own entry objects (though they will have the same key/value
    * contents), and may take ownership of entryArray.
    */
-  static <K, V> ImmutableMap<K, V> fromEntryArray(int n, Entry<K, V>[] entryArray) {
+  static <K extends @NonNull Object, V extends @NonNull Object> ImmutableMap<K, V> fromEntryArray(
+      int n, Entry<K, V>[] entryArray) {
     checkPositionIndex(n, entryArray.length);
     if (n == 0) {
       return (RegularImmutableMap<K, V>) EMPTY;
@@ -123,18 +127,21 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
   }
 
   /** Makes an entry usable internally by a new ImmutableMap without rereading its contents. */
-  static <K, V> ImmutableMapEntry<K, V> makeImmutable(Entry<K, V> entry, K key, V value) {
+  static <K extends @NonNull Object, V extends @NonNull Object>
+  ImmutableMapEntry<K, V> makeImmutable(Entry<K, V> entry, K key, V value) {
     boolean reusable =
         entry instanceof ImmutableMapEntry && ((ImmutableMapEntry<K, V>) entry).isReusable();
     return reusable ? (ImmutableMapEntry<K, V>) entry : new ImmutableMapEntry<K, V>(key, value);
   }
 
   /** Makes an entry usable internally by a new ImmutableMap. */
-  static <K, V> ImmutableMapEntry<K, V> makeImmutable(Entry<K, V> entry) {
+  static <K extends @NonNull Object, V extends @NonNull Object>
+  ImmutableMapEntry<K, V> makeImmutable(Entry<K, V> entry) {
     return makeImmutable(entry, entry.getKey(), entry.getValue());
   }
 
-  private RegularImmutableMap(Entry<K, V>[] entries, ImmutableMapEntry<K, V>[] table, int mask) {
+  private RegularImmutableMap(
+      Entry<K, V>[] entries, ImmutableMapEntry<K, V> @Nullable [] table, int mask) {
     this.entries = entries;
     this.table = table;
     this.mask = mask;
@@ -146,7 +153,8 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
    */
   @CanIgnoreReturnValue
   static int checkNoConflictInKeyBucket(
-      Object key, Entry<?, ?> entry, @Nullable ImmutableMapEntry<?, ?> keyBucketHead) {
+      Object key, Entry<?, ?> entry,
+      @Nullable ImmutableMapEntry<@NonNull ?, @NonNull ?> keyBucketHead) {
     int bucketSize = 0;
     for (; keyBucketHead != null; keyBucketHead = keyBucketHead.getNextInKeyBucket()) {
       checkNoConflict(!key.equals(keyBucketHead.getKey()), "key", entry, keyBucketHead);
@@ -160,8 +168,8 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
     return get(key, table, mask);
   }
 
-  static <V> @Nullable V get(
-      @Nullable Object key, ImmutableMapEntry<?, V> @Nullable [] keyTable, int mask) {
+  static <V extends @NonNull Object> @Nullable V get(
+      @Nullable Object key, ImmutableMapEntry<@NonNull ?, V> @Nullable [] keyTable, int mask) {
     if (key == null || keyTable == null) {
       return null;
     }
@@ -214,7 +222,8 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
   }
 
   @GwtCompatible(emulated = true)
-  private static final class KeySet<K, V> extends IndexedImmutableSet<K> {
+  private static final class KeySet<K extends @NonNull Object, V extends @NonNull Object>
+      extends IndexedImmutableSet<K> {
     @Weak private final RegularImmutableMap<K, V> map;
 
     KeySet(RegularImmutableMap<K, V> map) {
@@ -227,7 +236,7 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
     }
 
     @Override
-    public boolean contains(Object object) {
+    public boolean contains(@Nullable Object object) {
       return map.containsKey(object);
     }
 
@@ -248,7 +257,7 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
     }
 
     @GwtIncompatible // serialization
-    private static class SerializedForm<K> implements Serializable {
+    private static class SerializedForm<K extends @NonNull Object> implements Serializable {
       final ImmutableMap<K, ?> map;
 
       SerializedForm(ImmutableMap<K, ?> map) {
@@ -269,7 +278,8 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
   }
 
   @GwtCompatible(emulated = true)
-  private static final class Values<K, V> extends ImmutableList<V> {
+  private static final class Values<K extends @NonNull Object, V extends @NonNull Object>
+      extends ImmutableList<V> {
     @Weak final RegularImmutableMap<K, V> map;
 
     Values(RegularImmutableMap<K, V> map) {
@@ -298,7 +308,7 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
     }
 
     @GwtIncompatible // serialization
-    private static class SerializedForm<V> implements Serializable {
+    private static class SerializedForm<V extends @NonNull Object> implements Serializable {
       final ImmutableMap<?, V> map;
 
       SerializedForm(ImmutableMap<?, V> map) {

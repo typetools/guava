@@ -23,6 +23,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.primitives.Ints;
 import java.util.Comparator;
 import java.util.function.ObjIntConsumer;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -32,7 +33,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  */
 @SuppressWarnings("serial") // uses writeReplace, not default serialization
 @GwtIncompatible
-final class RegularImmutableSortedMultiset<E> extends ImmutableSortedMultiset<E> {
+final class RegularImmutableSortedMultiset<E extends @NonNull Object>
+    extends ImmutableSortedMultiset<E> {
   private static final long[] ZERO_CUMULATIVE_COUNTS = {0};
 
   static final ImmutableSortedMultiset<Comparable> NATURAL_EMPTY_MULTISET =
@@ -76,12 +78,12 @@ final class RegularImmutableSortedMultiset<E> extends ImmutableSortedMultiset<E>
   }
 
   @Override
-  public Entry<E> firstEntry() {
+  public @Nullable Entry<E> firstEntry() {
     return isEmpty() ? null : getEntry(0);
   }
 
   @Override
-  public Entry<E> lastEntry() {
+  public @Nullable Entry<E> lastEntry() {
     return isEmpty() ? null : getEntry(length - 1);
   }
 

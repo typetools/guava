@@ -23,6 +23,7 @@ import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -31,7 +32,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Gregory Kick
  */
 @GwtCompatible
-abstract class RegularImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
+abstract class RegularImmutableTable<R extends @NonNull Object, C extends @NonNull Object,
+    V extends @NonNull Object> extends ImmutableTable<R, C, V> {
   RegularImmutableTable() {}
 
   abstract Cell<R, C, V> getCell(int iterationIndex);
@@ -94,7 +96,8 @@ abstract class RegularImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
     }
   }
 
-  static <R, C, V> RegularImmutableTable<R, C, V> forCells(
+  static <R extends @NonNull Object, C extends @NonNull Object, V extends @NonNull Object>
+  RegularImmutableTable<R, C, V> forCells(
       List<Cell<R, C, V>> cells,
       final @Nullable Comparator<? super R> rowComparator,
       final @Nullable Comparator<? super C> columnComparator) {
@@ -128,11 +131,13 @@ abstract class RegularImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
     return forCellsInternal(cells, rowComparator, columnComparator);
   }
 
-  static <R, C, V> RegularImmutableTable<R, C, V> forCells(Iterable<Cell<R, C, V>> cells) {
+  static <R extends @NonNull Object, C extends @NonNull Object, V extends @NonNull Object>
+  RegularImmutableTable<R, C, V> forCells(Iterable<Cell<R, C, V>> cells) {
     return forCellsInternal(cells, null, null);
   }
 
-  private static <R, C, V> RegularImmutableTable<R, C, V> forCellsInternal(
+  private static <R extends @NonNull Object, C extends @NonNull Object, V extends @NonNull Object>
+  RegularImmutableTable<R, C, V> forCellsInternal(
       Iterable<Cell<R, C, V>> cells,
       @Nullable Comparator<? super R> rowComparator,
       @Nullable Comparator<? super C> columnComparator) {
@@ -157,7 +162,8 @@ abstract class RegularImmutableTable<R, C, V> extends ImmutableTable<R, C, V> {
   }
 
   /** A factory that chooses the most space-efficient representation of the table. */
-  static <R, C, V> RegularImmutableTable<R, C, V> forOrderedComponents(
+  static <R extends @NonNull Object, C extends @NonNull Object, V extends @NonNull Object>
+  RegularImmutableTable<R, C, V> forOrderedComponents(
       ImmutableList<Cell<R, C, V>> cellList,
       ImmutableSet<R> rowSpace,
       ImmutableSet<C> columnSpace) {

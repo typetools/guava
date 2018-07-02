@@ -24,6 +24,8 @@ import com.google.common.primitives.Ints;
 import com.google.errorprone.annotations.concurrent.LazyInit;
 import java.util.Arrays;
 import java.util.Collection;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -34,10 +36,11 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  */
 @GwtCompatible(emulated = true, serializable = true)
 @SuppressWarnings("serial") // uses writeReplace(), not default serialization
-class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
+class RegularImmutableMultiset<E extends @NonNull Object> extends ImmutableMultiset<E> {
   static final ImmutableMultiset<Object> EMPTY = create(ImmutableList.<Entry<Object>>of());
 
-  static <E> ImmutableMultiset<E> create(Collection<? extends Entry<? extends E>> entries) {
+  static <E extends @NonNull Object> ImmutableMultiset<E> create(
+      Collection<? extends Entry<? extends E>> entries) {
     int distinct = entries.size();
     @SuppressWarnings("unchecked")
     Multisets.ImmutableEntry<E>[] entryArray = new Multisets.ImmutableEntry[distinct];
@@ -120,22 +123,26 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
   private final transient int size;
   private final transient int hashCode;
 
-  @LazyInit private transient ImmutableSet<E> elementSet;
+  @LazyInit @MonotonicNonNull private transient ImmutableSet<E> elementSet;
 
   private RegularImmutableMultiset(
       ImmutableEntry<E>[] entries,
-      ImmutableEntry<E>[] hashTable,
+      ImmutableEntry<E> @Nullable [] hashTable,
       int size,
       int hashCode,
-      ImmutableSet<E> elementSet) {
+      @Nullable ImmutableSet<E> elementSet) {
     this.entries = entries;
     this.hashTable = hashTable;
     this.size = size;
     this.hashCode = hashCode;
-    this.elementSet = elementSet;
+    // Allocating a @Nullable value to @MonotonicNonNull variable throws assignment.type.incompatible
+    // warnings. Following is added to impede warning.
+    if (elementSet != null)
+      this.elementSet = elementSet;
   }
 
-  private static final class NonTerminalEntry<E> extends Multisets.ImmutableEntry<E> {
+  private static final class NonTerminalEntry<E extends @NonNull Object>
+      extends Multisets.ImmutableEntry<E> {
     private final Multisets.ImmutableEntry<E> nextInBucket;
 
     NonTerminalEntry(E element, int count, ImmutableEntry<E> nextInBucket) {

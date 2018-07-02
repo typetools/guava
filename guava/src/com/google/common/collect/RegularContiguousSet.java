@@ -23,6 +23,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 import java.io.Serializable;
 import java.util.Collection;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -71,7 +72,7 @@ final class RegularContiguousSet<C extends Comparable> extends ContiguousSet<C> 
 
   @GwtIncompatible // not used by GWT emulation
   @Override
-  int indexOf(Object target) {
+  int indexOf(@Nullable Object target) {
     return contains(target) ? (int) domain.distance(first(), (C) target) : -1;
   }
 
@@ -146,6 +147,7 @@ final class RegularContiguousSet<C extends Comparable> extends ContiguousSet<C> 
   }
 
   @Override
+  @EnsuresNonNullIf(expression = "#1", result = true)
   public boolean contains(@Nullable Object object) {
     if (object == null) {
       return false;

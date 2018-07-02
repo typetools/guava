@@ -28,6 +28,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.function.Consumer;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -43,7 +44,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
 @SuppressWarnings("serial")
-final class RegularImmutableSortedSet<E> extends ImmutableSortedSet<E> {
+final class RegularImmutableSortedSet<E extends @NonNull Object> extends ImmutableSortedSet<E> {
   static final RegularImmutableSortedSet<Comparable> NATURAL_EMPTY_SET =
       new RegularImmutableSortedSet<>(ImmutableList.<Comparable>of(), Ordering.natural());
 
@@ -93,6 +94,8 @@ final class RegularImmutableSortedSet<E> extends ImmutableSortedSet<E> {
 
   @Pure
   @Override
+  @SuppressWarnings("nullness:argument.type.incompatible") // This method returns false in case a
+  // NullPointerException occurs
   public boolean containsAll(Collection<?> targets) {
     // TODO(jlevy): For optimal performance, use a binary search when
     // targets.size() < size() / log(size())
@@ -154,7 +157,7 @@ final class RegularImmutableSortedSet<E> extends ImmutableSortedSet<E> {
   }
 
   @Override
-  int copyIntoArray(Object[] dst, int offset) {
+  int copyIntoArray(@Nullable Object[] dst, int offset) {
     return elements.copyIntoArray(dst, offset);
   }
 
@@ -215,25 +218,25 @@ final class RegularImmutableSortedSet<E> extends ImmutableSortedSet<E> {
   }
 
   @Override
-  public E lower(E element) {
+  public @Nullable E lower(E element) {
     int index = headIndex(element, false) - 1;
     return (index == -1) ? null : elements.get(index);
   }
 
   @Override
-  public E floor(E element) {
+  public @Nullable E floor(E element) {
     int index = headIndex(element, true) - 1;
     return (index == -1) ? null : elements.get(index);
   }
 
   @Override
-  public E ceiling(E element) {
+  public @Nullable E ceiling(E element) {
     int index = tailIndex(element, true);
     return (index == size()) ? null : elements.get(index);
   }
 
   @Override
-  public E higher(E element) {
+  public @Nullable E higher(E element) {
     int index = tailIndex(element, false);
     return (index == size()) ? null : elements.get(index);
   }
