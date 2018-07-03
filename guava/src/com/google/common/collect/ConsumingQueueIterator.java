@@ -20,13 +20,14 @@ import com.google.common.annotations.GwtCompatible;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Queue;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * An Iterator implementation which draws elements from a queue, removing them from the queue as it
  * iterates.
  */
 @GwtCompatible
-class ConsumingQueueIterator<T> extends AbstractIterator<T> {
+class ConsumingQueueIterator<T extends @NonNull Object> extends AbstractIterator<T> {
   private final Queue<T> queue;
 
   ConsumingQueueIterator(T... elements) {
@@ -39,6 +40,8 @@ class ConsumingQueueIterator<T> extends AbstractIterator<T> {
   }
 
   @Override
+  @SuppressWarnings("nullness:return.type.incompatible") // If endOfData is called during execution,
+  // the return value will be ignored.
   public T computeNext() {
     return queue.isEmpty() ? endOfData() : queue.remove();
   }

@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /** Precondition checks useful in collection implementations. */
 @GwtCompatible
@@ -34,7 +35,7 @@ final class CollectPreconditions {
   }
 
   @CanIgnoreReturnValue
-  static int checkNonnegative(int value, String name) {
+  static int checkNonnegative(int value, @Nullable String name) {
     if (value < 0) {
       throw new IllegalArgumentException(name + " cannot be negative but was: " + value);
     }
@@ -42,14 +43,14 @@ final class CollectPreconditions {
   }
 
   @CanIgnoreReturnValue
-  static long checkNonnegative(long value, String name) {
+  static long checkNonnegative(long value, @Nullable String name) {
     if (value < 0) {
       throw new IllegalArgumentException(name + " cannot be negative but was: " + value);
     }
     return value;
   }
 
-  static void checkPositive(int value, String name) {
+  static void checkPositive(int value, @Nullable String name) {
     if (value <= 0) {
       throw new IllegalArgumentException(name + " must be positive but was: " + value);
     }

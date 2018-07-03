@@ -43,6 +43,7 @@ import java.util.Spliterators;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -125,7 +126,7 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
    *
    * <p>Its size must be a power of two.
    */
-  private transient int @MonotonicNonNull [] table;
+  private transient int[] table;
 
   /**
    * Contains the logical entries, in the range of [0, size()). The high 32 bits of each long is the
@@ -133,19 +134,19 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
    * next entry in the bucket chain). The pointers in [size(), entries.length) are all "null"
    * (UNSET).
    */
-  @VisibleForTesting transient long @MonotonicNonNull [] entries;
+  @VisibleForTesting transient long[] entries;
 
   /**
    * The keys of the entries in the map, in the range of [0, size()). The keys in [size(),
    * keys.length) are all {@code null}.
    */
-  @VisibleForTesting transient Object @MonotonicNonNull[] keys;
+  @VisibleForTesting transient @Nullable Object[] keys;
 
   /**
    * The values of the entries in the map, in the range of [0, size()). The values in [size(),
    * values.length) are all {@code null}.
    */
-  @VisibleForTesting transient Object @MonotonicNonNull[] values;
+  @VisibleForTesting transient @Nullable Object[] values;
 
   /** The load factor. */
   transient float loadFactor;
@@ -164,6 +165,8 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
   private transient int size;
 
   /** Constructs a new empty instance of {@code CompactHashMap}. */
+  @SuppressWarnings("initialization:method.invocation.invalid") // Init method acts as a pseudo
+  // constructor
   CompactHashMap() {
     init(DEFAULT_SIZE, DEFAULT_LOAD_FACTOR);
   }
@@ -177,11 +180,14 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
     this(capacity, DEFAULT_LOAD_FACTOR);
   }
 
+  @SuppressWarnings("initialization:method.invocation.invalid") // Init method acts as a pseudo
+  // constructor
   CompactHashMap(int expectedSize, float loadFactor) {
     init(expectedSize, loadFactor);
   }
 
   /** Pseudoconstructor for serialization support. */
+  @EnsuresNonNull({"table", "keys", "values", "entries"})
   void init(int expectedSize, float loadFactor) {
     Preconditions.checkArgument(expectedSize >= 0, "Initial capacity must be non-negative");
     Preconditions.checkArgument(loadFactor > 0, "Illegal load factor");
@@ -236,10 +242,10 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
 
   @CanIgnoreReturnValue
   @Override
-  public @Nullable V put(@Nullable K key, @Nullable V value) {
+  public @Nullable V put(K key, V value) {
     long[] entries = this.entries;
-    Object[] keys = this.keys;
-    Object[] values = this.values;
+    @Nullable Object[] keys = this.keys;
+    @Nullable Object[] values = this.values;
 
     int hash = smearedHash(key);
     int tableIndex = hash & hashTableMask();
@@ -283,7 +289,7 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
   /**
    * Creates a fresh entry with the specified object at the specified position in the entry arrays.
    */
-  void insertEntry(int entryIndex, @Nullable K key, @Nullable V value, int hash) {
+  void insertEntry(int entryIndex, K key, V value, int hash) {
     this.entries[entryIndex] = ((long) hash << 32) | (NEXT_MASK & UNSET);
     this.keys[entryIndex] = key;
     this.values[entryIndex] = value;
@@ -364,7 +370,7 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
 
   @SuppressWarnings("unchecked") // values only contains Vs
   @Override
-  public V get(@Nullable Object key) {
+  public @Nullable V get(@Nullable Object key) {
     int index = indexOf(key);
     accessEntry(index);
     return (index == -1) ? null : (V) values[index];
@@ -411,7 +417,7 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
   }
 
   @CanIgnoreReturnValue
-  private V removeEntry(int entryIndex) {
+  private @Nullable V removeEntry(int entryIndex) {
     return remove(keys[entryIndex], getHash(entries[entryIndex]));
   }
 
@@ -541,12 +547,14 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
     }
 
     @Override
-    public Object[] toArray() {
+    @SuppressWarnings("nullness:override.return.invalid") // Suppressed due to annotations for toArray
+    public @Nullable Object[] toArray() {
       return ObjectArrays.copyAsObjectArray(keys, 0, size);
     }
 
     @Override
-    public <T> T[] toArray(T[] a) {
+    @SuppressWarnings("nullness:override.param.invalid") // Suppressed due to annotations for toArray
+    public <T> @Nullable T[] toArray(@Nullable T[] a) {
       return ObjectArrays.toArrayImpl(keys, 0, size, a);
     }
 
@@ -567,6 +575,8 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
     }
 
     @Override
+    @SuppressWarnings("nullness:argument.type.incompatible") // Missing annotated version of
+    // Spliterators in annotated-JDK. TODO dilraj45: Pull request changes for annotating Spliterators
     public Spliterator<K> spliterator() {
       return Spliterators.spliterator(keys, 0, size, Spliterator.DISTINCT | Spliterator.ORDERED);
     }
@@ -661,7 +671,7 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
   }
 
   final class MapEntry extends AbstractMapEntry<K, V> {
-    private final @Nullable K key;
+    private final K key;
 
     private int lastKnownIndex;
 
@@ -684,16 +694,22 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
       }
     }
 
-    @SuppressWarnings("unchecked") // values only contains Vs
+    @SuppressWarnings({
+      "unchecked", // values only contains Vs
+      "nullness:override.return.invalid" // This method may return null in case lastKnownIndex == -1
+    })
     @Override
-    public V getValue() {
+    public @Nullable V getValue() {
       updateLastKnownIndex();
       return (lastKnownIndex == -1) ? null : (V) values[lastKnownIndex];
     }
 
-    @SuppressWarnings("unchecked") // values only contains Vs
+    @SuppressWarnings({
+      "unchecked", // values only contains Vs
+      "nullness:override.return.invalid" // This method may return null in case lastKnownIndex == -1
+    })
     @Override
-    public V setValue(V value) {
+    public @Nullable V setValue(V value) {
       updateLastKnownIndex();
       if (lastKnownIndex == -1) {
         put(key, value);
@@ -757,17 +773,21 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
     }
 
     @Override
+    @SuppressWarnings("nullness:argument.type.incompatible") // Missing annotated version of
+    // Spliterators in annotated-JDK
     public Spliterator<V> spliterator() {
       return Spliterators.spliterator(values, 0, size, Spliterator.ORDERED);
     }
 
     @Override
-    public Object[] toArray() {
+    @SuppressWarnings("nullness:override.return.invalid") // Suppressed due to annotations for toArray
+    public @Nullable Object[] toArray() {
       return ObjectArrays.copyAsObjectArray(values, 0, size);
     }
 
     @Override
-    public <T> T[] toArray(T[] a) {
+    @SuppressWarnings("nullness:override.param.invalid") // Suppressed due to annotations for toArray
+    public <T> @Nullable T[] toArray(@Nullable T[] a) {
       return ObjectArrays.toArrayImpl(values, 0, size, a);
     }
   }

@@ -50,7 +50,7 @@ public interface ClassToInstanceMap<B> extends Map<Class<? extends B>, B> {
    * that may have been bound to a subtype.
    */
   @CanIgnoreReturnValue // TODO(kak): Consider removing this?
-  <T extends B> T getInstance(Class<T> type);
+  <T extends B> @Nullable T getInstance(Class<T> type);
 
   /**
    * Maps the specified class to the specified value. Does <i>not</i> associate this value with any
@@ -60,5 +60,5 @@ public interface ClassToInstanceMap<B> extends Map<Class<? extends B>, B> {
    *     null} if there was no previous entry.
    */
   @CanIgnoreReturnValue
-  <T extends B> T putInstance(Class<T> type, @Nullable T value);
+  <T extends B> @Nullable T putInstance(Class<T> type, T value);
 }

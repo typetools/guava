@@ -27,6 +27,7 @@ import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Queue;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * A non-blocking queue which automatically evicts elements from the head of the queue when
@@ -45,7 +46,8 @@ import java.util.Queue;
  */
 @Beta
 @GwtCompatible
-public final class EvictingQueue<E> extends ForwardingQueue<E> implements Serializable {
+public final class EvictingQueue<E extends @NonNull Object> extends ForwardingQueue<E>
+    implements Serializable {
 
   private final Queue<E> delegate;
 
@@ -63,7 +65,7 @@ public final class EvictingQueue<E> extends ForwardingQueue<E> implements Serial
    * <p>When {@code maxSize} is zero, elements will be evicted immediately after being added to the
    * queue.
    */
-  public static <E> EvictingQueue<E> create(int maxSize) {
+  public static <E extends @NonNull Object> EvictingQueue<E> create(int maxSize) {
     return new EvictingQueue<E>(maxSize);
   }
 
@@ -126,12 +128,16 @@ public final class EvictingQueue<E> extends ForwardingQueue<E> implements Serial
   }
 
   @Override
+  @SuppressWarnings("nullness:override.param.invalid") // This class does not accept null elements
+  // and calling contains for null arguments throws NullPointerException
   public boolean contains(Object object) {
     return delegate().contains(checkNotNull(object));
   }
 
   @Override
   @CanIgnoreReturnValue
+  @SuppressWarnings("nullness:override.param.invalid") // This class does not accept null elements
+  // and calling remove for null arguments throws NullPointerException
   public boolean remove(Object object) {
     return delegate().remove(checkNotNull(object));
   }

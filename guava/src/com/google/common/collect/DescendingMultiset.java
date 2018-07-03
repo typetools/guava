@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.NavigableSet;
 import java.util.Set;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A skeleton implementation of a descending multiset. Only needs {@code forwardMultiset()} and
@@ -57,12 +58,12 @@ abstract class DescendingMultiset<E> extends ForwardingMultiset<E> implements So
   }
 
   @Override
-  public Entry<E> pollFirstEntry() {
+  public @Nullable Entry<E> pollFirstEntry() {
     return forwardMultiset().pollLastEntry();
   }
 
   @Override
-  public Entry<E> pollLastEntry() {
+  public @Nullable Entry<E> pollLastEntry() {
     return forwardMultiset().pollFirstEntry();
   }
 
@@ -95,12 +96,12 @@ abstract class DescendingMultiset<E> extends ForwardingMultiset<E> implements So
   }
 
   @Override
-  public Entry<E> firstEntry() {
+  public @Nullable Entry<E> firstEntry() {
     return forwardMultiset().lastEntry();
   }
 
   @Override
-  public Entry<E> lastEntry() {
+  public @Nullable Entry<E> lastEntry() {
     return forwardMultiset().firstEntry();
   }
 
@@ -141,12 +142,14 @@ abstract class DescendingMultiset<E> extends ForwardingMultiset<E> implements So
   }
 
   @Override
-  public Object[] toArray() {
+  @SuppressWarnings("nullness:override.return.invalid") // Suppressed due to annotations for toArray
+  public @Nullable Object[] toArray() {
     return standardToArray();
   }
 
   @Override
-  public <T> T[] toArray(T[] array) {
+  @SuppressWarnings("nullness:override.param.invalid") // Suppressed due to annotations for toArray
+  public <T> @Nullable T[] toArray(@Nullable T[] array) {
     return standardToArray(array);
   }
 

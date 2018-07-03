@@ -19,6 +19,7 @@ package com.google.common.collect;
 import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
 import java.util.List;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -27,7 +28,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Emily Soldal
  */
 @GwtCompatible(serializable = true)
-final class AllEqualOrdering extends Ordering<Object> implements Serializable {
+final class AllEqualOrdering extends Ordering<@Nullable Object> implements Serializable {
   static final AllEqualOrdering INSTANCE = new AllEqualOrdering();
 
   @Override
@@ -41,7 +42,7 @@ final class AllEqualOrdering extends Ordering<Object> implements Serializable {
   }
 
   @Override
-  public <E> ImmutableList<E> immutableSortedCopy(Iterable<E> iterable) {
+  public <E extends @NonNull Object> ImmutableList<E> immutableSortedCopy(Iterable<E> iterable) {
     return ImmutableList.copyOf(iterable);
   }
 

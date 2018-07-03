@@ -91,6 +91,8 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   private transient long size;
 
   /** Creates an empty {@code EnumMultiset}. */
+  @SuppressWarnings("nullness:assignment.type.incompatible") // getEnumConstants returns null only if
+  // the Class object does not represents an enum type
   private EnumMultiset(Class<E> type) {
     this.type = type;
     checkArgument(type.isEnum());
@@ -112,7 +114,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
    * either a NullPointerException or a ClassCastException as appropriate.
    */
   @SuppressWarnings("unchecked")
-  void checkIsE(@Nullable Object element) {
+  void checkIsE(Object element) {
     checkNotNull(element);
     if (!isActuallyE(element)) {
       throw new ClassCastException("Expected an " + type + " but got " + element);
@@ -307,6 +309,8 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
    *     element, its count, the second element, its count, and so on
    */
   @GwtIncompatible // java.io.ObjectInputStream
+  @SuppressWarnings("nullness:assignment.type.incompatible") // getEnumConstants returns null only if
+  // the Class object does not represents an enum type
   private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
     stream.defaultReadObject();
     @SuppressWarnings("unchecked") // reading data stored by writeObject

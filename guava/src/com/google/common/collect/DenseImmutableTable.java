@@ -21,12 +21,14 @@ import com.google.common.collect.ImmutableMap.IteratorBasedImmutableMap;
 import com.google.errorprone.annotations.Immutable;
 import com.google.j2objc.annotations.WeakOuter;
 import java.util.Map;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /** A {@code RegularImmutableTable} optimized for dense data. */
 @GwtCompatible
 @Immutable(containerOf = {"R", "C", "V"})
-final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> {
+final class DenseImmutableTable<R extends @NonNull Object, C extends @NonNull Object,
+    V extends @NonNull Object> extends RegularImmutableTable<R, C, V> {
   private final ImmutableMap<R, Integer> rowKeyToIndex;
   private final ImmutableMap<C, Integer> columnKeyToIndex;
   private final ImmutableMap<R, ImmutableMap<C, V>> rowMap;
@@ -49,6 +51,8 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
   @SuppressWarnings("Immutable") // We don't modify this after construction.
   private final int[] cellColumnIndices;
 
+  @SuppressWarnings("nullness:unboxing.of.nullable") // rowKeyToIndex.get and columnKeyToIndex.get
+  // returns null only if no mapping exists for the provided key
   DenseImmutableTable(
       ImmutableList<Cell<R, C, V>> cellList,
       ImmutableSet<R> rowSpace,
@@ -83,7 +87,8 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
   }
 
   /** An immutable map implementation backed by an indexed nullable array. */
-  private abstract static class ImmutableArrayMap<K, V> extends IteratorBasedImmutableMap<K, V> {
+  private abstract static class ImmutableArrayMap<K extends @NonNull Object,
+      V extends @NonNull Object> extends IteratorBasedImmutableMap<K, V> {
     private final int size;
 
     ImmutableArrayMap(int size) {
@@ -101,7 +106,7 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
       return keyToIndex().keySet().asList().get(index);
     }
 
-    abstract @Nullable V getValue(int keyIndex);
+    abstract V getValue(int keyIndex);
 
     @Override
     ImmutableSet<K> createKeySet() {
@@ -114,7 +119,7 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
     }
 
     @Override
-    public V get(@Nullable Object key) {
+    public @Nullable V get(@Nullable Object key) {
       Integer keyIndex = keyToIndex().get(key);
       return (keyIndex == null) ? null : getValue(keyIndex);
     }
@@ -246,7 +251,7 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
   }
 
   @Override
-  public V get(@Nullable Object rowKey, @Nullable Object columnKey) {
+  public @Nullable V get(@Nullable Object rowKey, @Nullable Object columnKey) {
     Integer rowIndex = rowKeyToIndex.get(rowKey);
     Integer columnIndex = columnKeyToIndex.get(columnKey);
     return ((rowIndex == null) || (columnIndex == null)) ? null : values[rowIndex][columnIndex];

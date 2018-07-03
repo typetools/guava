@@ -17,6 +17,7 @@
 package com.google.common.collect;
 
 import com.google.common.annotations.GwtIncompatible;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -25,7 +26,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Louis Wasserman
  */
 @GwtIncompatible
-final class DescendingImmutableSortedSet<E> extends ImmutableSortedSet<E> {
+final class DescendingImmutableSortedSet<E extends @NonNull Object> extends ImmutableSortedSet<E> {
   private final ImmutableSortedSet<E> forward;
 
   DescendingImmutableSortedSet(ImmutableSortedSet<E> forward) {
@@ -83,22 +84,22 @@ final class DescendingImmutableSortedSet<E> extends ImmutableSortedSet<E> {
   }
 
   @Override
-  public E lower(E element) {
+  public @Nullable E lower(E element) {
     return forward.higher(element);
   }
 
   @Override
-  public E floor(E element) {
+  public @Nullable E floor(E element) {
     return forward.ceiling(element);
   }
 
   @Override
-  public E ceiling(E element) {
+  public @Nullable E ceiling(E element) {
     return forward.floor(element);
   }
 
   @Override
-  public E higher(E element) {
+  public @Nullable E higher(E element) {
     return forward.lower(element);
   }
 

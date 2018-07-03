@@ -38,7 +38,7 @@ import java.util.NoSuchElementException;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -139,7 +139,7 @@ class CompactHashSet<E> extends AbstractSet<E> implements Serializable {
    *
    * <p>Its size must be a power of two.
    */
-  private transient int @MonotonicNonNull [] table;
+  private transient int[] table;
 
   /**
    * Contains the logical entries, in the range of [0, size()). The high 32 bits of each long is the
@@ -147,10 +147,10 @@ class CompactHashSet<E> extends AbstractSet<E> implements Serializable {
    * next entry in the bucket chain). The pointers in [size(), entries.length) are all "null"
    * (UNSET).
    */
-  private transient long @MonotonicNonNull [] entries;
+  private transient long[] entries;
 
   /** The elements contained in the set, in the range of [0, size()). */
-  transient Object @MonotonicNonNull [] elements;
+  transient @Nullable Object[] elements;
 
   /** The load factor. */
   transient float loadFactor;
@@ -169,6 +169,8 @@ class CompactHashSet<E> extends AbstractSet<E> implements Serializable {
   private transient int size;
 
   /** Constructs a new empty instance of {@code CompactHashSet}. */
+  @SuppressWarnings("initialization:method.invocation.invalid") // Method init acts as a pseudo
+  // constructor
   CompactHashSet() {
     init(DEFAULT_SIZE, DEFAULT_LOAD_FACTOR);
   }
@@ -178,11 +180,14 @@ class CompactHashSet<E> extends AbstractSet<E> implements Serializable {
    *
    * @param expectedSize the initial capacity of this {@code CompactHashSet}.
    */
+  @SuppressWarnings("initialization:method.invocation.invalid") // Method init acts as a pseudo
+  // constructor
   CompactHashSet(int expectedSize) {
     init(expectedSize, DEFAULT_LOAD_FACTOR);
   }
 
   /** Pseudoconstructor for serialization support. */
+  @EnsuresNonNull({"table", "elements", "entries"})
   void init(int expectedSize, float loadFactor) {
     Preconditions.checkArgument(expectedSize >= 0, "Initial capacity must be non-negative");
     Preconditions.checkArgument(loadFactor > 0, "Illegal load factor");
@@ -226,9 +231,9 @@ class CompactHashSet<E> extends AbstractSet<E> implements Serializable {
 
   @CanIgnoreReturnValue
   @Override
-  public boolean add(@Nullable E object) {
+  public boolean add(E object) {
     long[] entries = this.entries;
-    Object[] elements = this.elements;
+    @Nullable Object[] elements = this.elements;
     int hash = smearedHash(object);
     int tableIndex = hash & hashTableMask();
     int newEntryIndex = this.size; // current size, and pointer to the entry to be appended
@@ -345,7 +350,7 @@ class CompactHashSet<E> extends AbstractSet<E> implements Serializable {
   }
 
   @CanIgnoreReturnValue
-  private boolean remove(Object object, int hash) {
+  private boolean remove(@Nullable Object object, int hash) {
     int tableIndex = hash & hashTableMask();
     int next = table[tableIndex];
     if (next == UNSET) {
@@ -473,6 +478,8 @@ class CompactHashSet<E> extends AbstractSet<E> implements Serializable {
   }
 
   @Override
+  @SuppressWarnings("nullness:argument.type.incompatible") // Missing annotated version of
+  // Spliterators in annotated-JDK
   public Spliterator<E> spliterator() {
     return Spliterators.spliterator(elements, 0, size, Spliterator.DISTINCT | Spliterator.ORDERED);
   }
@@ -496,13 +503,15 @@ class CompactHashSet<E> extends AbstractSet<E> implements Serializable {
   }
 
   @Override
-  public Object[] toArray() {
+  @SuppressWarnings("nullness:override.return.invalid") // Suppressed due to annotations for toArray
+  public @Nullable Object[] toArray() {
     return Arrays.copyOf(elements, size);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public <T> T[] toArray(T[] a) {
+  @SuppressWarnings("nullness:override.param.invalid") // Suppressed due to annotations for toArray
+  public <T> @Nullable T[] toArray(@Nullable T[] a) {
     return ObjectArrays.toArrayImpl(elements, 0, size, a);
   }
 

@@ -190,7 +190,9 @@ public boolean equals(@Nullable Object arg0) { return super.equals(arg0); }
 public boolean isEmpty() { return super.isEmpty(); }
 
 @Override
-public List<V> get(@Nullable K arg0) { return super.get(arg0); }
+@SuppressWarnings("nullness:override.param.invalid") // Please refer to note on 'get' method in
+// AbstractMapBasedMultimap
+public List<V> get(K arg0) { return super.get(arg0); }
 
 @Override
 public boolean remove(@Nullable Object arg0, @Nullable Object arg1) { return super.remove(arg0, arg1); }

@@ -72,6 +72,8 @@ public final class EnumHashBiMap<K extends Enum<K>, V> extends AbstractBiMap<K, 
     return bimap;
   }
 
+  @SuppressWarnings("nullness:dereference.of.nullable") // getEnumConstant returns null only if the
+  // Class object does not represents an enum type.
   private EnumHashBiMap(Class<K> keyType) {
     super(
         WellBehavedMap.wrap(new EnumMap<K, V>(keyType)),
@@ -88,13 +90,13 @@ public final class EnumHashBiMap<K extends Enum<K>, V> extends AbstractBiMap<K, 
 
   @CanIgnoreReturnValue
   @Override
-  public V put(K key, @Nullable V value) {
+  public @Nullable V put(K key, V value) {
     return super.put(key, value);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public V forcePut(K key, @Nullable V value) {
+  public @Nullable V forcePut(K key, V value) {
     return super.forcePut(key, value);
   }
 
@@ -114,7 +116,11 @@ public final class EnumHashBiMap<K extends Enum<K>, V> extends AbstractBiMap<K, 
     Serialization.writeMap(this, stream);
   }
 
-  @SuppressWarnings("unchecked") // reading field populated by writeObject
+  @SuppressWarnings({
+    "unchecked", // reading field populated by writeObject
+    "nullness:dereference.of.nullable" // getEnumConstant returns null only if the Class object does
+    // not represents an enum type.
+  })
   @GwtIncompatible // java.io.ObjectInputStream
   private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
     stream.defaultReadObject();

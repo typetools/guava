@@ -25,6 +25,8 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A descriptor for a <i>discrete</i> {@code Comparable} domain such as all {@link Integer}
@@ -62,13 +64,13 @@ public abstract class DiscreteDomain<C extends Comparable> {
     }
 
     @Override
-    public Integer next(Integer value) {
+    public @Nullable Integer next(Integer value) {
       int i = value;
       return (i == Integer.MAX_VALUE) ? null : i + 1;
     }
 
     @Override
-    public Integer previous(Integer value) {
+    public @Nullable Integer previous(Integer value) {
       int i = value;
       return (i == Integer.MIN_VALUE) ? null : i - 1;
     }
@@ -123,13 +125,13 @@ public abstract class DiscreteDomain<C extends Comparable> {
     }
 
     @Override
-    public Long next(Long value) {
+    public @Nullable Long next(Long value) {
       long l = value;
       return (l == Long.MAX_VALUE) ? null : l + 1;
     }
 
     @Override
-    public Long previous(Long value) {
+    public @Nullable Long previous(Long value) {
       long l = value;
       return (l == Long.MIN_VALUE) ? null : l - 1;
     }
@@ -247,7 +249,10 @@ public abstract class DiscreteDomain<C extends Comparable> {
    * Returns, conceptually, "origin + distance", or equivalently, the result of calling {@link
    * #next} on {@code origin} {@code distance} times.
    */
-  C offset(C origin, long distance) {
+  @SuppressWarnings("nullness:assignment.type.incompatible") // next method returns null only if the
+  // value is equal to maxValue for the given type. TODO dilraj45, Invoking next with null argument
+  // may lead to NullPointerException. Verify method contract, could be a potential bug
+  @Nullable C offset(C origin, long distance) {
     checkNonnegative(distance, "distance");
     for (long i = 0; i < distance; i++) {
       origin = next(origin);
@@ -263,7 +268,7 @@ public abstract class DiscreteDomain<C extends Comparable> {
    * @return the least value greater than {@code value}, or {@code null} if {@code value} is {@code
    *     maxValue()}
    */
-  public abstract C next(C value);
+  public abstract @Nullable C next(C value);
 
   /**
    * Returns the unique greatest value of type {@code C} that is less than {@code value}, or {@code
@@ -273,7 +278,7 @@ public abstract class DiscreteDomain<C extends Comparable> {
    * @return the greatest value less than {@code value}, or {@code null} if {@code value} is {@code
    *     minValue()}
    */
-  public abstract C previous(C value);
+  public abstract @Nullable C previous(C value);
 
   /**
    * Returns a signed value indicating how many nested invocations of {@link #next} (if positive) or
@@ -300,7 +305,7 @@ public abstract class DiscreteDomain<C extends Comparable> {
    *     {@link java.math.BigInteger}
    */
   @CanIgnoreReturnValue
-  public C minValue() {
+  public @NonNull C minValue() {
     throw new NoSuchElementException();
   }
 
@@ -316,7 +321,7 @@ public abstract class DiscreteDomain<C extends Comparable> {
    *     {@link java.math.BigInteger}
    */
   @CanIgnoreReturnValue
-  public C maxValue() {
+  public @NonNull C maxValue() {
     throw new NoSuchElementException();
   }
 }

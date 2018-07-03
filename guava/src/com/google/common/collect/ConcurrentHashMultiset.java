@@ -41,6 +41,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -60,7 +61,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtIncompatible
-public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> implements Serializable {
+public final class ConcurrentHashMultiset<E extends @NonNull Object> extends AbstractMultiset<E>
+    implements Serializable {
 
   /*
    * The ConcurrentHashMultiset's atomic operations are implemented primarily in terms of
@@ -86,7 +88,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    * Creates a new, empty {@code ConcurrentHashMultiset} using the default initial capacity, load
    * factor, and concurrency settings.
    */
-  public static <E> ConcurrentHashMultiset<E> create() {
+  public static <E extends @NonNull Object> ConcurrentHashMultiset<E> create() {
     // TODO(schmoe): provide a way to use this class with other (possibly arbitrary)
     // ConcurrentMap implementors. One possibility is to extract most of this class into
     // an AbstractConcurrentMapMultiset.
@@ -101,7 +103,8 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    *
    * @param elements the elements that the multiset should contain
    */
-  public static <E> ConcurrentHashMultiset<E> create(Iterable<? extends E> elements) {
+  public static <E extends @NonNull Object> ConcurrentHashMultiset<E> create(
+      Iterable<? extends E> elements) {
     ConcurrentHashMultiset<E> multiset = ConcurrentHashMultiset.create();
     Iterables.addAll(multiset, elements);
     return multiset;
@@ -122,7 +125,8 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    * @since 20.0
    */
   @Beta
-  public static <E> ConcurrentHashMultiset<E> create(ConcurrentMap<E, AtomicInteger> countMap) {
+  public static <E extends @NonNull Object> ConcurrentHashMultiset<E> create(
+      ConcurrentMap<E, AtomicInteger> countMap) {
     return new ConcurrentHashMultiset<E>(countMap);
   }
 
@@ -173,7 +177,8 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
   }
 
   @Override
-  public <T> T[] toArray(T[] array) {
+  @SuppressWarnings("nullness:override.param.invalid") // Suppressed due to annotations for toArray
+  public <T> @Nullable T[] toArray(@Nullable T[] array) {
     return snapshot().toArray(array);
   }
 
@@ -272,6 +277,8 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    */
   @CanIgnoreReturnValue
   @Override
+  @SuppressWarnings("nullness:argument.type.incompatible") // It returns 0 in case element is not a
+  // key for the map. This ensures that countMap.remove is invoked only for @NonNull values
   public int remove(@Nullable Object element, int occurrences) {
     if (occurrences == 0) {
       return count(element);
@@ -313,6 +320,8 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    * @throws IllegalArgumentException if {@code occurrences} is negative
    */
   @CanIgnoreReturnValue
+  @SuppressWarnings("nullness:argument.type.incompatible") // It returns false in case element is not
+  // a key for the map. This ensures that countMap.remove is invoked only for @NonNull values
   public boolean removeExactly(@Nullable Object element, int occurrences) {
     if (occurrences == 0) {
       return true;
@@ -579,7 +588,8 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
     }
 
     @Override
-    public <T> T[] toArray(T[] array) {
+    @SuppressWarnings("nullness:override.param.invalid") // Suppressed due to annotations for toArray
+    public <T> @Nullable T[] toArray(@Nullable T[] array) {
       return snapshot().toArray(array);
     }
 

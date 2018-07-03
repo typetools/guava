@@ -19,6 +19,7 @@ package com.google.common.collect;
 import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
 import java.util.List;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -27,13 +28,13 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true)
 final class ExplicitOrdering<T> extends Ordering<T> implements Serializable {
-  final ImmutableMap<T, Integer> rankMap;
+  final ImmutableMap<@NonNull T, Integer> rankMap;
 
-  ExplicitOrdering(List<T> valuesInOrder) {
+  ExplicitOrdering(List<@NonNull T> valuesInOrder) {
     this(Maps.indexMap(valuesInOrder));
   }
 
-  ExplicitOrdering(ImmutableMap<T, Integer> rankMap) {
+  ExplicitOrdering(ImmutableMap<@NonNull T, Integer> rankMap) {
     this.rankMap = rankMap;
   }
 

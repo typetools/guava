@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collector;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Provides static methods for working with {@link Comparator} instances. For many other helpful
@@ -173,7 +174,9 @@ public final class Comparators {
   @Beta
   public static <T> Comparator<Optional<T>> emptiesFirst(Comparator<? super T> valueComparator) {
     checkNotNull(valueComparator);
-    return Comparator.comparing(o -> o.orElse(null), Comparator.nullsFirst(valueComparator));
+    return Comparator.comparing(
+        (java.util.function.Function<Optional<T>, @Nullable T>) o -> o.orElse(null),
+        Comparator.nullsFirst(valueComparator));
   }
 
   /**
@@ -186,6 +189,8 @@ public final class Comparators {
   @Beta
   public static <T> Comparator<Optional<T>> emptiesLast(Comparator<? super T> valueComparator) {
     checkNotNull(valueComparator);
-    return Comparator.comparing(o -> o.orElse(null), Comparator.nullsLast(valueComparator));
+    return Comparator.comparing(
+        (java.util.function.Function<Optional<T>, @Nullable T>) o -> o.orElse(null),
+        Comparator.nullsLast(valueComparator));
   }
 }

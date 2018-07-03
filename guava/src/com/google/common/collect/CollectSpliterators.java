@@ -43,7 +43,7 @@ final class CollectSpliterators {
       int size,
       int extraCharacteristics,
       IntFunction<T> function,
-      Comparator<? super T> comparator) {
+      @Nullable Comparator<? super T> comparator) {
     if (comparator != null) {
       checkArgument((extraCharacteristics & (Spliterator.SORTED)) != 0);
     }
@@ -117,7 +117,7 @@ final class CollectSpliterators {
       }
 
       @Override
-      public Spliterator<T> trySplit() {
+      public @Nullable Spliterator<T> trySplit() {
         Spliterator<F> fromSplit = fromSpliterator.trySplit();
         return (fromSplit != null) ? map(fromSplit, function) : null;
       }
@@ -140,7 +140,7 @@ final class CollectSpliterators {
     checkNotNull(fromSpliterator);
     checkNotNull(predicate);
     class Splitr implements Spliterator<T>, Consumer<T> {
-      T holder = null;
+      @Nullable T holder = null;
 
       @Override
       public void accept(T t) {
@@ -163,7 +163,7 @@ final class CollectSpliterators {
       }
 
       @Override
-      public Spliterator<T> trySplit() {
+      public @Nullable Spliterator<T> trySplit() {
         Spliterator<T> fromSplit = fromSpliterator.trySplit();
         return (fromSplit == null) ? null : filter(fromSplit, predicate);
       }
@@ -214,7 +214,8 @@ final class CollectSpliterators {
       long estimatedSize;
 
       FlatMapSpliterator(
-          Spliterator<T> prefix, Spliterator<F> from, int characteristics, long estimatedSize) {
+          @Nullable Spliterator<T> prefix, Spliterator<F> from, int characteristics,
+          long estimatedSize) {
         this.prefix = prefix;
         this.from = from;
         this.characteristics = characteristics;
@@ -249,7 +250,7 @@ final class CollectSpliterators {
       }
 
       @Override
-      public Spliterator<T> trySplit() {
+      public @Nullable Spliterator<T> trySplit() {
         Spliterator<F> fromSplit = from.trySplit();
         if (fromSplit != null) {
           int splitCharacteristics = characteristics & ~Spliterator.SIZED;
