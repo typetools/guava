@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -36,7 +37,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  */
 @Beta
 @GwtIncompatible
-public interface RangeMap<K extends Comparable, V> {
+public interface RangeMap<K extends Comparable, V extends @NonNull Object> {
   /**
    * Returns the value associated with the specified key, or {@code null} if there is no such value.
    *

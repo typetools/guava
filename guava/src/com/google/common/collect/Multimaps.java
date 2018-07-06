@@ -53,6 +53,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -118,7 +119,8 @@ public final class Multimaps {
     checkNotNull(multimapSupplier);
     return Collector.of(
         multimapSupplier,
-        (multimap, input) -> multimap.put(keyFunction.apply(input), valueFunction.apply(input)),
+        (java.util.function.BiConsumer<@NonNull M, T>) (multimap, input) ->
+            multimap.put(keyFunction.apply(input), valueFunction.apply(input)),
         (multimap1, multimap2) -> {
           multimap1.putAll(multimap2);
           return multimap1;
@@ -168,7 +170,7 @@ public final class Multimaps {
     checkNotNull(multimapSupplier);
     return Collector.of(
         multimapSupplier,
-        (multimap, input) -> {
+        (java.util.function.BiConsumer<@NonNull M, T>) (multimap, input) -> {
           K key = keyFunction.apply(input);
           Collection<V> valuesForKey = multimap.get(key);
           valueFunction.apply(input).forEachOrdered(valuesForKey::add);
@@ -647,7 +649,8 @@ public final class Multimaps {
    * @since 10.0
    */
   @Deprecated
-  public static <K, V> Multimap<K, V> unmodifiableMultimap(ImmutableMultimap<K, V> delegate) {
+  public static <K extends @NonNull Object, V extends @NonNull Object>
+  Multimap<K, V> unmodifiableMultimap(ImmutableMultimap<K, V> delegate) {
     return checkNotNull(delegate);
   }
 
@@ -782,7 +785,7 @@ public final class Multimaps {
     }
 
     @Override
-    public List<V> get(K key) {
+    public List<V> get(@Nullable K key) {
       return Collections.unmodifiableList(delegate().get(key));
     }
 
@@ -850,7 +853,7 @@ public final class Multimaps {
     }
 
     @Override
-    public SortedSet<V> get(K key) {
+    public SortedSet<V> get(@Nullable K key) {
       return Collections.unmodifiableSortedSet(delegate().get(key));
     }
 
@@ -914,7 +917,8 @@ public final class Multimaps {
    * @since 10.0
    */
   @Deprecated
-  public static <K, V> SetMultimap<K, V> unmodifiableSetMultimap(
+  public static <K extends @NonNull Object, V extends @NonNull Object>
+  SetMultimap<K, V> unmodifiableSetMultimap(
       ImmutableSetMultimap<K, V> delegate) {
     return checkNotNull(delegate);
   }
@@ -997,7 +1001,8 @@ public final class Multimaps {
    * @since 10.0
    */
   @Deprecated
-  public static <K, V> ListMultimap<K, V> unmodifiableListMultimap(
+  public static <K extends @NonNull Object, V extends @NonNull Object>
+  ListMultimap<K, V> unmodifiableListMultimap(
       ImmutableListMultimap<K, V> delegate) {
     return checkNotNull(delegate);
   }
@@ -1140,7 +1145,7 @@ public final class Multimaps {
     }
 
     @Override
-    public Set<V> get(final K key) {
+    public Set<V> get(final @Nullable K key) {
       return new Sets.ImprovedAbstractSet<V>() {
         @Override
         public Iterator<V> iterator() {
@@ -1204,6 +1209,8 @@ public final class Multimaps {
     }
 
     @Override
+    @SuppressWarnings("nullness:argument.type.incompatible") // map.remove is called only for keys
+    // existing in the map, thus it will always return a value of type V
     public Set<V> removeAll(@Nullable Object key) {
       Set<V> values = new HashSet<V>(2);
       if (!map.containsKey(key)) {
@@ -1235,7 +1242,7 @@ public final class Multimaps {
     public Set<Entry<K, V>> entries() {
       return map.entrySet();
     }
-    
+
     @Override
     Collection<Entry<K, V>> createEntries() {
       throw new AssertionError("unreachable");
@@ -1507,10 +1514,10 @@ public final class Multimaps {
     }
 
     @Override
-    public boolean containsKey(Object key) {
+    public boolean containsKey(@Nullable Object key) {
       return fromMultimap.containsKey(key);
     }
-    
+
     @Override
     Collection<Entry<K, V2>> createEntries() {
       return new Entries();
@@ -1523,6 +1530,8 @@ public final class Multimaps {
     }
 
     @Override
+    @SuppressWarnings("nullness:override.param.invalid") // This method delegates to transform method
+    // and it requires the key to be of type K
     public Collection<V2> get(final K key) {
       return transform(key, fromMultimap.get(key));
     }
@@ -1559,11 +1568,15 @@ public final class Multimaps {
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean remove(Object key, Object value) {
+    public boolean remove(@Nullable Object key, @Nullable Object value) {
       return get((K) key).remove(value);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({
+        "unchecked",
+        "nullness:override.param.invalid" // This method delegates to transform method and it
+        // requires key to be of type K
+    })
     @Override
     public Collection<V2> removeAll(Object key) {
       return transform((K) key, fromMultimap.removeAll(key));
@@ -1600,11 +1613,17 @@ public final class Multimaps {
     }
 
     @Override
+    @SuppressWarnings("nullness:override.param.invalid") // This method delegates to transform method
+    // and it requires key to be of type K
     public List<V2> get(K key) {
       return transform(key, fromMultimap.get(key));
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({
+        "unchecked",
+        "nullness:override.param.invalid" // This method delegates to transform method and it
+        // requires key to be of type K
+    })
     @Override
     public List<V2> removeAll(Object key) {
       return transform((K) key, fromMultimap.removeAll(key));
@@ -1651,7 +1670,8 @@ public final class Multimaps {
    * @throws NullPointerException if any element of {@code values} is {@code null}, or if {@code
    *     keyFunction} produces {@code null} for any key
    */
-  public static <K, V> ImmutableListMultimap<K, V> index(
+  public static <K extends @NonNull Object, V extends @NonNull Object>
+  ImmutableListMultimap<K, V> index(
       Iterable<V> values, Function<? super V, K> keyFunction) {
     return index(values.iterator(), keyFunction);
   }
@@ -1692,7 +1712,8 @@ public final class Multimaps {
    *     keyFunction} produces {@code null} for any key
    * @since 10.0
    */
-  public static <K, V> ImmutableListMultimap<K, V> index(
+  public static <K extends @NonNull Object, V extends @NonNull Object>
+  ImmutableListMultimap<K, V> index(
       Iterator<V> values, Function<? super V, K> keyFunction) {
     checkNotNull(keyFunction);
     ImmutableListMultimap.Builder<K, V> builder = ImmutableListMultimap.builder();
@@ -1862,7 +1883,7 @@ public final class Multimaps {
       return new EntrySet();
     }
 
-    void removeValuesForKey(Object key) {
+    void removeValuesForKey(@Nullable Object key) {
       multimap.keySet().remove(key);
     }
 
@@ -1886,7 +1907,7 @@ public final class Multimaps {
       }
 
       @Override
-      public boolean remove(Object o) {
+      public boolean remove(@Nullable Object o) {
         if (!contains(o)) {
           return false;
         }
@@ -1898,12 +1919,12 @@ public final class Multimaps {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Collection<V> get(Object key) {
+    public @Nullable Collection<V> get(@Nullable Object key) {
       return containsKey(key) ? multimap.get((K) key) : null;
     }
 
     @Override
-    public Collection<V> remove(Object key) {
+    public @Nullable Collection<V> remove(@Nullable Object key) {
       return containsKey(key) ? multimap.removeAll(key) : null;
     }
 
@@ -1918,7 +1939,7 @@ public final class Multimaps {
     }
 
     @Override
-    public boolean containsKey(Object key) {
+    public boolean containsKey(@Nullable Object key) {
       return multimap.containsKey(key);
     }
 

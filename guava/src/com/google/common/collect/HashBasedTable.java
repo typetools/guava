@@ -24,6 +24,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -49,7 +50,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @since 7.0
  */
 @GwtCompatible(serializable = true)
-public class HashBasedTable<R, C, V> extends StandardTable<R, C, V> {
+public class HashBasedTable<R extends @NonNull Object, C extends @NonNull Object,
+    V extends @NonNull Object> extends StandardTable<R, C, V> {
   private static class Factory<C, V> implements Supplier<Map<C, V>>, Serializable {
     final int expectedSize;
 
@@ -66,7 +68,8 @@ public class HashBasedTable<R, C, V> extends StandardTable<R, C, V> {
   }
 
   /** Creates an empty {@code HashBasedTable}. */
-  public static <R, C, V> HashBasedTable<R, C, V> create() {
+  public static <R extends @NonNull Object, C extends @NonNull Object, V extends @NonNull Object>
+  HashBasedTable<R, C, V> create() {
     return new HashBasedTable<>(new LinkedHashMap<R, Map<C, V>>(), new Factory<C, V>(0));
   }
 
@@ -78,7 +81,8 @@ public class HashBasedTable<R, C, V> extends StandardTable<R, C, V> {
    * @throws IllegalArgumentException if {@code expectedRows} or {@code expectedCellsPerRow} is
    *     negative
    */
-  public static <R, C, V> HashBasedTable<R, C, V> create(
+  public static <R extends @NonNull Object, C extends @NonNull Object, V extends @NonNull Object>
+  HashBasedTable<R, C, V> create(
       int expectedRows, int expectedCellsPerRow) {
     checkNonnegative(expectedCellsPerRow, "expectedCellsPerRow");
     Map<R, Map<C, V>> backingMap = Maps.newLinkedHashMapWithExpectedSize(expectedRows);
@@ -92,7 +96,8 @@ public class HashBasedTable<R, C, V> extends StandardTable<R, C, V> {
    * @throws NullPointerException if any of the row keys, column keys, or values in {@code table} is
    *     null
    */
-  public static <R, C, V> HashBasedTable<R, C, V> create(
+  public static <R extends @NonNull Object, C extends @NonNull Object, V extends @NonNull Object>
+  HashBasedTable<R, C, V> create(
       Table<? extends R, ? extends C, ? extends V> table) {
     HashBasedTable<R, C, V> result = create();
     result.putAll(table);
@@ -126,7 +131,7 @@ public class HashBasedTable<R, C, V> extends StandardTable<R, C, V> {
   }
 
   @Override
-  public V get(@Nullable Object rowKey, @Nullable Object columnKey) {
+  public @Nullable V get(@Nullable Object rowKey, @Nullable Object columnKey) {
     return super.get(rowKey, columnKey);
   }
 
@@ -137,7 +142,7 @@ public class HashBasedTable<R, C, V> extends StandardTable<R, C, V> {
 
   @CanIgnoreReturnValue
   @Override
-  public V remove(@Nullable Object rowKey, @Nullable Object columnKey) {
+  public @Nullable V remove(@Nullable Object rowKey, @Nullable Object columnKey) {
     return super.remove(rowKey, columnKey);
   }
 

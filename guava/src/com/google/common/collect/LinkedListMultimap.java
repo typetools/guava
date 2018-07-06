@@ -41,6 +41,7 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.function.Consumer;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -110,14 +111,14 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
    */
 
   private static final class Node<K, V> extends AbstractMapEntry<K, V> {
-    final @Nullable K key;
-    @Nullable V value;
+    final K key;
+    V value;
     @Nullable Node<K, V> next; // the next node (with any key)
     @Nullable Node<K, V> previous; // the previous node (with any key)
     @Nullable Node<K, V> nextSibling; // the next node with the same key
     @Nullable Node<K, V> previousSibling; // the previous node with the same key
 
-    Node(@Nullable K key, @Nullable V value) {
+    Node(K key, V value) {
       this.key = key;
       this.value = value;
     }
@@ -133,7 +134,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
-    public V setValue(@Nullable V newValue) {
+    public V setValue(V newValue) {
       V result = value;
       this.value = newValue;
       return result;
@@ -213,7 +214,9 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
    * is specified, it MUST be for an node for the same {@code key}!
    */
   @CanIgnoreReturnValue
-  private Node<K, V> addNode(@Nullable K key, @Nullable V value, @Nullable Node<K, V> nextSibling) {
+  @SuppressWarnings("nullness:dereference.of.nullable") // Safe because tail is de-referenced only
+  // if the list is non-empty and it is ensured to be non-null
+  private Node<K, V> addNode(K key, V value, @Nullable Node<K, V> nextSibling) {
     Node<K, V> node = new Node<>(key, value);
     if (head == null) { // empty list
       head = tail = node;
@@ -262,6 +265,12 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
    * Removes the specified node from the linked list. This method is only intended to be used from
    * the {@code Iterator} classes. See also {@link LinkedListMultimap#removeAllNodes(Object)}.
    */
+  @SuppressWarnings({
+    "nullness:dereference.of.nullable", // keyToKeyList.remove(node.key) is invoked only for keys
+    // for which mapping exists in the map
+    "nullness:assignment.type.incompatible" // node.nextSibling and node.previousSibling are
+    // assigned to keyList.head and keyList.tail, respectively, only when they are non-null
+  })
   private void removeNode(Node<K, V> node) {
     if (node.previous != null) {
       node.previous.next = node.next;
@@ -302,6 +311,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
   }
 
   /** Helper method for verifying that an iterator element is present. */
+  @EnsuresNonNull("#1")
   private static void checkElement(@Nullable Object node) {
     if (node == null) {
       throw new NoSuchElementException();
@@ -358,6 +368,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
+    @SuppressWarnings("nullness:dereference.of.nullable") // Safe because of checkRemove statement
     public void remove() {
       checkForConcurrentModification();
       checkRemove(current != null);
@@ -409,6 +420,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
       throw new UnsupportedOperationException();
     }
 
+    @SuppressWarnings("nullness:dereference.of.nullable") // Safe because of checkState statement
     void setValue(V value) {
       checkState(current != null);
       current.value = value;
@@ -435,6 +447,8 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
+    @SuppressWarnings("nullness:dereference.of.nullable") // Condition for do-while loop ensures
+    // next is de-referenced only when it is non-null
     public K next() {
       checkForConcurrentModification();
       checkElement(next);
@@ -447,6 +461,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
+    @SuppressWarnings("nullness:dereference.of.nullable") // Safe because of checkRemove statement
     public void remove() {
       checkForConcurrentModification();
       checkRemove(current != null);
@@ -540,6 +555,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
+    @SuppressWarnings("nullness:dereference.of.nullable") // Safe because of checkRemove statement
     public void remove() {
       checkRemove(current != null);
       if (current != next) { // after call to next()
@@ -553,6 +569,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
     }
 
     @Override
+    @SuppressWarnings("nullness:dereference.of.nullable") // Safe because of checkState statement
     public void set(V value) {
       checkState(current != null);
       current.value = value;
@@ -604,7 +621,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
    */
   @CanIgnoreReturnValue
   @Override
-  public boolean put(@Nullable K key, @Nullable V value) {
+  public boolean put(K key, V value) {
     addNode(key, value, null);
     return true;
   }
@@ -621,7 +638,7 @@ public class LinkedListMultimap<K, V> extends AbstractMultimap<K, V>
    */
   @CanIgnoreReturnValue
   @Override
-  public List<V> replaceValues(@Nullable K key, Iterable<? extends V> values) {
+  public List<V> replaceValues(K key, Iterable<? extends V> values) {
     List<V> oldValues = getCopy(key);
     ListIterator<V> keyValues = new ValueForKeyIterator(key);
     Iterator<? extends V> newValues = values.iterator();

@@ -148,7 +148,9 @@ public final class HashMultimap<K, V> extends HashMultimapGwtSerializationDepend
 public boolean equals(@Nullable Object arg0) { return super.equals(arg0); }
 
 @Override
-public Set<V> get(@Nullable K arg0) { return super.get(arg0); }
+@SuppressWarnings("nullness:override.param.invalid") // Please refer to note on 'get' method in
+// AbstractMapBasedMultimap
+public Set<V> get(K arg0) { return super.get(arg0); }
 
 @Override
 public Set<V> removeAll(@Nullable Object arg0) { return super.removeAll(arg0); }

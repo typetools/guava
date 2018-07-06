@@ -38,6 +38,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 @GwtCompatible(serializable = true)
 final class GeneralRange<T> implements Serializable {
   /** Converts a Range to a GeneralRange. */
+  @SuppressWarnings("nullness:argument.type.incompatible") // Suppressing conservatively issued
+  // warnings, as the required conditions for invoking constructor of GeneralRange holds
   static <T extends Comparable> GeneralRange<T> from(Range<T> range) {
     @Nullable T lowerEndpoint = range.hasLowerBound() ? range.lowerEndpoint() : null;
     BoundType lowerBoundType = range.hasLowerBound() ? range.lowerBoundType() : OPEN;
@@ -55,6 +57,7 @@ final class GeneralRange<T> implements Serializable {
   }
 
   /** Returns the whole range relative to the specified comparator. */
+  @SuppressWarnings("nullness:argument.type.incompatible")
   static <T> GeneralRange<T> all(Comparator<? super T> comparator) {
     return new GeneralRange<T>(comparator, false, null, OPEN, false, null, OPEN);
   }
@@ -63,8 +66,9 @@ final class GeneralRange<T> implements Serializable {
    * Returns everything above the endpoint relative to the specified comparator, with the specified
    * endpoint behavior.
    */
+  @SuppressWarnings("nullness:argument.type.incompatible")
   static <T> GeneralRange<T> downTo(
-      Comparator<? super T> comparator, @Nullable T endpoint, BoundType boundType) {
+      Comparator<? super T> comparator, T endpoint, BoundType boundType) {
     return new GeneralRange<T>(comparator, true, endpoint, boundType, false, null, OPEN);
   }
 
@@ -72,8 +76,9 @@ final class GeneralRange<T> implements Serializable {
    * Returns everything below the endpoint relative to the specified comparator, with the specified
    * endpoint behavior.
    */
+  @SuppressWarnings("nullness:argument.type.incompatible")
   static <T> GeneralRange<T> upTo(
-      Comparator<? super T> comparator, @Nullable T endpoint, BoundType boundType) {
+      Comparator<? super T> comparator, T endpoint, BoundType boundType) {
     return new GeneralRange<T>(comparator, false, null, OPEN, true, endpoint, boundType);
   }
 
@@ -83,9 +88,9 @@ final class GeneralRange<T> implements Serializable {
    */
   static <T> GeneralRange<T> range(
       Comparator<? super T> comparator,
-      @Nullable T lower,
+      T lower,
       BoundType lowerType,
-      @Nullable T upper,
+      T upper,
       BoundType upperType) {
     return new GeneralRange<T>(comparator, true, lower, lowerType, true, upper, upperType);
   }
@@ -98,13 +103,16 @@ final class GeneralRange<T> implements Serializable {
   private final @Nullable T upperEndpoint;
   private final BoundType upperBoundType;
 
+  // Annotations are technically incorrect. lowerEndpoint and upperEndpoint requires to be of type T
+  // only if hasLowerBound and hasUpperBound are true, respectively. It conservatively issues warning
+  // if any of the lowerEndpoint or upperEndpoint is not of type T
   private GeneralRange(
       Comparator<? super T> comparator,
       boolean hasLowerBound,
-      @Nullable T lowerEndpoint,
+      T lowerEndpoint,
       BoundType lowerBoundType,
       boolean hasUpperBound,
-      @Nullable T upperEndpoint,
+      T upperEndpoint,
       BoundType upperBoundType) {
     this.comparator = checkNotNull(comparator);
     this.hasLowerBound = hasLowerBound;
@@ -143,12 +151,16 @@ final class GeneralRange<T> implements Serializable {
     return hasUpperBound;
   }
 
+  @SuppressWarnings("nullness:argument.type.incompatible") // lowerEndpoint is ensured to be of type
+  // T if hasLowerBound is true. Similarly, upperEndpoint is of type T if hasUpperBound is true
   boolean isEmpty() {
     return (hasUpperBound() && tooLow(getUpperEndpoint()))
         || (hasLowerBound() && tooHigh(getLowerEndpoint()));
   }
 
-  boolean tooLow(@Nullable T t) {
+  @SuppressWarnings("nullness:argument.type.incompatible") // Method 'compare' is called only if the
+  // lower bound exists else it returns false
+  boolean tooLow(T t) {
     if (!hasLowerBound()) {
       return false;
     }
@@ -157,7 +169,9 @@ final class GeneralRange<T> implements Serializable {
     return cmp < 0 | (cmp == 0 & getLowerBoundType() == OPEN);
   }
 
-  boolean tooHigh(@Nullable T t) {
+  @SuppressWarnings("nullness:argument.type.incompatible") // Method 'compare' is called only if the
+  // upper bound exists else it returns false
+  boolean tooHigh(T t) {
     if (!hasUpperBound()) {
       return false;
     }
@@ -166,13 +180,15 @@ final class GeneralRange<T> implements Serializable {
     return cmp > 0 | (cmp == 0 & getUpperBoundType() == OPEN);
   }
 
-  boolean contains(@Nullable T t) {
+  boolean contains(T t) {
     return !tooLow(t) && !tooHigh(t);
   }
 
   /**
    * Returns the intersection of the two ranges, or an empty range if their intersection is empty.
    */
+  @SuppressWarnings("nullness:argument.type.incompatible") // lowerEndpoint is ensured to be of type
+  // T if hasLowerBound is true. Similarly, upperEndpoint is of type T if hasUpperBound is true
   GeneralRange<T> intersect(GeneralRange<T> other) {
     checkNotNull(other);
     checkArgument(comparator.equals(other.comparator));
@@ -248,6 +264,8 @@ final class GeneralRange<T> implements Serializable {
   private transient @MonotonicNonNull GeneralRange<T> reverse;
 
   /** Returns the same range relative to the reversed comparator. */
+  @SuppressWarnings("nullness:argument.type.incompatible") // lowerEndpoint is ensured to be of type
+  // T if hasLowerBound is true. Similarly, upperEndpoint is of type T if hasUpperBound is true
   GeneralRange<T> reverse() {
     GeneralRange<T> result = reverse;
     if (result == null) {
@@ -277,7 +295,7 @@ final class GeneralRange<T> implements Serializable {
         + (upperBoundType == CLOSED ? ']' : ')');
   }
 
-  T getLowerEndpoint() {
+  @Nullable T getLowerEndpoint() {
     return lowerEndpoint;
   }
 
@@ -285,7 +303,7 @@ final class GeneralRange<T> implements Serializable {
     return lowerBoundType;
   }
 
-  T getUpperEndpoint() {
+  @Nullable T getUpperEndpoint() {
     return upperEndpoint;
   }
 

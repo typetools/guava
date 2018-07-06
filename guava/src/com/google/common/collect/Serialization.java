@@ -23,6 +23,7 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -126,7 +127,7 @@ final class Serialization {
       throws IOException, ClassNotFoundException {
     for (int i = 0; i < distinctElements; i++) {
       @SuppressWarnings("unchecked") // reading data stored by writeMultiset
-      E element = (E) stream.readObject();
+      @NonNull E element = (@NonNull E) stream.readObject();
       int count = stream.readInt();
       multiset.add(element, count);
     }

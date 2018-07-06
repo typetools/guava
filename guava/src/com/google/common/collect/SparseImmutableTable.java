@@ -19,11 +19,13 @@ import com.google.errorprone.annotations.Immutable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /** A {@code RegularImmutableTable} optimized for sparse data. */
 @GwtCompatible
 @Immutable(containerOf = {"R", "C", "V"})
-final class SparseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> {
+final class SparseImmutableTable<R extends @NonNull Object, C extends @NonNull Object,
+    V extends @NonNull Object> extends RegularImmutableTable<R, C, V> {
   static final ImmutableTable<Object, Object, Object> EMPTY =
       new SparseImmutableTable<>(
           ImmutableList.<Cell<Object, Object, Object>>of(), ImmutableSet.of(), ImmutableSet.of());
@@ -40,6 +42,10 @@ final class SparseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V>
   @SuppressWarnings("Immutable") // We don't modify this after construction.
   private final int[] cellColumnInRowIndices;
 
+  @SuppressWarnings({
+      "nullness:unboxing.of.nullable",
+      "nullness:dereference.of.nullable"
+  }) // Method get is being invoked for mapped keys
   SparseImmutableTable(
       ImmutableList<Cell<R, C, V>> cellList,
       ImmutableSet<R> rowSpace,
@@ -133,6 +139,7 @@ final class SparseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V>
   }
 
   @Override
+  @SuppressWarnings("nullness:unboxing.of.nullable") // Method get is being invoked for mapped keys
   SerializedForm createSerializedForm() {
     Map<C, Integer> columnKeyToIndex = Maps.indexMap(columnKeySet());
     int[] cellColumnIndices = new int[cellSet().size()];

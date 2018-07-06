@@ -96,22 +96,22 @@ final class SortedMultisets {
     }
 
     @Override
-    public E lower(E e) {
+    public @Nullable E lower(E e) {
       return getElementOrNull(multiset().headMultiset(e, OPEN).lastEntry());
     }
 
     @Override
-    public E floor(E e) {
+    public @Nullable E floor(E e) {
       return getElementOrNull(multiset().headMultiset(e, CLOSED).lastEntry());
     }
 
     @Override
-    public E ceiling(E e) {
+    public @Nullable E ceiling(E e) {
       return getElementOrNull(multiset().tailMultiset(e, CLOSED).firstEntry());
     }
 
     @Override
-    public E higher(E e) {
+    public @Nullable E higher(E e) {
       return getElementOrNull(multiset().tailMultiset(e, OPEN).firstEntry());
     }
 
@@ -126,12 +126,12 @@ final class SortedMultisets {
     }
 
     @Override
-    public E pollFirst() {
+    public @Nullable E pollFirst() {
       return getElementOrNull(multiset().pollFirstEntry());
     }
 
     @Override
-    public E pollLast() {
+    public @Nullable E pollLast() {
       return getElementOrNull(multiset().pollLastEntry());
     }
 
@@ -158,14 +158,14 @@ final class SortedMultisets {
     }
   }
 
-  private static <E> E getElementOrThrow(Entry<E> entry) {
+  private static <E> E getElementOrThrow(@Nullable Entry<E> entry) {
     if (entry == null) {
       throw new NoSuchElementException();
     }
     return entry.getElement();
   }
 
-  private static <E> E getElementOrNull(@Nullable Entry<E> entry) {
+  private static <E> @Nullable E getElementOrNull(@Nullable Entry<E> entry) {
     return (entry == null) ? null : entry.getElement();
   }
 }

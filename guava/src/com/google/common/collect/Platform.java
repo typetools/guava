@@ -20,6 +20,7 @@ import com.google.common.annotations.GwtCompatible;
 import java.lang.reflect.Array;
 import java.util.Map;
 import java.util.Set;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -78,13 +79,14 @@ final class Platform {
    * @param reference any array of the desired type
    * @param length the length of the new array
    */
-  static <T> T[] newArray(T[] reference, int length) {
+  @SuppressWarnings("nullness:argument.type.incompatible") // 'reference' always represents an array
+  static <T> @Nullable T[] newArray(@Nullable T[] reference, int length) {
     Class<?> type = reference.getClass().getComponentType();
 
     // the cast is safe because
     // result.getClass() == reference.getClass().getComponentType()
     @SuppressWarnings("unchecked")
-    T[] result = (T[]) Array.newInstance(type, length);
+    @Nullable T[] result = (@Nullable T[]) Array.newInstance(type, length);
     return result;
   }
 

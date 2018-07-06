@@ -35,6 +35,7 @@ import java.util.NoSuchElementException;
 import java.util.SortedMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -216,7 +217,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    */
   // TODO(kevinb): provide replacement
   @GwtCompatible(serializable = true)
-  public static <T> Ordering<T> explicit(List<T> valuesInOrder) {
+  public static <T extends @NonNull Object> Ordering<T> explicit(List<T> valuesInOrder) {
     return new ExplicitOrdering<T>(valuesInOrder);
   }
 
@@ -242,7 +243,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    */
   // TODO(kevinb): provide replacement
   @GwtCompatible(serializable = true)
-  public static <T> Ordering<T> explicit(T leastValue, T... remainingValuesInOrder) {
+  public static <T extends @NonNull Object> Ordering<T> explicit(T leastValue, T... remainingValuesInOrder) {
     return explicit(Lists.asList(leastValue, remainingValuesInOrder));
   }
 
@@ -278,7 +279,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    */
   @GwtCompatible(serializable = true)
   @SuppressWarnings("unchecked")
-  public static Ordering<Object> allEqual() {
+  public static Ordering<@Nullable Object> allEqual() {
     return AllEqualOrdering.INSTANCE;
   }
 
@@ -342,7 +343,7 @@ public abstract class Ordering<T> implements Comparator<T> {
     }
 
     @Override
-    public int compare(Object left, Object right) {
+    public int compare(@Nullable Object left,@Nullable Object right) {
       if (left == right) {
         return 0;
       } else if (left == null) {
@@ -377,7 +378,7 @@ public abstract class Ordering<T> implements Comparator<T> {
      * recognize that the call is 1-morphic and should still be willing to
      * inline it if necessary.
      */
-    int identityHashCode(Object object) {
+    int identityHashCode(@Nullable Object object) {
       return System.identityHashCode(object);
     }
   }
@@ -414,8 +415,8 @@ public abstract class Ordering<T> implements Comparator<T> {
   // type parameter <S> lets us avoid the extra <String> in statements like:
   // Ordering<String> o = Ordering.<String>natural().nullsFirst();
   @GwtCompatible(serializable = true)
-  public <S extends T> Ordering<@Nullable S> nullsFirst() {
-    return new NullsFirstOrdering<S>(this);
+  public <S extends @Nullable T> Ordering<S> nullsFirst() {
+    return new NullsFirstOrdering<S>((Ordering<@Nullable T>) this);
   }
 
   /**
@@ -427,8 +428,8 @@ public abstract class Ordering<T> implements Comparator<T> {
   // type parameter <S> lets us avoid the extra <String> in statements like:
   // Ordering<String> o = Ordering.<String>natural().nullsLast();
   @GwtCompatible(serializable = true)
-  public <S extends T> Ordering<@Nullable S> nullsLast() {
-    return new NullsLastOrdering<S>(this);
+  public <S extends @Nullable T> Ordering<S> nullsLast() {
+    return new NullsLastOrdering<S>((Ordering<@Nullable T>) this);
   }
 
   /**
@@ -530,7 +531,8 @@ public abstract class Ordering<T> implements Comparator<T> {
   // Override to add @Nullable
   @CanIgnoreReturnValue // TODO(kak): Consider removing this
   @Override
-  public abstract int compare(@Nullable T left, @Nullable T right);
+  // TODO dilraj45: Should this be removed?
+  public abstract int compare(T left, T right);
 
   /**
    * Returns the least of the specified values according to this ordering. If there are multiple
@@ -595,7 +597,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    *     ordering.
    */
   @CanIgnoreReturnValue // TODO(kak): Consider removing this
-  public <E extends T> E min(@Nullable E a, @Nullable E b) {
+  public <E extends T> E min(E a, E b) {
     return (compare(a, b) <= 0) ? a : b;
   }
 
@@ -614,7 +616,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    *     ordering.
    */
   @CanIgnoreReturnValue // TODO(kak): Consider removing this
-  public <E extends T> E min(@Nullable E a, @Nullable E b, @Nullable E c, E... rest) {
+  public <E extends T> E min(E a, E b, E c, E... rest) {
     E minSoFar = min(min(a, b), c);
 
     for (E r : rest) {
@@ -687,7 +689,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    *     ordering.
    */
   @CanIgnoreReturnValue // TODO(kak): Consider removing this
-  public <E extends T> E max(@Nullable E a, @Nullable E b) {
+  public <E extends T> E max(E a, E b) {
     return (compare(a, b) >= 0) ? a : b;
   }
 
@@ -706,7 +708,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    *     ordering.
    */
   @CanIgnoreReturnValue // TODO(kak): Consider removing this
-  public <E extends T> E max(@Nullable E a, @Nullable E b, @Nullable E c, E... rest) {
+  public <E extends T> E max(E a, E b, E c, E... rest) {
     E maxSoFar = max(max(a, b), c);
 
     for (E r : rest) {
@@ -732,6 +734,8 @@ public abstract class Ordering<T> implements Comparator<T> {
    * @throws IllegalArgumentException if {@code k} is negative
    * @since 8.0
    */
+  @SuppressWarnings("nullness:assignment.type.incompatible") // New Length passed to Arrays.copyOf
+  // is always less than or equal to array.length
   public <E extends T> List<E> leastOf(Iterable<E> iterable, int k) {
     if (iterable instanceof Collection) {
       Collection<E> collection = (Collection<E>) iterable;
@@ -873,7 +877,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    */
   // TODO(kevinb): rerun benchmarks including new options
   @CanIgnoreReturnValue // TODO(kak): Consider removing this before internal migration
-  public <E extends T> ImmutableList<E> immutableSortedCopy(Iterable<E> elements) {
+  public <E extends @NonNull T> ImmutableList<E> immutableSortedCopy(Iterable<E> elements) {
     return ImmutableList.sortedCopyOf(this, elements);
   }
 
@@ -936,7 +940,7 @@ public abstract class Ordering<T> implements Comparator<T> {
    * @deprecated Use {@link Collections#binarySearch(List, Object, Comparator)} directly.
    */
   @Deprecated
-  public int binarySearch(List<? extends T> sortedList, @Nullable T key) {
+  public int binarySearch(List<? extends T> sortedList, T key) {
     return Collections.binarySearch(sortedList, key, this);
   }
 
@@ -947,9 +951,9 @@ public abstract class Ordering<T> implements Comparator<T> {
    */
   @VisibleForTesting
   static class IncomparableValueException extends ClassCastException {
-    final Object value;
+    final @Nullable Object value;
 
-    IncomparableValueException(Object value) {
+    IncomparableValueException(@Nullable Object value) {
       super("Cannot compare value: " + value);
       this.value = value;
     }

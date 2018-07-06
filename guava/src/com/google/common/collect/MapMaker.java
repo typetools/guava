@@ -30,7 +30,9 @@ import java.util.ConcurrentModificationException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -120,6 +122,7 @@ public final class MapMaker {
    */
   @CanIgnoreReturnValue
   @GwtIncompatible // To be supported
+  @EnsuresNonNull("keyEquivalence")
   MapMaker keyEquivalence(Equivalence<Object> equivalence) {
     checkState(keyEquivalence == null, "key equivalence was already set to %s", keyEquivalence);
     keyEquivalence = checkNotNull(equivalence);
@@ -127,6 +130,8 @@ public final class MapMaker {
     return this;
   }
 
+  @SuppressWarnings("nullness:argument.type.incompatible") // Suppressing conservatively issued
+  // warning as defaultEquivalence() always returns a non-null reference to default strategy
   Equivalence<Object> getKeyEquivalence() {
     return MoreObjects.firstNonNull(keyEquivalence, getKeyStrength().defaultEquivalence());
   }
@@ -207,6 +212,7 @@ public final class MapMaker {
     return setKeyStrength(Strength.WEAK);
   }
 
+  @EnsuresNonNull("keyStrength")
   MapMaker setKeyStrength(Strength strength) {
     checkState(keyStrength == null, "Key strength was already set to %s", keyStrength);
     keyStrength = checkNotNull(strength);
@@ -217,6 +223,8 @@ public final class MapMaker {
     return this;
   }
 
+  @SuppressWarnings("nullness:argument.type.incompatible") // Suppressing conservatively issued
+  // warning as Strength.STRONG is always non-null
   Strength getKeyStrength() {
     return MoreObjects.firstNonNull(keyStrength, Strength.STRONG);
   }
@@ -253,6 +261,7 @@ public final class MapMaker {
     VALUE
   }
 
+  @EnsuresNonNull("valueStrength")
   MapMaker setValueStrength(Strength strength) {
     checkState(valueStrength == null, "Value strength was already set to %s", valueStrength);
     valueStrength = checkNotNull(strength);
@@ -263,6 +272,8 @@ public final class MapMaker {
     return this;
   }
 
+  @SuppressWarnings("nullness:argument.type.incompatible") // Suppressing conservatively issued
+  // warning as Strength.STRONG is always non-null
   Strength getValueStrength() {
     return MoreObjects.firstNonNull(valueStrength, Strength.STRONG);
   }
@@ -278,7 +289,7 @@ public final class MapMaker {
    *
    * @return a serializable concurrent map having the requested features
    */
-  public <K, V> ConcurrentMap<K, V> makeMap() {
+  public <K extends @NonNull Object, V extends @NonNull Object> ConcurrentMap<K, V> makeMap() {
     if (!useCustomMap) {
       return new ConcurrentHashMap<>(getInitialCapacity(), 0.75f, getConcurrencyLevel());
     }

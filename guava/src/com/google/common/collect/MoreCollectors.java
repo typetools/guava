@@ -25,7 +25,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collector;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 
 /**
  * Collectors not present in {@code java.util.stream.Collectors} that are not otherwise associated
@@ -57,18 +59,18 @@ public final class MoreCollectors {
    * which is null.
    */
   @SuppressWarnings("unchecked")
-  public static <T> Collector<T, ?, Optional<T>> toOptional() {
+  public static <T extends @NonNull Object> Collector<T, ?, Optional<T>> toOptional() {
     return (Collector) TO_OPTIONAL;
   }
 
   private static final Object NULL_PLACEHOLDER = new Object();
 
-  private static final Collector<Object, ?, Object> ONLY_ELEMENT =
+  private static final Collector<Object, ?, @Nullable Object> ONLY_ELEMENT =
       Collector.of(
           ToOptionalState::new,
           (state, o) -> state.add((o == null) ? NULL_PLACEHOLDER : o),
           ToOptionalState::combine,
-          state -> {
+          (java.util.function.Function<ToOptionalState, @Nullable Object>) state -> {
             Object result = state.getElement();
             return (result == NULL_PLACEHOLDER) ? null : result;
           },
@@ -99,6 +101,9 @@ public final class MoreCollectors {
       extras = null;
     }
 
+    @RequiresNonNull("extras")
+    @SuppressWarnings("nullness:iterating.over.nullable") // Invoking append method for StringBuilder
+    // does not affect the nullability of extras
     IllegalArgumentException multiples(boolean overflow) {
       StringBuilder sb =
           new StringBuilder().append("expected one element but was: <").append(element);
@@ -126,6 +131,8 @@ public final class MoreCollectors {
       }
     }
 
+    @SuppressWarnings("nullness:contracts.precondition.not.satisfied") // Method multiples is invoked
+    // only when extras is non-null
     ToOptionalState combine(ToOptionalState other) {
       if (element == null) {
         return other;

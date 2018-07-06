@@ -39,6 +39,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
@@ -107,18 +109,20 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
 
   private static final double LOAD_FACTOR = 1.0;
 
-  private transient BiEntry<K, V>[] hashTableKToV;
-  private transient BiEntry<K, V>[] hashTableVToK;
+  private transient @Nullable BiEntry<K, V>[] hashTableKToV;
+  private transient @Nullable BiEntry<K, V>[] hashTableVToK;
   private transient @Nullable BiEntry<K, V> firstInKeyInsertionOrder;
   private transient @Nullable BiEntry<K, V> lastInKeyInsertionOrder;
   private transient int size;
   private transient int mask;
   private transient int modCount;
 
+  @SuppressWarnings("initialization:method.invocation.invalid") // init acts as a pseudo constructor
   private HashBiMap(int expectedSize) {
     init(expectedSize);
   }
 
+  @EnsuresNonNull({"hashTableKToV", "hashTableVToK"})
   private void init(int expectedSize) {
     checkNonnegative(expectedSize, "expectedSize");
     int tableSize = Hashing.closedTableSize(expectedSize, LOAD_FACTOR);
@@ -135,6 +139,8 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
    * Finds and removes {@code entry} from the bucket linked lists in both the key-to-value direction
    * and the value-to-key direction.
    */
+  @SuppressWarnings("nullness:dereference.of.nullable") // Method delete is invoked only for entries
+  // which exist in the bucket linked list
   private void delete(BiEntry<K, V> entry) {
     int keyBucket = entry.keyHash & mask;
     BiEntry<K, V> prevBucketEntry = null;
@@ -221,7 +227,7 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
     modCount++;
   }
 
-  private BiEntry<K, V> seekByKey(@Nullable Object key, int keyHash) {
+  private @Nullable BiEntry<K, V> seekByKey(@Nullable Object key, int keyHash) {
     for (BiEntry<K, V> entry = hashTableKToV[keyHash & mask];
         entry != null;
         entry = entry.nextInKToVBucket) {
@@ -232,7 +238,7 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
     return null;
   }
 
-  private BiEntry<K, V> seekByValue(@Nullable Object value, int valueHash) {
+  private @Nullable BiEntry<K, V> seekByValue(@Nullable Object value, int valueHash) {
     for (BiEntry<K, V> entry = hashTableVToK[valueHash & mask];
         entry != null;
         entry = entry.nextInVToKBucket) {
@@ -261,11 +267,11 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
 
   @CanIgnoreReturnValue
   @Override
-  public V put(@Nullable K key, @Nullable V value) {
+  public @Nullable V put(K key, V value) {
     return put(key, value, false);
   }
 
-  private V put(@Nullable K key, @Nullable V value, boolean force) {
+  private @Nullable V put(K key, V value, boolean force) {
     int keyHash = smearedHash(key);
     int valueHash = smearedHash(value);
 
@@ -285,7 +291,7 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
       }
     }
 
-    BiEntry<K, V> newEntry = new BiEntry<>(key, keyHash, value, valueHash);
+    @Nullable BiEntry<K, V> newEntry = new BiEntry<>(key, keyHash, value, valueHash);
     if (oldEntryForKey != null) {
       delete(oldEntryForKey);
       insert(newEntry, oldEntryForKey);
@@ -302,11 +308,11 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
   @CanIgnoreReturnValue
   @Override
   @Nullable
-  public V forcePut(@Nullable K key, @Nullable V value) {
+  public V forcePut(K key, V value) {
     return put(key, value, true);
   }
 
-  private @Nullable K putInverse(@Nullable V value, @Nullable K key, boolean force) {
+  private @Nullable K putInverse(V value, K key, boolean force) {
     int valueHash = smearedHash(value);
     int keyHash = smearedHash(key);
 
@@ -351,7 +357,7 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
   }
 
   private void rehashIfNecessary() {
-    BiEntry<K, V>[] oldKToV = hashTableKToV;
+    @Nullable BiEntry<K, V>[] oldKToV = hashTableKToV;
     if (Hashing.needsResizing(size, oldKToV.length, LOAD_FACTOR)) {
       int newTableSize = oldKToV.length * 2;
 
@@ -370,7 +376,7 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
   }
 
   @SuppressWarnings("unchecked")
-  private BiEntry<K, V>[] createTable(int length) {
+  private @Nullable BiEntry<K, V>[] createTable(int length) {
     return new BiEntry[length];
   }
 
@@ -404,12 +410,13 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
   }
 
   abstract class Itr<T> implements Iterator<T> {
-    BiEntry<K, V> next = firstInKeyInsertionOrder;
-    BiEntry<K, V> toRemove = null;
+    @Nullable BiEntry<K, V> next = firstInKeyInsertionOrder;
+    @Nullable BiEntry<K, V> toRemove = null;
     int expectedModCount = modCount;
     int remaining = size();
 
     @Override
+    @EnsuresNonNullIf(expression = "next", result = true)
     public boolean hasNext() {
       if (modCount != expectedModCount) {
         throw new ConcurrentModificationException();
@@ -431,6 +438,8 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
     }
 
     @Override
+    @SuppressWarnings("nullness:argument.type.incompatible") // checkRemove(toRemove != null) ensures
+    // toRemove to be non-null
     public void remove() {
       if (modCount != expectedModCount) {
         throw new ConcurrentModificationException();
@@ -583,6 +592,7 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
     }
 
     @Override
+    @Nullable
     public K get(@Nullable Object value) {
       return Maps.keyOrNull(seekByValue(value, smearedHash(value)));
     }
@@ -590,13 +600,13 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
     @CanIgnoreReturnValue
     @Override
     @Nullable
-    public K put(@Nullable V value, @Nullable K key) {
+    public K put(V value, K key) {
       return putInverse(value, key, false);
     }
 
     @Override
     @Nullable
-    public K forcePut(@Nullable V value, @Nullable K key) {
+    public K forcePut(V value, K key) {
       return putInverse(value, key, true);
     }
 
