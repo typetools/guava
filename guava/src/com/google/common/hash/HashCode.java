@@ -24,7 +24,11 @@ import com.google.common.primitives.Ints;
 import com.google.common.primitives.UnsignedInts;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.io.Serializable;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * An immutable hash code of arbitrary bit length.
@@ -71,7 +75,7 @@ public abstract class HashCode {
    * returned by this method.
    */
   // TODO(user): consider ByteString here, when that is available
-  public abstract byte[] asBytes();
+  public abstract byte @MinLen(1)[] asBytes();
 
   /**
    * Copies bytes from this hash code into {@code dest}.
@@ -83,7 +87,8 @@ public abstract class HashCode {
    * @throws IndexOutOfBoundsException if there is not enough room in {@code dest}
    */
   @CanIgnoreReturnValue
-  public int writeBytesTo(byte[] dest, int offset, int maxLength) {
+  @SuppressWarnings("lowerbound:assignment.type.incompatible")//`bits()` return a positive multiple of 8.
+  public int writeBytesTo(byte[] dest, @NonNegative int offset, @NonNegative int maxLength) {
     maxLength = Ints.min(maxLength, bits() / 8);
     Preconditions.checkPositionIndexes(offset, offset + maxLength, dest.length);
     writeBytesToImpl(dest, offset, maxLength);
@@ -97,7 +102,7 @@ public abstract class HashCode {
    * byte-based hashcode. Otherwise it returns {@link HashCode#asBytes}. Do <i>not</i> mutate this
    * array or else you will break the immutability contract of {@code HashCode}.
    */
-  byte[] getBytesInternal() {
+  byte @MinLen(1)[] getBytesInternal() {
     return asBytes();
   }
 
@@ -150,7 +155,7 @@ public abstract class HashCode {
     }
 
     @Override
-    void writeBytesToImpl(byte[] dest, int offset, int maxLength) {
+    void writeBytesToImpl(byte[] dest, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int offset, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int maxLength) {
       for (int i = 0; i < maxLength; i++) {
         dest[offset + i] = (byte) (hash >> (i * 8));
       }
@@ -216,7 +221,7 @@ public abstract class HashCode {
     }
 
     @Override
-    void writeBytesToImpl(byte[] dest, int offset, int maxLength) {
+    void writeBytesToImpl(byte[] dest, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int offset, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int maxLength) {
       for (int i = 0; i < maxLength; i++) {
         dest[offset + i] = (byte) (hash >> (i * 8));
       }
@@ -267,6 +272,7 @@ public abstract class HashCode {
     }
 
     @Override
+    @SuppressWarnings("upperbound:array.access.unsafe.high.constant")// `bytes.length` is checked to be >= 4 inside the function
     public int asInt() {
       checkState(
           bytes.length >= 4,
@@ -297,7 +303,7 @@ public abstract class HashCode {
     }
 
     @Override
-    void writeBytesToImpl(byte[] dest, int offset, int maxLength) {
+    void writeBytesToImpl(byte[] dest, @NonNegative int offset, @NonNegative  @LTLengthOf(value = {"this.bytes", "#1"}, offset = {"-1","#2 - 1"}) int maxLength) {
       System.arraycopy(bytes, 0, dest, offset, maxLength);
     }
 
@@ -307,7 +313,9 @@ public abstract class HashCode {
     }
 
     @Override
-    boolean equalsSameBits(HashCode that) {
+    @SuppressWarnings("upperbound:array.access.unsafe.high")/* Since `this.bytes.length` has same length as that.getBytesInternal().length
+    ( else return false), `i` range from 0 to `this.bytes.length` is safe as indexes.*/
+    boolean equalsSameBits(@SameLen("this.bytes") HashCode that) {
       // We don't use MessageDigest.isEqual() here because its contract does not guarantee
       // constant-time evaluation (no short-circuiting).
       if (this.bytes.length != that.getBytesInternal().length) {
@@ -334,6 +342,10 @@ public abstract class HashCode {
    *
    * @since 15.0
    */
+  @SuppressWarnings({"upperbound:argument.type.incompatible",/* (1): `string` min length is 2 and `string.length` must be a even number.
+  Since for loop increment by two each iteration, `i` is always < `string.length - 2` */
+          "upperbound:array.access.unsafe.high"/* Since `bytes.length = string.length / 2` and `i` is incremented by 2, range 0 - string.length()
+          `i / 2` is safe as indexes. */})
   public static HashCode fromString(String string) {
     checkArgument(
         string.length() >= 2, "input string (%s) must have at least 2 characters", string);
@@ -345,7 +357,7 @@ public abstract class HashCode {
     byte[] bytes = new byte[string.length() / 2];
     for (int i = 0; i < string.length(); i += 2) {
       int ch1 = decode(string.charAt(i)) << 4;
-      int ch2 = decode(string.charAt(i + 1));
+      int ch2 = decode(string.charAt(i + 1));//(1)
       bytes[i / 2] = (byte) (ch1 + ch2);
     }
     return fromBytesNoCopy(bytes);
@@ -390,7 +402,7 @@ public abstract class HashCode {
       return asInt();
     }
     // If we have less than 4 bytes, use them all.
-    byte[] bytes = getBytesInternal();
+    byte @MinLen(1)[] bytes = getBytesInternal();
     int val = (bytes[0] & 0xFF);
     for (int i = 1; i < bytes.length; i++) {
       val |= ((bytes[i] & 0xFF) << (i * 8));
