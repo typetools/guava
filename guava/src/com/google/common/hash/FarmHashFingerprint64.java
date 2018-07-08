@@ -18,7 +18,6 @@ import static com.google.common.base.Preconditions.checkPositionIndexes;
 import static com.google.common.hash.LittleEndianByteArray.load32;
 import static com.google.common.hash.LittleEndianByteArray.load64;
 import static java.lang.Long.rotateRight;
-
 import com.google.common.annotations.VisibleForTesting;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
