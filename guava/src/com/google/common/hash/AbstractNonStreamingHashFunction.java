@@ -21,6 +21,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * Skeleton implementation of {@link HashFunction}, appropriate for non-streaming algorithms. All
@@ -37,7 +39,7 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
   }
 
   @Override
-  public Hasher newHasher(int expectedInputSize) {
+  public Hasher newHasher(@NonNegative int expectedInputSize) {
     Preconditions.checkArgument(expectedInputSize >= 0);
     return new BufferingHasher(expectedInputSize);
   }
@@ -70,6 +72,9 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
   @Override
   public abstract HashCode hashBytes(byte[] input, int off, int len);
 
+  @SuppressWarnings("lowerbound:argument.type.incompatible")/* Since invariants: mark <= position <= limit <= capacity,
+  and position is initialized as 0, `input.remaining()` return `limit - position` with lowest possible value as 0.
+  */
   @Override
   public HashCode hashBytes(ByteBuffer input) {
     return newHasher(input.remaining()).putBytes(input).hash();
@@ -79,7 +84,7 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
   private final class BufferingHasher extends AbstractHasher {
     final ExposedByteArrayOutputStream stream;
 
-    BufferingHasher(int expectedInputSize) {
+    BufferingHasher(@NonNegative int expectedInputSize) {
       this.stream = new ExposedByteArrayOutputStream(expectedInputSize);
     }
 
@@ -90,7 +95,7 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
     }
 
     @Override
-    public Hasher putBytes(byte[] bytes, int off, int len) {
+    public Hasher putBytes(byte[] bytes, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int len) {
       stream.write(bytes, off, len);
       return this;
     }
@@ -109,12 +114,14 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
 
   // Just to access the byte[] without introducing an unnecessary copy
   private static final class ExposedByteArrayOutputStream extends ByteArrayOutputStream {
-    ExposedByteArrayOutputStream(int expectedInputSize) {
+    ExposedByteArrayOutputStream(@NonNegative int expectedInputSize) {
       super(expectedInputSize);
     }
 
+    @SuppressWarnings({"lowerbound:argument.type.incompatible", "lowerbound:assignment.type.incompatible"})/* Since invariants: mark <= position <= limit <= capacity,
+    and position is initialized as 0, `input.remaining()` return `limit - position` with lowest possible value as 0. */
     void write(ByteBuffer input) {
-      int remaining = input.remaining();
+      @NonNegative int remaining = input.remaining();
       if (count + remaining > buf.length) {
         buf = Arrays.copyOf(buf, count + remaining);
       }
