@@ -255,7 +255,7 @@ public abstract class HashCode {
   }
 
   private static final class BytesHashCode extends HashCode implements Serializable {
-    final byte[] bytes;
+    final byte @MinLen(1)[] bytes;
 
     BytesHashCode(byte[] bytes) {
       this.bytes = checkNotNull(bytes);
