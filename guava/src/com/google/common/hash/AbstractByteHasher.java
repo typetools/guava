@@ -22,12 +22,11 @@ import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 import com.google.common.primitives.Shorts;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.common.value.qual.IntRange;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 /**
  * Abstract {@link Hasher} that handles converting primitives to bytes using a scratch {@code
