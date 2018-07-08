@@ -22,6 +22,10 @@ import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 import com.google.common.primitives.Shorts;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.common.value.qual.IntRange;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -38,19 +42,24 @@ abstract class AbstractByteHasher extends AbstractHasher {
   /** Updates this hasher with the given byte. */
   protected abstract void update(byte b);
 
+  @SuppressWarnings("upperbound:argument.type.incompatible")// `0 + b.length - 1` is < b.length.
   /** Updates this hasher with the given bytes. */
   protected void update(byte[] b) {
     update(b, 0, b.length);
   }
 
   /** Updates this hasher with {@code len} bytes starting at {@code off} in the given buffer. */
-  protected void update(byte[] b, int off, int len) {
+  protected void update(byte[] b, @NonNegative @LTLengthOf(value = "#1",offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int len) {
     for (int i = off; i < off + len; i++) {
       update(b[i]);
     }
   }
 
   /** Updates this hasher with bytes from the given buffer. */
+  @SuppressWarnings({"lowerbound:argument.type.incompatible","upperbound:argument.type.incompatible"})/*
+  Invariants: mark <= position <= limit <= capacity(is length of buffer). Since `b.remaining()` return limit - position,
+  and `b.arrayOffset() + b.position()` return offset("buffer's backing array of the first element of the buffer")  + position,
+  `b.remaining() + b.arrayOffset() + b.position() - 1 < b.array().length`. */
   protected void update(ByteBuffer b) {
     if (b.hasArray()) {
       update(b.array(), b.arrayOffset() + b.position(), b.remaining());
@@ -63,7 +72,9 @@ abstract class AbstractByteHasher extends AbstractHasher {
   }
 
   /** Updates the sink with the given number of bytes from the buffer. */
-  private Hasher update(int bytes) {
+  @SuppressWarnings({"upperbound:argument.type.icnompatible","lowerbound:argument.type.icnompatible"})// Since `scratch.array().length` will return 8, `bytes`
+  // range from 0 to 8) - 1 < scratch.array().length
+  private Hasher update(@IntRange(from = 0, to = 8) int bytes) {
     try {
       update(scratch.array(), 0, bytes);
     } finally {
@@ -86,7 +97,7 @@ abstract class AbstractByteHasher extends AbstractHasher {
   }
 
   @Override
-  public Hasher putBytes(byte[] bytes, int off, int len) {
+  public Hasher putBytes(byte[] bytes, @NonNegative @LTLengthOf(value = "#1",offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int len) {
     checkPositionIndexes(off, off + len, bytes.length);
     update(bytes, off, len);
     return this;
