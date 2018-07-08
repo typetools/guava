@@ -241,7 +241,7 @@ public abstract class HashCode {
    *
    * @since 15.0 (since 12.0 in HashCodes)
    */
-  public static HashCode fromBytes(byte[] bytes) {
+  public static HashCode fromBytes(byte @MinLen(1)[] bytes) {
     checkArgument(bytes.length >= 1, "A HashCode must contain at least 1 byte.");
     return fromBytesNoCopy(bytes.clone());
   }
@@ -250,14 +250,14 @@ public abstract class HashCode {
    * Creates a {@code HashCode} from a byte array. The array is <i>not</i> copied defensively, so it
    * must be handed-off so as to preserve the immutability contract of {@code HashCode}.
    */
-  static HashCode fromBytesNoCopy(byte[] bytes) {
+  static HashCode fromBytesNoCopy(byte @MinLen(1)[] bytes) {
     return new BytesHashCode(bytes);
   }
 
   private static final class BytesHashCode extends HashCode implements Serializable {
     final byte @MinLen(1)[] bytes;
 
-    BytesHashCode(byte[] bytes) {
+    BytesHashCode(byte @MinLen(1)[] bytes) {
       this.bytes = checkNotNull(bytes);
     }
 
@@ -344,15 +344,17 @@ public abstract class HashCode {
    */
   @SuppressWarnings({"upperbound:argument.type.incompatible",/* (1): `string` min length is 2 and `string.length` must be a even number.
   Since for loop increment by two each iteration, `i` is always < `string.length - 2` */
-          "upperbound:array.access.unsafe.high"/* Since `bytes.length = string.length / 2` and `i` is incremented by 2, range 0 - string.length()
-          `i / 2` is safe as indexes. */})
+          "upperbound:array.access.unsafe.high",/* Since `bytes.length = string.length / 2` and `i` is incremented by 2, range 0 - string.length()
+          `i / 2` is safe as indexes. */
+          "lowerbound:argument.type.incompatible"// Since `string.length >= 2` and `bytes.length` init is `string.length / 2`, bytes has min length of 1.
+          })
   public static HashCode fromString(String string) {
     checkArgument(
-        string.length() >= 2, "input string (%s) must have at least 2 characters", string);
+            string.length() >= 2, "input string (%s) must have at least 2 characters", string);
     checkArgument(
-        string.length() % 2 == 0,
-        "input string (%s) must have an even number of characters",
-        string);
+            string.length() % 2 == 0,
+            "input string (%s) must have an even number of characters",
+            string);
 
     byte[] bytes = new byte[string.length() / 2];
     for (int i = 0; i < string.length(); i += 2) {
@@ -360,7 +362,7 @@ public abstract class HashCode {
       int ch2 = decode(string.charAt(i + 1));//(1)
       bytes[i / 2] = (byte) (ch1 + ch2);
     }
-    return fromBytesNoCopy(bytes);
+    return fromBytesNoCopy(bytes);//(2)
   }
 
   private static int decode(char ch) {
