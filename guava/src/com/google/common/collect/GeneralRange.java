@@ -97,10 +97,10 @@ final class GeneralRange<T> implements Serializable {
 
   private final Comparator<? super T> comparator;
   private final boolean hasLowerBound;
-  private final @Nullable T lowerEndpoint;
+  private final T lowerEndpoint;
   private final BoundType lowerBoundType;
   private final boolean hasUpperBound;
-  private final @Nullable T upperEndpoint;
+  private final T upperEndpoint;
   private final BoundType upperBoundType;
 
   // Annotations are technically incorrect. lowerEndpoint and upperEndpoint requires to be of type T
@@ -295,7 +295,7 @@ final class GeneralRange<T> implements Serializable {
         + (upperBoundType == CLOSED ? ']' : ')');
   }
 
-  @Nullable T getLowerEndpoint() {
+  T getLowerEndpoint() {
     return lowerEndpoint;
   }
 
@@ -303,7 +303,7 @@ final class GeneralRange<T> implements Serializable {
     return lowerBoundType;
   }
 
-  @Nullable T getUpperEndpoint() {
+  T getUpperEndpoint() {
     return upperEndpoint;
   }
 
