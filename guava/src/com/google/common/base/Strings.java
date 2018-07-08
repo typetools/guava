@@ -21,8 +21,8 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.VisibleForTesting;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.EnsuresQualifierIf;
 
 /**
@@ -66,7 +66,7 @@ public final class Strings {
    * @param string a string reference to check
    * @return {@code true} if the string is null or is the empty string
    */
-  @EnsuresNonNullIf(result = false, expression = "#1")
+  @EnsuresNonNullIf(expression = "#1", result = false)
   public static boolean isNullOrEmpty(@Nullable String string) {
     return Platform.stringIsNullOrEmpty(string);
   }
