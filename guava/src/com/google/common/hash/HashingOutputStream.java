@@ -17,6 +17,8 @@ package com.google.common.hash;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.Beta;
+import org.checkerframework.checker.index.qual.NonNegative;
+
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -53,7 +55,7 @@ public final class HashingOutputStream extends FilterOutputStream {
   }
 
   @Override
-  public void write(byte[] bytes, int off, int len) throws IOException {
+  public void write(byte[] bytes, @NonNegative int off, @NonNegative int len) throws IOException {
     hasher.putBytes(bytes, off, len);
     out.write(bytes, off, len);
   }

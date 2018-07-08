@@ -346,7 +346,7 @@ public abstract class HashCode {
   Since for loop increment by two each iteration, `i` is always < `string.length - 2` */
           "upperbound:array.access.unsafe.high",/* Since `bytes.length = string.length / 2` and `i` is incremented by 2, range 0 - string.length()
           `i / 2` is safe as indexes. */
-          "lowerbound:argument.type.incompatible"// Since `string.length >= 2` and `bytes.length` init is `string.length / 2`, bytes has min length of 1.
+          "argument.type.incompatible"//(2) Since `string.length >= 2` and `bytes.length` init is `string.length / 2`, bytes has min length of 1.
           })
   public static HashCode fromString(String string) {
     checkArgument(

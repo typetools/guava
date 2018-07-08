@@ -71,7 +71,7 @@ abstract class AbstractByteHasher extends AbstractHasher {
   }
 
   /** Updates the sink with the given number of bytes from the buffer. */
-  @SuppressWarnings({"upperbound:argument.type.icnompatible","lowerbound:argument.type.icnompatible"})// Since `scratch.array().length` will return 8, `bytes`
+  @SuppressWarnings({"upperbound:argument.type.incompatible","lowerbound:argument.type.incompatible"})// Since `scratch.array().length` will return 8, `bytes`
   // range from 0 to 8) - 1 < scratch.array().length
   private Hasher update(@IntRange(from = 0, to = 8) int bytes) {
     try {
