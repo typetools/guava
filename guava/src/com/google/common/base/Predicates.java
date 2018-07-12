@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -173,7 +174,7 @@ public final class Predicates {
    * instances {@code Lists.newArrayList(1)} and {@code Arrays.asList(1)}.
    */
   @GwtIncompatible // Class.isInstance
-  public static Predicate<Object> instanceOf(Class<?> clazz) {
+  public static Predicate<@PolyNull Object> instanceOf(Class<@PolyNull ?> clazz) {
     return new InstanceOfPredicate(clazz);
   }
 
