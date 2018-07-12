@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -64,14 +65,16 @@ abstract class AbstractMultiset<E> extends AbstractCollection<E> implements Mult
   // Modification Operations
   @CanIgnoreReturnValue
   @Override
-  public final boolean add(E element) {
+  @SuppressWarnings("nullness:override.param.invalid") // This method delegates to add(E, int) and
+  // the default specification for that method restricts 'element' to @NonNull types only
+  public final boolean add(@NonNull E element) {
     add(element, 1);
     return true;
   }
 
   @CanIgnoreReturnValue
   @Override
-  public int add(E element, int occurrences) {
+  public int add(@NonNull E element, int occurrences) {
     throw new UnsupportedOperationException();
   }
 
@@ -89,13 +92,13 @@ abstract class AbstractMultiset<E> extends AbstractCollection<E> implements Mult
 
   @CanIgnoreReturnValue
   @Override
-  public int setCount(E element, int count) {
+  public int setCount(@NonNull E element, int count) {
     return setCountImpl(this, element, count);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public boolean setCount(E element, int oldCount, int newCount) {
+  public boolean setCount(@NonNull E element, int oldCount, int newCount) {
     return setCountImpl(this, element, oldCount, newCount);
   }
 
