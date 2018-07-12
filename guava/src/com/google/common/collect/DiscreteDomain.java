@@ -45,7 +45,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @since 10.0
  */
 @GwtCompatible
-public abstract class DiscreteDomain<C extends Comparable> {
+public abstract class DiscreteDomain<C extends @Nullable Comparable> {
 
   /**
    * Returns the discrete domain for values of type {@code Integer}.
