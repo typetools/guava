@@ -36,6 +36,7 @@ import java.util.SortedSet;
 import java.util.Spliterator;
 import java.util.function.BinaryOperator;
 import java.util.stream.Collector;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -66,7 +67,7 @@ public final class Tables {
   public static <T, R, C, V, I extends Table<R, C, V>> Collector<T, ?, I> toTable(
       java.util.function.Function<? super T, ? extends R> rowFunction,
       java.util.function.Function<? super T, ? extends C> columnFunction,
-      java.util.function.Function<? super T, ? extends V> valueFunction,
+      java.util.function.Function<? super T, ? extends @NonNull V> valueFunction,
       java.util.function.Supplier<I> tableSupplier) {
     return toTable(
         rowFunction,
@@ -92,10 +93,12 @@ public final class Tables {
    *
    * @since 21.0
    */
+  @SuppressWarnings("nullness:argument.type.incompatible") // cell2.getValue() returns a non-null
+  // value as the given valueFunction does not allow nulls
   public static <T, R, C, V, I extends Table<R, C, V>> Collector<T, ?, I> toTable(
       java.util.function.Function<? super T, ? extends R> rowFunction,
       java.util.function.Function<? super T, ? extends C> columnFunction,
-      java.util.function.Function<? super T, ? extends V> valueFunction,
+      java.util.function.Function<? super T, ? extends @NonNull V> valueFunction,
       BinaryOperator<V> mergeFunction,
       java.util.function.Supplier<I> tableSupplier) {
     checkNotNull(rowFunction);
@@ -121,7 +124,7 @@ public final class Tables {
   }
 
   private static <R, C, V> void merge(
-      Table<R, C, V> table, R row, C column, V value, BinaryOperator<V> mergeFunction) {
+      Table<R, C, V> table, R row, C column, @NonNull V value, BinaryOperator<V> mergeFunction) {
     checkNotNull(value);
     V oldValue = table.get(row, column);
     if (oldValue == null) {
@@ -146,16 +149,16 @@ public final class Tables {
    * @param value the value to be associated with the returned cell
    */
   public static <R, C, V> Cell<R, C, V> immutableCell(
-      @Nullable R rowKey, @Nullable C columnKey, @Nullable V value) {
+      R rowKey, C columnKey, V value) {
     return new ImmutableCell<>(rowKey, columnKey, value);
   }
 
   static final class ImmutableCell<R, C, V> extends AbstractCell<R, C, V> implements Serializable {
-    private final @Nullable R rowKey;
-    private final @Nullable C columnKey;
-    private final @Nullable V value;
+    private final R rowKey;
+    private final C columnKey;
+    private final V value;
 
-    ImmutableCell(@Nullable R rowKey, @Nullable C columnKey, @Nullable V value) {
+    ImmutableCell(R rowKey, C columnKey, V value) {
       this.rowKey = rowKey;
       this.columnKey = columnKey;
       this.value = value;
@@ -184,7 +187,7 @@ public final class Tables {
     AbstractCell() {}
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
       if (obj == this) {
         return true;
       }
@@ -274,12 +277,12 @@ public final class Tables {
     }
 
     @Override
-    public V get(@Nullable Object rowKey, @Nullable Object columnKey) {
+    public @Nullable V get(@Nullable Object rowKey, @Nullable Object columnKey) {
       return original.get(columnKey, rowKey);
     }
 
     @Override
-    public V put(C rowKey, R columnKey, V value) {
+    public @Nullable V put(C rowKey, R columnKey, V value) {
       return original.put(columnKey, rowKey, value);
     }
 
@@ -289,7 +292,7 @@ public final class Tables {
     }
 
     @Override
-    public V remove(@Nullable Object rowKey, @Nullable Object columnKey) {
+    public @Nullable V remove(@Nullable Object rowKey, @Nullable Object columnKey) {
       return original.remove(columnKey, rowKey);
     }
 
@@ -379,7 +382,8 @@ public final class Tables {
    * @since 10.0
    */
   @Beta
-  public static <R, C, V> Table<R, C, V> newCustomTable(
+  public static <R extends @NonNull Object, C extends @NonNull Object, V extends @NonNull Object>
+  Table<R, C, V> newCustomTable(
       Map<R, Map<C, V>> backingMap, Supplier<? extends Map<C, V>> factory) {
     checkArgument(backingMap.isEmpty());
     checkNotNull(factory);
@@ -424,12 +428,14 @@ public final class Tables {
     }
 
     @Override
-    public boolean contains(Object rowKey, Object columnKey) {
+    public boolean contains(@Nullable Object rowKey, @Nullable Object columnKey) {
       return fromTable.contains(rowKey, columnKey);
     }
 
     @Override
-    public V2 get(Object rowKey, Object columnKey) {
+    @SuppressWarnings("nullness:argument.type.incompatible") // fromTable.get(rowKey, columnKey)
+    // will return value of type V1 as it is being invoked only if the key-pair exists
+    public @Nullable V2 get(@Nullable Object rowKey, @Nullable Object columnKey) {
       // The function is passed a null input only when the table contains a null
       // value.
       return contains(rowKey, columnKey) ? function.apply(fromTable.get(rowKey, columnKey)) : null;
@@ -446,7 +452,7 @@ public final class Tables {
     }
 
     @Override
-    public V2 put(R rowKey, C columnKey, V2 value) {
+    public @Nullable V2 put(R rowKey, C columnKey, V2 value) {
       throw new UnsupportedOperationException();
     }
 
@@ -456,7 +462,9 @@ public final class Tables {
     }
 
     @Override
-    public V2 remove(Object rowKey, Object columnKey) {
+    @SuppressWarnings("nullness:argument.type.incompatible") // fromTable.remove(rowKey, columnKey)
+    // will return value of type V1 as it is being invoked only if the key-pair exists
+    public @Nullable V2 remove(@Nullable Object rowKey, @Nullable Object columnKey) {
       return contains(rowKey, columnKey)
           ? function.apply(fromTable.remove(rowKey, columnKey))
           : null;
@@ -574,7 +582,7 @@ public final class Tables {
     }
 
     @Override
-    public Map<R, V> column(@Nullable C columnKey) {
+    public Map<R, V> column(C columnKey) {
       return Collections.unmodifiableMap(super.column(columnKey));
     }
 
@@ -590,7 +598,7 @@ public final class Tables {
     }
 
     @Override
-    public V put(@Nullable R rowKey, @Nullable C columnKey, @Nullable V value) {
+    public @Nullable V put(R rowKey, C columnKey, V value) {
       throw new UnsupportedOperationException();
     }
 
@@ -600,12 +608,12 @@ public final class Tables {
     }
 
     @Override
-    public V remove(@Nullable Object rowKey, @Nullable Object columnKey) {
+    public @Nullable V remove(@Nullable Object rowKey, @Nullable Object columnKey) {
       throw new UnsupportedOperationException();
     }
 
     @Override
-    public Map<C, V> row(@Nullable R rowKey) {
+    public Map<C, V> row(R rowKey) {
       return Collections.unmodifiableMap(super.row(rowKey));
     }
 

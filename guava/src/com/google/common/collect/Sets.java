@@ -52,6 +52,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -306,7 +307,7 @@ public final class Sets {
    * @return a new, empty thread-safe {@code Set}
    * @since 15.0
    */
-  public static <E> Set<E> newConcurrentHashSet() {
+  public static <E extends @NonNull Object> Set<E> newConcurrentHashSet() {
     return Collections.newSetFromMap(new ConcurrentHashMap<E, Boolean>());
   }
 
@@ -323,7 +324,8 @@ public final class Sets {
    * @throws NullPointerException if {@code elements} or any of its contents is null
    * @since 15.0
    */
-  public static <E> Set<E> newConcurrentHashSet(Iterable<? extends E> elements) {
+  public static <E extends @NonNull Object> Set<E> newConcurrentHashSet(
+      Iterable<? extends E> elements) {
     Set<E> set = newConcurrentHashSet();
     Iterables.addAll(set, elements);
     return set;
@@ -425,7 +427,8 @@ public final class Sets {
    * @param elements the elements that the set should contain
    * @return a new {@code TreeSet} containing those elements (minus duplicates)
    */
-  public static <E extends @Nullable Comparable> TreeSet<E> newTreeSet(Iterable<? extends E> elements) {
+  public static <E extends @Nullable Comparable> TreeSet<E> newTreeSet(
+      Iterable<? extends E> elements) {
     TreeSet<E> set = newTreeSet();
     Iterables.addAll(set, elements);
     return set;
@@ -598,8 +601,8 @@ public final class Sets {
      * nonstandard notion of equivalence, for example if it is a {@link TreeSet} using a comparator
      * that is inconsistent with {@link Object#equals(Object)}.
      */
-    public ImmutableSet<E> immutableCopy() {
-      return ImmutableSet.copyOf(this);
+    public ImmutableSet<@NonNull E> immutableCopy() {
+      return ImmutableSet.copyOf((Collection<@NonNull E>) this);
     }
 
     /**
@@ -639,7 +642,7 @@ public final class Sets {
     @CanIgnoreReturnValue
     @Deprecated
     @Override
-    public final boolean remove(Object object) {
+    public final boolean remove(@Nullable Object object) {
       throw new UnsupportedOperationException();
     }
 
@@ -1050,7 +1053,9 @@ public final class Sets {
    * you to migrate to streams.
    */
   // TODO(kevinb): how to omit that last sentence when building GWT javadoc?
-  public static <E> Set<E> filter(Set<E> unfiltered, Predicate<? super E> predicate) {
+  // E can be of type @Nullable if the provided predicate allows @Nullable input values
+  public static <E extends @NonNull Object> Set<E> filter(Set<E> unfiltered,
+      Predicate<? super E> predicate) {
     if (unfiltered instanceof SortedSet) {
       return filter((SortedSet<E>) unfiltered, predicate);
     }
@@ -1089,7 +1094,9 @@ public final class Sets {
    *
    * @since 11.0
    */
-  public static <E> SortedSet<E> filter(SortedSet<E> unfiltered, Predicate<? super E> predicate) {
+  // E can be of type @Nullable if the provided predicate allows @Nullable input values
+  public static <E extends @NonNull Object> SortedSet<E> filter(SortedSet<E> unfiltered,
+      Predicate<? super E> predicate) {
     if (unfiltered instanceof FilteredSet) {
       // Support clear(), removeAll(), and retainAll() when filtering a filtered
       // collection.
@@ -1127,7 +1134,7 @@ public final class Sets {
    */
   @GwtIncompatible // NavigableSet
   @SuppressWarnings("unchecked")
-  public static <E> NavigableSet<E> filter(
+  public static <E extends @NonNull Object> NavigableSet<E> filter(
       NavigableSet<E> unfiltered, Predicate<? super E> predicate) {
     if (unfiltered instanceof FilteredSet) {
       // Support clear(), removeAll(), and retainAll() when filtering a filtered
@@ -1140,7 +1147,8 @@ public final class Sets {
     return new FilteredNavigableSet<E>(checkNotNull(unfiltered), checkNotNull(predicate));
   }
 
-  private static class FilteredSet<E> extends FilteredCollection<E> implements Set<E> {
+  private static class FilteredSet<E extends @NonNull Object> extends FilteredCollection<E>
+      implements Set<E> {
     FilteredSet(Set<E> unfiltered, Predicate<? super E> predicate) {
       super(unfiltered, predicate);
     }
@@ -1156,7 +1164,8 @@ public final class Sets {
     }
   }
 
-  private static class FilteredSortedSet<E> extends FilteredSet<E> implements SortedSet<E> {
+  private static class FilteredSortedSet<E extends @NonNull Object> extends FilteredSet<E>
+      implements SortedSet<E> {
 
     FilteredSortedSet(SortedSet<E> unfiltered, Predicate<? super E> predicate) {
       super(unfiltered, predicate);
@@ -1202,7 +1211,7 @@ public final class Sets {
   }
 
   @GwtIncompatible // NavigableSet
-  private static class FilteredNavigableSet<E> extends FilteredSortedSet<E>
+  private static class FilteredNavigableSet<E extends @NonNull Object> extends FilteredSortedSet<E>
       implements NavigableSet<E> {
     FilteredNavigableSet(NavigableSet<E> unfiltered, Predicate<? super E> predicate) {
       super(unfiltered, predicate);
@@ -1223,22 +1232,22 @@ public final class Sets {
     }
 
     @Override
-    public E ceiling(E e) {
+    public @Nullable E ceiling(E e) {
       return Iterables.find(unfiltered().tailSet(e, true), predicate, null);
     }
 
     @Override
-    public E higher(E e) {
+    public @Nullable E higher(E e) {
       return Iterables.find(unfiltered().tailSet(e, false), predicate, null);
     }
 
     @Override
-    public E pollFirst() {
+    public @Nullable E pollFirst() {
       return Iterables.removeFirstMatching(unfiltered(), predicate);
     }
 
     @Override
-    public E pollLast() {
+    public @Nullable E pollLast() {
       return Iterables.removeFirstMatching(unfiltered().descendingSet(), predicate);
     }
 
@@ -1327,7 +1336,8 @@ public final class Sets {
    *     provided set is null
    * @since 2.0
    */
-  public static <B> Set<List<B>> cartesianProduct(List<? extends Set<? extends B>> sets) {
+  public static <B extends @NonNull Object> Set<List<B>> cartesianProduct(
+      List<? extends Set<? extends B>> sets) {
     return CartesianSet.create(sets);
   }
 
@@ -1384,16 +1394,16 @@ public final class Sets {
    * @since 2.0
    */
   @SafeVarargs
-  public static <B> Set<List<B>> cartesianProduct(Set<? extends B>... sets) {
+  public static <B extends @NonNull Object> Set<List<B>> cartesianProduct(Set<? extends B>... sets) {
     return cartesianProduct(Arrays.asList(sets));
   }
 
-  private static final class CartesianSet<E> extends ForwardingCollection<List<E>>
-      implements Set<List<E>> {
+  private static final class CartesianSet<E extends @NonNull Object>
+      extends ForwardingCollection<List<E>> implements Set<List<E>> {
     private final transient ImmutableList<ImmutableSet<E>> axes;
     private final transient CartesianList<E> delegate;
 
-    static <E> Set<List<E>> create(List<? extends Set<? extends E>> sets) {
+    static <E extends @NonNull Object> Set<List<E>> create(List<? extends Set<? extends E>> sets) {
       ImmutableList.Builder<ImmutableSet<E>> axesBuilder = new ImmutableList.Builder<>(sets.size());
       for (Set<? extends E> set : sets) {
         ImmutableSet<E> copy = ImmutableSet.copyOf(set);
@@ -1492,11 +1502,11 @@ public final class Sets {
    * @since 4.0
    */
   @GwtCompatible(serializable = false)
-  public static <E> Set<Set<E>> powerSet(Set<E> set) {
+  public static <E extends @NonNull Object> Set<Set<E>> powerSet(Set<E> set) {
     return new PowerSet<E>(set);
   }
 
-  private static final class SubSet<E> extends AbstractSet<E> {
+  private static final class SubSet<E extends @NonNull Object> extends AbstractSet<E> {
     private final ImmutableMap<E, Integer> inputSet;
     private final int mask;
 
@@ -1540,7 +1550,7 @@ public final class Sets {
     }
   }
 
-  private static final class PowerSet<E> extends AbstractSet<Set<E>> {
+  private static final class PowerSet<E extends @NonNull Object> extends AbstractSet<Set<E>> {
     final ImmutableMap<E, Integer> inputSet;
 
     PowerSet(Set<E> input) {
@@ -1628,7 +1638,7 @@ public final class Sets {
    * @since 23.0
    */
   @Beta
-  public static <E> Set<Set<E>> combinations(Set<E> set, final int size) {
+  public static <E extends @NonNull Object> Set<Set<E>> combinations(Set<E> set, final int size) {
     final ImmutableMap<E, Integer> index = Maps.indexMap(set);
     checkNonnegative(size, "size");
     checkArgument(size <= index.size(), "size (%s) must be <= set.size() (%s)", size, index.size());
@@ -1740,6 +1750,7 @@ public final class Sets {
   }
 
   /** An implementation for {@link Set#equals(Object)}. */
+  @Pure
   static boolean equalsImpl(Set<?> s, @Nullable Object object) {
     if (s == object) {
       return true;
@@ -1814,32 +1825,32 @@ public final class Sets {
     }
 
     @Override
-    public E lower(E e) {
+    public @Nullable E lower(E e) {
       return delegate.lower(e);
     }
 
     @Override
-    public E floor(E e) {
+    public @Nullable E floor(E e) {
       return delegate.floor(e);
     }
 
     @Override
-    public E ceiling(E e) {
+    public @Nullable E ceiling(E e) {
       return delegate.ceiling(e);
     }
 
     @Override
-    public E higher(E e) {
+    public @Nullable E higher(E e) {
       return delegate.higher(e);
     }
 
     @Override
-    public E pollFirst() {
+    public @Nullable E pollFirst() {
       throw new UnsupportedOperationException();
     }
 
     @Override
-    public E pollLast() {
+    public @Nullable E pollLast() {
       throw new UnsupportedOperationException();
     }
 
@@ -1972,32 +1983,32 @@ public final class Sets {
     }
 
     @Override
-    public E lower(E e) {
+    public @Nullable E lower(E e) {
       return forward.higher(e);
     }
 
     @Override
-    public E floor(E e) {
+    public @Nullable E floor(E e) {
       return forward.ceiling(e);
     }
 
     @Override
-    public E ceiling(E e) {
+    public @Nullable E ceiling(E e) {
       return forward.floor(e);
     }
 
     @Override
-    public E higher(E e) {
+    public @Nullable E higher(E e) {
       return forward.lower(e);
     }
 
     @Override
-    public E pollFirst() {
+    public @Nullable E pollFirst() {
       return forward.pollLast();
     }
 
     @Override
-    public E pollLast() {
+    public @Nullable E pollLast() {
       return forward.pollFirst();
     }
 
@@ -2074,12 +2085,14 @@ public final class Sets {
     }
 
     @Override
-    public Object[] toArray() {
+    @SuppressWarnings("nullness:override.return.invalid") // Suppressed due to annotations for toArray
+    public @Nullable Object[] toArray() {
       return standardToArray();
     }
 
     @Override
-    public <T> T[] toArray(T[] array) {
+    @SuppressWarnings("nullness:override.param.invalid") // Suppressed due to annotations for toArray
+    public <T> @Nullable T[] toArray(@Nullable T[] array) {
       return standardToArray(array);
     }
 

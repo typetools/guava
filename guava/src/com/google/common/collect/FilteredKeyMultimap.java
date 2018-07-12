@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -36,7 +37,10 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Louis Wasserman
  */
 @GwtCompatible
-class FilteredKeyMultimap<K, V> extends AbstractMultimap<K, V> implements FilteredMultimap<K, V> {
+// FilterKeyMultimap may accept @Nullable keys if the implementation provided for keyPredicate
+// allows @Nullable inputs
+class FilteredKeyMultimap<K extends @NonNull Object, V> extends AbstractMultimap<K, V>
+    implements FilteredMultimap<K, V> {
   final Multimap<K, V> unfiltered;
   final Predicate<? super K> keyPredicate;
 
@@ -65,6 +69,7 @@ class FilteredKeyMultimap<K, V> extends AbstractMultimap<K, V> implements Filter
   }
 
   @Override
+  @SuppressWarnings("nullness:cast.unsafe") // unfiltered.containsKey ensures key to be of type K
   public boolean containsKey(@Nullable Object key) {
     if (unfiltered.containsKey(key)) {
       @SuppressWarnings("unchecked") // k is equal to a K, if not one itself
@@ -75,11 +80,12 @@ class FilteredKeyMultimap<K, V> extends AbstractMultimap<K, V> implements Filter
   }
 
   @Override
-  public Collection<V> removeAll(Object key) {
-    return containsKey(key) ? unfiltered.removeAll(key) : unmodifiableEmptyCollection();
+  public Collection<V> removeAll(@Nullable Object key) {
+    return containsKey(key) ? unfiltered.removeAll(key) :
+        (Collection<V>) unmodifiableEmptyCollection();
   }
 
-  Collection<V> unmodifiableEmptyCollection() {
+  Collection<@NonNull V> unmodifiableEmptyCollection() {
     if (unfiltered instanceof SetMultimap) {
       return ImmutableSet.of();
     } else {
@@ -98,6 +104,8 @@ class FilteredKeyMultimap<K, V> extends AbstractMultimap<K, V> implements Filter
   }
 
   @Override
+  @SuppressWarnings("nullness:override.param.invalid") // This method can accept @Nullable argument
+  // if the underlying predicate allows @Nullable values
   public Collection<V> get(K key) {
     if (keyPredicate.apply(key)) {
       return unfiltered.get(key);
@@ -189,7 +197,8 @@ class FilteredKeyMultimap<K, V> extends AbstractMultimap<K, V> implements Filter
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "nullness:cast.unsafe"}) // entry.getKey() is type casted to K
+    // only if it is present in unfiltered map
     public boolean remove(@Nullable Object o) {
       if (o instanceof Entry) {
         Entry<?, ?> entry = (Entry<?, ?>) o;

@@ -25,7 +25,8 @@ import java.util.Collections;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * CompactLinkedHashSet is an implementation of a Set, which a predictable iteration order that
@@ -108,26 +109,30 @@ class CompactLinkedHashSet<E> extends CompactHashSet<E> {
    * Pointer to the predecessor of an entry in insertion order. ENDPOINT indicates a node is the
    * first node in insertion order; all values at indices ≥ {@link #size()} are UNSET.
    */
-  private transient int @MonotonicNonNull [] predecessor;
+  private transient int[] predecessor;
 
   /**
    * Pointer to the successor of an entry in insertion order. ENDPOINT indicates a node is the last
    * node in insertion order; all values at indices ≥ {@link #size()} are UNSET.
    */
-  private transient int @MonotonicNonNull [] successor;
+  private transient int[] successor;
 
   private transient int firstEntry;
   private transient int lastEntry;
 
+  @SuppressWarnings("initialization:initialization.fields.uninitialized") // super class method calls
+  // overridden 'init' method which initializes all the necessary fields
   CompactLinkedHashSet() {
     super();
   }
 
+  @SuppressWarnings("initialization:initialization.fields.uninitialized")
   CompactLinkedHashSet(int expectedSize) {
     super(expectedSize);
   }
 
   @Override
+  @EnsuresNonNull({"table", "elements", "entries", "successor"})
   void init(int expectedSize, float loadFactor) {
     super.init(expectedSize, loadFactor);
     this.predecessor = new int[expectedSize];
@@ -197,12 +202,14 @@ class CompactLinkedHashSet<E> extends CompactHashSet<E> {
   }
 
   @Override
-  public Object[] toArray() {
+  @SuppressWarnings("nullness:override.return.invalid") // Suppressed due to annotations for toArray
+  public @Nullable Object[] toArray() {
     return ObjectArrays.toArrayImpl(this);
   }
 
   @Override
-  public <T> T[] toArray(T[] a) {
+  @SuppressWarnings("nullness:override.param.invalid") // Suppressed due to annotations for toArray
+  public <T> @Nullable T[] toArray(@Nullable T[] a) {
     return ObjectArrays.toArrayImpl(this, a);
   }
 

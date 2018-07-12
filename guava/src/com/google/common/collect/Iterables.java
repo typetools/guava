@@ -39,6 +39,7 @@ import java.util.Set;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.dataflow.qual.Pure;
@@ -89,11 +90,12 @@ public final class Iterables {
    * @since 10.0
    */
   @Deprecated
-  public static <E> Iterable<E> unmodifiableIterable(ImmutableCollection<E> iterable) {
+  public static <E extends @NonNull Object> Iterable<E> unmodifiableIterable(ImmutableCollection<E> iterable) {
     return checkNotNull(iterable);
   }
 
-  private static final class UnmodifiableIterable<T> extends FluentIterable<T> {
+  private static final class UnmodifiableIterable<T extends @NonNull Object>
+      extends FluentIterable<T> {
     private final Iterable<? extends T> iterable;
 
     private UnmodifiableIterable(Iterable<? extends T> iterable) {
@@ -196,7 +198,9 @@ public final class Iterables {
    * @since 2.0
    */
   @CanIgnoreReturnValue
-  public static <T> boolean removeIf(Iterable<T> removeFrom, Predicate<? super T> predicate) {
+  // T can be of type @Nullable if the provided predicate allows @Nullable inputs
+  public static <T extends @NonNull Object> boolean removeIf(Iterable<T> removeFrom,
+      Predicate<? super T> predicate) {
     if (removeFrom instanceof Collection) {
       return ((Collection<T>) removeFrom).removeIf(predicate);
     }
@@ -204,7 +208,8 @@ public final class Iterables {
   }
 
   /** Removes and returns the first matching element, or returns {@code null} if there is none. */
-  static <T> @Nullable T removeFirstMatching(
+  // T can be of type @Nullable if the provided predicate allows @Nullable inputs
+  static <T extends @NonNull Object> @Nullable T removeFirstMatching(
       Iterable<T> removeFrom, Predicate<? super T> predicate) {
     checkNotNull(predicate);
     Iterator<T> iterator = removeFrom.iterator();
@@ -282,11 +287,11 @@ public final class Iterables {
    * @return a newly-allocated array into which all the elements of the iterable have been copied
    */
   @GwtIncompatible // Array.newInstance(Class, int)
-  public static <T> T[] toArray(Iterable<? extends T> iterable, Class<T> type) {
+  public static <T> @Nullable T[] toArray(Iterable<? extends T> iterable, Class<T> type) {
     return toArray(iterable, ObjectArrays.newArray(type, 0));
   }
 
-  static <T> T[] toArray(Iterable<? extends T> iterable, T[] array) {
+  static <T> @Nullable T[] toArray(Iterable<? extends T> iterable, @Nullable T[] array) {
     Collection<? extends T> collection = castOrCopyToCollection(iterable);
     return collection.toArray(array);
   }
@@ -297,7 +302,7 @@ public final class Iterables {
    * @param iterable the iterable to copy
    * @return a newly-allocated array into which all the elements of the iterable have been copied
    */
-  static Object[] toArray(Iterable<?> iterable) {
+  static @Nullable Object[] toArray(Iterable<?> iterable) {
     return castOrCopyToCollection(iterable).toArray();
   }
 
@@ -364,7 +369,7 @@ public final class Iterables {
    * <p><b>Java 8 users:</b> The {@code Stream} equivalent of this method is {@code
    * Stream.generate(() -> iterable).flatMap(Streams::stream)}.
    */
-  public static <T> Iterable<T> cycle(final Iterable<T> iterable) {
+  public static <T extends @NonNull Object> Iterable<T> cycle(final Iterable<T> iterable) {
     checkNotNull(iterable);
     return new FluentIterable<T>() {
       @Override
@@ -421,7 +426,8 @@ public final class Iterables {
    * <p><b>Java 8 users:</b> The {@code Stream} equivalent of this method is {@code Stream.concat(a,
    * b)}.
    */
-  public static <T> Iterable<T> concat(Iterable<? extends T> a, Iterable<? extends T> b) {
+  public static <T extends @NonNull Object> Iterable<T> concat(Iterable<? extends T> a,
+      Iterable<? extends T> b) {
     return FluentIterable.concat(a, b);
   }
 
@@ -436,7 +442,7 @@ public final class Iterables {
    * <p><b>Java 8 users:</b> The {@code Stream} equivalent of this method is {@code
    * Streams.concat(a, b, c)}.
    */
-  public static <T> Iterable<T> concat(
+  public static <T extends @NonNull Object> Iterable<T> concat(
       Iterable<? extends T> a, Iterable<? extends T> b, Iterable<? extends T> c) {
     return FluentIterable.concat(a, b, c);
   }
@@ -453,7 +459,7 @@ public final class Iterables {
    * <p><b>Java 8 users:</b> The {@code Stream} equivalent of this method is {@code
    * Streams.concat(a, b, c, d)}.
    */
-  public static <T> Iterable<T> concat(
+  public static <T extends @NonNull Object> Iterable<T> concat(
       Iterable<? extends T> a,
       Iterable<? extends T> b,
       Iterable<? extends T> c,
@@ -475,7 +481,7 @@ public final class Iterables {
    * @throws NullPointerException if any of the provided iterables is null
    */
   @SafeVarargs
-  public static <T> Iterable<T> concat(Iterable<? extends T>... inputs) {
+  public static <T extends @NonNull Object> Iterable<T> concat(Iterable<? extends T>... inputs) {
     return FluentIterable.concat(inputs);
   }
 
@@ -491,7 +497,8 @@ public final class Iterables {
    * <p><b>Java 8 users:</b> The {@code Stream} equivalent of this method is {@code
    * streamOfStreams.flatMap(s -> s)}.
    */
-  public static <T> Iterable<T> concat(Iterable<? extends Iterable<? extends T>> inputs) {
+  public static <T extends @NonNull Object> Iterable<T> concat(
+      Iterable<? extends Iterable<? extends T>> inputs) {
     return FluentIterable.concat(inputs);
   }
 
@@ -556,7 +563,7 @@ public final class Iterables {
    *
    * <p><b>{@code Stream} equivalent:</b> {@link Stream#filter}.
    */
-  public static <T> Iterable<T> filter(
+  public static <T extends @NonNull Object> Iterable<T> filter(
       final Iterable<T> unfiltered, final Predicate<? super T> retainIfTrue) {
     checkNotNull(unfiltered);
     checkNotNull(retainIfTrue);
@@ -600,7 +607,8 @@ public final class Iterables {
    */
   @SuppressWarnings("unchecked")
   @GwtIncompatible // Class.isInstance
-  public static <T> Iterable<T> filter(final Iterable<?> unfiltered, final Class<T> desiredType) {
+  public static <T extends @NonNull Object> Iterable<T> filter(final Iterable<@NonNull ?> unfiltered,
+      final Class<T> desiredType) {
     checkNotNull(unfiltered);
     checkNotNull(desiredType);
     return (Iterable<T>) filter(unfiltered, Predicates.instanceOf(desiredType));
@@ -611,7 +619,8 @@ public final class Iterables {
    *
    * <p><b>{@code Stream} equivalent:</b> {@link Stream#anyMatch}.
    */
-  public static <T> boolean any(Iterable<T> iterable, Predicate<? super T> predicate) {
+  public static <T extends @NonNull Object> boolean any(Iterable<T> iterable,
+      Predicate<? super T> predicate) {
     return Iterators.any(iterable.iterator(), predicate);
   }
 
@@ -621,7 +630,8 @@ public final class Iterables {
    *
    * <p><b>{@code Stream} equivalent:</b> {@link Stream#allMatch}.
    */
-  public static <T> boolean all(Iterable<T> iterable, Predicate<? super T> predicate) {
+  public static <T extends @NonNull Object> boolean all(Iterable<T> iterable,
+      Predicate<? super T> predicate) {
     return Iterators.all(iterable.iterator(), predicate);
   }
 
@@ -634,7 +644,8 @@ public final class Iterables {
    *
    * @throws NoSuchElementException if no element in {@code iterable} matches the given predicate
    */
-  public static <T> T find(Iterable<T> iterable, Predicate<? super T> predicate) {
+  public static <T extends @NonNull Object> T find(Iterable<T> iterable,
+      Predicate<? super T> predicate) {
     return Iterators.find(iterable.iterator(), predicate);
   }
 
@@ -648,7 +659,7 @@ public final class Iterables {
    *
    * @since 7.0
    */
-  public static <T> @Nullable T find(
+  public static <T extends @NonNull Object> @Nullable T find(
       Iterable<? extends T> iterable, Predicate<? super T> predicate, @Nullable T defaultValue) {
     return Iterators.find(iterable.iterator(), predicate, defaultValue);
   }
@@ -664,7 +675,8 @@ public final class Iterables {
    *
    * @since 11.0
    */
-  public static <T> Optional<T> tryFind(Iterable<T> iterable, Predicate<? super T> predicate) {
+  public static <T extends @NonNull Object> Optional<T> tryFind(Iterable<T> iterable,
+      Predicate<? super T> predicate) {
     return Iterators.tryFind(iterable.iterator(), predicate);
   }
 
@@ -678,7 +690,8 @@ public final class Iterables {
    *
    * @since 2.0
    */
-  public static <T> int indexOf(Iterable<T> iterable, Predicate<? super T> predicate) {
+  public static <T extends @NonNull Object> int indexOf(Iterable<T> iterable,
+      Predicate<? super T> predicate) {
     return Iterators.indexOf(iterable.iterator(), predicate);
   }
 
@@ -695,7 +708,7 @@ public final class Iterables {
    *
    * <p><b>{@code Stream} equivalent:</b> {@link Stream#map}
    */
-  public static <F, T> Iterable<T> transform(
+  public static <F, T extends @NonNull Object> Iterable<T> transform(
       final Iterable<F> fromIterable, final Function<? super F, ? extends T> function) {
     checkNotNull(fromIterable);
     checkNotNull(function);
@@ -782,7 +795,7 @@ public final class Iterables {
    * @return the first element of {@code iterable} or the default value
    * @since 7.0
    */
-  public static <T> @PolyNull T getFirst(Iterable<? extends T> iterable, @PolyNull T defaultValue) {
+  public static <T> @Nullable T getFirst(Iterable<? extends T> iterable, @Nullable T defaultValue) {
     return Iterators.getNext(iterable.iterator(), defaultValue);
   }
 
@@ -855,7 +868,8 @@ public final class Iterables {
    *
    * @since 3.0
    */
-  public static <T> Iterable<T> skip(final Iterable<T> iterable, final int numberToSkip) {
+  public static <T extends @NonNull Object> Iterable<T> skip(final Iterable<T> iterable,
+      final int numberToSkip) {
     checkNotNull(iterable);
     checkArgument(numberToSkip >= 0, "number to skip cannot be negative");
 
@@ -925,7 +939,8 @@ public final class Iterables {
    * @throws IllegalArgumentException if {@code limitSize} is negative
    * @since 3.0
    */
-  public static <T> Iterable<T> limit(final Iterable<T> iterable, final int limitSize) {
+  public static <T extends @NonNull Object> Iterable<T> limit(final Iterable<T> iterable,
+      final int limitSize) {
     checkNotNull(iterable);
     checkArgument(limitSize >= 0, "limit is negative");
     return new FluentIterable<T>() {
@@ -957,7 +972,8 @@ public final class Iterables {
    * @see Iterators#consumingIterator(Iterator)
    * @since 2.0
    */
-  public static <T> Iterable<T> consumingIterable(final Iterable<T> iterable) {
+  public static <T extends @NonNull Object> Iterable<T> consumingIterable(
+      final Iterable<T> iterable) {
     checkNotNull(iterable);
 
     return new FluentIterable<T>() {
@@ -1009,7 +1025,7 @@ public final class Iterables {
    * @since 11.0
    */
   @Beta
-  public static <T> Iterable<T> mergeSorted(
+  public static <T extends @NonNull Object> Iterable<T> mergeSorted(
       final Iterable<? extends Iterable<? extends T>> iterables,
       final Comparator<? super T> comparator) {
     checkNotNull(iterables, "iterables");

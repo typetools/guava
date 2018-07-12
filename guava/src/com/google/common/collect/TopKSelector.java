@@ -125,7 +125,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
    * Adds {@code elem} as a candidate for the top {@code k} elements. This operation takes amortized
    * O(1) time.
    */
-  public void offer(@Nullable T elem) {
+  @SuppressWarnings("nullness:argument.type.incompatible") // 'threshold' is initialized to elem of
+  // type T before passing it to comparator.compare
+  public void offer(T elem) {
     if (k == 0) {
       return;
     } else if (bufferSize == 0) {
@@ -150,6 +152,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
    * Quickselects the top k elements from the 2k elements in the buffer. O(k) expected time, O(k log
    * k) worst case.
    */
+  @SuppressWarnings("nullness:argument.type.incompatible") // 'threshold' is assigned a value of type
+  // T before passing it as an argument to comparator.compare method
   private void trim() {
     int left = 0;
     int right = 2 * k - 1;

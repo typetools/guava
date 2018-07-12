@@ -37,8 +37,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -86,7 +89,9 @@ public final class Collections2 {
    */
   // TODO(kevinb): how can we omit that Iterables link when building gwt
   // javadoc?
-  public static <E> Collection<E> filter(Collection<E> unfiltered, Predicate<? super E> predicate) {
+  // It can be invoked for @Nullable E type if the provided predicate accepts @Nullable inputs
+  public static <E extends @NonNull Object> Collection<E> filter(
+      Collection<E> unfiltered, Predicate<? super E> predicate) {
     if (unfiltered instanceof FilteredCollection) {
       // Support clear(), removeAll(), and retainAll() when filtering a filtered
       // collection.
@@ -122,7 +127,8 @@ public final class Collections2 {
     }
   }
 
-  static class FilteredCollection<E> extends AbstractCollection<E> {
+  // It can be created for @Nullable E if the provided predicate accepts @Nullable inputs
+  static class FilteredCollection<E extends @NonNull Object> extends AbstractCollection<E> {
     final Collection<E> unfiltered;
     final Predicate<? super E> predicate;
 
@@ -143,7 +149,7 @@ public final class Collections2 {
     }
 
     @Override
-    public boolean addAll(Collection<? extends E> collection) {
+    public boolean addAll(Collection<? extends @NonNull E> collection) {
       for (E element : collection) {
         checkArgument(predicate.apply(element));
       }
@@ -157,6 +163,7 @@ public final class Collections2 {
 
     @Pure
     @Override
+    @SuppressWarnings("nullness:cast.unsafe")
     public boolean contains(@Nullable Object element) {
       if (safeContains(unfiltered, element)) {
         @SuppressWarnings("unchecked") // element is in unfiltered, so it must be an E
@@ -189,7 +196,7 @@ public final class Collections2 {
     }
 
     @Override
-    public void forEach(Consumer<? super E> action) {
+    public void forEach(Consumer<? super @NonNull E> action) {
       checkNotNull(action);
       unfiltered.forEach(
           (E e) -> {
@@ -233,13 +240,15 @@ public final class Collections2 {
     }
 
     @Override
-    public Object[] toArray() {
+    @SuppressWarnings("nullness:override.return.invalid") // Suppressed due to annotation for toArray
+    public @Nullable Object[] toArray() {
       // creating an ArrayList so filtering happens once
       return Lists.newArrayList(iterator()).toArray();
     }
 
     @Override
-    public <T> T[] toArray(T[] array) {
+    @SuppressWarnings("nullness:override.param.invalid") // Suppressed due to annotation for toArray
+    public <T> @Nullable T[] toArray(@Nullable T[] array) {
       return Lists.newArrayList(iterator()).toArray(array);
     }
 
@@ -315,6 +324,7 @@ public final class Collections2 {
       return fromCollection.removeIf(element -> filter.test(function.apply(element)));
     }
 
+    @Pure
     @Override
     public int size() {
       return fromCollection.size();
@@ -332,6 +342,7 @@ public final class Collections2 {
    * @param self a collection which might contain all elements in {@code c}
    * @param c a collection whose elements might be contained by {@code self}
    */
+  @Pure
   static boolean containsAllImpl(Collection<?> self, Collection<?> c) {
     for (Object o : c) {
       if (!self.contains(o)) {
@@ -342,6 +353,7 @@ public final class Collections2 {
   }
 
   /** An implementation of {@link Collection#toString()}. */
+  @SideEffectFree
   static String toStringImpl(final Collection<?> collection) {
     StringBuilder sb = newStringBuilderForCollection(collection.size()).append('[');
     boolean first = true;
@@ -445,12 +457,13 @@ public final class Collections2 {
    * @since 12.0
    */
   @Beta
-  public static <E> Collection<List<E>> orderedPermutations(
+  public static <E extends @NonNull Object> Collection<List<E>> orderedPermutations(
       Iterable<E> elements, Comparator<? super E> comparator) {
     return new OrderedPermutationCollection<E>(elements, comparator);
   }
 
-  private static final class OrderedPermutationCollection<E> extends AbstractCollection<List<E>> {
+  private static final class OrderedPermutationCollection<E extends @NonNull Object>
+      extends AbstractCollection<List<E>> {
     final ImmutableList<E> inputList;
     final Comparator<? super E> comparator;
     final int size;
@@ -491,11 +504,13 @@ public final class Collections2 {
       return IntMath.saturatedMultiply(permutations, IntMath.binomial(n, r));
     }
 
+    @Pure
     @Override
     public int size() {
       return size;
     }
 
+    @Pure
     @Override
     public boolean isEmpty() {
       return false;
@@ -506,6 +521,7 @@ public final class Collections2 {
       return new OrderedPermutationIterator<E>(inputList, comparator);
     }
 
+    @Pure
     @Override
     public boolean contains(@Nullable Object obj) {
       if (obj instanceof List) {
@@ -515,13 +531,15 @@ public final class Collections2 {
       return false;
     }
 
+    @SideEffectFree
     @Override
     public String toString() {
       return "orderedPermutationCollection(" + inputList + ")";
     }
   }
 
-  private static final class OrderedPermutationIterator<E> extends AbstractIterator<List<E>> {
+  private static final class OrderedPermutationIterator<E extends @NonNull Object>
+      extends AbstractIterator<List<E>> {
     @Nullable List<E> nextPermutation;
     final Comparator<? super E> comparator;
 
@@ -531,6 +549,8 @@ public final class Collections2 {
     }
 
     @Override
+    @SuppressWarnings("nullness:return.type.incompatible") // If endOfData was called during
+    // execution, the return value will be ignored.
     protected List<E> computeNext() {
       if (nextPermutation == null) {
         return endOfData();
@@ -540,6 +560,7 @@ public final class Collections2 {
       return next;
     }
 
+    @RequiresNonNull("nextPermutation")
     void calculateNextPermutation() {
       int j = findNextJ();
       if (j == -1) {
@@ -553,6 +574,9 @@ public final class Collections2 {
       Collections.reverse(nextPermutation.subList(j + 1, n));
     }
 
+    @SideEffectFree
+    @RequiresNonNull("nextPermutation")
+    @SuppressWarnings("nullness:dereference.of.nullable")
     int findNextJ() {
       for (int k = nextPermutation.size() - 2; k >= 0; k--) {
         if (comparator.compare(nextPermutation.get(k), nextPermutation.get(k + 1)) < 0) {
@@ -562,6 +586,9 @@ public final class Collections2 {
       return -1;
     }
 
+    @SideEffectFree
+    @RequiresNonNull("nextPermutation")
+    @SuppressWarnings("nullness:dereference.of.nullable")
     int findNextL(int j) {
       E ak = nextPermutation.get(j);
       for (int l = nextPermutation.size() - 1; l > j; l--) {
@@ -591,11 +618,12 @@ public final class Collections2 {
    * @since 12.0
    */
   @Beta
-  public static <E> Collection<List<E>> permutations(Collection<E> elements) {
+  public static <E extends @NonNull Object> Collection<List<E>> permutations(Collection<E> elements) {
     return new PermutationCollection<E>(ImmutableList.copyOf(elements));
   }
 
-  private static final class PermutationCollection<E> extends AbstractCollection<List<E>> {
+  private static final class PermutationCollection<E extends @NonNull Object>
+      extends AbstractCollection<List<E>> {
     final ImmutableList<E> inputList;
 
     PermutationCollection(ImmutableList<E> input) {
@@ -632,7 +660,8 @@ public final class Collections2 {
     }
   }
 
-  private static class PermutationIterator<E> extends AbstractIterator<List<E>> {
+  private static class PermutationIterator<E extends @NonNull Object>
+      extends AbstractIterator<List<E>> {
     final List<E> list;
     final int[] c;
     final int[] o;
@@ -649,6 +678,8 @@ public final class Collections2 {
     }
 
     @Override
+    @SuppressWarnings("nullness:return.type.incompatible") // If endOfData was called during
+    // execution, the return value will be ignored.
     protected List<E> computeNext() {
       if (j <= 0) {
         return endOfData();

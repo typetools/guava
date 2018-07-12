@@ -42,7 +42,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -65,7 +68,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Jared Levy
  */
 @GwtCompatible
-class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializable {
+class StandardTable<R extends @NonNull Object, C extends @NonNull Object, V extends @NonNull Object>
+    extends AbstractTable<R, C, V> implements Serializable {
   @GwtTransient final Map<R, Map<C, V>> backingMap;
   @GwtTransient final Supplier<? extends Map<C, V>> factory;
 
@@ -95,17 +99,19 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
   }
 
   @Override
+  @EnsuresNonNullIf(expression = "#1", result = true)
   public boolean containsRow(@Nullable Object rowKey) {
     return rowKey != null && safeContainsKey(backingMap, rowKey);
   }
 
   @Override
+  @EnsuresNonNullIf(expression = "#1", result = true)
   public boolean containsValue(@Nullable Object value) {
     return value != null && super.containsValue(value);
   }
 
   @Override
-  public V get(@Nullable Object rowKey, @Nullable Object columnKey) {
+  public @Nullable V get(@Nullable Object rowKey, @Nullable Object columnKey) {
     return (rowKey == null || columnKey == null) ? null : super.get(rowKey, columnKey);
   }
 
@@ -141,7 +147,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
 
   @CanIgnoreReturnValue
   @Override
-  public V put(R rowKey, C columnKey, V value) {
+  public @Nullable V put(R rowKey, C columnKey, V value) {
     checkNotNull(rowKey);
     checkNotNull(columnKey);
     checkNotNull(value);
@@ -150,7 +156,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
 
   @CanIgnoreReturnValue
   @Override
-  public V remove(@Nullable Object rowKey, @Nullable Object columnKey) {
+  public @Nullable V remove(@Nullable Object rowKey, @Nullable Object columnKey) {
     if ((rowKey == null) || (columnKey == null)) {
       return null;
     }
@@ -166,7 +172,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
   }
 
   @CanIgnoreReturnValue
-  private Map<R, V> removeColumn(Object column) {
+  private Map<R, V> removeColumn(@Nullable Object column) {
     Map<R, V> output = new LinkedHashMap<>();
     Iterator<Entry<R, Map<C, V>>> iterator = backingMap.entrySet().iterator();
     while (iterator.hasNext()) {
@@ -182,12 +188,14 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
     return output;
   }
 
-  private boolean containsMapping(Object rowKey, Object columnKey, Object value) {
+  private boolean containsMapping(@Nullable Object rowKey, @Nullable Object columnKey,
+      @Nullable Object value) {
     return value != null && value.equals(get(rowKey, columnKey));
   }
 
   /** Remove a row key / column key / value mapping, if present. */
-  private boolean removeMapping(Object rowKey, Object columnKey, Object value) {
+  private boolean removeMapping(@Nullable Object rowKey, @Nullable Object columnKey,
+      @Nullable Object value) {
     if (containsMapping(rowKey, columnKey, value)) {
       remove(rowKey, columnKey);
       return true;
@@ -244,6 +252,12 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
     }
 
     @Override
+    @EnsuresNonNull("rowEntry")
+    @SuppressWarnings({
+        "nullness:dereference.of.nullable",
+        "nullness:contracts.postcondition.not.satisfied"
+    }) // rowEntry is always initialized to rowIterator.next() before de-referencing. The next method
+    // throws NoSuchElementException if iteration has no more elements
     public Cell<R, C, V> next() {
       if (!columnIterator.hasNext()) {
         rowEntry = rowIterator.next();
@@ -254,6 +268,8 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
     }
 
     @Override
+    @SuppressWarnings("nullness:dereference.of.nullable") // Call to next method ensures rowEntry to
+    // be non-null. If remove is invoked without calling next it throws an IllegalStateException
     public void remove() {
       columnIterator.remove();
       if (rowEntry.getValue().isEmpty()) {
@@ -291,17 +307,19 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
 
     @Nullable Map<C, V> backingRowMap;
 
-    Map<C, V> backingRowMap() {
+    @Nullable Map<C, V> backingRowMap() {
       return (backingRowMap == null || (backingRowMap.isEmpty() && backingMap.containsKey(rowKey)))
           ? backingRowMap = computeBackingRowMap()
           : backingRowMap;
     }
 
-    Map<C, V> computeBackingRowMap() {
+    @Nullable Map<C, V> computeBackingRowMap() {
       return backingMap.get(rowKey);
     }
 
     // Call this every time we perform a removal.
+    @SuppressWarnings("nullness:dereference.of.nullable") // Condition backingRowMap() != null
+    // ensures backingRowMap to be non-null
     void maintainEmptyInvariant() {
       if (backingRowMap() != null && backingRowMap.isEmpty()) {
         backingMap.remove(rowKey);
@@ -310,19 +328,19 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
     }
 
     @Override
-    public boolean containsKey(Object key) {
+    public boolean containsKey(@Nullable Object key) {
       Map<C, V> backingRowMap = backingRowMap();
       return (key != null && backingRowMap != null) && Maps.safeContainsKey(backingRowMap, key);
     }
 
     @Override
-    public V get(Object key) {
+    public @Nullable V get(@Nullable Object key) {
       Map<C, V> backingRowMap = backingRowMap();
       return (key != null && backingRowMap != null) ? Maps.safeGet(backingRowMap, key) : null;
     }
 
     @Override
-    public V put(C key, V value) {
+    public @Nullable V put(C key, V value) {
       checkNotNull(key);
       checkNotNull(value);
       if (backingRowMap != null && !backingRowMap.isEmpty()) {
@@ -332,7 +350,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
     }
 
     @Override
-    public V remove(Object key) {
+    public @Nullable V remove(@Nullable Object key) {
       Map<C, V> backingRowMap = backingRowMap();
       if (backingRowMap == null) {
         return null;
@@ -405,7 +423,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
         }
 
         @Override
-        public boolean equals(Object object) {
+        public boolean equals(@Nullable Object object) {
           // TODO(lowasser): identify why this affects GWT tests
           return standardEquals(object);
         }
@@ -431,22 +449,22 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
     }
 
     @Override
-    public V put(R key, V value) {
+    public @Nullable V put(R key, V value) {
       return StandardTable.this.put(key, columnKey, value);
     }
 
     @Override
-    public V get(Object key) {
+    public @Nullable V get(@Nullable Object key) {
       return StandardTable.this.get(key, columnKey);
     }
 
     @Override
-    public boolean containsKey(Object key) {
+    public boolean containsKey(@Nullable Object key) {
       return StandardTable.this.contains(key, columnKey);
     }
 
     @Override
-    public V remove(Object key) {
+    public @Nullable V remove(@Nullable Object key) {
       return StandardTable.this.remove(key, columnKey);
     }
 
@@ -504,7 +522,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public boolean contains(Object o) {
+      public boolean contains(@Nullable Object o) {
         if (o instanceof Entry) {
           Entry<?, ?> entry = (Entry<?, ?>) o;
           return containsMapping(entry.getKey(), columnKey, entry.getValue());
@@ -513,7 +531,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public boolean remove(Object obj) {
+      public boolean remove(@Nullable Object obj) {
         if (obj instanceof Entry) {
           Entry<?, ?> entry = (Entry<?, ?>) obj;
           return removeMapping(entry.getKey(), columnKey, entry.getValue());
@@ -531,6 +549,8 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       final Iterator<Entry<R, Map<C, V>>> iterator = backingMap.entrySet().iterator();
 
       @Override
+      @SuppressWarnings("nullness:return.type.incompatible") // If endOfData was called during
+      // execution the return value is ignored
       protected Entry<R, V> computeNext() {
         while (iterator.hasNext()) {
           final Entry<R, Map<C, V>> entry = iterator.next();
@@ -571,12 +591,12 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public boolean contains(Object obj) {
+      public boolean contains(@Nullable Object obj) {
         return StandardTable.this.contains(obj, columnKey);
       }
 
       @Override
-      public boolean remove(Object obj) {
+      public boolean remove(@Nullable Object obj) {
         return StandardTable.this.remove(obj, columnKey) != null;
       }
 
@@ -598,7 +618,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public boolean remove(Object obj) {
+      public boolean remove(@Nullable Object obj) {
         return obj != null && removeFromColumnIf(Maps.<V>valuePredicateOnEntries(equalTo(obj)));
       }
 
@@ -648,7 +668,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
     }
 
     @Override
-    public boolean remove(Object obj) {
+    public boolean remove(@Nullable Object obj) {
       if (obj == null) {
         return false;
       }
@@ -703,7 +723,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
     }
 
     @Override
-    public boolean contains(Object obj) {
+    public boolean contains(@Nullable Object obj) {
       return containsColumn(obj);
     }
   }
@@ -721,6 +741,8 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
     Iterator<Entry<C, V>> entryIterator = Iterators.emptyIterator();
 
     @Override
+    @SuppressWarnings("nullness:return.type.incompatible") // If endOfData is called during execution
+    // the return value will be ignored
     protected C computeNext() {
       while (true) {
         if (entryIterator.hasNext()) {
@@ -764,19 +786,19 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
   @WeakOuter
   class RowMap extends ViewCachingAbstractMap<R, Map<C, V>> {
     @Override
-    public boolean containsKey(Object key) {
+    public boolean containsKey(@Nullable Object key) {
       return containsRow(key);
     }
 
     // performing cast only when key is in backing map and has the correct type
     @SuppressWarnings("unchecked")
     @Override
-    public Map<C, V> get(Object key) {
+    public @Nullable Map<C, V> get(@Nullable Object key) {
       return containsRow(key) ? row((R) key) : null;
     }
 
     @Override
-    public Map<C, V> remove(Object key) {
+    public @Nullable Map<C, V> remove(@Nullable Object key) {
       return (key == null) ? null : backingMap.remove(key);
     }
 
@@ -805,7 +827,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public boolean contains(Object obj) {
+      public boolean contains(@Nullable Object obj) {
         if (obj instanceof Entry) {
           Entry<?, ?> entry = (Entry<?, ?>) obj;
           return entry.getKey() != null
@@ -816,7 +838,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public boolean remove(Object obj) {
+      public boolean remove(@Nullable Object obj) {
         if (obj instanceof Entry) {
           Entry<?, ?> entry = (Entry<?, ?>) obj;
           return entry.getKey() != null
@@ -840,19 +862,22 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
   private class ColumnMap extends ViewCachingAbstractMap<C, Map<R, V>> {
     // The cast to C occurs only when the key is in the map, implying that it
     // has the correct type.
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({
+        "unchecked",
+        "nullness:cast.unsafe" // Safe because of containsColumn(key)
+    })
     @Override
-    public Map<R, V> get(Object key) {
+    public @Nullable Map<R, V> get(@Nullable Object key) {
       return containsColumn(key) ? column((C) key) : null;
     }
 
     @Override
-    public boolean containsKey(Object key) {
+    public boolean containsKey(@Nullable Object key) {
       return containsColumn(key);
     }
 
     @Override
-    public Map<R, V> remove(Object key) {
+    public @Nullable Map<R, V> remove(@Nullable Object key) {
       return containsColumn(key) ? removeColumn(key) : null;
     }
 
@@ -891,7 +916,11 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public boolean contains(Object obj) {
+      @SuppressWarnings({
+        "nullness:cast.unsafe",
+        "nullness:dereference.of.nullable"
+      }) // Safe because of containsColumn(entry.getKey())
+      public boolean contains(@Nullable Object obj) {
         if (obj instanceof Entry) {
           Entry<?, ?> entry = (Entry<?, ?>) obj;
           if (containsColumn(entry.getKey())) {
@@ -906,7 +935,8 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public boolean remove(Object obj) {
+      @SuppressWarnings("nullness:dereference.of.nullable") // Safe because of contains(obj)
+      public boolean remove(@Nullable Object obj) {
         if (contains(obj)) {
           Entry<?, ?> entry = (Entry<?, ?>) obj;
           removeColumn(entry.getKey());
@@ -948,7 +978,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public boolean remove(Object obj) {
+      public boolean remove(@Nullable Object obj) {
         for (Entry<C, Map<R, V>> entry : ColumnMap.this.entrySet()) {
           if (entry.getValue().equals(obj)) {
             removeColumn(entry.getKey());

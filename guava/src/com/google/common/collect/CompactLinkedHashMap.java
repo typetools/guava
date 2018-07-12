@@ -27,7 +27,8 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * CompactLinkedHashMap is an implementation of a Map with insertion or LRU iteration order,
@@ -84,7 +85,7 @@ class CompactLinkedHashMap<K, V> extends CompactHashMap<K, V> {
    * <p>A node with "prev" pointer equal to {@code ENDPOINT} is the first node in the linked list,
    * and a node with "next" pointer equal to {@code ENDPOINT} is the last node.
    */
-  @VisibleForTesting transient long @MonotonicNonNull [] links;
+  @VisibleForTesting transient long[] links;
 
   /**
    * Pointer to the first node in the linked list, or {@code ENDPOINT} if there are no entries.
@@ -106,12 +107,15 @@ class CompactLinkedHashMap<K, V> extends CompactHashMap<K, V> {
     this(expectedSize, DEFAULT_LOAD_FACTOR, false);
   }
 
+  @SuppressWarnings("initialization:initialization.fields.uninitialized") // super class constructor
+  // calls init method, and is overridden to initialize all the necessary fields
   CompactLinkedHashMap(int expectedSize, float loadFactor, boolean accessOrder) {
     super(expectedSize, loadFactor);
     this.accessOrder = accessOrder;
   }
 
   @Override
+  @EnsuresNonNull({"table", "keys", "values", "entries", "links"})
   void init(int expectedSize, float loadFactor) {
     super.init(expectedSize, loadFactor);
     firstEntry = ENDPOINT;
@@ -223,12 +227,12 @@ class CompactLinkedHashMap<K, V> extends CompactHashMap<K, V> {
     @WeakOuter
     class KeySetImpl extends KeySetView {
       @Override
-      public Object[] toArray() {
+      public @Nullable Object[] toArray() {
         return ObjectArrays.toArrayImpl(this);
       }
 
       @Override
-      public <T> T[] toArray(T[] a) {
+      public <T> @Nullable T[] toArray(@Nullable T[] a) {
         return ObjectArrays.toArrayImpl(this, a);
       }
 
@@ -253,12 +257,12 @@ class CompactLinkedHashMap<K, V> extends CompactHashMap<K, V> {
     @WeakOuter
     class ValuesImpl extends ValuesView {
       @Override
-      public Object[] toArray() {
+      public @Nullable Object[] toArray() {
         return ObjectArrays.toArrayImpl(this);
       }
 
       @Override
-      public <T> T[] toArray(T[] a) {
+      public <T> @Nullable T[] toArray(@Nullable T[] a) {
         return ObjectArrays.toArrayImpl(this, a);
       }
 

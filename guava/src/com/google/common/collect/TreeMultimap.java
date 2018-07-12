@@ -77,8 +77,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
 public class TreeMultimap<K, V> extends AbstractSortedKeySortedSetMultimap<K, V> {
-  private transient @Nullable Comparator<? super K> keyComparator;
-  private transient @Nullable Comparator<? super V> valueComparator;
+  private transient Comparator<? super K> keyComparator;
+  private transient Comparator<? super V> valueComparator;
 
   /**
    * Creates an empty {@code TreeMultimap} ordered by the natural ordering of its keys and values.
@@ -110,16 +110,14 @@ public class TreeMultimap<K, V> extends AbstractSortedKeySortedSetMultimap<K, V>
     return new TreeMultimap<>(Ordering.natural(), Ordering.natural(), multimap);
   }
 
-  TreeMultimap(@Nullable Comparator<? super K> keyComparator, @Nullable Comparator<? super V> valueComparator) {
+  TreeMultimap(Comparator<? super K> keyComparator, Comparator<? super V> valueComparator) {
     super(new TreeMap<K, Collection<V>>(keyComparator));
     this.keyComparator = keyComparator;
     this.valueComparator = valueComparator;
   }
 
   private TreeMultimap(
-      @Nullable
       Comparator<? super K> keyComparator,
-      @Nullable
       Comparator<? super V> valueComparator,
       Multimap<? extends K, ? extends V> multimap) {
     this(keyComparator, valueComparator);
@@ -144,7 +142,7 @@ public class TreeMultimap<K, V> extends AbstractSortedKeySortedSetMultimap<K, V>
   }
 
   @Override
-  Collection<V> createCollection(@Nullable K key) {
+  Collection<V> createCollection(K key) {
     if (key == null) {
       keyComparator().compare(key, key);
     }
@@ -157,19 +155,21 @@ public class TreeMultimap<K, V> extends AbstractSortedKeySortedSetMultimap<K, V>
    * @deprecated Use {@code ((NavigableSet<K>) multimap.keySet()).comparator()} instead.
    */
   @Deprecated
-  public @Nullable Comparator<? super K> keyComparator() {
+  public Comparator<? super K> keyComparator() {
     return keyComparator;
   }
 
   @Override
-  public @Nullable Comparator<? super V> valueComparator() {
+  public Comparator<? super V> valueComparator() {
     return valueComparator;
   }
 
   /** @since 14.0 (present with return type {@code SortedSet} since 2.0) */
   @Override
   @GwtIncompatible // NavigableSet
-  public NavigableSet<V> get(@Nullable K key) {
+  @SuppressWarnings("nullness:override.param.invalid") // Please refer to note on 'get' method in
+  // AbstractMapBasedMultimap
+  public NavigableSet<V> get(K key) {
     return (NavigableSet<V>) super.get(key);
   }
 

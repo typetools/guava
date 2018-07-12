@@ -44,6 +44,7 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -668,7 +669,9 @@ public final class Streams {
     abstract S createSplit(F from, long i);
 
     @Override
-    public S trySplit() {
+    @SuppressWarnings("nullness:override.return.invalid") // Missing annotations for trySplit in
+    // annotated-JDK TODO dilraj45: Add missing annotations to java.util.Spliterator
+    public @Nullable S trySplit() {
       @SuppressWarnings("unchecked")
       F split = (F) fromSpliterator.trySplit();
       if (split == null) {
@@ -748,7 +751,7 @@ public final class Streams {
    * @see Stream#findFirst()
    * @throws NullPointerException if the last element of the stream is null
    */
-  public static <T> java.util.Optional<T> findLast(Stream<T> stream) {
+  public static <T extends @NonNull Object> java.util.Optional<T> findLast(Stream<T> stream) {
     class OptionalState {
       boolean set = false;
       T value = null;

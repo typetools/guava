@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Spliterator;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -119,12 +120,12 @@ public final class MutableClassToInstanceMap<B> extends ForwardingMap<Class<? ex
       }
 
       @Override
-      public Object[] toArray() {
+      public @Nullable Object[] toArray() {
         return standardToArray();
       }
 
       @Override
-      public <T> T[] toArray(T[] array) {
+      public <T> @Nullable T[] toArray(@Nullable T[] array) {
         return standardToArray(array);
       }
     };
@@ -132,7 +133,9 @@ public final class MutableClassToInstanceMap<B> extends ForwardingMap<Class<? ex
 
   @Override
   @CanIgnoreReturnValue
-  public B put(Class<? extends B> key, B value) {
+  @SuppressWarnings("nullness:argument.type.incompatible") // Argument value supplied to cast
+  // method is always of type B
+  public @Nullable B put(Class<? extends B> key, B value) {
     return super.put(key, cast(key, value));
   }
 
@@ -147,17 +150,17 @@ public final class MutableClassToInstanceMap<B> extends ForwardingMap<Class<? ex
 
   @CanIgnoreReturnValue
   @Override
-  public <T extends B> T putInstance(Class<T> type, T value) {
+  public <T extends B> @Nullable T putInstance(Class<T> type, T value) {
     return cast(type, put(type, value));
   }
 
   @Override
-  public <T extends B> T getInstance(Class<T> type) {
+  public <T extends B> @Nullable T getInstance(Class<T> type) {
     return cast(type, get(type));
   }
 
   @CanIgnoreReturnValue
-  private static <B, T extends B> T cast(Class<T> type, @Nullable B value) {
+  private static <B, T extends B> @PolyNull T cast(Class<T> type, @PolyNull B value) {
     return Primitives.wrap(type).cast(value);
   }
 

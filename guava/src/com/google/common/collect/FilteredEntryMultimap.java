@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -78,12 +79,13 @@ class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V> implements Filt
     }
 
     @Override
-    public boolean apply(@Nullable V value) {
+    public boolean apply(V value) {
       return satisfies(key, value);
     }
   }
 
-  static <E> Collection<E> filterCollection(
+  // Type E can be @Nullable if the provided predicate allows @Nullable input values
+  static <E extends @NonNull Object> Collection<E> filterCollection(
       Collection<E> collection, Predicate<? super E> predicate) {
     if (collection instanceof Set) {
       return Sets.filter((Set<E>) collection, predicate);
@@ -98,6 +100,8 @@ class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V> implements Filt
   }
 
   @Override
+  @SuppressWarnings("nullness:argument.type.incompatible") // Suppressing conservatively issued
+  // warning. Method unmodifiableEmptyCollection always return a @NonNull Collection<V>
   public Collection<V> removeAll(@Nullable Object key) {
     return MoreObjects.firstNonNull(asMap().remove(key), unmodifiableEmptyCollection());
   }
@@ -115,7 +119,11 @@ class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V> implements Filt
   }
 
   @Override
-  public Collection<V> get(final K key) {
+  @SuppressWarnings({
+    "nullness:argument.type.incompatible",
+    "nullness:type.argument.type.incompatible"
+  }) // ValuePredicate allows @Nullable input arguments
+  public Collection<V> get(final @Nullable K key) {
     return filterCollection(unfiltered.get(key), new ValuePredicate(key));
   }
 
@@ -144,6 +152,8 @@ class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V> implements Filt
     return asMap().keySet();
   }
 
+  @SuppressWarnings("nullness:type.argument.type.incompatible") // ValuePredicate allows @Nullable
+  // input values
   boolean removeEntriesIf(Predicate<? super Entry<K, Collection<V>>> predicate) {
     Iterator<Entry<K, Collection<V>>> entryIterator = unfiltered.asMap().entrySet().iterator();
     boolean changed = false;
@@ -176,7 +186,9 @@ class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V> implements Filt
     }
 
     @Override
-    public Collection<V> get(@Nullable Object key) {
+    @SuppressWarnings("nullness:type.argument.type.incompatible") // ValuePredicate allows @Nullable
+    // input values
+    public @Nullable Collection<V> get(@Nullable Object key) {
       Collection<V> result = unfiltered.asMap().get(key);
       if (result == null) {
         return null;
@@ -188,7 +200,7 @@ class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V> implements Filt
     }
 
     @Override
-    public Collection<V> remove(@Nullable Object key) {
+    public @Nullable Collection<V> remove(@Nullable Object key) {
       Collection<V> collection = unfiltered.asMap().get(key);
       if (collection == null) {
         return null;

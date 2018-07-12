@@ -21,6 +21,7 @@ import com.google.common.collect.Multisets.UnmodifiableMultiset;
 import java.util.Comparator;
 import java.util.NavigableSet;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Implementation of {@link Multisets#unmodifiableSortedMultiset(SortedMultiset)}, split out into
@@ -70,22 +71,22 @@ final class UnmodifiableSortedMultiset<E> extends UnmodifiableMultiset<E>
   }
 
   @Override
-  public Entry<E> firstEntry() {
+  public @Nullable Entry<E> firstEntry() {
     return delegate().firstEntry();
   }
 
   @Override
-  public Entry<E> lastEntry() {
+  public @Nullable Entry<E> lastEntry() {
     return delegate().lastEntry();
   }
 
   @Override
-  public Entry<E> pollFirstEntry() {
+  public @Nullable Entry<E> pollFirstEntry() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public Entry<E> pollLastEntry() {
+  public @Nullable Entry<E> pollLastEntry() {
     throw new UnsupportedOperationException();
   }
 

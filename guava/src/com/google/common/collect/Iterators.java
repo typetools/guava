@@ -45,6 +45,7 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -220,7 +221,9 @@ public final class Iterators {
    * @since 2.0
    */
   @CanIgnoreReturnValue
-  public static <T> boolean removeIf(Iterator<T> removeFrom, Predicate<? super T> predicate) {
+  // T can be of type @Nullable if the provided predicate allows @Nullable inputs
+  public static <T extends @NonNull Object> boolean removeIf(Iterator<T> removeFrom,
+      Predicate<? super T> predicate) {
     checkNotNull(predicate);
     boolean modified = false;
     while (removeFrom.hasNext()) {
@@ -343,7 +346,7 @@ public final class Iterators {
    * @return a newly-allocated array into which all the elements of the iterator have been copied
    */
   @GwtIncompatible // Array.newInstance(Class, int)
-  public static <T> T[] toArray(Iterator<? extends T> iterator, Class<T> type) {
+  public static <T> @Nullable T[] toArray(Iterator<? extends T> iterator, Class<T> type) {
     List<T> list = Lists.newArrayList(iterator);
     return Iterables.toArray(list, type);
   }
@@ -664,7 +667,9 @@ public final class Iterators {
    * Returns {@code true} if one or more elements returned by {@code iterator} satisfy the given
    * predicate.
    */
-  public static <T> boolean any(Iterator<T> iterator, Predicate<? super T> predicate) {
+  // T can be of type @Nullable if the provided predicate accepts @Nullable inputs
+  public static <T extends @NonNull Object> boolean any(Iterator<T> iterator,
+      Predicate<? super T> predicate) {
     return indexOf(iterator, predicate) != -1;
   }
 
@@ -672,7 +677,9 @@ public final class Iterators {
    * Returns {@code true} if every element returned by {@code iterator} satisfies the given
    * predicate. If {@code iterator} is empty, {@code true} is returned.
    */
-  public static <T> boolean all(Iterator<T> iterator, Predicate<? super T> predicate) {
+  // T can be of type @Nullable if the provided predicate accepts @Nullable inputs
+  public static <T extends @NonNull Object> boolean all(Iterator<T> iterator,
+      Predicate<? super T> predicate) {
     checkNotNull(predicate);
     while (iterator.hasNext()) {
       T element = iterator.next();
@@ -692,7 +699,9 @@ public final class Iterators {
    *
    * @throws NoSuchElementException if no element in {@code iterator} matches the given predicate
    */
-  public static <T> T find(Iterator<T> iterator, Predicate<? super T> predicate) {
+  // T can be of type @Nullable if the provided predicate accepts @Nullable inputs
+  public static <T extends @NonNull Object> T find(Iterator<T> iterator,
+      Predicate<? super T> predicate) {
     checkNotNull(iterator);
     checkNotNull(predicate);
     while (iterator.hasNext()) {
@@ -712,7 +721,7 @@ public final class Iterators {
    *
    * @since 7.0
    */
-  public static <T> @Nullable T find(
+  public static <T extends @NonNull Object> @Nullable T find(
       Iterator<? extends T> iterator, Predicate<? super T> predicate, @Nullable T defaultValue) {
     checkNotNull(iterator);
     checkNotNull(predicate);
@@ -736,7 +745,8 @@ public final class Iterators {
    *
    * @since 11.0
    */
-  public static <T> Optional<T> tryFind(Iterator<T> iterator, Predicate<? super T> predicate) {
+  public static <T extends @NonNull Object> Optional<T> tryFind(Iterator<T> iterator,
+      Predicate<? super T> predicate) {
     checkNotNull(iterator);
     checkNotNull(predicate);
     while (iterator.hasNext()) {
@@ -762,7 +772,8 @@ public final class Iterators {
    *
    * @since 2.0
    */
-  public static <T> int indexOf(Iterator<T> iterator, Predicate<? super T> predicate) {
+  public static <T extends @NonNull Object> int indexOf(Iterator<T> iterator,
+      Predicate<? super T> predicate) {
     checkNotNull(predicate, "predicate");
     for (int i = 0; iterator.hasNext(); i++) {
       T current = iterator.next();
@@ -1132,6 +1143,8 @@ public final class Iterators {
     }
 
     @Override
+    @SuppressWarnings("nullness:return.type.incompatible") // Returns peekedElement only if hasPeeked
+    // is true i.e. only if peekedElement exists
     public E next() {
       if (!hasPeeked) {
         return iterator.next();
@@ -1149,6 +1162,7 @@ public final class Iterators {
     }
 
     @Override
+    @SuppressWarnings("nullness:return.type.incompatible") // peekedElement is ensured to be of type E
     public E peek() {
       if (!hasPeeked) {
         peekedElement = iterator.next();
@@ -1301,7 +1315,7 @@ public final class Iterators {
      * operation O(1).
      */
 
-    private Iterator<? extends Iterator<? extends T>> topMetaIterator;
+    private @Nullable Iterator<? extends Iterator<? extends T>> topMetaIterator;
 
     // Only becomes nonnull if we encounter nested concatenations.
     private @Nullable Deque<Iterator<? extends Iterator<? extends T>>> metaIterators;
@@ -1350,10 +1364,8 @@ public final class Iterators {
             this.metaIterators = new ArrayDeque<>();
           }
           this.metaIterators.addFirst(this.topMetaIterator);
-          if (topConcat.metaIterators != null) {
-            while (!topConcat.metaIterators.isEmpty()) {
-              this.metaIterators.addFirst(topConcat.metaIterators.removeLast());
-            }
+          while (topConcat.metaIterators != null && !topConcat.metaIterators.isEmpty()) {
+            this.metaIterators.addFirst(topConcat.metaIterators.removeLast());
           }
           this.topMetaIterator = topConcat.topMetaIterator;
         }
@@ -1372,6 +1384,7 @@ public final class Iterators {
     }
 
     @Override
+    @SuppressWarnings("nullness:dereference.of.nullable") // Safe because of checkRemove statement
     public void remove() {
       CollectPreconditions.checkRemove(toRemove != null);
       toRemove.remove();

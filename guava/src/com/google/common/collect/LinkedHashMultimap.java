@@ -40,7 +40,10 @@ import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -119,9 +122,11 @@ public final class LinkedHashMultimap<K, V>
   }
 
   private interface ValueSetLink<K, V> {
-    ValueSetLink<K, V> getPredecessorInValueSet();
+    @Pure
+    @Nullable ValueSetLink<K, V> getPredecessorInValueSet();
 
-    ValueSetLink<K, V> getSuccessorInValueSet();
+    @Pure
+    @Nullable ValueSetLink<K, V> getSuccessorInValueSet();
 
     void setPredecessorInValueSet(ValueSetLink<K, V> entry);
 
@@ -138,10 +143,13 @@ public final class LinkedHashMultimap<K, V>
     succ.setPredecessorInMultimap(pred);
   }
 
+  @SuppressWarnings("nullness:argument.type.incompatible") // Invoked for entries present in bucket
+  // for which predecessor and successor are always assigned
   private static <K, V> void deleteFromValueSet(ValueSetLink<K, V> entry) {
     succeedsInValueSet(entry.getPredecessorInValueSet(), entry.getSuccessorInValueSet());
   }
 
+  @SuppressWarnings("nullness:argument.type.incompatible")
   private static <K, V> void deleteFromMultimap(ValueEntry<K, V> entry) {
     succeedsInMultimap(entry.getPredecessorInMultimap(), entry.getSuccessorInMultimap());
   }
@@ -165,8 +173,8 @@ public final class LinkedHashMultimap<K, V>
     @Nullable ValueEntry<K, V> successorInMultimap;
 
     ValueEntry(
-        @Nullable K key,
-        @Nullable V value,
+        K key,
+        V value,
         int smearedValueHash,
         @Nullable ValueEntry<K, V> nextInValueBucket) {
       super(key, value);
@@ -179,30 +187,34 @@ public final class LinkedHashMultimap<K, V>
     }
 
     @Override
-    public ValueSetLink<K, V> getPredecessorInValueSet() {
+    public @Nullable ValueSetLink<K, V> getPredecessorInValueSet() {
       return predecessorInValueSet;
     }
 
     @Override
-    public ValueSetLink<K, V> getSuccessorInValueSet() {
+    public @Nullable ValueSetLink<K, V> getSuccessorInValueSet() {
       return successorInValueSet;
     }
 
     @Override
+    @EnsuresNonNull("predecessorInValueSet")
     public void setPredecessorInValueSet(ValueSetLink<K, V> entry) {
       predecessorInValueSet = entry;
     }
 
     @Override
+    @EnsuresNonNull("successorInValueSet")
     public void setSuccessorInValueSet(ValueSetLink<K, V> entry) {
       successorInValueSet = entry;
     }
 
-    public ValueEntry<K, V> getPredecessorInMultimap() {
+    @Pure
+    public @Nullable ValueEntry<K, V> getPredecessorInMultimap() {
       return predecessorInMultimap;
     }
 
-    public ValueEntry<K, V> getSuccessorInMultimap() {
+    @Pure
+    public @Nullable ValueEntry<K, V> getSuccessorInMultimap() {
       return successorInMultimap;
     }
 
@@ -220,14 +232,14 @@ public final class LinkedHashMultimap<K, V>
   @VisibleForTesting static final double VALUE_SET_LOAD_FACTOR = 1.0;
 
   @VisibleForTesting transient int valueSetCapacity = DEFAULT_VALUE_SET_CAPACITY;
-  private transient ValueEntry<K, V> multimapHeaderEntry;
+  private transient ValueEntry<@Nullable K, @Nullable V> multimapHeaderEntry;
 
   private LinkedHashMultimap(int keyCapacity, int valueSetCapacity) {
     super(Platform.<K, Collection<V>>newLinkedHashMapWithExpectedSize(keyCapacity));
     checkNonnegative(valueSetCapacity, "expectedValuesPerKey");
 
     this.valueSetCapacity = valueSetCapacity;
-    this.multimapHeaderEntry = new ValueEntry<>(null, null, 0, null);
+    this.multimapHeaderEntry = new ValueEntry<@Nullable K, @Nullable V>(null, null, 0, null);
     succeedsInMultimap(multimapHeaderEntry, multimapHeaderEntry);
   }
 
@@ -266,7 +278,7 @@ public final class LinkedHashMultimap<K, V>
    */
   @CanIgnoreReturnValue
   @Override
-  public Set<V> replaceValues(@Nullable K key, Iterable<? extends V> values) {
+  public Set<V> replaceValues(K key, Iterable<? extends V> values) {
     return super.replaceValues(key, values);
   }
 
@@ -324,7 +336,7 @@ public final class LinkedHashMultimap<K, V>
      */
 
     private final K key;
-    @VisibleForTesting ValueEntry<K, V>[] hashTable;
+    @VisibleForTesting @Nullable ValueEntry<K, V>[] hashTable;
     private int size = 0;
     private int modCount = 0;
 
@@ -412,6 +424,8 @@ public final class LinkedHashMultimap<K, V>
     }
 
     @Override
+    @SuppressWarnings("nullness:dereference.of.nullable") // entry is never null during the execution
+    // of the for-loop
     public void forEach(Consumer<? super V> action) {
       checkNotNull(action);
       for (ValueSetLink<K, V> entry = firstEntry;
@@ -440,7 +454,9 @@ public final class LinkedHashMultimap<K, V>
     }
 
     @Override
-    public boolean add(@Nullable V value) {
+    @SuppressWarnings("nullness:argument.type.incompatible") // multimapHeaderEntry is initialized
+    // to be predecessor of itself
+    public boolean add(V value) {
       int smearedHash = Hashing.smearedHash(value);
       int bucket = smearedHash & mask();
       ValueEntry<K, V> rowHead = hashTable[bucket];
@@ -462,6 +478,8 @@ public final class LinkedHashMultimap<K, V>
       return true;
     }
 
+    @SuppressWarnings("nullness:dereference.of.nullable") // Successor are initialized whenever a
+    // entry is added. Thus for every existing entry in list, successor will be a non-null value
     private void rehashIfNecessary() {
       if (Hashing.needsResizing(size, hashTable.length, VALUE_SET_LOAD_FACTOR)) {
         @SuppressWarnings("unchecked")
@@ -506,6 +524,11 @@ public final class LinkedHashMultimap<K, V>
     }
 
     @Override
+    @SuppressWarnings({
+      "nullness:dereference.of.nullable",
+      "nullness:argument.type.incompatible"
+    }) // Successor are initialized whenever a entry is added. Thus for every existing entry in list,
+    // successor will be a non-null value
     public void clear() {
       Arrays.fill(hashTable, null);
       size = 0;
@@ -606,7 +629,7 @@ public final class LinkedHashMultimap<K, V>
     int entries = stream.readInt();
     for (int i = 0; i < entries; i++) {
       @SuppressWarnings("unchecked")
-      K key = (K) stream.readObject();
+      @KeyFor("map") K key = (K) stream.readObject();
       @SuppressWarnings("unchecked")
       V value = (V) stream.readObject();
       map.get(key).add(value);

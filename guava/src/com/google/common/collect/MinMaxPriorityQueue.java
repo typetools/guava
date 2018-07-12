@@ -41,8 +41,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 
 /**
  * A double-ended priority queue, which provides constant-time access to both its least element and
@@ -99,7 +102,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  */
 @Beta
 @GwtCompatible
-public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
+public final class MinMaxPriorityQueue<E extends @NonNull Object> extends AbstractQueue<E> {
 
   /**
    * Creates a new min-max priority queue with default settings: natural order, no maximum size, no
@@ -122,7 +125,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
    * Creates and returns a new builder, configured to build {@code MinMaxPriorityQueue} instances
    * that use {@code comparator} to determine the least and greatest elements.
    */
-  public static <B> Builder<B> orderedBy(Comparator<B> comparator) {
+  public static <B extends @NonNull Object> Builder<B> orderedBy(Comparator<B> comparator) {
     return new Builder<B>(comparator);
   }
 
@@ -155,7 +158,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
    * @since 8.0
    */
   @Beta
-  public static final class Builder<B> {
+  public static final class Builder<B extends @NonNull Object> {
     /*
      * TODO(kevinb): when the dust settles, see if we still need this or can
      * just default to DEFAULT_CAPACITY.
@@ -225,10 +228,12 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
   private final Heap minHeap;
   private final Heap maxHeap;
   @VisibleForTesting final int maximumSize;
-  private Object[] queue;
+  private @Nullable Object[] queue;
   private int size;
   private int modCount;
 
+  @EnsuresNonNull({"maxHeap.otherHeap", "minHeap.otherHeap"})
+  @SuppressWarnings("nullness:contracts.postcondition.not.satisfied")
   private MinMaxPriorityQueue(Builder<? super E> builder, int queueSize) {
     Ordering<E> ordering = builder.ordering();
     this.minHeap = new Heap(ordering);
@@ -278,6 +283,8 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
    */
   @CanIgnoreReturnValue
   @Override
+  @SuppressWarnings("nullness:contracts.precondition.not.satisfied") // The otherHeap for both minHeap
+  // and maxHeap are initialized by the MinMaxPriorityQueue constructor
   public boolean offer(E element) {
     checkNotNull(element);
     modCount++;
@@ -293,17 +300,17 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
 
   @CanIgnoreReturnValue
   @Override
-  public E poll() {
+  public @Nullable E poll() {
     return isEmpty() ? null : removeAndGet(0);
   }
 
-  @SuppressWarnings("unchecked") // we must carefully only allow Es to get in
+  @SuppressWarnings({"unchecked", "nullness:cast.unsafe"}) // we must carefully only allow Es to get in
   E elementData(int index) {
     return (E) queue[index];
   }
 
   @Override
-  public E peek() {
+  public @Nullable E peek() {
     return isEmpty() ? null : elementData(0);
   }
 
@@ -326,7 +333,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
    * empty.
    */
   @CanIgnoreReturnValue
-  public E pollFirst() {
+  public @Nullable E pollFirst() {
     return poll();
   }
 
@@ -344,7 +351,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
    * Retrieves, but does not remove, the least element of this queue, or returns {@code null} if the
    * queue is empty.
    */
-  public E peekFirst() {
+  public @Nullable E peekFirst() {
     return peek();
   }
 
@@ -353,7 +360,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
    * empty.
    */
   @CanIgnoreReturnValue
-  public E pollLast() {
+  public @Nullable E pollLast() {
     return isEmpty() ? null : removeAndGet(getMaxElementIndex());
   }
 
@@ -374,7 +381,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
    * Retrieves, but does not remove, the greatest element of this queue, or returns {@code null} if
    * the queue is empty.
    */
-  public E peekLast() {
+  public @Nullable E peekLast() {
     return isEmpty() ? null : elementData(getMaxElementIndex());
   }
 
@@ -393,7 +400,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
    */
   @VisibleForTesting
   @CanIgnoreReturnValue
-  MoveDesc<E> removeAt(int index) {
+  @Nullable MoveDesc<E> removeAt(int index) {
     checkPositionIndex(index, size);
     modCount++;
     size--;
@@ -428,7 +435,9 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
     return changes;
   }
 
-  private MoveDesc<E> fillHole(int index, E toTrickle) {
+  @SuppressWarnings("nullness:contracts.precondition.not.satisfied") // The otherHeap for both minHeap
+  // and maxHeap are initialized by the MinMaxPriorityQueue constructor
+  private @Nullable MoveDesc<E> fillHole(int index, E toTrickle) {
     Heap heap = heapForIndex(index);
     // We consider elementData(index) a "hole", and we want to fill it
     // with the last element of the heap, toTrickle.
@@ -519,7 +528,8 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
      * Tries to move {@code toTrickle} from a min to a max level and bubble up there. If it moved
      * before {@code removeIndex} this method returns a pair as described in {@link #removeAt}.
      */
-    MoveDesc<E> tryCrossOverAndBubbleUp(int removeIndex, int vacated, E toTrickle) {
+    @RequiresNonNull("otherHeap")
+    @Nullable MoveDesc<E> tryCrossOverAndBubbleUp(int removeIndex, int vacated, E toTrickle) {
       int crossOver = crossOver(vacated, toTrickle);
       if (crossOver == vacated) {
         return null;
@@ -546,6 +556,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
     }
 
     /** Bubbles a value from {@code index} up the appropriate heap if required. */
+    @RequiresNonNull("otherHeap")
     void bubbleUp(int index, E x) {
       int crossOver = crossOverUp(index, x);
 
@@ -784,6 +795,8 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
     }
 
     @Override
+    @SuppressWarnings("nullness:argument.type.incompatible") // skipMe is always initiailized before
+    // making a call to foundAndRemovedExactReference
     public void remove() {
       checkRemove(canRemove);
       checkModCount();
@@ -824,7 +837,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
     }
 
     /** Removes only this exact instance, not others that are equals() */
-    private boolean removeExact(Object target) {
+    private boolean removeExact(@Nullable Object target) {
       for (int i = 0; i < size; i++) {
         if (queue[i] == target) {
           removeAt(i);

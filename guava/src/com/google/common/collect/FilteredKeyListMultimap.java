@@ -19,6 +19,7 @@ package com.google.common.collect;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Predicate;
 import java.util.List;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -27,7 +28,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Louis Wasserman
  */
 @GwtCompatible
-final class FilteredKeyListMultimap<K, V> extends FilteredKeyMultimap<K, V>
+// FilterKeyListMultimap may accept @Nullable Keys if the implementation provided for keyPredicate
+// allows @Nullable input
+final class FilteredKeyListMultimap<K extends @NonNull Object, V> extends FilteredKeyMultimap<K, V>
     implements ListMultimap<K, V> {
   FilteredKeyListMultimap(ListMultimap<K, V> unfiltered, Predicate<? super K> keyPredicate) {
     super(unfiltered, keyPredicate);
@@ -39,6 +42,8 @@ final class FilteredKeyListMultimap<K, V> extends FilteredKeyMultimap<K, V>
   }
 
   @Override
+  @SuppressWarnings("nullness:override.param.invalid") // This method may accept @Nullable value
+  // if the provided keyPredicate allows @Nullable inputs
   public List<V> get(K key) {
     return (List<V>) super.get(key);
   }

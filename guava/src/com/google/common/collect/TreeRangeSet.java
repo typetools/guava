@@ -161,6 +161,8 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
   }
 
   @Override
+  @SuppressWarnings("nullness:dereference.of.nullable") // Safe because this method throws
+  // NoSuchElementException if the rangesByLowerBound map is empty
   public Range<C> span() {
     Entry<Cut<C>, Range<C>> firstEntry = rangesByLowerBound.firstEntry();
     Entry<Cut<C>, Range<C>> lastEntry = rangesByLowerBound.lastEntry();
@@ -171,6 +173,9 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
   }
 
   @Override
+  @SuppressWarnings("nullness:contracts.precondition.not.satisfied") // lowerBound and upperBound for
+  // a Range instance are references of type Cut of @NonNull type C, thus endpoint and that.endpoint
+  // are ensured to be of type @NonNull
   public void add(Range<C> rangeToAdd) {
     checkNotNull(rangeToAdd);
 
@@ -218,6 +223,9 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
   }
 
   @Override
+  @SuppressWarnings("nullness:contracts.precondition.not.satisfied") // lowerBound and upperBound for
+  // a Range instance are references of type Cut of @NonNull type C, thus endpoint and that.endpoint
+  // are ensured to be of type @NonNull
   public void remove(Range<C> rangeToRemove) {
     checkNotNull(rangeToRemove);
 
@@ -336,7 +344,9 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
     }
 
     @Override
-    public Range<C> get(@Nullable Object key) {
+    @SuppressWarnings("nullness:contracts.precondition.not.satisfied") // 'endpoint' for upperBound
+    // is always non-null
+    public @Nullable Range<C> get(@Nullable Object key) {
       if (key instanceof Cut) {
         try {
           @SuppressWarnings("unchecked") // we catch CCEs
@@ -555,6 +565,8 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
     }
 
     @Override
+    @SuppressWarnings("nullness:argument.type.incompatible") // aboveAll() method always return a
+    // non-null value
     Iterator<Entry<Cut<C>, Range<C>>> descendingEntryIterator() {
       /*
        * firstComplementRangeUpperBound is the upper bound of the last complement range with lower
@@ -623,7 +635,9 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
     }
 
     @Override
-    public @Nullable Range<C> get(Object key) {
+    @SuppressWarnings("nullness:contracts.precondition.not.satisfied") // firstEntry.getKey() returns
+    // a reference to Cut for @NonNull type C
+    public @Nullable Range<C> get(@Nullable Object key) {
       if (key instanceof Cut) {
         try {
           @SuppressWarnings("unchecked")
@@ -641,7 +655,7 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
     }
 
     @Override
-    public boolean containsKey(Object key) {
+    public boolean containsKey(@Nullable Object key) {
       return get(key) != null;
     }
   }
@@ -668,7 +682,7 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
 
     @Override
     public RangeSet<C> complement() {
-      return TreeRangeSet.this;
+      return (TreeRangeSet<C>) TreeRangeSet.this;
     }
   }
 
@@ -740,6 +754,9 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
     }
 
     @Override
+    @SuppressWarnings("nullness:contracts.precondition.not.satisfied") // lowerBoundWindow.contains
+    // ensures cut to be a reference of type Cut for @NonNull type C. Further, upperBound and lowerBound
+    // are references to Cut for @NonNull type C
     public @Nullable Range<C> get(@Nullable Object key) {
       if (key instanceof Cut) {
         try {
