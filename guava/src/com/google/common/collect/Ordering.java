@@ -243,7 +243,8 @@ public abstract class Ordering<T> implements Comparator<T> {
    */
   // TODO(kevinb): provide replacement
   @GwtCompatible(serializable = true)
-  public static <T extends @NonNull Object> Ordering<T> explicit(T leastValue, T... remainingValuesInOrder) {
+  public static <T extends @NonNull Object> Ordering<T> explicit(
+      T leastValue, T... remainingValuesInOrder) {
     return explicit(Lists.asList(leastValue, remainingValuesInOrder));
   }
 
