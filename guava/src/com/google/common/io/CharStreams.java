@@ -302,12 +302,16 @@ public final class CharStreams {
     }
 
     @Override
+    @SuppressWarnings("nullness:override.param.invalid") // If csq is null this implementation throws
+    // a NullPointerException
     public Writer append(CharSequence csq) {
       checkNotNull(csq);
       return this;
     }
 
     @Override
+    @SuppressWarnings("nullness:override.param.invalid") // If csq is null this implementation throws
+    // a NullPointerException
     public Writer append(CharSequence csq, int start, int end) {
       checkPositionIndexes(start, end, csq.length());
       return this;

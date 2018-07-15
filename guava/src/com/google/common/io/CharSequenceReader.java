@@ -22,6 +22,10 @@ import com.google.common.annotations.GwtIncompatible;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.CharBuffer;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.RequiresNonNull;
+import org.checkerframework.dataflow.qual.Pure;
 
 /**
  * A {@link Reader} that reads the characters in a {@link CharSequence}. Like {@code StringReader},
@@ -33,7 +37,7 @@ import java.nio.CharBuffer;
 @GwtIncompatible
 final class CharSequenceReader extends Reader {
 
-  private CharSequence seq;
+  @Nullable private CharSequence seq;
   private int pos;
   private int mark;
 
@@ -42,21 +46,31 @@ final class CharSequenceReader extends Reader {
     this.seq = checkNotNull(seq);
   }
 
+  @EnsuresNonNull("seq")
   private void checkOpen() throws IOException {
     if (seq == null) {
       throw new IOException("reader closed");
     }
   }
 
+  @Pure
+  @RequiresNonNull("seq")
   private boolean hasRemaining() {
     return remaining() > 0;
   }
 
+  @Pure
+  @RequiresNonNull("seq")
   private int remaining() {
     return seq.length() - pos;
   }
 
   @Override
+  @SuppressWarnings({
+    "nullness:contracts.precondition.not.satisfied",
+    "nullness:dereference.of.nullable"
+  }) // Missing annotations for method remaining() in java.util.Spliterator.Buffer Todo dilraj45:
+  // Add missing annotations
   public synchronized int read(CharBuffer target) throws IOException {
     checkNotNull(target);
     checkOpen();

@@ -187,6 +187,11 @@ public final class Resources {
   @CanIgnoreReturnValue // being used to check if a resource exists
   // TODO(cgdecker): maybe add a better way to check if a resource exists
   // e.g. Optional<URL> tryGetResource or boolean resourceExists
+  @SuppressWarnings({
+    "nullness:argument.type.incompatible", // Suppressing conservatively issued warning, as
+    // Resources.class.getClassLoader will always evaluate to a non-null value.
+    "nullness:return.type.incompatible" // It throws IllegalArgumentException if url == null
+  })
   public static URL getResource(String resourceName) {
     ClassLoader loader =
         MoreObjects.firstNonNull(
@@ -202,6 +207,8 @@ public final class Resources {
    *
    * @throws IllegalArgumentException if the resource is not found
    */
+  @SuppressWarnings("nullness:return.type.incompatible") // It throws an IllegalArgumentException if
+  // url == null
   public static URL getResource(Class<?> contextClass, String resourceName) {
     URL url = contextClass.getResource(resourceName);
     checkArgument(

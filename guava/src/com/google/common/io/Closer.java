@@ -29,6 +29,7 @@ import java.util.Deque;
 import java.util.logging.Level;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 
 /**
  * A {@link Closeable} that collects {@code Closeable} resources and closes them all when it is
@@ -121,7 +122,7 @@ public final class Closer implements Closeable {
    */
   // close. this word no longer has any meaning to me.
   @CanIgnoreReturnValue
-  public <C extends Closeable> C register(@Nullable C closeable) {
+  public <C extends Closeable> @PolyNull C register(@PolyNull C closeable) {
     if (closeable != null) {
       stack.addFirst(closeable);
     }
@@ -265,9 +266,9 @@ public final class Closer implements Closeable {
       return addSuppressed != null;
     }
 
-    static final Method addSuppressed = getAddSuppressed();
+    static final @Nullable Method addSuppressed = getAddSuppressed();
 
-    private static Method getAddSuppressed() {
+    private static @Nullable Method getAddSuppressed() {
       try {
         return Throwable.class.getMethod("addSuppressed", Throwable.class);
       } catch (Throwable e) {
@@ -276,6 +277,8 @@ public final class Closer implements Closeable {
     }
 
     @Override
+    @SuppressWarnings("nullness:dereference.of.nullable") // It falls back to logging in case a
+    // NullPointerException is thrown
     public void suppress(Closeable closeable, Throwable thrown, Throwable suppressed) {
       // ensure no exceptions from addSuppressed
       if (thrown == suppressed) {

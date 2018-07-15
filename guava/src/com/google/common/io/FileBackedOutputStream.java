@@ -45,7 +45,7 @@ public final class FileBackedOutputStream extends OutputStream {
   private final ByteSource source;
 
   private OutputStream out;
-  private MemoryOutput memory;
+  private @Nullable MemoryOutput memory;
   private @Nullable File file;
 
   /** ByteArrayOutputStream that exposes its internals. */
@@ -61,7 +61,7 @@ public final class FileBackedOutputStream extends OutputStream {
 
   /** Returns the file holding the data (possibly null). */
   @VisibleForTesting
-  synchronized File getFile() {
+  synchronized @Nullable File getFile() {
     return file;
   }
 
@@ -126,6 +126,8 @@ public final class FileBackedOutputStream extends OutputStream {
     return source;
   }
 
+  @SuppressWarnings("nullness:dereference.of.nullable") // If file is null; memory is ensured to be
+  // non-null
   private synchronized InputStream openInputStream() throws IOException {
     if (file != null) {
       return new FileInputStream(file);
@@ -191,6 +193,8 @@ public final class FileBackedOutputStream extends OutputStream {
    * Checks if writing {@code len} bytes would go over threshold, and switches to file buffering if
    * so.
    */
+  @SuppressWarnings("nullness:dereference.of.nullable") // If file is null; memory is ensured to be
+  // non-null
   private void update(int len) throws IOException {
     if (file == null && (memory.getCount() + len > fileThreshold)) {
       File temp = File.createTempFile("FileBackedOutputStream", null);

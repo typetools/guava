@@ -68,7 +68,7 @@ public final class LineReader {
    * @throws IOException if an I/O error occurs
    */
   @CanIgnoreReturnValue // to skip a line
-  public String readLine() throws IOException {
+  public @Nullable String readLine() throws IOException {
     while (lines.peek() == null) {
       cbuf.clear();
       // The default implementation of Reader#read(CharBuffer) allocates a

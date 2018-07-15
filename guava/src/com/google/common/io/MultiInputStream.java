@@ -90,7 +90,7 @@ final class MultiInputStream extends InputStream {
   }
 
   @Override
-  public int read(byte @Nullable [] b, int off, int len) throws IOException {
+  public int read(byte[] b, int off, int len) throws IOException {
     while (in != null) {
       int result = in.read(b, off, len);
       if (result != -1) {
@@ -102,6 +102,7 @@ final class MultiInputStream extends InputStream {
   }
 
   @Override
+  @SuppressWarnings("nullness:dereference.of.nullable") // It returns 0 if 'in' is null
   public long skip(long n) throws IOException {
     if (in == null || n <= 0) {
       return 0;

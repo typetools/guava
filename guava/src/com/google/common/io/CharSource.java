@@ -582,7 +582,7 @@ public abstract class CharSource {
     }
 
     @Override
-    public String readFirstLine() {
+    public @Nullable String readFirstLine() {
       Iterator<String> lines = linesIterator();
       return lines.hasNext() ? lines.next() : null;
     }

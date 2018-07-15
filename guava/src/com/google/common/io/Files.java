@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Provides utility methods for working with {@linkplain File files}.
@@ -498,7 +499,7 @@ public final class Files {
    *     scheduled to be removed in January 2019.
    */
   @Deprecated
-  public static String readFirstLine(File file, Charset charset) throws IOException {
+  public static @Nullable String readFirstLine(File file, Charset charset) throws IOException {
     return asCharSource(file, charset).readFirstLine();
   }
 
