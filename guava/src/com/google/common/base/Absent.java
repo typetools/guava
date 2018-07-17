@@ -59,11 +59,7 @@ final class Absent<T> extends Optional<T> {
   }
 
   @Override
-  @SuppressWarnings("nullness:contracts.precondition.override.invalid") // This method throws an
-  // exception when passed a supplier that returns null unlike its overridden method, therefore, it
-  // has been conservatively annotated with @RequiresNonNull
-  @RequiresNonNull("#1.get()")
-  public @NonNull T or(Supplier<? extends T> supplier) {
+  public @NonNull T or(Supplier<? extends @NonNull T> supplier) {
     return checkNotNull(
         supplier.get(), "use Optional.orNull() instead of a Supplier that returns null");
   }

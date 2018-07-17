@@ -101,9 +101,6 @@ final class Platform {
     return new JdkPatternCompiler();
   }
 
-  @SuppressWarnings("nullness:argument.type.incompatible") // Missing annotated version of class
-  // java.util.logging.Level in annotated JDK for nullness. Link to pull requested changes
-  // https://github.com/typetools/checker-framework/pull/2007
   private static void logPatternCompilerError(ServiceConfigurationError e) {
     logger.log(Level.WARNING, "Error loading regex compiler, falling back to next option", e);
   }

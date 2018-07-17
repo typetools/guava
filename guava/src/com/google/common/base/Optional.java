@@ -25,6 +25,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.framework.qual.Covariant;
 
 /**
  * An immutable object that may contain a non-null reference to another object. Each instance of
@@ -83,6 +84,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @since 10.0
  */
 @AnnotatedFor({"nullness"})
+@Covariant(0)
 @GwtCompatible(serializable = true)
 public abstract @NonNull class Optional<T> implements Serializable {
   /**
@@ -343,6 +345,8 @@ public abstract @NonNull class Optional<T> implements Serializable {
               checkNotNull(optionals.iterator());
 
           @Override
+          @SuppressWarnings("nullness:return.type.incompatible") // If endOfData is invoked during
+          // execution the returned value is ignored
           protected T computeNext() {
             while (iterator.hasNext()) {
               Optional<? extends T> optional = iterator.next();
