@@ -16,6 +16,10 @@ package com.google.common.hash;
 
 import com.google.common.annotations.Beta;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
+
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
@@ -55,7 +59,7 @@ public interface PrimitiveSink {
    * @throws IndexOutOfBoundsException if {@code off < 0} or {@code off + len > bytes.length} or
    *     {@code len < 0}
    */
-  PrimitiveSink putBytes(byte[] bytes, int off, int len);
+  PrimitiveSink putBytes(byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 + 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 + 1") int len);
 
   /**
    * Puts the remaining bytes of a byte buffer into this sink. {@code bytes.position()} is the first
