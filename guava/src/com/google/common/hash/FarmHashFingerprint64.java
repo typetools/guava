@@ -80,9 +80,6 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
       return hashLength65Plus(bytes, offset, length);
     }
   }
-  public static void main(String args[]) {
-    System.out.println("sth");
-  }
   private static long shiftMix(long val) {
     return val ^ (val >>> 47);
   }
