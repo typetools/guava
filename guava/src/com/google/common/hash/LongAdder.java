@@ -11,6 +11,7 @@
 
 package com.google.common.hash;
 
+import org.checkerframework.common.value.qual.MinLen;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -54,10 +55,12 @@ final class LongAdder extends Striped64 implements Serializable, LongAddable {
    *
    * @param x the value to add
    */
+  @SuppressWarnings("value:assignment.type.incompatible")// if `threadHashCode.get()` return an array of min length < 1,
+  // other conditions will be computed.
   public void add(long x) {
     Cell[] as;
     long b, v;
-    int[] hc;
+    int @MinLen(1)[] hc;
     Cell a;
     int n;
     if ((as = cells) != null || !casBase(b = base, b + x)) {
