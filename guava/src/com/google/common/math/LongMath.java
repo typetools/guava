@@ -108,7 +108,8 @@ public final class LongMath {
    * signed long. The implementation is branch-free, and benchmarks suggest it is measurably faster
    * than the straightforward ternary expression.
    */
-  @SuppressWarnings("value:return.type.incompatible")// lessThanBranchFree() is specified to return 1 if x < y and 0 otherwise
+  @SuppressWarnings("value:return.type.incompatible")//Since `Integer.SIZE - 1` in bits form is: 1111, for shifted( i.e >>> ), positive values return 1,
+  //otherwise return 0.
   @VisibleForTesting
   static @IntRange(from = 0, to = 1) int lessThanBranchFree(long x, long y) {
     // Returns the sign bit of x - y.
@@ -200,7 +201,9 @@ public final class LongMath {
           Since `log10Floor()` is a static method and only called by methods that take in positive `x` values, `Long.numberOfLeadingZeros(x)`
           won't return 0 and cause an error */
           "upperbound:assignment.type.incompatible",/* (2): except for element at index 0 in `maxLog10ForLeadingZeros`, the rest
-          can be indexed for `powersOf10`
+          can be indexed for `powersOf10` */
+          "upperbound:array.access.unsafe.high"/*(1): `Integer.numberOfLeadingZeros(x)` return an int value range from 0 to 64.
+          Since maxLog10ForLeadingZeros has min length of 64, array access is safe.
           */})
   static @IndexFor(value = {"powersOf10", "halfPowersOf10"}) int log10Floor(long x) {
     /*
@@ -220,7 +223,7 @@ public final class LongMath {
 
   // maxLog10ForLeadingZeros[i] == floor(log10(2^(Long.SIZE - i)))
   @VisibleForTesting
-  static final @NonNegative byte @MinLen(64)[] maxLog10ForLeadingZeros = {
+  static final @NonNegative  byte @MinLen(64)[] maxLog10ForLeadingZeros = {
     19, 18, 18, 18, 18, 17, 17, 17, 16, 16, 16, 15, 15, 15, 15, 14, 14, 14, 13, 13, 13, 12, 12, 12,
     12, 11, 11, 11, 10, 10, 10, 9, 9, 9, 9, 8, 8, 8, 7, 7, 7, 6, 6, 6, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3,
     3, 2, 2, 2, 1, 1, 1, 0, 0, 0

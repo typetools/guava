@@ -29,6 +29,7 @@ import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
@@ -203,7 +204,7 @@ public final class Quantiles {
      *     q-quantiles; the order of the indexes is unimportant, duplicates will be ignored, and the
      *     set will be snapshotted when this method is called
      */
-    @SuppressWarnings("argument.type.incompatible")//para `indexes` is of mutable length data structures(Collection)
+    @SuppressWarnings("value:argument.type.incompatible")//para `indexes` is of mutable length data structures(Collection)
     public ScaleAndIndexes indexes(Collection<Integer> indexes) {
       return new ScaleAndIndexes(scale, Ints.toArray(indexes));
     }
@@ -234,7 +235,7 @@ public final class Quantiles {
      *     this call (it is copied instead)
      * @return the quantile value
      */
-    @SuppressWarnings("argument.type.incompatible")// `dataset` is of mutable length data structures type( `Collection`)
+    @SuppressWarnings("value:argument.type.incompatible")// `dataset` is of mutable length data structures type( `Collection`)
     //if `dataset` is not empty as specified in doc, method `Doubles.toArray()` return a non empty `dataset` as well
     public double compute(Collection<? extends Number> dataset) {
       return computeInPlace(Doubles.toArray(dataset));
@@ -282,8 +283,8 @@ public final class Quantiles {
      * @return the quantile value
      */
     @SuppressWarnings({"lowerbound:assignment.type.incompatible",// (0): Since index and (dataset.length - 1) are non-negative ints, numerator is non negative.
-            "upperbound:argument.type.incompatible", "upperbound:array.access.unsafe.high",/* (1): second argument in selectInPlace() and interpolate()
-            is required to be < dataset.length,since quotien therefore `quotient + 1` should be < dataset.length. If when remainder is not zero,
+            "upperbound:argument.type.incompatible", "upperbound:array.access.unsafe.high",/* (1): second argument in selectInPlace() and interpolate() is `dataset`,
+            therefore `quotient + 1` should be < dataset.length. If remainder is not zero,
             quotient max value is `dataset.length - 2`*/
             "upperbound:assignment.type.incompatible"/*(3) Since `numerator = index * (dataset.length - 1)`,
             dividing it to scale will return a value less than dataset.length. */})
@@ -345,7 +346,7 @@ public final class Quantiles {
      *     the values the corresponding quantile values
      */
 
-    @SuppressWarnings("argument.type.incompatible")// `dataset` is of mutable length data structures type( `Collection`)
+    @SuppressWarnings("value:argument.type.incompatible")// `dataset` is of mutable length data structures type( `Collection`)
     //if `dataset` is not empty as specified in doc, method `Doubles.toArray()` return a non empty `dataset` as well
     public Map<Integer, Double> compute(Collection<? extends Number> dataset) {
       return computeInPlace(Doubles.toArray(dataset));
@@ -541,7 +542,7 @@ public final class Quantiles {
    * ({@code required}, {@code to}] are greater than or equal to that value. Therefore, the value at
    * {@code required} is the value which would appear at that index in the sorted dataset.
    */
-  @SuppressWarnings(value = {"lowerbound:assignment.type.incompatible",//(1): lowest possible while `to` > 0, `partionPoint` value is 1, therefore `to` can't be negative.
+  @SuppressWarnings(value = {"lowerbound:assignment.type.incompatible",//(1): lowest possible while `to` > 0, `partitionPoint` value is 1, therefore `to` can't be negative.
           "upperbound:assignment.type.incompatible"/* (2): highest possible `partionPoint` value is array.length / 2 or (array.length / 2) + 1.
           Even with highest `required` value, `from` can only grow to array.length.
           */})
@@ -583,8 +584,9 @@ public final class Quantiles {
    * equal to the value at {@code ret} and the values with indexes in ({@code ret}, {@code to}] are
    * greater than or equal to that.
    */
-  @SuppressWarnings("lowerbound:compound.assignment.type.incompatible")// (1): Lowest possible `from` value is 0, Since for loop init at `i = to`, `to` needs to be at least at 1 in order to execute for loop
-  // If `to` is at least 1, `partionPoint` can't be negative
+  @SuppressWarnings("lowerbound:compound.assignment.type.incompatible")// (1): Lowest possible `from` value is 0.
+  // Since for loop init at `i = to`, lowest possible `to` value is 1 in order to execute for loop, `partitionPoint--`
+  // will be as low as 0 and for loop will stop executing.
   private static @IndexFor("#1") int partition(double[] array, @IndexFor("#1") int from, @IndexFor("#1") int to) {
     // Select a pivot, and move it to the start of the slice i.e. to index from.
     movePivotToStartOfSlice(array, from, to);
@@ -637,7 +639,8 @@ public final class Quantiles {
    * allRequired[i]} for {@code i} in the range [{@code requiredFrom}, {@code requiredTo}]. These
    * indexes must be sorted in the array and must all be in the range [{@code from}, {@code to}].
    */
-  @SuppressWarnings({"lowerbound:argument.type.incompatible",// (1): lowest `requiredFrom` value is 0, for `requiredBelow >= requiredFrom`, required is least 1
+  @SuppressWarnings({"lowerbound:argument.type.incompatible",/* (1): Lowest possible `requiredFrom` value is 0.
+           Although `requiredBelow` can be negative, if `requiredBelow` is not >= `requiredFrom`, `required` can't be negative */
           "upperbound:argument.type.incompatible"/* (2): highest `requiredTo` value is `allRequired.length - 1`.
           When `requiredAbove` <= highest `requiredTo` value, required max value is `allRequired.length - 1`*/ })
   private static void selectAllInPlace(
@@ -650,7 +653,7 @@ public final class Quantiles {
     selectInPlace(required, array, from, to);
 
     // ...then recursively perform the selections in the range below...
-    int requiredBelow = requiredChosen - 1;// (1)
+    @GTENegativeOne int requiredBelow = requiredChosen - 1;
     while (requiredBelow >= requiredFrom && allRequired[requiredBelow] == required) {
       requiredBelow--; // skip duplicates of required in the range below
     }
