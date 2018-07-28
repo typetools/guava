@@ -19,6 +19,8 @@ import com.google.common.base.Preconditions;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.nio.charset.Charset;
+
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -251,7 +253,7 @@ public final class Funnels {
     }
 
     @Override
-    public void write(byte[] bytes, int off, int len) {
+    public void write(byte[] bytes, @NonNegative int off, @NonNegative int len) {
       sink.putBytes(bytes, off, len);
     }
 
