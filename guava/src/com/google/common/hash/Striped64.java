@@ -13,7 +13,9 @@ package com.google.common.hash;
 
 import com.google.common.annotations.GwtIncompatible;
 import java.util.Random;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * A package-local class holding common representation and mechanics for classes supporting dynamic
@@ -177,7 +179,11 @@ abstract class Striped64 extends Number {
    * @param hc the hash code holder
    * @param wasUncontended false if CAS failed before call
    */
-  final void retryUpdate(long x, int @Nullable [] hc, boolean wasUncontended) {
+  @SuppressWarnings({"upperbound:array.access.unsafe.high",//(1) Since `Cell[] rs = new Cell[n << 1]`, rs.length is n * 2.
+  // for loop is executed while i < n, therefore array access is safe.
+          "lowerbound:array.length.negative"//(2) Since int n is annotated as non negative, n << 2 is n * 2 can't be negative
+          })
+  final void retryUpdate(long x, int @Nullable @MinLen(1)[] hc, boolean wasUncontended) {
     int h;
     if (hc == null) {
       threadHashCode.set(hc = new int[1]); // Initialize randomly
@@ -188,7 +194,7 @@ abstract class Striped64 extends Number {
     for (; ; ) {
       Cell[] as;
       Cell a;
-      int n;
+      @NonNegative int n;
       long v;
       if ((as = cells) != null && (n = as.length) > 0) {
         if ((a = as[(n - 1) & h]) == null) {
@@ -219,8 +225,8 @@ abstract class Striped64 extends Number {
         else if (busy == 0 && casBusy()) {
           try {
             if (cells == as) { // Expand table unless stale
-              Cell[] rs = new Cell[n << 1];
-              for (int i = 0; i < n; ++i) rs[i] = as[i];
+              Cell[] rs = new Cell[n << 1];//(2)
+              for (int i = 0; i < n; ++i) rs[i] = as[i];//(1)
               cells = rs;
             }
           } finally {
