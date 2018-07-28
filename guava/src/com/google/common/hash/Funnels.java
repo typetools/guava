@@ -20,6 +20,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 
+import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -253,7 +254,7 @@ public final class Funnels {
     }
 
     @Override
-    public void write(byte[] bytes, @NonNegative int off, @NonNegative int len) {
+    public void write(byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 + 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 + 1") int len) {
       sink.putBytes(bytes, off, len);
     }
 
