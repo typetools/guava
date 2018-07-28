@@ -28,10 +28,7 @@ import java.util.zip.Adler32;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * Static methods to obtain {@link HashFunction} instances, and other static hashing-related
@@ -527,7 +524,7 @@ public final class Hashing {
   public static HashCode combineOrdered(Iterable<HashCode> hashCodes) {
     Iterator<HashCode> iterator = hashCodes.iterator();
     checkArgument(iterator.hasNext(), "Must be at least 1 hash code to combine.");
-    @NonNegative int bits = iterator.next().bits();
+    int bits = iterator.next().bits();
     byte[] resultBytes = new byte[bits / 8];
     for (HashCode hashCode : hashCodes) {
       byte[] nextBytes = hashCode.asBytes();

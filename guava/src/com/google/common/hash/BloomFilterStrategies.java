@@ -22,10 +22,7 @@ import com.google.common.primitives.Longs;
 import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicLongArray;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.common.value.qual.IntRange;
-import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * Collections of strategies of generating the k * log(M) bits required for an element to be mapped
@@ -98,7 +95,7 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
     public <T> boolean put(
         T object, Funnel<? super T> funnel, int numHashFunctions, LockFreeBitArray bits) {
       long bitSize = bits.bitSize();
-      byte @MinLen(16)[] bytes = Hashing.murmur3_128().hashObject(object, funnel).getBytesInternal();
+      byte[] bytes = Hashing.murmur3_128().hashObject(object, funnel).getBytesInternal();
       long hash1 = lowerEight(bytes);
       long hash2 = upperEight(bytes);
 
@@ -116,7 +113,7 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
     public <T> boolean mightContain(
         T object, Funnel<? super T> funnel, int numHashFunctions, LockFreeBitArray bits) {
       long bitSize = bits.bitSize();
-      byte @MinLen(16)[] bytes = Hashing.murmur3_128().hashObject(object, funnel).getBytesInternal();
+      byte[] bytes = Hashing.murmur3_128().hashObject(object, funnel).getBytesInternal();
       long hash1 = lowerEight(bytes);
       long hash2 = upperEight(bytes);
 
@@ -131,12 +128,12 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
       return true;
     }
 
-    private /* static */ long lowerEight(byte @MinLen(8)[] bytes) {
+    private /* static */ long lowerEight(byte[] bytes) {
       return Longs.fromBytes(
           bytes[7], bytes[6], bytes[5], bytes[4], bytes[3], bytes[2], bytes[1], bytes[0]);
     }
 
-    private /* static */ long upperEight(byte @MinLen(16)[] bytes) {
+    private /* static */ long upperEight(byte[] bytes) {
       return Longs.fromBytes(
           bytes[15], bytes[14], bytes[13], bytes[12], bytes[11], bytes[10], bytes[9], bytes[8]);
     }
@@ -148,7 +145,6 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
    * <p>We use this instead of java.util.BitSet because we need access to the array of longs and we
    * need compare-and-swap.
    */
-  @SuppressWarnings("lowerbound:argument.type.incompatible")
   static final class LockFreeBitArray {
     private static final int LONG_ADDRESSABLE_BITS = 6;
     final AtomicLongArray data;
@@ -203,8 +199,6 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
      * final long[] will be a "rolling snapshot" of the state of the bit array. This is usually good
      * enough, but should be kept in mind.
      */
-    @SuppressWarnings("lowerbound:array.length.negative")// AtomicLongArray.length() return length of a long array
-    // which can't be negative
     public static long[] toPlainArray(AtomicLongArray atomicLongArray) {
       long[] array = new long[atomicLongArray.length()];
       for (int i = 0; i < array.length; ++i) {
