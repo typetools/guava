@@ -133,15 +133,18 @@ public enum CaseFormat {
   @SuppressWarnings({
     "upperbound:assignment.type.incompatible", "upperbound:compound.assignment.type.incompatible", // refinement on multiple assignments in expression
     "upperbound:argument.type.incompatible", // length of sequence with ArrayLenRange in offset
+    "nullness:dereference.of.nullable" // Safe because the if block with condition i == 0 is always
+    // executed before out is de-referenced
   })
   String convert(CaseFormat format, String s) {
     // deal with camel conversion
-    StringBuilder out = new StringBuilder(s.length() + 4 * wordSeparator.length());
+    StringBuilder out = null;
     @IndexOrHigh("s") int i = 0;
     @GTENegativeOne @LTEqLengthOf("s") int j = -1;
     while ((j = wordBoundary.indexIn(s, ++j)) != -1) {
       if (i == 0) {
         // include some extra space for separators
+        out = new StringBuilder(s.length() + 4 * wordSeparator.length());
         out.append(format.normalizeFirstWord(s.substring(i, j)));
       } else {
         out.append(format.normalizeWord(s.substring(i, j)));
