@@ -28,7 +28,10 @@ import java.util.zip.Adler32;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 import javax.crypto.spec.SecretKeySpec;
+
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * Static methods to obtain {@link HashFunction} instances, and other static hashing-related
@@ -73,7 +76,7 @@ public final class Hashing {
 
     // Otherwise, join together some 128-bit murmur3s
     int hashFunctionsNeeded = (bits + 127) / 128;
-    HashFunction[] hashFunctions = new HashFunction[hashFunctionsNeeded];
+    HashFunction @MinLen(1)[] hashFunctions = new HashFunction[hashFunctionsNeeded];
     hashFunctions[0] = Murmur3_128HashFunction.GOOD_FAST_HASH_128;
     int seed = GOOD_FAST_HASH_SEED;
     for (int i = 1; i < hashFunctionsNeeded; i++) {
@@ -524,7 +527,7 @@ public final class Hashing {
   public static HashCode combineOrdered(Iterable<HashCode> hashCodes) {
     Iterator<HashCode> iterator = hashCodes.iterator();
     checkArgument(iterator.hasNext(), "Must be at least 1 hash code to combine.");
-    int bits = iterator.next().bits();
+    @NonNegative int bits = iterator.next().bits();
     byte[] resultBytes = new byte[bits / 8];
     for (HashCode hashCode : hashCodes) {
       byte[] nextBytes = hashCode.asBytes();
