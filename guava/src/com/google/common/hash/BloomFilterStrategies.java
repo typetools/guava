@@ -149,13 +149,19 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
    * <p>We use this instead of java.util.BitSet because we need access to the array of longs and we
    * need compare-and-swap.
    */
+  @SuppressWarnings({"lowerbound:array.length.negative",// Since `Ints.checkedCast` return the int value that is equal to non negative`long bits`,
+  // Ints.checkedCast() can't return negative value
+          "value:argument.type.incompatible"// If long bits is in range from 0 to Integer.MAX_VALUE, LongMath.divide() return
+          //long value in range 0 to (Integer.MAX_VALUE / 64)
+          })
+
   static final class LockFreeBitArray {
     private static final int LONG_ADDRESSABLE_BITS = 6;
     final AtomicLongArray data;
     private final LongAddable bitCount;
 
-    LockFreeBitArray(@NonNegative long bits) {
-      this(new long[Ints.checkedCast(LongMath.divide(bits, 64, RoundingMode.CEILING))]);
+    LockFreeBitArray(@IntRange(from = 0, to = Integer.MAX_VALUE) long bits) {
+      this(new long[Ints.checkedCast(LongMath.divide(bits, 64, RoundingMode.CEILING))]);//(1)
     }
 
     // Used by serialization
