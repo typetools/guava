@@ -80,7 +80,7 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
   }
 
   @Override
-  public abstract HashCode hashBytes(byte[] input, int off, int len);
+  public abstract HashCode hashBytes(byte[] input, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len);
 
   @SuppressWarnings("lowerbound:argument.type.incompatible")/* Since invariants: mark <= position <= limit <= capacity,
   and position is initialized as 0, `input.remaining()` return `limit - position` with lowest possible value as 0.
@@ -116,6 +116,10 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
       return this;
     }
 
+    @SuppressWarnings(value = {"upperbound:argument.type.incompatible",// `stream.byteArray()` return an array of length 32
+            // Since `stream.length()` return the length of return byte array, 0 + stream.length - 1 is always < stream.length.
+            "lowerbound:argument.type.incompatible"// `stream.length()` return length of the byte array( 32)
+    })
     @Override
     public HashCode hash() {
       return hashBytes(stream.byteArray(), 0, stream.length());
@@ -139,7 +143,8 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
       count += remaining;
     }
 
-    byte[] byteArray() {
+    @SuppressWarnings("value:return.type.incompatible")//`buf` array in ByteArrayOutputStream should be annotated as @MinLen(1)
+    byte @MinLen(1)[] byteArray() {
       return buf;
     }
 
