@@ -39,7 +39,7 @@ final class LittleEndianByteArray {
    * @param offset the offset into the array at which to start
    * @return a long of a concatenated 8 bytes
    */
-  static long load64(byte[] input, int offset) {
+  static long load64(byte[] input,  @NonNegative @LTLengthOf(value = "#1", offset = "7") int offset) {
     // We don't want this in production code as this is the most critical part of the loop.
     assert input.length >= offset + 8;
     // Delegates to the fast (unsafe) version or the fallback.
@@ -77,7 +77,7 @@ final class LittleEndianByteArray {
    * @param offset the offset into the array at which to start writing
    * @param value the value to write
    */
-  static void store64(byte[] sink, int offset, long value) {
+  static void store64(byte[] sink,  @NonNegative @LTLengthOf(value = "#1", offset = "7") int offset, long value) {
     // We don't want to assert in production code.
     assert offset >= 0 && offset + 8 <= sink.length;
     // Delegates to the fast (unsafe)version or the fallback.
@@ -115,9 +115,9 @@ final class LittleEndianByteArray {
    * back on the slower approach of using Longs.fromBytes(byte...).
    */
   private interface LittleEndianBytes {
-    long getLongLittleEndian(byte[] array, int offset);
+    long getLongLittleEndian(byte[] array, @NonNegative @LTLengthOf(value = "#1",offset = "7") int offset);
 
-    void putLongLittleEndian(byte[] array, int offset, long value);
+    void putLongLittleEndian(byte[] array, @NonNegative @LTLengthOf(value = "#1", offset = "7") int offset, long value);
   }
 
   /**
