@@ -16,6 +16,8 @@ package com.google.common.hash;
 
 import com.google.common.annotations.Beta;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
@@ -62,7 +64,7 @@ public interface Hasher extends PrimitiveSink {
   Hasher putBytes(byte[] bytes);
 
   @Override
-  Hasher putBytes(byte[] bytes, int off, int len);
+  Hasher putBytes(byte[] bytes, @NonNegative @LTLengthOf(value = "#1",offset = "#3 - 1") int off, @LTLengthOf(value = "#1",offset = "#2 - 1") int len);
 
   @Override
   Hasher putBytes(ByteBuffer bytes);
