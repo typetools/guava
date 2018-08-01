@@ -55,7 +55,7 @@ public final class HashingOutputStream extends FilterOutputStream {
   }
 
   @Override
-  public void write(byte[] bytes, @NonNegative int off, @NonNegative int len) throws IOException {
+  public void write(byte[] bytes, int off, int len) throws IOException {
     hasher.putBytes(bytes, off, len);
     out.write(bytes, off, len);
   }
