@@ -19,7 +19,9 @@ import static com.google.common.base.Preconditions.checkPositionIndexes;
 
 import com.google.errorprone.annotations.Immutable;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.common.value.qual.MinLen;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
@@ -35,15 +37,16 @@ abstract class AbstractHashFunction implements HashFunction {
     return newHasher().putObject(instance, funnel).hash();
   }
 
-  @SuppressWarnings("lowerbound:argument.type.incompatible")//Since input is of CharSequence type, input.length can't be negative
+  @SuppressWarnings("lowerbound:argument.type.incompatible")// Since len is length of `input` with min length of 1,
+  // len * 2 can't be negative
   @Override
-  public HashCode hashUnencodedChars(CharSequence input) {
-    @NonNegative int len = input.length();
+  public HashCode hashUnencodedChars(@MinLen(1) CharSequence input) {
+    @LengthOf("#1") int len = input.length();
     return newHasher(len * 2).putUnencodedChars(input).hash();
   }
 
   @Override
-  public HashCode hashString(CharSequence input, Charset charset) {
+  public HashCode hashString(@MinLen(1) CharSequence input, Charset charset) {
     return newHasher().putString(input, charset).hash();
   }
 
@@ -57,8 +60,9 @@ abstract class AbstractHashFunction implements HashFunction {
     return newHasher(8).putLong(input).hash();
   }
 
+  @SuppressWarnings("upperbound:argument.type.incompatible")// If input has min length of 1, since off is 0, off + input.length - 1 is always < input.length.
   @Override
-  public HashCode hashBytes(byte[] input) {
+  public HashCode hashBytes(byte @MinLen(1)[] input) {
     return hashBytes(input, 0, input.length);
   }
 
