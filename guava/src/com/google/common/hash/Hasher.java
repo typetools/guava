@@ -18,6 +18,7 @@ import com.google.common.annotations.Beta;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.common.value.qual.MinLen;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
@@ -61,7 +62,7 @@ public interface Hasher extends PrimitiveSink {
   Hasher putByte(byte b);
 
   @Override
-  Hasher putBytes(byte[] bytes);
+  Hasher putBytes(byte @MinLen(1)[] bytes);
 
   @Override
   Hasher putBytes(byte[] bytes, @NonNegative @LTLengthOf(value = "#1",offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int len);
@@ -118,7 +119,7 @@ public interface Hasher extends PrimitiveSink {
    * input, even if some are invalid.
    */
   @Override
-  Hasher putString(CharSequence charSequence, Charset charset);
+  Hasher putString(@MinLen(1) CharSequence charSequence, Charset charset);
 
   /** A simple convenience for {@code funnel.funnel(object, this)}. */
   <T> Hasher putObject(T instance, Funnel<? super T> funnel);

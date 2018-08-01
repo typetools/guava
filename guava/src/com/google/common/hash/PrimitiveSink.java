@@ -19,6 +19,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.common.value.qual.MinLen;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -46,7 +47,7 @@ public interface PrimitiveSink {
    * @param bytes a byte array
    * @return this instance
    */
-  PrimitiveSink putBytes(byte[] bytes);
+  PrimitiveSink putBytes(byte @MinLen(1)[] bytes);
 
   /**
    * Puts a chunk of an array of bytes into this sink. {@code bytes[off]} is the first byte written,
@@ -112,5 +113,5 @@ public interface PrimitiveSink {
    * is faster, produces the same output across Java releases, and processes every {@code char} in
    * the input, even if some are invalid.
    */
-  PrimitiveSink putString(CharSequence charSequence, Charset charset);
+  PrimitiveSink putString(@MinLen(1) CharSequence charSequence, Charset charset);
 }
