@@ -64,7 +64,7 @@ public interface Hasher extends PrimitiveSink {
   Hasher putBytes(byte[] bytes);
 
   @Override
-  Hasher putBytes(byte[] bytes, @NonNegative @LTLengthOf(value = "#1",offset = "#3 - 1") int off, @LTLengthOf(value = "#1",offset = "#2 - 1") int len);
+  Hasher putBytes(byte[] bytes, @NonNegative @LTLengthOf(value = "#1",offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int len);
 
   @Override
   Hasher putBytes(ByteBuffer bytes);
