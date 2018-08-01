@@ -17,6 +17,7 @@ package com.google.common.hash;
 import com.google.common.annotations.Beta;
 import com.google.common.primitives.Ints;
 import com.google.errorprone.annotations.Immutable;
+import org.checkerframework.checker.index.qual.NonNegative;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
@@ -139,7 +140,7 @@ public interface HashFunction {
    * size of the input (in bytes). This is only important for non-streaming hash functions (hash
    * functions that need to buffer their whole input before processing any of it).
    */
-  Hasher newHasher(int expectedInputSize);
+  Hasher newHasher(@NonNegative int expectedInputSize);
 
   /**
    * Shortcut for {@code newHasher().putInt(input).hash()}; returns the hash code for the given

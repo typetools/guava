@@ -72,7 +72,7 @@ abstract class AbstractHashFunction implements HashFunction {
   }
 
   @Override
-  public Hasher newHasher(int expectedInputSize) {
+  public Hasher newHasher(@NonNegative int expectedInputSize) {
     checkArgument(
         expectedInputSize >= 0, "expectedInputSize must be >= 0 but was %s", expectedInputSize);
     return newHasher();
