@@ -171,7 +171,7 @@ public interface HashFunction {
    * @throws IndexOutOfBoundsException if {@code off < 0} or {@code off + len > bytes.length} or
    *     {@code len < 0}
    */
-  HashCode hashBytes(byte[] input, int off, int len);
+  HashCode hashBytes(byte[] input, @NonNegative int off, @NonNegative int len);
 
   /**
    * Shortcut for {@code newHasher().putBytes(input).hash()}. The implementation <i>might</i>

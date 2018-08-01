@@ -18,6 +18,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkPositionIndexes;
 
 import com.google.errorprone.annotations.Immutable;
+import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -34,9 +35,10 @@ abstract class AbstractHashFunction implements HashFunction {
     return newHasher().putObject(instance, funnel).hash();
   }
 
+  @SuppressWarnings("lowerbound:argument.type.incompatible")//Since input is of CharSequence type, input.length can't be negative
   @Override
   public HashCode hashUnencodedChars(CharSequence input) {
-    int len = input.length();
+    @NonNegative int len = input.length();
     return newHasher(len * 2).putUnencodedChars(input).hash();
   }
 
@@ -61,12 +63,14 @@ abstract class AbstractHashFunction implements HashFunction {
   }
 
   @Override
-  public HashCode hashBytes(byte[] input, @NonNegative int off, @NonNegative int len) {
+  public HashCode hashBytes(byte[] input, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
     checkPositionIndexes(off, off + len, input.length);
     return newHasher(len).putBytes(input, off, len).hash();
   }
 
   @Override
+  @SuppressWarnings("lowerbound:argument.type.incompatible")//ByteBuffer#remaining is annotated to return non negative value
+  //Link to PR: https://github.com/typetools/checker-framework/pull/2080 ( status: waiting for merge)
   public HashCode hashBytes(ByteBuffer input) {
     return newHasher(input.remaining()).putBytes(input).hash();
   }
