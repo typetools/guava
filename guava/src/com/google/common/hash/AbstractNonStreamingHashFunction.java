@@ -24,6 +24,8 @@ import java.util.Arrays;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * Skeleton implementation of {@link HashFunction}, appropriate for non-streaming algorithms. All
@@ -45,18 +47,24 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
     return new BufferingHasher(expectedInputSize);
   }
 
+  @SuppressWarnings("value:argument.type.incompatible")// ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(input).array()
+  //return an array of length 4.
   @Override
   public HashCode hashInt(int input) {
     return hashBytes(ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(input).array());
   }
 
+  @SuppressWarnings("value:argument.type.incompatible")// ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(input).array()
+  //return an array of length 8.
   @Override
   public HashCode hashLong(long input) {
     return hashBytes(ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(input).array());
   }
 
+  @SuppressWarnings("value:argument.type.incompatible")// If `input` has min length of 1, since `buffer.array()`
+  //returns the array that backs this buffer, the array also has min length of 1.
   @Override
-  public HashCode hashUnencodedChars(CharSequence input) {
+  public HashCode hashUnencodedChars(@MinLen(1) CharSequence input) {
     int len = input.length();
     ByteBuffer buffer = ByteBuffer.allocate(len * 2).order(ByteOrder.LITTLE_ENDIAN);
     for (int i = 0; i < len; i++) {
@@ -65,8 +73,10 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
     return hashBytes(buffer.array());
   }
 
+  @SuppressWarnings("value:argument.type.incompatible")//If `input` has min of 1, since `getBytes(charset)`
+  // the resultant byte array, the array returned also has min length of 1
   @Override
-  public HashCode hashString(CharSequence input, Charset charset) {
+  public HashCode hashString(@MinLen(1) CharSequence input, Charset charset) {
     return hashBytes(input.toString().getBytes(charset));
   }
 
