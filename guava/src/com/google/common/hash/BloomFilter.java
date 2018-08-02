@@ -508,6 +508,7 @@ public final class BloomFilter<T> implements Predicate<T>, Serializable {
    * @param m total number of bits in Bloom filter (must be positive)
    */
   @VisibleForTesting
+  @SuppressWarnings("value:return.type.incompatible")
   static @IntRange(from = 0, to = 255) int optimalNumOfHashFunctions(@Positive long n, @Positive long m) {
     // (m / n) * log(2), but avoid truncation due to division!
     return Math.max(1, (int) Math.round((double) m / n * Math.log(2)));
