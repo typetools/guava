@@ -51,7 +51,8 @@ To upload to Maven Central
 
 # Ensure the version number is set properly in file guava/cfMavenCentral.xml.
 # Then, set this variable to the same version.
-PACKAGE=guava-25.1-jre
+# If it's not the same as the upstream version, then also edit pom.xml and guava/pom.xml.
+PACKAGE=guava-25.1.0.1-jre
 
 cd guava
 
