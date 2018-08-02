@@ -17,6 +17,7 @@ package com.google.common.hash;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.Beta;
+import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 import java.io.FilterOutputStream;
@@ -54,8 +55,10 @@ public final class HashingOutputStream extends FilterOutputStream {
     out.write(b);
   }
 
+  @SuppressWarnings("override.param.invalid")//FilterOutputStream#write() should be annotated as
+  // void write(byte b[], @NonNegative @LTLengthOf(value = "#1",offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int len)
   @Override
-  public void write(byte[] bytes, int off, int len) throws IOException {
+  public void write(byte[] bytes, @NonNegative @LTLengthOf(value = "#1",offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int len) throws IOException {
     hasher.putBytes(bytes, off, len);
     out.write(bytes, off, len);
   }
