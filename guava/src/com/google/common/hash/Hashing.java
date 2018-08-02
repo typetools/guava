@@ -64,7 +64,7 @@ public final class Hashing {
    * @return a hash function, described above, that produces hash codes of length {@code
    *     minimumBits} or greater
    */
-  public static HashFunction goodFastHash(int minimumBits) {
+  public static HashFunction goodFastHash(@NonNegative int minimumBits) {
     int bits = checkPositiveAndMakeMultipleOf32(minimumBits);
 
     if (bits == 32) {
@@ -76,7 +76,7 @@ public final class Hashing {
 
     // Otherwise, join together some 128-bit murmur3s
     int hashFunctionsNeeded = (bits + 127) / 128;
-    HashFunction @MinLen(1)[] hashFunctions = new HashFunction[hashFunctionsNeeded];
+    HashFunction[] hashFunctions = new HashFunction[hashFunctionsNeeded];
     hashFunctions[0] = Murmur3_128HashFunction.GOOD_FAST_HASH_128;
     int seed = GOOD_FAST_HASH_SEED;
     for (int i = 1; i < hashFunctionsNeeded; i++) {
@@ -565,7 +565,7 @@ public final class Hashing {
   }
 
   /** Checks that the passed argument is positive, and ceils it to a multiple of 32. */
-  static int checkPositiveAndMakeMultipleOf32(int bits) {
+  static @NonNegative int checkPositiveAndMakeMultipleOf32(int bits) {
     checkArgument(bits > 0, "Number of bits must be positive");
     return (bits + 31) & ~31;
   }
@@ -627,7 +627,7 @@ public final class Hashing {
     @Override
     HashCode makeHash(Hasher[] hashers) {
       byte[] bytes = new byte[bits() / 8];
-      int i = 0;
+      @NonNegative int i = 0;
       for (Hasher hasher : hashers) {
         HashCode newHash = hasher.hash();
         i += newHash.writeBytesTo(bytes, i, newHash.bits() / 8);
@@ -636,7 +636,7 @@ public final class Hashing {
     }
 
     @Override
-    public int bits() {
+    public @NonNegative int bits() {
       int bitSum = 0;
       for (HashFunction function : functions) {
         bitSum += function.bits();

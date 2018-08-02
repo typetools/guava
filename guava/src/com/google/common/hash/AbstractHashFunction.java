@@ -39,12 +39,10 @@ abstract class AbstractHashFunction implements HashFunction {
 
   @SuppressWarnings({"lowerbound:argument.type.incompatible",// Since len is length of `input` with min length of 1,
           // len * 2 can't be negative
-          "lowerbound:assignment.type.incompatible"//(1): Since len is length of `input` with min length of 1,
-          // `len` can't be negative
   })
   @Override
   public HashCode hashUnencodedChars(@MinLen(1) CharSequence input) {
-    @LengthOf("#1") int len = input.length();//(1)
+    int len = input.length();
     return newHasher(len * 2).putUnencodedChars(input).hash();
   }
 

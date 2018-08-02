@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.errorprone.annotations.Immutable;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 import java.io.Serializable;
@@ -72,7 +73,7 @@ final class ChecksumHashFunction extends AbstractHashFunction implements Seriali
     }
 
     @Override
-    protected void update(byte[] bytes, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int len) {
+    protected void update(byte[] bytes, @NonNegative @LTLengthOf(value = "#1",offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int len) {
       checksum.update(bytes, off, len);
     }
 

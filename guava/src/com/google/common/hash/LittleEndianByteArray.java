@@ -39,7 +39,7 @@ final class LittleEndianByteArray {
    * @param offset the offset into the array at which to start
    * @return a long of a concatenated 8 bytes
    */
-  static long load64(byte[] input,  @NonNegative @LTLengthOf(value = "#1", offset = "7") int offset) {
+  static long load64(byte[] input, int offset) {
     // We don't want this in production code as this is the most critical part of the loop.
     assert input.length >= offset + 8;
     // Delegates to the fast (unsafe) version or the fallback.
