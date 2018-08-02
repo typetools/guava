@@ -30,7 +30,9 @@ import java.util.zip.Checksum;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 
 /**
@@ -64,7 +66,9 @@ public final class Hashing {
    * @return a hash function, described above, that produces hash codes of length {@code
    *     minimumBits} or greater
    */
-  public static HashFunction goodFastHash(@NonNegative int minimumBits) {
+  @SuppressWarnings("upperbound:array.access.unsafe.high.constant")// if lowest minimumBits is 1, checkPositiveAndMakeMultipleOf32(minimumBits) return
+  //lowest value of 32.
+  public static HashFunction goodFastHash(@Positive int minimumBits) {
     int bits = checkPositiveAndMakeMultipleOf32(minimumBits);
 
     if (bits == 32) {
@@ -524,10 +528,12 @@ public final class Hashing {
    * @throws IllegalArgumentException if {@code hashCodes} is empty, or the hash codes do not all
    *     have the same bit length
    */
+  @SuppressWarnings("value:argument.type.incompatible")// `hashCode.asBytes()` return an array with min length of 1.
+  //Since nextBytes.length is checked to have same bit length with resultBytes.length, resultBytes also needs min length of 1.
   public static HashCode combineOrdered(Iterable<HashCode> hashCodes) {
     Iterator<HashCode> iterator = hashCodes.iterator();
     checkArgument(iterator.hasNext(), "Must be at least 1 hash code to combine.");
-    @NonNegative int bits = iterator.next().bits();
+    int bits = iterator.next().bits();
     byte[] resultBytes = new byte[bits / 8];
     for (HashCode hashCode : hashCodes) {
       byte[] nextBytes = hashCode.asBytes();
@@ -537,7 +543,7 @@ public final class Hashing {
         resultBytes[i] = (byte) (resultBytes[i] * 37 ^ nextBytes[i]);
       }
     }
-    return HashCode.fromBytesNoCopy(resultBytes);
+    return HashCode.fromBytesNoCopy(resultBytes);//(1)
   }
 
   /**
@@ -549,6 +555,8 @@ public final class Hashing {
    * @throws IllegalArgumentException if {@code hashCodes} is empty, or the hash codes do not all
    *     have the same bit length
    */
+  @SuppressWarnings("value:argument.type.incompatible")// `hashCode.asBytes()` return an array with min length of 1.
+  //Since nextBytes.length is checked to have same bit length with resultBytes.length, resultBytes also needs min length of 1.
   public static HashCode combineUnordered(Iterable<HashCode> hashCodes) {
     Iterator<HashCode> iterator = hashCodes.iterator();
     checkArgument(iterator.hasNext(), "Must be at least 1 hash code to combine.");
@@ -625,9 +633,10 @@ public final class Hashing {
     }
 
     @Override
+    @SuppressWarnings("argument.type.incompatible")//
     HashCode makeHash(Hasher[] hashers) {
       byte[] bytes = new byte[bits() / 8];
-      @NonNegative int i = 0;
+      int i = 0;
       for (Hasher hasher : hashers) {
         HashCode newHash = hasher.hash();
         i += newHash.writeBytesTo(bytes, i, newHash.bits() / 8);
