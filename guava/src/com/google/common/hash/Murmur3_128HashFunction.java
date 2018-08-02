@@ -165,6 +165,7 @@ final class Murmur3_128HashFunction extends AbstractHashFunction implements Seri
       h2 ^= mixK2(k2);
     }
 
+    @SuppressWarnings("value:argument.type.incompatible")//ByteBuffer#array() should be annotated as  byte @MinLen(1)[] array().
     @Override
     public HashCode makeHash() {
       h1 ^= length;
