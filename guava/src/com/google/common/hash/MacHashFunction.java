@@ -38,7 +38,7 @@ final class MacHashFunction extends AbstractHashFunction {
   @SuppressWarnings("Immutable") // keys are immutable, but not provably so
   private final Key key;
   private final String toString;
-  private final int bits;
+  private final @NonNegative int bits;
   private final boolean supportsClone;
 
   MacHashFunction(String algorithmName, Key key, String toString) {
