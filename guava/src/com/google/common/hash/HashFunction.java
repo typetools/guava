@@ -222,5 +222,5 @@ public interface HashFunction {
    * Returns the number of bits (a multiple of 32) that each hash code produced by this hash
    * function has.
    */
-  int bits();
+  @NonNegative int bits();
 }

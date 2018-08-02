@@ -15,6 +15,7 @@
 package com.google.common.hash;
 
 import com.google.errorprone.annotations.Immutable;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * This class generates a CRC32C checksum, defined by RFC 3720, Section 12.1. The generator
@@ -27,7 +28,7 @@ final class Crc32cHashFunction extends AbstractHashFunction {
   static final HashFunction CRC_32_C = new Crc32cHashFunction();
 
   @Override
-  public int bits() {
+  public @NonNegative int bits() {
     return 32;
   }
 

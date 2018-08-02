@@ -72,7 +72,7 @@ final class Murmur3_32HashFunction extends AbstractHashFunction implements Seria
   }
 
   @Override
-  public int bits() {
+  public @NonNegative int bits() {
     return 32;
   }
 

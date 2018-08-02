@@ -55,7 +55,7 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
   }
 
   @Override
-  public int bits() {
+  public @NonNegative int bits() {
     return 64;
   }
 

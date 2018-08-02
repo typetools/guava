@@ -45,7 +45,7 @@ final class ChecksumHashFunction extends AbstractHashFunction implements Seriali
   }
 
   @Override
-  public int bits() {
+  public @NonNegative int bits() {
     return bits;
   }
 

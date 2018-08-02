@@ -18,6 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 import com.google.errorprone.annotations.Immutable;
+import org.checkerframework.checker.index.qual.NonNegative;
 import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -49,7 +50,7 @@ final class MacHashFunction extends AbstractHashFunction {
   }
 
   @Override
-  public int bits() {
+  public @NonNegative int bits() {
     return bits;
   }
 

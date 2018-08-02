@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 import com.google.errorprone.annotations.Immutable;
+import org.checkerframework.checker.index.qual.NonNegative;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
@@ -36,7 +37,7 @@ final class MessageDigestHashFunction extends AbstractHashFunction implements Se
 
   @SuppressWarnings("Immutable") // cloned before each use
   private final MessageDigest prototype;
-  private final int bytes;
+  private final @NonNegative int bytes;
   private final boolean supportsClone;
   private final String toString;
 
@@ -67,7 +68,7 @@ final class MessageDigestHashFunction extends AbstractHashFunction implements Se
   }
 
   @Override
-  public int bits() {
+  public @NonNegative int bits() {
     return bytes * Byte.SIZE;
   }
 
