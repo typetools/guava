@@ -143,9 +143,12 @@ final class Murmur3_32HashFunction extends AbstractHashFunction implements Seria
     return fmix(h1, Chars.BYTES * input.length());
   }
 
-  @SuppressWarnings("deprecation") // need to use Charsets for Android tests to pass
+  @SuppressWarnings({"deprecation", // need to use Charsets for Android tests to pass
+          "value:argument.type.incompatible"// Since CharSequence input is annotated to have  minimum length of 1,
+          // `input.toString().getBytes(charset)` return a byte array with minimum length of 1.
+  })
   @Override
-  public HashCode hashString(CharSequence input, Charset charset) {
+  public HashCode hashString(@MinLen(1) CharSequence input, Charset charset) {
     if (Charsets.UTF_8.equals(charset)) {
       int utf16Length = input.length();
       int h1 = seed;
@@ -189,7 +192,7 @@ final class Murmur3_32HashFunction extends AbstractHashFunction implements Seria
           int codePoint = Character.codePointAt(input, i);
           if (codePoint == c) {
             // not a valid code point; let the JDK handle invalid Unicode
-            return hashBytes(input.toString().getBytes(charset));
+            return hashBytes(input.toString().getBytes(charset));//(1)
           }
           i++;
           buffer |= codePointToFourUtf8Bytes(codePoint) << shift;
@@ -208,12 +211,12 @@ final class Murmur3_32HashFunction extends AbstractHashFunction implements Seria
       h1 ^= k1;
       return fmix(h1, len);
     } else {
-      return hashBytes(input.toString().getBytes(charset));
+      return hashBytes(input.toString().getBytes(charset));//(1)
     }
   }
 
   @Override
-  public HashCode hashBytes(byte @MinLen(4)[] input, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
+  public HashCode hashBytes(byte[] input, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
     checkPositionIndexes(off, off + len, input.length);
     int h1 = seed;
     int i;
@@ -230,7 +233,7 @@ final class Murmur3_32HashFunction extends AbstractHashFunction implements Seria
     return fmix(h1, len);
   }
 
-  private static int getIntLittleEndian(byte @MinLen(4)[] input, @NonNegative @LTLengthOf(value = "#1", offset = "3") int offset) {
+  private static int getIntLittleEndian(byte[] input, @NonNegative @LTLengthOf(value = "#1", offset = "3") int offset) {
     return Ints.fromBytes(input[offset + 3], input[offset + 2], input[offset + 1], input[offset]);
   }
 
@@ -293,7 +296,7 @@ final class Murmur3_32HashFunction extends AbstractHashFunction implements Seria
     }
 
     @Override
-    public Hasher putBytes(byte @MinLen(4)[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
+    public Hasher putBytes(byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
       checkPositionIndexes(off, off + len, bytes.length);
       int i;
       for (i = 0; i + 4 <= len; i += 4) {
