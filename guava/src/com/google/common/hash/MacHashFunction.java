@@ -129,6 +129,7 @@ final class MacHashFunction extends AbstractHashFunction {
       checkState(!done, "Cannot re-use a Hasher after calling hash() on it");
     }
 
+    @SuppressWarnings("value:argument.type.incompatible")// Max#doFinal() should be annotated as @MinLen(1) doFinal()
     @Override
     public HashCode hash() {
       checkNotDone();
