@@ -25,9 +25,12 @@ import com.google.common.primitives.UnsignedInts;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.io.Serializable;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.common.value.qual.ArrayLenRange;
+import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 
 /**
@@ -42,7 +45,7 @@ public abstract class HashCode {
   HashCode() {}
 
   /** Returns the number of bits in this hash code; a positive multiple of 8. */
-  public abstract int bits();
+  public abstract @NonNegative int bits();
 
   /**
    * Returns the first four bytes of {@linkplain #asBytes() this hashcode's bytes}, converted to an
@@ -86,16 +89,20 @@ public abstract class HashCode {
    * @return the number of bytes written to {@code dest}
    * @throws IndexOutOfBoundsException if there is not enough room in {@code dest}
    */
+  @SuppressWarnings({"lowerbound:assignment.type.incompatible",// Since bits() return non negative value, `bits() / 8`
+          //return non negative.
+          "upperbound:assignment.type.incompatible"// maxLength is = `bits() / 8` if maxLength < bits() / 8.
+          //Since bits() returns a positive multiple of 8, `bits() / 8 + offset - 1` < dest.length
+          })
   @CanIgnoreReturnValue
-  @SuppressWarnings("lowerbound:assignment.type.incompatible")//`bits()` return a positive multiple of 8.
-  public int writeBytesTo(byte[] dest, @NonNegative int offset, @NonNegative int maxLength) {
+  public int writeBytesTo(byte[] dest, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int offset, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int maxLength) {
     maxLength = Ints.min(maxLength, bits() / 8);
     Preconditions.checkPositionIndexes(offset, offset + maxLength, dest.length);
     writeBytesToImpl(dest, offset, maxLength);
     return maxLength;
   }
 
-  abstract void writeBytesToImpl(byte[] dest, int offset, int maxLength);
+  abstract void writeBytesToImpl(byte[] dest, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int offset, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int maxLength);
 
   /**
    * Returns a mutable view of the underlying bytes for the given {@code HashCode} if it is a
@@ -130,13 +137,13 @@ public abstract class HashCode {
     }
 
     @Override
-    public int bits() {
+    public @NonNegative int bits() {
       return 32;
     }
 
     @Override
-    public byte[] asBytes() {
-      return new byte[] {(byte) hash, (byte) (hash >> 8), (byte) (hash >> 16), (byte) (hash >> 24)};
+    public byte @MinLen(1)[] asBytes() {
+      return new byte @MinLen(1)[] {(byte) hash, (byte) (hash >> 8), (byte) (hash >> 16), (byte) (hash >> 24)};
     }
 
     @Override
@@ -187,13 +194,13 @@ public abstract class HashCode {
     }
 
     @Override
-    public int bits() {
+    public @NonNegative int bits() {
       return 64;
     }
 
     @Override
-    public byte[] asBytes() {
-      return new byte[] {
+    public byte @MinLen(1)[] asBytes() {
+      return new byte @MinLen(1)[] {
         (byte) hash,
         (byte) (hash >> 8),
         (byte) (hash >> 16),
@@ -262,12 +269,12 @@ public abstract class HashCode {
     }
 
     @Override
-    public int bits() {
+    public @NonNegative int bits() {
       return bytes.length * 8;
     }
 
     @Override
-    public byte[] asBytes() {
+    public byte @MinLen(1)[] asBytes() {
       return bytes.clone();
     }
 
@@ -303,19 +310,19 @@ public abstract class HashCode {
     }
 
     @Override
-    void writeBytesToImpl(byte[] dest, @NonNegative int offset, @NonNegative  @LTLengthOf(value = {"this.bytes", "#1"}, offset = {"-1","#2 - 1"}) int maxLength) {
+    void writeBytesToImpl(byte[] dest, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int offset, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int maxLength) {
       System.arraycopy(bytes, 0, dest, offset, maxLength);
     }
 
     @Override
-    byte[] getBytesInternal() {
+    byte @MinLen(1)[] getBytesInternal() {
       return bytes;
     }
 
     @Override
     @SuppressWarnings("upperbound:array.access.unsafe.high")/* Since `this.bytes.length` has same length as that.getBytesInternal().length
     ( else return false), `i` range from 0 to `this.bytes.length` is safe as indexes.*/
-    boolean equalsSameBits(@SameLen("this.bytes") HashCode that) {
+    boolean equalsSameBits(HashCode that) {
       // We don't use MessageDigest.isEqual() here because its contract does not guarantee
       // constant-time evaluation (no short-circuiting).
       if (this.bytes.length != that.getBytesInternal().length) {
@@ -404,7 +411,7 @@ public abstract class HashCode {
       return asInt();
     }
     // If we have less than 4 bytes, use them all.
-    byte @MinLen(1)[] bytes = getBytesInternal();
+    byte[] bytes = getBytesInternal();
     int val = (bytes[0] & 0xFF);
     for (int i = 1; i < bytes.length; i++) {
       val |= ((bytes[i] & 0xFF) << (i * 8));
