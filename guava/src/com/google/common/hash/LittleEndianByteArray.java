@@ -39,6 +39,8 @@ final class LittleEndianByteArray {
    * @param offset the offset into the array at which to start
    * @return a long of a concatenated 8 bytes
    */
+  @SuppressWarnings("upperbound:argument.type.incompatible")// method uses assertion
+  // to ensure `offset + 8` <= input.length, same as `offset + 8 - 1 < input.length`
   static long load64(byte[] input, int offset) {
     // We don't want this in production code as this is the most critical part of the loop.
     assert input.length >= offset + 8;
