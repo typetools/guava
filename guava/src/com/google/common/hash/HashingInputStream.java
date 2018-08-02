@@ -18,6 +18,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.Beta;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,10 +65,16 @@ public final class HashingInputStream extends FilterInputStream {
    */
   @Override
   @CanIgnoreReturnValue
-  public int read(byte[] bytes, int off, int len) throws IOException {
-    int numOfBytesRead = in.read(bytes, off, len);
+  @SuppressWarnings({"override.param.invalid",//FilterInputStream#read should be annotated as
+          // @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int read()
+          "upperbound:argument.type.incompatible",//(1): param `off` should be annotated as @LTLengthOf(value = "#1",offset = "numOfBytesRead - 1")
+          //However, numOfBytesRead is declared inside method body.
+          "lowerbound:assignment.type.incompatible"//(2): Input#stream() should be annotated as `@NonNegative int read()`
+  })
+  public int read(byte[] bytes, @NonNegative int off, @NonNegative int len) throws IOException {
+    @NonNegative int numOfBytesRead = in.read(bytes, off, len);//(2)
     if (numOfBytesRead != -1) {
-      hasher.putBytes(bytes, off, numOfBytesRead);
+      hasher.putBytes(bytes, off, numOfBytesRead);//(1)
     }
     return numOfBytesRead;
   }
