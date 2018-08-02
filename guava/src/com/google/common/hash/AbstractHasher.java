@@ -78,8 +78,11 @@ abstract class AbstractHasher implements Hasher {
   }
 
   @Override
-  @SuppressWarnings("lowerbound:argument.type.incompatible")//  b.arrayOffset(), b.position() and b.remaining() all return non negative values.
-  // Link to PR: https://github.com/typetools/checker-framework/pull/2080
+  @SuppressWarnings({"lowerbound:argument.type.incompatible", //  b.arrayOffset(), b.position() and b.remaining() all return non negative values.
+          "upperbound:argument.type.incompatible"// b.arrayOffset() returns the offset within this buffer's array of the first element of the buffer and b.remaining() returns the number of elements remaining in this buffer
+          // Therefore, `b.arrayOffset() + b.position() + b.remaining() - 1` is < b.array()
+          // Link to PR: https://github.com/typetools/checker-framework/pull/2080
+  })
   public Hasher putBytes(ByteBuffer b) {
     if (b.hasArray()) {
       putBytes(b.array(), b.arrayOffset() + b.position(), b.remaining());

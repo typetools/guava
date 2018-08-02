@@ -91,12 +91,12 @@ public abstract class HashCode {
    */
   @SuppressWarnings({"lowerbound:assignment.type.incompatible",// Since bits() return non negative value, `bits() / 8`
           //return non negative.
-          "upperbound:assignment.type.incompatible"// maxLength is = `bits() / 8` if maxLength < bits() / 8.
+          "upperbound:assignment.type.incompatible"//(1) maxLength is = `bits() / 8` if maxLength < bits() / 8.
           //Since bits() returns a positive multiple of 8, `bits() / 8 + offset - 1` < dest.length
           })
   @CanIgnoreReturnValue
   public int writeBytesTo(byte[] dest, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int offset, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int maxLength) {
-    maxLength = Ints.min(maxLength, bits() / 8);
+    maxLength = Ints.min(maxLength, bits() / 8);//(1)
     Preconditions.checkPositionIndexes(offset, offset + maxLength, dest.length);
     writeBytesToImpl(dest, offset, maxLength);
     return maxLength;
