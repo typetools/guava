@@ -26,6 +26,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.common.value.qual.ArrayLen;
 import org.checkerframework.common.value.qual.IntRange;
 
 /**
@@ -56,8 +57,9 @@ abstract class AbstractByteHasher extends AbstractHasher {
 
   /** Updates this hasher with bytes from the given buffer. */
   @SuppressWarnings({"lowerbound:argument.type.incompatible","upperbound:argument.type.incompatible"})/*
-  Invariants: mark <= position <= limit <= capacity(is length of buffer). Since `b.remaining()` return limit - position,
-  and `b.arrayOffset() + b.position()` return offset("buffer's backing array of the first element of the buffer")  + position,
+  Invariants: position <= limit <= capacity( is length of buffer).
+  Since `b.remaining()` return limit - position, and `b.arrayOffset() + b.position()`
+  return offset("buffer's backing array of the first element of the buffer")  + position,
   `b.remaining() + b.arrayOffset() + b.position() - 1 < b.array().length`. */
   protected void update(ByteBuffer b) {
     if (b.hasArray()) {
@@ -71,8 +73,10 @@ abstract class AbstractByteHasher extends AbstractHasher {
   }
 
   /** Updates the sink with the given number of bytes from the buffer. */
-  @SuppressWarnings({"upperbound:argument.type.incompatible","lowerbound:argument.type.incompatible"})// Since `scratch.array().length` will return 8, `bytes`
-  // range from 0 to 8) - 1 < scratch.array().length
+  @SuppressWarnings({"upperbound:argument.type.incompatible","lowerbound:argument.type.incompatible"})/*
+  Since `ByteBuffer scratch = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN);`, scratch.array() will
+  return an array with length of 8.
+  */
   private Hasher update(@IntRange(from = 0, to = 8) int bytes) {
     try {
       update(scratch.array(), 0, bytes);
