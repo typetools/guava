@@ -357,12 +357,11 @@ public abstract class HashCode {
           })
   public static HashCode fromString(String string) {
     checkArgument(
-            string.length() >= 2, "input string (%s) must have at least 2 characters", string);
+        string.length() >= 2, "input string (%s) must have at least 2 characters", string);
     checkArgument(
-            string.length() % 2 == 0,
-            "input string (%s) must have an even number of characters",
-            string);
-
+        string.length() % 2 == 0,
+        "input string (%s) must have an even number of characters",
+		string);
     byte[] bytes = new byte[string.length() / 2];
     for (int i = 0; i < string.length(); i += 2) {
       int ch1 = decode(string.charAt(i)) << 4;
