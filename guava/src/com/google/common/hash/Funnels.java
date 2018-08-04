@@ -19,7 +19,6 @@ import com.google.common.base.Preconditions;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.nio.charset.Charset;
-
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -249,6 +248,7 @@ public final class Funnels {
       sink.putByte((byte) b);
     }
 
+    @SuppressWarnings("override.param.invalid")//OutputStream#write() should be annotated as void write(byte @MinLen(1)[] bytes)
     @Override
     public void write(byte @MinLen(1)[] bytes) {
       sink.putBytes(bytes);
