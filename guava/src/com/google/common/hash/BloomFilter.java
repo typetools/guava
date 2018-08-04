@@ -34,6 +34,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.RoundingMode;
 import java.util.stream.Collector;
+import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -113,8 +114,7 @@ public final class BloomFilter<T> implements Predicate<T>, Serializable {
   private final Strategy strategy;
 
   /** Creates a BloomFilter. */
-  @SuppressWarnings("upperbound:assignment.type.incompatible")// lowerbound of `numHashFunctions` is checked to be non negative
-  //if `numHashFunctions > 255`, check argument throws an error message
+  @SuppressWarnings("upperbound:assignment.type.incompatible")//if `numHashFunctions > 255`, check argument throws an error message
   private BloomFilter(
       LockFreeBitArray bits, @IntRange(from = 0, to = 255) int numHashFunctions, Funnel<? super T> funnel, Strategy strategy) {
     checkArgument(numHashFunctions > 0, "numHashFunctions (%s) must be > 0", numHashFunctions);
@@ -314,7 +314,7 @@ public final class BloomFilter<T> implements Predicate<T>, Serializable {
    * @return a {@code Collector} generating a {@code BloomFilter} of the received elements
    * @since 23.0
    */
-  @SuppressWarnings("value:argument.type.incompatible")// 0.03 is in range of 0-1
+  @SuppressWarnings("argument.type.incompatible")// 0.03 is in range of 0-1
   public static <T> Collector<T, ?, BloomFilter<T>> toBloomFilter(
       Funnel<? super T> funnel, @Positive long expectedInsertions) {
     return toBloomFilter(funnel, expectedInsertions, 0.03);
@@ -343,7 +343,7 @@ public final class BloomFilter<T> implements Predicate<T>, Serializable {
    * @since 23.0
    */
   public static <T> Collector<T, ?, BloomFilter<T>> toBloomFilter(
-      Funnel<? super T> funnel, @Positive long expectedInsertions, @IntRange(from = 0, to = 1) double fpp) {
+      Funnel<? super T> funnel, @Positive long expectedInsertions, @NonNegative @LessThan("1") double fpp) {
     checkNotNull(funnel);
     checkArgument(
         expectedInsertions >= 0, "Expected insertions (%s) must be >= 0", expectedInsertions);
@@ -381,7 +381,7 @@ public final class BloomFilter<T> implements Predicate<T>, Serializable {
    * @return a {@code BloomFilter}
    */
   public static <T> BloomFilter<T> create(
-      Funnel<? super T> funnel, @Positive int expectedInsertions, @IntRange(from = 0, to = 1) double fpp) {
+      Funnel<? super T> funnel, @Positive int expectedInsertions, @NonNegative @LessThan("1") double fpp) {
     return create(funnel, (long) expectedInsertions, fpp);
   }
 
@@ -407,13 +407,13 @@ public final class BloomFilter<T> implements Predicate<T>, Serializable {
    * @since 19.0
    */
   public static <T> BloomFilter<T> create(
-      Funnel<? super T> funnel, @Positive long expectedInsertions, @IntRange(from = 0, to = 1) double fpp) {
+      Funnel<? super T> funnel, @Positive long expectedInsertions, @NonNegative @LessThan("1") double fpp) {
     return create(funnel, expectedInsertions, fpp, BloomFilterStrategies.MURMUR128_MITZ_64);
   }
 
   @VisibleForTesting
   static <T> BloomFilter<T> create(
-      Funnel<? super T> funnel, @Positive long expectedInsertions, @IntRange(from = 0, to = 1) double fpp, Strategy strategy) {
+      Funnel<? super T> funnel, @NonNegative long expectedInsertions, @NonNegative @LessThan("1") double fpp, Strategy strategy) {
     checkNotNull(funnel);
     checkArgument(
         expectedInsertions >= 0, "Expected insertions (%s) must be >= 0", expectedInsertions);
@@ -481,7 +481,7 @@ public final class BloomFilter<T> implements Predicate<T>, Serializable {
    * @return a {@code BloomFilter}
    * @since 19.0
    */
-  @SuppressWarnings("value:argument.type.incompatible")// 0.03 is in range of 0-1
+  @SuppressWarnings("argument.type.incompatible")// 0.03 is in range of 0-1
   public static <T> BloomFilter<T> create(Funnel<? super T> funnel, @Positive long expectedInsertions) {
     return create(funnel, expectedInsertions, 0.03); // FYI, for 3%, we always get 5 hash functions
   }
@@ -524,15 +524,16 @@ public final class BloomFilter<T> implements Predicate<T>, Serializable {
    * @param n expected insertions (must be positive)
    * @param p false positive rate (must be 0 < p < 1)
    */
-  @VisibleForTesting
-  @SuppressWarnings({"value:return.type.incompatible",//if n is Positive and 0 < p < 1, lowest possible value optimalNumOfBits() return is 0
-          "value:assignment.type.incompatible", "lowerbound:assignment.type.incompatible"// only if p == 0, p is = Double.MIN_VALUE.
+  @SuppressWarnings({"lowerbound:return.type.incompatible",/*(1): Since 0 < p < 1, Math.log(p) returns negative
+  value, therefore `-n * Math.log(p)` returns positive value. */
+          "assignment.type.incompatible"//(2): Double.MIN_VALUE is 4.9E-324, still in range from 0 to 1
   })
-  static @IntRange(from = 1, to = Integer.MAX_VALUE) long optimalNumOfBits(@Positive long n, @IntRange(from = 0, to = 1) double p) {
+  @VisibleForTesting
+  static @Positive long optimalNumOfBits(@Positive long n, @NonNegative @LessThan("1") double p) {
     if (p == 0) {
-      p = Double.MIN_VALUE;
+      p = Double.MIN_VALUE;//(2)
     }
-    return (long) (-n * Math.log(p) / (Math.log(2) * Math.log(2)));
+    return (long) (-n * Math.log(p) / (Math.log(2) * Math.log(2)));//(1)
   }
 
   private Object writeReplace() {
