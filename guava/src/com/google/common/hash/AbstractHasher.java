@@ -53,14 +53,13 @@ abstract class AbstractHasher implements Hasher {
     return this;
   }
 
-  @SuppressWarnings("argument.type.incompatible")/* Since `charSequence` has min length of 1,
-  `charSequence.toString().getBytes(charset)` return byte array with min length of 1 */
+  @SuppressWarnings("argument.type.incompatible")//Strings#getBytes() should be annotated as @PolyValue
   @Override
   public Hasher putString(@MinLen(1) CharSequence charSequence, Charset charset) {
     return putBytes(charSequence.toString().getBytes(charset));
   }
 
-  @SuppressWarnings("upperbound:argument.type.incompatible")/* `off` is required to be @LTLengthOf(value = "#1", offset = "#3 - 1"). Since `bytes.length` min value is 1,
+  @SuppressWarnings("upperbound:argument.type.incompatible")/* `off` is required to be @LTLengthOf(value = "#1", offset = "len - 1"). Since `bytes.length` min value is 1,
   `off = 0` + `bytes.length = 1" - 1 is still less than `bytes.length`
   */
   @Override
@@ -79,9 +78,10 @@ abstract class AbstractHasher implements Hasher {
 
   @Override
   @SuppressWarnings({"lowerbound:argument.type.incompatible", //  b.arrayOffset(), b.position() and b.remaining() all return non negative values.
-          "upperbound:argument.type.incompatible"// b.arrayOffset() returns the offset within this buffer's array of the first element of the buffer and b.remaining() returns the number of elements remaining in this buffer
-          // Therefore, `b.arrayOffset() + b.position() + b.remaining() - 1` is < b.array()
-          // Link to PR: https://github.com/typetools/checker-framework/pull/2080
+          "upperbound:argument.type.incompatible"/* b.arrayOffset() returns the offset within this buffer's array of the first element of the buffer
+          and b.remaining() returns the number of elements remaining in this buffer
+          Therefore, `b.arrayOffset() + b.position() + b.remaining() - 1` is < b.array()
+          Link to PR: https://github.com/typetools/checker-framework/pull/2080 */
   })
   public Hasher putBytes(ByteBuffer b) {
     if (b.hasArray()) {
