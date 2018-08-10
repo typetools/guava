@@ -23,7 +23,6 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.common.value.qual.MinLen;
 
 /**
@@ -46,15 +45,15 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
     return new BufferingHasher(expectedInputSize);
   }
 
-  @SuppressWarnings("value:argument.type.incompatible")// ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(input).array()
-  //return an array of length 4.
+  @SuppressWarnings("value:argument.type.incompatible")/* Since ByteBuffer is a mutable length data structure, `ByteBuffer.allocate(4)` returns the new byte buffer with 4 as capacity,
+  therefore `ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(input).array()` returns an array of length 4 */
   @Override
   public HashCode hashInt(int input) {
     return hashBytes(ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(input).array());
   }
 
-  @SuppressWarnings("value:argument.type.incompatible")// ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(input).array()
-  //return an array of length 8.
+  @SuppressWarnings("value:argument.type.incompatible")/* Since ByteBuffer is a mutable length data structure, `ByteBuffer.allocate(8)` returns the new byte buffer with 8 as capacity,
+  therefore `ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(input).array()` returns an array of length 8 */
   @Override
   public HashCode hashLong(long input) {
     return hashBytes(ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(input).array());
