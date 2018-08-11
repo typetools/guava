@@ -45,22 +45,25 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
     return new BufferingHasher(expectedInputSize);
   }
 
-  @SuppressWarnings("value:argument.type.incompatible")/* Since ByteBuffer is a mutable length data structure, `ByteBuffer.allocate(4)` returns the new byte buffer with 4 as capacity,
-  therefore `ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(input).array()` returns an array of length 4 */
+  @SuppressWarnings("value:argument.type.incompatible")/* Since ByteBuffer is a mutable length data structure, `ByteBuffer.allocate(4)`
+  returns the new byte buffer with 4 as capacity, therefore `ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(input).array()`
+  returns an array of length 4 */
   @Override
   public HashCode hashInt(int input) {
     return hashBytes(ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(input).array());
   }
 
-  @SuppressWarnings("value:argument.type.incompatible")/* Since ByteBuffer is a mutable length data structure, `ByteBuffer.allocate(8)` returns the new byte buffer with 8 as capacity,
-  therefore `ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(input).array()` returns an array of length 8 */
+  @SuppressWarnings("value:argument.type.incompatible")/* Since ByteBuffer is a mutable length data structure, `ByteBuffer.allocate(8)`
+  returns the new byte buffer with 8 as capacity, therefore `ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(input).array()`
+  returns an array of length 8 */
   @Override
   public HashCode hashLong(long input) {
     return hashBytes(ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(input).array());
   }
 
-  @SuppressWarnings("value:argument.type.incompatible")// If `input` has min length of 1, since `buffer.array()`
-  //returns the array that backs this buffer, the array also has min length of 1.
+  @SuppressWarnings("value:argument.type.incompatible") /* Since ByteBuffer is a mutable length data structure and input
+  has min length of 1,`ByteBuffer.allocate(len * 2)` returns the new byte buffer with min length of 2 as capacity,
+  therefore ByteBuffer.allocate(len * 2).order(ByteOrder.LITTLE_ENDIAN) returns an array of non negative length */
   @Override
   public HashCode hashUnencodedChars(@MinLen(1) CharSequence input) {
     int len = input.length();
