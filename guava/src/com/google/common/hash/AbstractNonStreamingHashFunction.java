@@ -120,8 +120,8 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
 
     @SuppressWarnings(value = {"upperbound:argument.type.incompatible",// `stream.byteArray()` return an array of length 32
             // Since `stream.length()` return the length of return byte array, 0 + stream.length - 1 is always < stream.length.
-            "lowerbound:argument.type.incompatible"// `stream.length()` return length of the byte array( 32)
-    })
+            "lowerbound:argument.type.incompatible"/*`stream.length` returns `count` of the pre-compiled class `ByteArrayOutputStream`.
+            therefore, `count` should be annotated as @NonNegative in `ByteArrayOutputStream` */})
     @Override
     public HashCode hash() {
       return hashBytes(stream.byteArray(), 0, stream.length());
@@ -145,7 +145,8 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
       count += remaining;
     }
 
-    @SuppressWarnings("value:return.type.incompatible")//`buf` array in ByteArrayOutputStream should be annotated as @MinLen(1)
+    @SuppressWarnings("value:return.type.incompatible")//`buf` array in the pre-compiled class `ByteArrayOutputStream`
+      // should be annotated as @MinLen(1)
     byte @MinLen(1)[] byteArray() {
       return buf;
     }
