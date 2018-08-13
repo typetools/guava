@@ -21,7 +21,10 @@ import static java.lang.Long.rotateRight;
 
 import com.google.common.annotations.VisibleForTesting;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.common.value.qual.ArrayLenRange;
+import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 
 /**
@@ -50,7 +53,7 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
   private static final long K2 = 0x9ae16a3b2f90404fL;
 
   @Override
-  public HashCode hashBytes(byte[] input, @NonNegative @LTLengthOf(value = "#1",offset = "#3 - 1") int off, @LTLengthOf(value = "#1",offset = "#2 - 1") @NonNegative int len) {
+  public HashCode hashBytes(byte[] input, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1")  int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
     checkPositionIndexes(off, off + len, input.length);
     return HashCode.fromLong(fingerprint(input, off, len));
   }
@@ -67,8 +70,9 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
 
   // End of public functions.
 
+  @SuppressWarnings({"value:argument.type.incompatible","upperbound:argument.type.incompatible"})
   @VisibleForTesting
-  static long fingerprint(byte[] bytes, @NonNegative @LTLengthOf(value = "#1",offset = "#3 - 1") int offset, @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int length) {
+  static long fingerprint(byte[] bytes, @NonNegative int offset, @LengthOf("#1") int length) {
     if (length <= 32) {
       if (length <= 16) {
         return hashLength0to16(bytes, offset, length);
@@ -117,6 +121,7 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
     output[1] = seedB + c;
   }
 
+  /*
   @SuppressWarnings(value = {"lowerbound:argument.type.incompatible",//(1): Since offset lowest possible value is 0, if length is >= 8,
   // `offset + length - 8` return non negative values
   //(1): Since offset lowest possible value is 0, if length is >= 4,
@@ -124,8 +129,13 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
           "upperbound:argument.type.incompatible",//(2): `offset + 3` is required to be < bytes.length, when length is >= 4,
           // `offset + 3` is always < bytes.length.
           "upperbound:array.access.unsafe.high"//(3): Range: 0 < length < 4, if length is 1
+  }) */
+  /*
+  @SuppressWarnings({"lowerbound:argument.type.incompatible",//(1): Lowest `offset` is 8 and lowest `length` is 0, `offset + length` >= 0.
+          //"upperbound:argument.type.incompatible",//(2): offset + length - 1 < bytes.length, if length >= 4, offset + 3 <
   })
-  private static long hashLength0to16(byte[] bytes, @NonNegative @LTLengthOf(value = "#1",offset = "#3 - 1") int offset, @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int length) {
+  */
+  private static long hashLength0to16(byte @ArrayLenRange(from = 0, to = 16)[] bytes, @LTLengthOf(value = "#1", offset = "#3 - 1") int offset, @LTLengthOf(value = "#1", offset = "#2 - 1") int length) {
     if (length >= 8) {
       long mul = K2 + length * 2;
       long a = load64(bytes, offset) + K2;
@@ -150,7 +160,7 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
     return K2;
   }
 
-  private static long hashLength17to32(byte[] bytes, @NonNegative int offset, @NonNegative int length) {
+  private static long hashLength17to32(byte @ArrayLenRange(from = 17, to = 32)[] bytes, int offset, int length) {
     long mul = K2 + length * 2;
     long a = load64(bytes, offset) * K1;
     long b = load64(bytes, offset + 8);
@@ -160,7 +170,7 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
         rotateRight(a + b, 43) + rotateRight(c, 30) + d, a + rotateRight(b + K2, 18) + c, mul);
   }
 
-  private static long hashLength33To64(byte[] bytes, @NonNegative int offset, @NonNegative int length) {
+  private static long hashLength33To64(byte @ArrayLenRange(from = 32, to = 64)[] bytes, int offset, int length) {
     long mul = K2 + length * 2;
     long a = load64(bytes, offset) * K2;
     long b = load64(bytes, offset + 8);
@@ -179,10 +189,7 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
   /*
    * Compute an 8-byte hash of a byte array of length greater than 64 bytes.
    */
-  @SuppressWarnings("lowerbound:assignment.type.incompatible")//lowest possible of length is 0.
-  // `int end = offset + ((length - 1) / 64) * 64` when length is 0 will return 0 and  int last64offset = end + ((length - 1) & 63) - 63 will also return 0.
-  // last64offset is non negative.
-  private static long hashLength65Plus(byte[] bytes, @NonNegative int offset, @NonNegative int length) {
+  private static long hashLength65Plus(byte @ArrayLenRange(from = 65)[] bytes, int offset, int length) {
     final int seed = 81;
     // For strings over 64 bytes we loop. Internal state consists of 56 bytes: v, w, x, y, and z.
     long x = seed;
@@ -194,8 +201,8 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
     x = x * K2 + load64(bytes, offset);
 
     // Set end so that after the loop we have 1 to 64 bytes left to process.
-    @NonNegative int end = offset + ((length - 1) / 64) * 64;
-    @NonNegative int last64offset = end + ((length - 1) & 63) - 63;
+    int end = offset + ((length - 1) / 64) * 64;
+    int last64offset = end + ((length - 1) & 63) - 63;
     do {
       x = rotateRight(x + y + v[0] + load64(bytes, offset + 8), 37) * K1;
       y = rotateRight(y + v[1] + load64(bytes, offset + 48), 42) * K1;
@@ -226,5 +233,7 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
         hashLength16(v[0], w[0], mul) + shiftMix(y) * K0 + x,
         hashLength16(v[1], w[1], mul) + z,
         mul);
+  }
+  public static void main(String args[]) {
   }
 }

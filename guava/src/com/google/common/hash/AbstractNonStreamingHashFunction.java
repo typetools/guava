@@ -22,6 +22,7 @@ import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.common.value.qual.MinLen;
 
@@ -82,7 +83,7 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
   }
 
   @Override
-  public abstract HashCode hashBytes(byte[] input, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len);
+  public abstract HashCode hashBytes(byte[] input, NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @LTLengthOf(value = "#1", offset = "#2 - 1") int len);
 
   @SuppressWarnings("lowerbound:argument.type.incompatible")/* Since invariants: mark <= position <= limit <= capacity,
   and position is initialized as 0, `input.remaining()` return `limit - position` with lowest possible value as 0.
@@ -107,7 +108,7 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
     }
 
     @Override
-    public Hasher putBytes(byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int len) {
+    public Hasher putBytes(byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
       stream.write(bytes, off, len);
       return this;
     }
@@ -134,7 +135,7 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
       super(expectedInputSize);
     }
 
-    @SuppressWarnings({"lowerbound:argument.type.incompatible", "lowerbound:assignment.type.incompatible"})/* Since invariants: mark <= position <= limit <= capacity,
+    @SuppressWarnings({"lowerbound:argument.type.incompatible", "lowerbound:assignment.type.incompatible"})/* Since invariants: position <= limit <= capacity,
     and position is initialized as 0, `input.remaining()` return `limit - position` with lowest possible value as 0. */
     void write(ByteBuffer input) {
       @NonNegative int remaining = input.remaining();
