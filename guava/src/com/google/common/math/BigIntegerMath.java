@@ -32,6 +32,7 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
@@ -147,11 +148,13 @@ public final class BigIntegerMath {
    *     is not a power of ten
    */
   @GwtIncompatible // TODO
-  @SuppressWarnings("fallthrough")
-  public static int log10(BigInteger x, RoundingMode mode) {
+  @SuppressWarnings({"fallthrough","lowerbound:argument.type.incompatible"// x fits in a long, then longValue is polymorphic over x's value
+          // with respect to the lowerbound type system. 
+  })
+  public static int log10(@Positive BigInteger x, RoundingMode mode) {
     checkPositive("x", x);
     if (fitsInLong(x)) {
-      return LongMath.log10(x.longValue(), mode);
+      return LongMath.log10(x.longValue(), mode);//(1)
     }
 
     int approxLog10 = (int) (log2(x, FLOOR) * LN_2 / LN_10);
@@ -422,7 +425,7 @@ public final class BigIntegerMath {
    *
    * @throws IllegalArgumentException if {@code n < 0}, {@code k < 0}, or {@code k > n}
    */
-  public static BigInteger binomial(@NonNegative int n, @NonNegative @LessThan("#1 + 1") int k) {
+  public static BigInteger binomial(@NonNegative @LTLengthOf("LongMath.factorials") int n, @NonNegative @LessThan("#1 + 1") int k) {
     checkNonNegative("n", n);
     checkNonNegative("k", k);
     checkArgument(k <= n, "k (%s) > n (%s)", k, n);

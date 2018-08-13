@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.common.value.qual.MinLen;
@@ -192,7 +193,7 @@ public final class Quantiles {
      *     q-quantiles; the order of the indexes is unimportant, duplicates will be ignored, and the
      *     set will be snapshotted when this method is called
      */
-    public ScaleAndIndexes indexes(int @MinLen(1)... indexes) {
+    public ScaleAndIndexes indexes(@NonNegative int @MinLen(1)... indexes) {
       return new ScaleAndIndexes(scale, indexes.clone());
     }
 
@@ -204,7 +205,7 @@ public final class Quantiles {
      *     q-quantiles; the order of the indexes is unimportant, duplicates will be ignored, and the
      *     set will be snapshotted when this method is called
      */
-    @SuppressWarnings("value:argument.type.incompatible")//para `indexes` is of mutable length data structures(Collection)
+    @SuppressWarnings({"value:argument.type.incompatible", "lowerbound:argument.type.incompatible"})//parameter `indexes` is of mutable length data structures(Collection)
     public ScaleAndIndexes indexes(Collection<Integer> indexes) {
       return new ScaleAndIndexes(scale, Ints.toArray(indexes));
     }
@@ -283,7 +284,7 @@ public final class Quantiles {
      * @return the quantile value
      */
     @SuppressWarnings({"lowerbound:assignment.type.incompatible",// (0): Since index and (dataset.length - 1) are non-negative ints, numerator is non negative.
-            "upperbound:argument.type.incompatible", "upperbound:array.access.unsafe.high",/* (1): second argument in selectInPlace() and interpolate() is `dataset`,
+            "upperbound:argument.type.incompatible", "upperbound:array.access.unsafe.high",/* (1): second argument in selectInPlace() is `dataset`,
             therefore `quotient + 1` should be < dataset.length. If remainder is not zero,
             quotient max value is `dataset.length - 2`*/
             "upperbound:assignment.type.incompatible"/*(3) Since `numerator = index * (dataset.length - 1)`,
@@ -326,9 +327,9 @@ public final class Quantiles {
   public static final class ScaleAndIndexes {
 
     private final int scale;
-    private final int @MinLen(1)[] indexes;
+    private final @NonNegative int @MinLen(1)[] indexes;
 
-    private ScaleAndIndexes(int scale, int @MinLen(1)[] indexes) {
+    private ScaleAndIndexes(int scale, @NonNegative int @MinLen(1)[] indexes) {
       for (int index : indexes) {
         checkIndex(index, scale);
       }
@@ -397,16 +398,16 @@ public final class Quantiles {
      * @return an unmodifiable map of results: the keys will be the specified quantile indexes, and
      *     the values the corresponding quantile values
      */
-    @SuppressWarnings({"upperbound:assignment.type.incompatible",// indexes` array is annotated to have min length of 1( which is > 0).
-            "upperbound:compound.assignment.type.incompatible",/* (1): Since `requiredSelections.length = indexes.length * 2`, and the for loop
+    @SuppressWarnings({"upperbound:compound.assignment.type.incompatible",/* (1): Since `requiredSelections.length = indexes.length * 2`, and the for loop
             iterate from 0 to indexes.length, increment on requiredSelectionsCount is safe thoughout the loop.
             */
             "lowerbound:argument.type.incompatible", "upperbound:argument.type.incompatible",/* (2): Since `indexes` is annotated to have at least length of 1,
             `requiredSelections.length` will be at least 2, therefore larger than constant 0. */
-            "lowerbound:assignment.type.incompatible",/* (3)
-            Since scale is a positive int, index is in [0, scale], and (dataset.length - 1) is non-negative int,
-            we can do long-arithmetic on index * (dataset.length - 1) / scale to
-            get a rounded ratio and a remainder which can be expressed as ints, without risk of overflow */
+            "lowerbound:assignment.type.incompatible",/*(3): numerator is = (long) indexes[i] * (dataset.length - 1). Since indexes[i] are non negative
+            dataset has min length of 1, numerator is non negative */
+            "upperbound:assignment.type.incompatible",/* (3): Since scale is a positive int, index is in [0, scale],
+            and (dataset.length - 1) is non-negative int, we can do long-arithmetic on index * (dataset.length - 1) / scale to get a rounded ratio and a remainder
+             which can be expressed as ints, without risk of overflow */
             "upperbound:array.access.unsafe.high"// (4) if `remainder` is not 0, highest possible value for quotient is `dataset.length - 2`
     })
     public Map<Integer, Double> computeInPlace(double @MinLen(1)... dataset) {
@@ -428,16 +429,16 @@ public final class Quantiles {
       int[] remainders = new int[indexes.length];
       // The indexes to select. In the worst case, we'll need one each side of each quantile.
       int[] requiredSelections = new int[indexes.length * 2];
-      @IndexFor("requiredSelections") int requiredSelectionsCount = 0;
+      @IndexOrHigh("requiredSelections") int requiredSelectionsCount = 0;
       for (int i = 0; i < indexes.length; i++) {
         // Since index and (dataset.length - 1) are non-negative ints, their product can be
         // expressed as a long, without risk of overflow:
-        long numerator = (long) indexes[i] * (dataset.length - 1);
+        long numerator = (long) indexes[i] * (dataset.length - 1);//(3)
         // Since scale is a positive int, index is in [0, scale], and (dataset.length - 1) is a
         // non-negative int, we can do long-arithmetic on index * (dataset.length - 1) / scale to
         // get a rounded ratio and a remainder which can be expressed as ints, without risk of
         // overflow:
-        @IndexFor("dataset") int quotient = (int) LongMath.divide(numerator, scale, RoundingMode.DOWN);// (3)
+        @IndexFor("dataset") int quotient = (int) LongMath.divide(numerator, scale, RoundingMode.DOWN);//(3)
         int remainder = (int) (numerator - (long) quotient * scale);
         quotients[i] = quotient;
         remainders[i] = remainder;
@@ -542,9 +543,12 @@ public final class Quantiles {
    * ({@code required}, {@code to}] are greater than or equal to that value. Therefore, the value at
    * {@code required} is the value which would appear at that index in the sorted dataset.
    */
-  @SuppressWarnings(value = {"lowerbound:assignment.type.incompatible",//(1): lowest possible while `to` > 0, `partitionPoint` value is 1, therefore `to` can't be negative.
-          "upperbound:assignment.type.incompatible"/* (2): highest possible `partionPoint` value is array.length / 2 or (array.length / 2) + 1.
-          Even with highest `required` value, `from` can only grow to array.length.
+  @SuppressWarnings(value = {"lowerbound:assignment.type.incompatible",/*(1): When entering the loop,
+          required > from and from >= 0, therefore required >= 1.
+          At the assignment, partitionPoint >= required, therefore partitionPoint - 1 >= 0. */
+          "upperbound:assignment.type.incompatible"/*(2): Entering the loop, from and to < array.length.
+          Since `partition(array, from, to)` while to > from return partitionPoint >= from, partitionPoint + 1 > from.
+          Since array.length > to > from and partitionPoint + 1 > from, partitionPoint + 1 < array.length.
           */})
   private static void selectInPlace(@IndexFor("#2") int required, double[] array, @IndexFor("#2") int from, @IndexFor("#2") int to) {
     // If we are looking for the least element in the range, we can just do a linear search for it.
@@ -584,9 +588,9 @@ public final class Quantiles {
    * equal to the value at {@code ret} and the values with indexes in ({@code ret}, {@code to}] are
    * greater than or equal to that.
    */
-  @SuppressWarnings("lowerbound:compound.assignment.type.incompatible")// (1): Lowest possible `from` value is 0.
-  // Since for loop init at `i = to`, lowest possible `to` value is 1 in order to execute for loop, `partitionPoint--`
-  // will be as low as 0 and for loop will stop executing.
+  @SuppressWarnings("lowerbound:compound.assignment.type.incompatible")/*(1): Both partitionPoint and i are initialized to the same value `to`.
+  partitionPoint is decremented at most one more time than i is decremented, therefore partitionPoint >= i-1.
+  i > from, therefore partitionPoint >= from. Since from is non-negative, therefore partitionPoint is non-negative. */
   private static @IndexFor("#1") int partition(double[] array, @IndexFor("#1") int from, @IndexFor("#1") int to) {
     // Select a pivot, and move it to the start of the slice i.e. to index from.
     movePivotToStartOfSlice(array, from, to);
@@ -639,10 +643,14 @@ public final class Quantiles {
    * allRequired[i]} for {@code i} in the range [{@code requiredFrom}, {@code requiredTo}]. These
    * indexes must be sorted in the array and must all be in the range [{@code from}, {@code to}].
    */
-  @SuppressWarnings({"lowerbound:argument.type.incompatible",/* (1): Lowest possible `requiredFrom` value is 0.
-           Although `requiredBelow` can be negative, if `requiredBelow` is not >= `requiredFrom`, `required` can't be negative */
-          "upperbound:argument.type.incompatible"/* (2): highest `requiredTo` value is `allRequired.length - 1`.
-          When `requiredAbove` <= highest `requiredTo` value, required max value is `allRequired.length - 1`*/ })
+  @SuppressWarnings({"lowerbound:argument.type.incompatible",/*(1): Since allRequired is sorted, and requiredBelow < requiredChosen,
+  allRequired[requiredBelow] <= allRequired[requiredChosen], therefore allRequired[requiredBelow] is always <= required. Based on the condition
+  of if and while, allRequired[requiredBelow] != required. Because allRequired[requiredBelow] <= required, we know that allRequired[requiredBelow] < required,
+  since allRequired[requiredBelow] >= 0, then required > 0. */
+          "upperbound:argument.type.incompatible"/*(2): Since allRequired is sorted, and requiredAbove > requiredChosen,
+  allRequired[requiredAbove] >= allRequired[requiredChosen], therefore allRequired[requiredAbove] is always >= required. Based on the condition
+  of if and while, allRequired[requiredAbove] != required. Because allRequired[requiredAbove] >= required, we know that allRequired[requiredAbove] > required,
+  since array.length > allRequired[requiredAbove] > required, required + 1 < array.length. */})
   private static void selectAllInPlace(
       @IndexFor("#4") int[] allRequired, @IndexFor("#1") int requiredFrom, @IndexFor("#1") int requiredTo, double[] array, @IndexFor("#4") int from, @IndexFor("#4") int to) {
     // Choose the first selection to do...
@@ -658,7 +666,7 @@ public final class Quantiles {
       requiredBelow--; // skip duplicates of required in the range below
     }
     if (requiredBelow >= requiredFrom) {
-      selectAllInPlace(allRequired, requiredFrom, requiredBelow, array, from, required - 1);// (1)
+      selectAllInPlace(allRequired, requiredFrom, requiredBelow, array, from, required - 1);//(1)
     }
 
     // ...and then recursively perform the selections in the range above.
@@ -667,7 +675,7 @@ public final class Quantiles {
       requiredAbove++; // skip duplicates of required in the range above
     }
     if (requiredAbove <= requiredTo) {
-      selectAllInPlace(allRequired, requiredAbove, requiredTo, array, required + 1, to);// (2)
+      selectAllInPlace(allRequired, requiredAbove, requiredTo, array, required + 1, to);//(2)
     }
   }
 
