@@ -41,11 +41,13 @@ final class MacHashFunction extends AbstractHashFunction {
   private final @NonNegative int bits;
   private final boolean supportsClone;
 
+  @SuppressWarnings("lowerbound:assignment.type.incompatible")/*(1): method `engineGetMacLength()` in the pre-compiled class `MacSpi`
+  should be annotated to return @NonNegative value */
   MacHashFunction(String algorithmName, Key key, String toString) {
     this.prototype = getMac(algorithmName, key);
     this.key = checkNotNull(key);
     this.toString = checkNotNull(toString);
-    this.bits = prototype.getMacLength() * Byte.SIZE;
+    this.bits = prototype.getMacLength() * Byte.SIZE;//(1)
     this.supportsClone = supportsClone(prototype);
   }
 
