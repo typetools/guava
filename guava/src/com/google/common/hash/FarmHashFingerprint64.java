@@ -237,6 +237,4 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
         hashLength16(v[1], w[1], mul) + z,
         mul);
   }
-  public static void main(String args[]) {
-  }
 }
