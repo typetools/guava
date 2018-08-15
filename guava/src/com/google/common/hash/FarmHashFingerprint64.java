@@ -119,6 +119,12 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
     output[1] = seedB + c;
   }
 
+  @SuppressWarnings({"lowerbound:argument.type.incompatible",//(1): if length >= 8 and offset is non negative, offset + length - 8 >= 0.
+          "upperbound:argument.type.incompatible",//(2): if length >= 4 and offset + length - 1 < bytes.length, offset + 4 - 1 < bytes.length.
+          "upperbound:array.access.unsafe.high",/*(3): if 0 < length < 4, therefore offset + length - 1 < bytes.length,
+          offset + length / 2(length >> 2) - 1 < bytes.length and offset + length - 1 - 1 < bytes.length.
+          */
+  })
   private static long hashLength0to16(byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int offset, @IntRange(from = 0, to = 16) @LTLengthOf(value = "#1", offset = "#2 - 1") int length) {
     if (length >= 8) {
       long mul = K2 + length * 2;
@@ -144,17 +150,23 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
     return K2;
   }
 
-  private static long hashLength17to32(byte[] bytes, int offset, @IntRange(from = 17, to = 32) @LTLengthOf(value = "#1", offset = "#2 - 1") int length) {
+  @SuppressWarnings(value = {"lowerbound:argument.type.incompatible"/*(1): if 17 <= length <= 32 and offset is non negative,
+          offset + length - 8 >= 0 and offset + length - 16 >= 0.
+          */})
+  private static long hashLength17to32(byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int offset, @IntRange(from = 17, to = 32) @LTLengthOf(value = "#1", offset = "#2 - 1") int length) {
     long mul = K2 + length * 2;
     long a = load64(bytes, offset) * K1;
     long b = load64(bytes, offset + 8);
-    long c = load64(bytes, offset + length - 8) * mul;
-    long d = load64(bytes, offset + length - 16) * K2;
+    long c = load64(bytes, offset + length - 8) * mul;//(1)
+    long d = load64(bytes, offset + length - 16) * K2;//(1)
     return hashLength16(
         rotateRight(a + b, 43) + rotateRight(c, 30) + d, a + rotateRight(b + K2, 18) + c, mul);
   }
 
-  private static long hashLength33To64(byte[] bytes, int offset, @IntRange(from = 33, to = 64) @LTLengthOf(value = "#1", offset = "#2 - 1") int length) {
+  @SuppressWarnings({"lowerbound:argument.type.incompatible"/*(1): if 17 <= length <= 32 and offset is non negative,
+          offset + length - 8 >= 0 and offset + length - 16 >= 0.
+          */})
+  private static long hashLength33To64(byte[] bytes, @NonNegative  @LTLengthOf(value = "#1", offset = "#3 - 1") int offset, @IntRange(from = 33, to = 64) @LTLengthOf(value = "#1", offset = "#2 - 1") int length) {
     long mul = K2 + length * 2;
     long a = load64(bytes, offset) * K2;
     long b = load64(bytes, offset + 8);
@@ -173,7 +185,14 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
   /*
    * Compute an 8-byte hash of a byte array of length greater than 64 bytes.
    */
-  private static long hashLength65Plus(byte[] bytes, int offset, @IntRange(from = 65) @LTLengthOf(value = "#1", offset = "#2 - 1") int length) {
+  @SuppressWarnings({"lowerbound:assignment.type.incompatible",/*(1): since length >= 65, `end` is non negative,
+  therefore `last64offset` is also non negative. */
+          "upperbound:assignment.type.incompatible",//(1): ?
+          "upperbound:compound.assignment.type.incompatible"/*(2): if length >= 65 and offset < bytes.length - length + 1,
+          offset += 64 < bytes.length.
+          */
+  })
+  private static long hashLength65Plus(byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int offset, @IntRange(from = 65) @LTLengthOf(value = "#1", offset = "#2 - 1") int length) {
     final int seed = 81;
     // For strings over 64 bytes we loop. Internal state consists of 56 bytes: v, w, x, y, and z.
     long x = seed;
@@ -198,7 +217,7 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
       long tmp = x;
       x = z;
       z = tmp;
-      offset += 64;
+      offset += 64;//(2)
     } while (offset != end);
     long mul = K1 + ((z & 0xFF) << 1);
     // Operate on the last 64 bytes of input.
