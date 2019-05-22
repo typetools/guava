@@ -18,10 +18,16 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkPositionIndexes;
 
-import com.google.common.annotations.GwtIncompatible;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.CharBuffer;
+
+import com.google.common.annotations.GwtIncompatible;
+
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * A {@link Reader} that reads the characters in a {@link CharSequence}. Like {@code StringReader},
@@ -57,7 +63,7 @@ final class CharSequenceReader extends Reader {
   }
 
   @Override
-  public synchronized int read(CharBuffer target) throws IOException {
+  public synchronized @GTENegativeOne int read(CharBuffer target) throws IOException {
     checkNotNull(target);
     checkOpen();
     if (!hasRemaining()) {
@@ -77,7 +83,7 @@ final class CharSequenceReader extends Reader {
   }
 
   @Override
-  public synchronized int read(char[] cbuf, int off, int len) throws IOException {
+  public synchronized int read(char[] cbuf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     checkPositionIndexes(off, off + len, cbuf.length);
     checkOpen();
     if (!hasRemaining()) {
@@ -91,7 +97,7 @@ final class CharSequenceReader extends Reader {
   }
 
   @Override
-  public synchronized long skip(long n) throws IOException {
+  public synchronized long skip(@NonNegative long n) throws IOException {
     checkArgument(n >= 0, "n (%s) may not be negative", n);
     checkOpen();
     int charsToSkip = (int) Math.min(remaining(), n); // safe because remaining is an int
@@ -111,7 +117,7 @@ final class CharSequenceReader extends Reader {
   }
 
   @Override
-  public synchronized void mark(int readAheadLimit) throws IOException {
+  public synchronized void mark(@NonNegative int readAheadLimit) throws IOException {
     checkArgument(readAheadLimit >= 0, "readAheadLimit (%s) may not be negative", readAheadLimit);
     checkOpen();
     mark = pos;

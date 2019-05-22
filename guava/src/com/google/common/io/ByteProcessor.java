@@ -17,6 +17,11 @@ package com.google.common.io;
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
+
 import java.io.IOException;
 
 /**
@@ -41,7 +46,7 @@ public interface ByteProcessor<T> {
    * @return true to continue processing, false to stop
    */
   @CanIgnoreReturnValue // some uses know that their processor never returns false
-  boolean processBytes(byte[] buf, int off, int len) throws IOException;
+  boolean processBytes(byte[] buf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException;
 
   /** Return the result of processing all the bytes. */
   T getResult();
