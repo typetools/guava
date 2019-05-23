@@ -16,6 +16,11 @@ package com.google.common.io;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
+
 import java.io.IOException;
 
 /**
@@ -46,8 +51,8 @@ abstract class LineBuffer {
    * @throws IOException if an I/O error occurs
    * @see #finish
    */
-  protected void add(char[] cbuf, int off, int len) throws IOException {
-    int pos = off;
+  protected void add(char[] cbuf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
+    @IndexOrHigh("#1") int pos = off;
     if (sawReturn && len > 0) {
       // Last call to add ended with a CR; we can handle the line now.
       if (finishLine(cbuf[pos] == '\n')) {
@@ -55,7 +60,7 @@ abstract class LineBuffer {
       }
     }
 
-    int start = pos;
+    @IndexOrHigh("#1") int start = pos;
     for (int end = off + len; pos < end; pos++) {
       switch (cbuf[pos]) {
         case '\r':
@@ -63,6 +68,7 @@ abstract class LineBuffer {
           sawReturn = true;
           if (pos + 1 < end) {
             if (finishLine(cbuf[pos + 1] == '\n')) {
+
               pos++;
             }
           }

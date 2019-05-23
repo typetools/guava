@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkPositionIndexes;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.primitives.UnsignedBytes;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -31,6 +32,11 @@ import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CoderResult;
 import java.nio.charset.CodingErrorAction;
 import java.util.Arrays;
+
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * An {@link InputStream} that converts characters from a {@link Reader} into bytes using an
@@ -78,7 +84,7 @@ final class ReaderInputStream extends InputStream {
    * @param bufferSize size of internal input and output buffers
    * @throws IllegalArgumentException if bufferSize is non-positive
    */
-  ReaderInputStream(Reader reader, Charset charset, int bufferSize) {
+  ReaderInputStream(Reader reader, Charset charset, @NonNegative int bufferSize) {
     this(
         reader,
         charset
@@ -97,7 +103,7 @@ final class ReaderInputStream extends InputStream {
    * @param bufferSize size of internal input and output buffers
    * @throws IllegalArgumentException if bufferSize is non-positive
    */
-  ReaderInputStream(Reader reader, CharsetEncoder encoder, int bufferSize) {
+  ReaderInputStream(Reader reader, CharsetEncoder encoder, @NonNegative int bufferSize) {
     this.reader = checkNotNull(reader);
     this.encoder = checkNotNull(encoder);
     checkArgument(bufferSize > 0, "bufferSize must be positive: %s", bufferSize);
@@ -115,14 +121,14 @@ final class ReaderInputStream extends InputStream {
   }
 
   @Override
-  public int read() throws IOException {
+  public @GTENegativeOne int read() throws IOException {
     return (read(singleByte) == 1) ? UnsignedBytes.toInt(singleByte[0]) : -1;
   }
 
   // TODO(chrisn): Consider trying to encode/flush directly to the argument byte
   // buffer when possible.
   @Override
-  public int read(byte[] b, int off, int len) throws IOException {
+  public @GTENegativeOne @LTLengthOf("#1") int read(byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     // Obey InputStream contract.
     checkPositionIndexes(off, off + len, b.length);
     if (len == 0) {
@@ -247,7 +253,7 @@ final class ReaderInputStream extends InputStream {
    * Copy as much of the byte buffer into the output array as possible, returning the (positive)
    * number of characters copied.
    */
-  private int drain(byte[] b, int off, int len) {
+  private int drain(byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
     int remaining = Math.min(len, byteBuffer.remaining());
     byteBuffer.get(b, off, remaining);
     return remaining;
