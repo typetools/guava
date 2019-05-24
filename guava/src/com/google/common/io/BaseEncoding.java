@@ -34,8 +34,13 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.Arrays;
+
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.common.value.qual.ArrayLen;
 
 /**
  * A binary encoding scheme for reversibly translating between byte sequences and printable ASCII
@@ -152,7 +157,7 @@ public abstract class BaseEncoding {
    * Encodes the specified range of the specified byte array, and returns the encoded {@code
    * String}.
    */
-  public final String encode(byte[] bytes, int off, int len) {
+  public final String encode(byte[] bytes, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
     checkPositionIndexes(off, off + len, bytes.length);
     StringBuilder result = new StringBuilder(maxEncodedSize(len));
     try {
@@ -187,7 +192,7 @@ public abstract class BaseEncoding {
 
   // TODO(lowasser): document the extent of leniency, probably after adding ignore(CharMatcher)
 
-  private static byte[] extract(byte[] result, int length) {
+  private static byte[] extract(byte[] result, @IndexOrHigh("#1") int length) {
     if (length == result.length) {
       return result;
     } else {
@@ -258,13 +263,13 @@ public abstract class BaseEncoding {
 
   // Implementations for encoding/decoding
 
-  abstract int maxEncodedSize(int bytes);
+  abstract @NonNegative int maxEncodedSize(int bytes);
 
   abstract void encodeTo(Appendable target, byte[] bytes, int off, int len) throws IOException;
 
-  abstract int maxDecodedSize(int chars);
+  abstract @NonNegative int maxDecodedSize(int chars);
 
-  abstract int decodeTo(byte[] target, CharSequence chars) throws DecodingException;
+  abstract @NonNegative @LTLengthOf("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException;
 
   CharSequence trimTrailingPadding(CharSequence chars) {
     return checkNotNull(chars);
@@ -583,7 +588,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    int maxEncodedSize(int bytes) {
+    @NonNegative int maxEncodedSize(int bytes) {
       return alphabet.charsPerChunk * divide(bytes, alphabet.bytesPerChunk, CEILING);
     }
 
@@ -667,7 +672,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    int maxDecodedSize(int chars) {
+    @NonNegative int maxDecodedSize(int chars) {
       return (int) ((alphabet.bitsPerChar * (long) chars + 7L) / 8L);
     }
 
@@ -703,7 +708,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
+    @NonNegative @LTLengthOf("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
       checkNotNull(target);
       chars = trimTrailingPadding(chars);
       if (!alphabet.isValidPaddingStartPosition(chars.length())) {
@@ -895,7 +900,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
+    @NonNegative @LTLengthOf("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
       checkNotNull(target);
       if (chars.length() % 2 == 1) {
         throw new DecodingException("Invalid input length " + chars.length());
@@ -942,7 +947,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
+    @NonNegative @LTLengthOf("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
       checkNotNull(target);
       chars = trimTrailingPadding(chars);
       if (!alphabet.isValidPaddingStartPosition(chars.length())) {
@@ -1075,7 +1080,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    int maxEncodedSize(int bytes) {
+    @NonNegative int maxEncodedSize(int bytes) {
       int unseparatedSize = delegate.maxEncodedSize(bytes);
       return unseparatedSize
           + separator.length() * divide(Math.max(0, unseparatedSize - 1), afterEveryChars, FLOOR);
@@ -1093,7 +1098,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    int maxDecodedSize(int chars) {
+    @NonNegative int maxDecodedSize(int chars) {
       return delegate.maxDecodedSize(chars);
     }
 
@@ -1110,7 +1115,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
+    @NonNegative @LTLengthOf("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
       StringBuilder stripped = new StringBuilder(chars.length());
       for (int i = 0; i < chars.length(); i++) {
         char c = chars.charAt(i);

@@ -20,6 +20,10 @@ import com.google.common.base.Preconditions;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
+
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.EOFException;
@@ -64,18 +68,18 @@ public final class LittleEndianDataInputStream extends FilterInputStream impleme
   }
 
   @Override
-  public void readFully(byte[] b, int off, int len) throws IOException {
+  public void readFully(byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     ByteStreams.readFully(this, b, off, len);
   }
 
   @Override
-  public int skipBytes(int n) throws IOException {
+  public @NonNegative int skipBytes(int n) throws IOException {
     return (int) in.skip(n);
   }
 
   @CanIgnoreReturnValue // to skip a byte
   @Override
-  public int readUnsignedByte() throws IOException {
+  public @NonNegative int readUnsignedByte() throws IOException {
     int b1 = in.read();
     if (0 > b1) {
       throw new EOFException();
@@ -94,7 +98,7 @@ public final class LittleEndianDataInputStream extends FilterInputStream impleme
    */
   @CanIgnoreReturnValue // to skip some bytes
   @Override
-  public int readUnsignedShort() throws IOException {
+  public @NonNegative int readUnsignedShort() throws IOException {
     byte b1 = readAndCheckByte();
     byte b2 = readAndCheckByte();
 
