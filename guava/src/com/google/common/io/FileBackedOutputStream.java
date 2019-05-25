@@ -58,7 +58,7 @@ public final class FileBackedOutputStream extends OutputStream {
       return buf;
     }
 
-    int getCount() {
+    @IndexOrHigh("this.getBuffer()") int getCount() {
       return count;
     }
   }
