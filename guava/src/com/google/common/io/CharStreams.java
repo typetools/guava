@@ -29,6 +29,10 @@ import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Provides utility methods for working with character streams.
  *
@@ -291,7 +295,7 @@ public final class CharStreams {
     }
 
     @Override
-    public void write(char[] cbuf, int off, int len) {
+    public void write(char[] cbuf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
       checkPositionIndexes(off, off + len, cbuf.length);
     }
 
@@ -301,7 +305,7 @@ public final class CharStreams {
     }
 
     @Override
-    public void write(String str, int off, int len) {
+    public void write(String str, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
       checkPositionIndexes(off, off + len, str.length());
     }
 
@@ -312,7 +316,7 @@ public final class CharStreams {
     }
 
     @Override
-    public Writer append(CharSequence csq, int start, int end) {
+    public Writer append(CharSequence csq, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
       checkPositionIndexes(start, end, csq.length());
       return this;
     }

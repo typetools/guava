@@ -15,8 +15,13 @@
 package com.google.common.io;
 
 import com.google.common.annotations.GwtIncompatible;
+
 import java.io.DataOutput;
 import java.io.IOException;
+
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * An extension of {@code DataOutput} for writing to in-memory byte arrays; its methods offer
@@ -34,7 +39,7 @@ public interface ByteArrayDataOutput extends DataOutput {
   void write(byte b[]);
 
   @Override
-  void write(byte b[], int off, int len);
+  void write(byte b[], @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len);
 
   @Override
   void writeBoolean(boolean v);

@@ -26,6 +26,7 @@ import com.google.common.annotations.GwtIncompatible;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 
@@ -77,13 +78,13 @@ final class CharSequenceReader extends Reader {
   }
 
   @Override
-  public synchronized int read() throws IOException {
+  public synchronized @GTENegativeOne int read() throws IOException {
     checkOpen();
     return hasRemaining() ? seq.charAt(pos++) : -1;
   }
 
   @Override
-  public synchronized int read(char[] cbuf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
+  public synchronized @GTENegativeOne @LTEqLengthOf("#1") int read(char[] cbuf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     checkPositionIndexes(off, off + len, cbuf.length);
     checkOpen();
     if (!hasRemaining()) {
@@ -97,7 +98,7 @@ final class CharSequenceReader extends Reader {
   }
 
   @Override
-  public synchronized long skip(@NonNegative long n) throws IOException {
+  public synchronized @NonNegative long skip(@NonNegative long n) throws IOException {
     checkArgument(n >= 0, "n (%s) may not be negative", n);
     checkOpen();
     int charsToSkip = (int) Math.min(remaining(), n); // safe because remaining is an int

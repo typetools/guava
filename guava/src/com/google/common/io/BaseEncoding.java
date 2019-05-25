@@ -40,7 +40,6 @@ import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.common.value.qual.ArrayLen;
 
 /**
  * A binary encoding scheme for reversibly translating between byte sequences and printable ASCII
