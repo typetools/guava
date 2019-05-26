@@ -22,6 +22,12 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * An {@link InputStream} that counts the number of bytes read.
  *
@@ -50,7 +56,7 @@ public final class CountingInputStream extends FilterInputStream {
   }
 
   @Override
-  public int read() throws IOException {
+  public @GTENegativeOne int read() throws IOException {
     int result = in.read();
     if (result != -1) {
       count++;
@@ -59,7 +65,7 @@ public final class CountingInputStream extends FilterInputStream {
   }
 
   @Override
-  public int read(byte[] b, int off, int len) throws IOException {
+  public @GTENegativeOne @LTEqLengthOf("#1") int read(byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     int result = in.read(b, off, len);
     if (result != -1) {
       count += result;
@@ -68,14 +74,14 @@ public final class CountingInputStream extends FilterInputStream {
   }
 
   @Override
-  public long skip(long n) throws IOException {
+  public @NonNegative long skip(long n) throws IOException {
     long result = in.skip(n);
     count += result;
     return result;
   }
 
   @Override
-  public synchronized void mark(int readlimit) {
+  public synchronized void mark(@NonNegative int readlimit) {
     in.mark(readlimit);
     mark = count;
     // it's okay to mark even if mark isn't supported, as reset won't work
