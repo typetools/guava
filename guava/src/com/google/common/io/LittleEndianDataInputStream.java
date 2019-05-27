@@ -20,14 +20,12 @@ import com.google.common.base.Preconditions;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
@@ -99,6 +97,7 @@ public final class LittleEndianDataInputStream extends FilterInputStream impleme
    */
   @CanIgnoreReturnValue // to skip some bytes
   @Override
+  @SuppressWarnings("return.type.incompatible") // The integer returned has its first bit equal to 0.
   public @NonNegative int readUnsignedShort() throws IOException {
     byte b1 = readAndCheckByte();
     byte b2 = readAndCheckByte();

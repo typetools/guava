@@ -40,12 +40,10 @@ import java.nio.channels.WritableByteChannel;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
-
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
-import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
@@ -232,7 +230,7 @@ public final class ByteStreams {
    * create an initial byte array, but if the actual number of bytes read from the stream differs,
    * the correct result will be returned anyway.
    */
-  static byte[] toByteArray(InputStream in, @NonNegative @LessThan("MAX_ARRAY_LEN") long expectedSize) throws IOException {
+  static byte[] toByteArray(InputStream in, @NonNegative long expectedSize) throws IOException {
     checkArgument(expectedSize >= 0, "expectedSize (%s) must be non-negative", expectedSize);
     if (expectedSize > MAX_ARRAY_LEN) {
       throw new OutOfMemoryError(expectedSize + " bytes is too large to fit in a byte array");
@@ -790,7 +788,7 @@ public final class ByteStreams {
    * @throws IOException if an I/O error occurs.
    */
   @Beta
-  public static void readFully(InputStream in, byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
+  public static void readFully(InputStream in, byte[] b, @IndexOrHigh("#2") int off, @NonNegative @LTLengthOf(value = "#2", offset = "#3 - 1") int len) throws IOException {
     int read = read(in, b, off, len);
     if (read != len) {
       throw new EOFException(

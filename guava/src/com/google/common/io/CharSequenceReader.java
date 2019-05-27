@@ -21,9 +21,7 @@ import static com.google.common.base.Preconditions.checkPositionIndexes;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.CharBuffer;
-
 import com.google.common.annotations.GwtIncompatible;
-
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;

@@ -15,10 +15,8 @@
 package com.google.common.io;
 
 import com.google.common.annotations.GwtIncompatible;
-
 import java.io.DataOutput;
 import java.io.IOException;
-
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;

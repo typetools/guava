@@ -34,7 +34,6 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.Arrays;
-
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
@@ -264,7 +263,7 @@ public abstract class BaseEncoding {
 
   abstract @NonNegative int maxEncodedSize(int bytes);
 
-  abstract void encodeTo(Appendable target, byte[] bytes, int off, int len) throws IOException;
+  abstract void encodeTo(Appendable target, byte[] bytes, @IndexOrHigh("#2") int off, @NonNegative @LTLengthOf(value = "#2", offset = "#3 - 1") int len) throws IOException;
 
   abstract @NonNegative int maxDecodedSize(int chars);
 
@@ -472,11 +471,11 @@ public abstract class BaseEncoding {
       this.validPadding = validPadding;
     }
 
-    char encode(int bits) {
+    char encode(@NonNegative int bits) {
       return chars[bits];
     }
 
-    boolean isValidPaddingStartPosition(int index) {
+    boolean isValidPaddingStartPosition(@NonNegative int index) {
       return validPadding[index % charsPerChunk];
     }
 

@@ -25,7 +25,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
@@ -58,6 +57,7 @@ public final class FileBackedOutputStream extends OutputStream {
       return buf;
     }
 
+    @SuppressWarnings("return.type.incompatible") // this.getBuffer() is the same as this.buf
     @IndexOrHigh("this.getBuffer()") int getCount() {
       return count;
     }
