@@ -45,6 +45,7 @@ import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
@@ -231,7 +232,7 @@ public final class ByteStreams {
    * create an initial byte array, but if the actual number of bytes read from the stream differs,
    * the correct result will be returned anyway.
    */
-  static byte[] toByteArray(InputStream in, @NonNegative long expectedSize) throws IOException {
+  static byte[] toByteArray(InputStream in, @NonNegative @LessThan("MAX_ARRAY_LEN") long expectedSize) throws IOException {
     checkArgument(expectedSize >= 0, "expectedSize (%s) must be non-negative", expectedSize);
     if (expectedSize > MAX_ARRAY_LEN) {
       throw new OutOfMemoryError(expectedSize + " bytes is too large to fit in a byte array");
@@ -820,7 +821,7 @@ public final class ByteStreams {
    * either the full amount has been skipped or until the end of the stream is reached, whichever
    * happens first. Returns the total number of bytes skipped.
    */
-  static @NonNegative long skipUpTo(InputStream in, final long n) throws IOException {
+  static long skipUpTo(InputStream in, final long n) throws IOException {
     long totalSkipped = 0;
     byte[] buf = createBuffer();
 
@@ -905,7 +906,7 @@ public final class ByteStreams {
   @CanIgnoreReturnValue
   // Sometimes you don't care how many bytes you actually read, I guess.
   // (You know that it's either going to read len bytes or stop at EOF.)
-  public static int read(InputStream in, byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
+  public static int read(InputStream in, byte[] b, @IndexOrHigh("#2") int off, @NonNegative @LTLengthOf(value = "#2", offset = "#3 - 1") int len) throws IOException {
     checkNotNull(in);
     checkNotNull(b);
     if (len < 0) {

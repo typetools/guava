@@ -224,7 +224,7 @@ public abstract class ByteSource {
    * Counts the bytes in the given input stream using skip if possible. Returns SKIP_FAILED if the
    * first call to skip threw, in which case skip may just not be supported.
    */
-  private long countBySkipping(InputStream in) throws IOException {
+  private @NonNegative long countBySkipping(InputStream in) throws IOException {
     long count = 0;
     long skipped;
     while ((skipped = skipUpTo(in, Integer.MAX_VALUE)) > 0) {
@@ -561,15 +561,15 @@ public abstract class ByteSource {
   private static class ByteArrayByteSource extends ByteSource {
 
     final byte[] bytes;
-    final @IndexOrHigh("this.bytes") int offset;
-    final @NonNegative @LTLengthOf(value = "this.bytes", offset = "this.offset - 1") int length;
+    final int offset;
+    final int length;
 
     ByteArrayByteSource(byte[] bytes) {
       this(bytes, 0, bytes.length);
     }
 
     // NOTE: Preconditions are enforced by slice, the only non-trivial caller.
-    ByteArrayByteSource(byte[] bytes, @IndexOrHigh("#1") int offset, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int length) {
+    ByteArrayByteSource(byte[] bytes, int offset, int length) {
       this.bytes = bytes;
       this.offset = offset;
       this.length = length;

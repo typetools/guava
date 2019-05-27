@@ -19,6 +19,10 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import java.io.IOException;
 
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
+
 /**
  * Package-protected abstract class that implements the line reading algorithm used by {@link
  * LineReader}. Line separators are per {@link java.io.BufferedReader}: line feed, carriage return,
@@ -47,7 +51,7 @@ abstract class LineBuffer {
    * @throws IOException if an I/O error occurs
    * @see #finish
    */
-  protected void add(char[] cbuf, int off, int len) throws IOException {
+  protected void add(char[] cbuf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     int pos = off;
     if (sawReturn && len > 0) {
       // Last call to add ended with a CR; we can handle the line now.
