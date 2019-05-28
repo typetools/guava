@@ -62,6 +62,8 @@ final class CharSequenceReader extends Reader {
   }
 
   @Override
+  @SuppressWarnings({"return.type.incompatible", "argument.type.incompatible"}) /*charsToRead is at least 0 because remaining() returns a non-negative value
+   pos is a valid index for seq and it can't exceed its limit because it stops at charsToRead steps, which has been verified before. */
   public synchronized @GTENegativeOne int read(CharBuffer target) throws IOException {
     checkNotNull(target);
     checkOpen();
@@ -76,12 +78,17 @@ final class CharSequenceReader extends Reader {
   }
 
   @Override
+  @SuppressWarnings({"return.type.incompatible", "argument.type.incompatible"}) /* charAt returns a char, which is known to be non-negative Ascii.
+  pos is a valid index for seq because it never exceeds the its size */
   public synchronized @GTENegativeOne int read() throws IOException {
     checkOpen();
     return hasRemaining() ? seq.charAt(pos++) : -1;
   }
 
   @Override
+  @SuppressWarnings({"return.type.incompatible", "argument.type.incompatible"}) /* charsToRead is at most the length of cbuf
+  because remaining() cannot return a value greater than the size of the array. pos is a valid index for seq and it can't
+  exceed its limit because it stops at charsToRead steps, which has been verified before. */
   public synchronized @GTENegativeOne @LTEqLengthOf("#1") int read(char[] cbuf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     checkPositionIndexes(off, off + len, cbuf.length);
     checkOpen();
@@ -96,6 +103,7 @@ final class CharSequenceReader extends Reader {
   }
 
   @Override
+  @SuppressWarnings("return.type.incompatible") // chartToSkip >= 0 because remaining() cannot return a negative value
   public synchronized @NonNegative long skip(@NonNegative long n) throws IOException {
     checkArgument(n >= 0, "n (%s) may not be negative", n);
     checkOpen();
