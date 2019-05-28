@@ -49,6 +49,9 @@ abstract class LineBuffer {
    * @throws IOException if an I/O error occurs
    * @see #finish
    */
+  @SuppressWarnings({"array.access.unsafe.high", "argument.type.incompatible"}) /* The first if block doesn't get executed if pos = cbuf.length.
+  Also, pos - start is within bounds because the for loop ends at off + len, which has been checked previously. This is also why off + len - start
+  is valid.*/
   protected void add(char[] cbuf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     int pos = off;
     if (sawReturn && len > 0) {
@@ -58,7 +61,8 @@ abstract class LineBuffer {
       }
     }
 
-    int start = pos;
+    @SuppressWarnings("assignment.type.incompatible") // Is pos = cbuf.length, the if block above doesn't get executed
+    @IndexOrHigh("#1") int start = pos;
     for (int end = off + len; pos < end; pos++) {
       switch (cbuf[pos]) {
         case '\r':

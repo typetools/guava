@@ -127,6 +127,9 @@ final class ReaderInputStream extends InputStream {
   // TODO(chrisn): Consider trying to encode/flush directly to the argument byte
   // buffer when possible.
   @Override
+  @SuppressWarnings({"argument.type.incompatible", "return.type.incompatible"}) /* The call to drain is safe because both
+  both off and len have been checked before and totalBytesRead can't exceed len, because that is the stopping condition.
+  The return type is safe because the while loop stops at off+len index, which has been previously checked*/
   public @GTENegativeOne @LTEqLengthOf("#1") int read(byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     // Obey InputStream contract.
     checkPositionIndexes(off, off + len, b.length);
@@ -221,6 +224,8 @@ final class ReaderInputStream extends InputStream {
 
     // (1) Read more characters into free space at end of array.
     int limit = charBuffer.limit();
+    @SuppressWarnings("argument.type.incompatible") /* limit is within bounds because it was verified in constructor
+    and availableCapacity returns the difference between the capacity and the limit */
     int numChars = reader.read(charBuffer.array(), limit, availableCapacity(charBuffer));
     if (numChars == -1) {
       endOfInput = true;
@@ -252,7 +257,7 @@ final class ReaderInputStream extends InputStream {
    * Copy as much of the byte buffer into the output array as possible, returning the (positive)
    * number of characters copied.
    */
-  private int drain(byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
+  private @NonNegative int drain(byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
     int remaining = Math.min(len, byteBuffer.remaining());
     byteBuffer.get(b, off, remaining);
     return remaining;
