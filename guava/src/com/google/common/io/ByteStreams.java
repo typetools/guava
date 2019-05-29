@@ -200,6 +200,8 @@ public final class ByteStreams {
     }
   }
 
+  @SuppressWarnings("argument.type.incompatible") /* resultOffset is greater than 0 because remaining gets closer to 0
+  totalLen stays the same. bytesToCopy is valid because it can't exceed the length of buf */
   private static byte[] combineBuffers(Deque<byte[]> bufs, @NonNegative int totalLen) {
     byte[] result = new byte[totalLen];
     int remaining = totalLen;
@@ -240,7 +242,10 @@ public final class ByteStreams {
     int remaining = (int) expectedSize;
 
     while (remaining > 0) {
-      int off = (int) expectedSize - remaining;
+      @SuppressWarnings("assignment.type.incompatible") /* off can't go below 0 because remaining doesn't get bigger,
+      only smaller. It can't go beyond an index for bytes because the loop stops when remaining is negative */
+      @IndexOrHigh("bytes") int off = (int) expectedSize - remaining;
+      @SuppressWarnings("argument.type.incompatible") /* off + remaining is at most expectedSize, which is the size of bytes. */
       int read = in.read(bytes, off, remaining);
       if (read == -1) {
         // end of stream before reading expectedSize bytes
@@ -298,6 +303,8 @@ public final class ByteStreams {
    *     the array
    */
   @Beta
+  @SuppressWarnings("argument.type.incompatible") /* bytes.length - start is a correct length for the array because start
+  is smaller than bytes.length and it doesn't exceed bytes.length when start is added as offset.*/
   public static ByteArrayDataInput newDataInput(byte[] bytes, @IndexOrHigh("#1") int start) {
     checkPositionIndex(start, bytes.length);
     return newDataInput(new ByteArrayInputStream(bytes, start, bytes.length - start));
@@ -690,7 +697,7 @@ public final class ByteStreams {
 
   private static final class LimitedInputStream extends FilterInputStream {
 
-    private long left;
+    private @NonNegative long left;
     private long mark = -1;
 
     LimitedInputStream(InputStream in, @NonNegative long limit) {
@@ -707,12 +714,13 @@ public final class ByteStreams {
 
     // it's okay to mark even if mark isn't supported, as reset won't work
     @Override
-    public synchronized void mark(int readLimit) {
+    public synchronized void mark(@NonNegative int readLimit) {
       in.mark(readLimit);
       mark = left;
     }
 
     @Override
+    @SuppressWarnings("compound.assignment.type.incompatible") /* left can't go below 0 because it was previously checked*/
     public @GTENegativeOne int read() throws IOException {
       if (left == 0) {
         return -1;
@@ -740,6 +748,7 @@ public final class ByteStreams {
     }
 
     @Override
+    @SuppressWarnings("ssignment.type.incompatible") /* mark is surely non-negative because of the check before*/
     public synchronized void reset() throws IOException {
       if (!in.markSupported()) {
         throw new IOException("Mark not supported");
@@ -912,6 +921,7 @@ public final class ByteStreams {
     }
     int total = 0;
     while (total < len) {
+      @SuppressWarnings("argument.type.incompatible") /* the offset and length of the call add up to off + len, which has been checked before */
       int result = in.read(b, off + total, len - total);
       if (result == -1) {
         break;

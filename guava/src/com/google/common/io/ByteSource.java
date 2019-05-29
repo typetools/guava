@@ -40,6 +40,8 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
@@ -280,6 +282,7 @@ public abstract class ByteSource {
    *
    * @throws IOException if an I/O error occurs while reading from this source
    */
+  @SuppressWarnings("argument.type.incompatible") /* size.get() is always non-negative, but the checker is weak in boxed primitives */
   public byte[] read() throws IOException {
     Closer closer = Closer.create();
     try {
@@ -525,6 +528,7 @@ public abstract class ByteSource {
     }
 
     @Override
+    @SuppressWarnings("argument.type.incompatible") /* the length of the array is bigger than the offset */
     public ByteSource slice(@NonNegative long offset, @NonNegative long length) {
       checkArgument(offset >= 0, "offset (%s) may not be negative", offset);
       checkArgument(length >= 0, "length (%s) may not be negative", length);
@@ -557,15 +561,16 @@ public abstract class ByteSource {
   private static class ByteArrayByteSource extends ByteSource {
 
     final byte[] bytes;
-    final int offset;
-    final int length;
+    final @IndexOrHigh("this.bytes") int offset;
+    final @NonNegative @LTLengthOf(value = "this.bytes", offset = "this.offset - 1") int length;
 
     ByteArrayByteSource(byte[] bytes) {
       this(bytes, 0, bytes.length);
     }
 
     // NOTE: Preconditions are enforced by slice, the only non-trivial caller.
-    ByteArrayByteSource(byte[] bytes, int offset, int length) {
+    @SuppressWarnings("assignment.type.incompatible") /* bytes is the same as this.bytes, and offset is the same as this.offset */
+    ByteArrayByteSource(byte[] bytes, @IndexOrHigh("#1") int offset, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int length) {
       this.bytes = bytes;
       this.offset = offset;
       this.length = length;
@@ -620,6 +625,8 @@ public abstract class ByteSource {
     }
 
     @Override
+    @SuppressWarnings({"assignment.type.incompatible", "argument.type.incompatible"}) /* length is valid because offset
+     if smaller than the this.length */
     public ByteSource slice(@NonNegative long offset, @NonNegative long length) {
       checkArgument(offset >= 0, "offset (%s) may not be negative", offset);
       checkArgument(length >= 0, "length (%s) may not be negative", length);
