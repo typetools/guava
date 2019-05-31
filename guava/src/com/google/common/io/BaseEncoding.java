@@ -34,6 +34,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.Arrays;
+import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
@@ -267,7 +268,7 @@ public abstract class BaseEncoding {
 
   abstract @NonNegative int maxDecodedSize(int chars);
 
-  abstract @NonNegative @LTLengthOf("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException;
+  abstract @IndexFor("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException;
 
   CharSequence trimTrailingPadding(CharSequence chars) {
     return checkNotNull(chars);
@@ -471,19 +472,20 @@ public abstract class BaseEncoding {
       this.validPadding = validPadding;
     }
 
-    char encode(@NonNegative int bits) {
+    char encode(@IndexFor("this.chars") int bits) {
       return chars[bits];
     }
 
-    boolean isValidPaddingStartPosition(@NonNegative int index) {
+    boolean isValidPaddingStartPosition( int index) {
       return validPadding[index % charsPerChunk];
     }
 
+    @SuppressWarnings("array.access.unsafe") // decodabet won't be accessed with an invalid index because it was previously checked.
     boolean canDecode(char ch) {
       return ch <= Ascii.MAX && decodabet[ch] != -1;
     }
 
-    int decode(char ch) throws DecodingException {
+    int decode(@IndexFor("this.decodabet") char ch) throws DecodingException {
       if (ch > Ascii.MAX) {
         throw new DecodingException("Unrecognized character: 0x" + Integer.toHexString(ch));
       }
@@ -542,6 +544,7 @@ public abstract class BaseEncoding {
       }
     }
 
+    @SuppressWarnings("array.access.unsafe") // if c is not a valid index for decodabet, the second operand will not be processed.
     public boolean matches(char c) {
       return c < decodabet.length && decodabet[c] != -1;
     }
@@ -636,7 +639,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    void encodeTo(Appendable target, byte[] bytes, int off, int len) throws IOException {
+    void encodeTo(Appendable target, byte[] bytes, @IndexOrHigh("#2") int off, @NonNegative @LTLengthOf(value = "#2", offset = "#3 - 1") int len) throws IOException {
       checkNotNull(target);
       checkPositionIndexes(off, off + len, bytes.length);
       for (int i = 0; i < len; i += alphabet.bytesPerChunk) {
@@ -644,7 +647,7 @@ public abstract class BaseEncoding {
       }
     }
 
-    void encodeChunkTo(Appendable target, byte[] bytes, int off, int len) throws IOException {
+    void encodeChunkTo(Appendable target, byte[] bytes, @IndexOrHigh("#2") int off, @NonNegative @LTLengthOf(value = "#2", offset = "#3 - 1") int len) throws IOException {
       checkNotNull(target);
       checkPositionIndexes(off, off + len, bytes.length);
       checkArgument(len <= alphabet.bytesPerChunk);
@@ -706,7 +709,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    @NonNegative @LTLengthOf("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
+    @IndexFor("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
       checkNotNull(target);
       chars = trimTrailingPadding(chars);
       if (!alphabet.isValidPaddingStartPosition(chars.length())) {
@@ -887,7 +890,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    void encodeTo(Appendable target, byte[] bytes, int off, int len) throws IOException {
+    void encodeTo(Appendable target, byte[] bytes, @IndexOrHigh("#2") int off, @NonNegative @LTLengthOf(value = "#2", offset = "#3 - 1") int len) throws IOException {
       checkNotNull(target);
       checkPositionIndexes(off, off + len, bytes.length);
       for (int i = 0; i < len; ++i) {
@@ -898,13 +901,14 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    @NonNegative @LTLengthOf("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
+    @IndexFor("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
       checkNotNull(target);
       if (chars.length() % 2 == 1) {
         throw new DecodingException("Invalid input length " + chars.length());
       }
       int bytesWritten = 0;
       for (int i = 0; i < chars.length(); i += 2) {
+        @SuppressWarnings("argument.type.incompatible") // a char variable  is a valid index for chars.
         int decoded = alphabet.decode(chars.charAt(i)) << 4 | alphabet.decode(chars.charAt(i + 1));
         target[bytesWritten++] = (byte) decoded;
       }
@@ -928,11 +932,13 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    void encodeTo(Appendable target, byte[] bytes, int off, int len) throws IOException {
+    @SuppressWarnings("argument.type.incompatible") // i is between off and off + len, so the last method call is safe.
+    void encodeTo(Appendable target, byte[] bytes, @IndexOrHigh("#2") int off, @NonNegative @LTLengthOf(value = "#2", offset = "#3 - 1") int len) throws IOException {
       checkNotNull(target);
       checkPositionIndexes(off, off + len, bytes.length);
       int i = off;
       for (int remaining = len; remaining >= 3; remaining -= 3) {
+        @SuppressWarnings("array.access.unsafe") // i is a valid index because the parameters have been checked
         int chunk = (bytes[i++] & 0xFF) << 16 | (bytes[i++] & 0xFF) << 8 | bytes[i++] & 0xFF;
         target.append(alphabet.encode(chunk >>> 18));
         target.append(alphabet.encode((chunk >>> 12) & 0x3F));
@@ -945,7 +951,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    @NonNegative @LTLengthOf("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
+    @IndexFor("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
       checkNotNull(target);
       chars = trimTrailingPadding(chars);
       if (!alphabet.isValidPaddingStartPosition(chars.length())) {
@@ -1001,7 +1007,7 @@ public abstract class BaseEncoding {
   }
 
   static Appendable separatingAppendable(
-      final Appendable delegate, final String separator, final int afterEveryChars) {
+      final Appendable delegate, final String separator, final @NonNegative int afterEveryChars) {
     checkNotNull(delegate);
     checkNotNull(separator);
     checkArgument(afterEveryChars > 0);
@@ -1033,7 +1039,7 @@ public abstract class BaseEncoding {
 
   @GwtIncompatible // Writer
   static Writer separatingWriter(
-      final Writer delegate, final String separator, final int afterEveryChars) {
+      final Writer delegate, final String separator, final @NonNegative int afterEveryChars) {
     final Appendable seperatingAppendable =
         separatingAppendable(delegate, separator, afterEveryChars);
     return new Writer() {
@@ -1062,9 +1068,9 @@ public abstract class BaseEncoding {
   static final class SeparatedBaseEncoding extends BaseEncoding {
     private final BaseEncoding delegate;
     private final String separator;
-    private final int afterEveryChars;
+    private final @NonNegative int afterEveryChars;
 
-    SeparatedBaseEncoding(BaseEncoding delegate, String separator, int afterEveryChars) {
+    SeparatedBaseEncoding(BaseEncoding delegate, String separator, @NonNegative int afterEveryChars) {
       this.delegate = checkNotNull(delegate);
       this.separator = checkNotNull(separator);
       this.afterEveryChars = afterEveryChars;
@@ -1078,6 +1084,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
+    @SuppressWarnings("return.type.incompatible") // Every operand in the return expression is non-negative
     @NonNegative int maxEncodedSize(int bytes) {
       int unseparatedSize = delegate.maxEncodedSize(bytes);
       return unseparatedSize
@@ -1091,7 +1098,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    void encodeTo(Appendable target, byte[] bytes, int off, int len) throws IOException {
+    void encodeTo(Appendable target, byte[] bytes, @IndexOrHigh("#2") int off, @NonNegative @LTLengthOf(value = "#2", offset = "#3 - 1") int len) throws IOException {
       delegate.encodeTo(separatingAppendable(target, separator, afterEveryChars), bytes, off, len);
     }
 
@@ -1113,7 +1120,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    @NonNegative @LTLengthOf("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
+    @IndexFor("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
       StringBuilder stripped = new StringBuilder(chars.length());
       for (int i = 0; i < chars.length(); i++) {
         char c = chars.charAt(i);
