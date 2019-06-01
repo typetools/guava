@@ -262,11 +262,11 @@ public abstract class BaseEncoding {
 
   // Implementations for encoding/decoding
 
-  abstract @NonNegative int maxEncodedSize(int bytes);
+  abstract @NonNegative int maxEncodedSize(@NonNegative int bytes);
 
   abstract void encodeTo(Appendable target, byte[] bytes, @IndexOrHigh("#2") int off, @NonNegative @LTLengthOf(value = "#2", offset = "#3 - 1") int len) throws IOException;
 
-  abstract @NonNegative int maxDecodedSize(int chars);
+  abstract @NonNegative int maxDecodedSize(@NonNegative int chars);
 
   abstract @IndexFor("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException;
 
@@ -301,7 +301,7 @@ public abstract class BaseEncoding {
    *     string, or if {@code n <= 0}
    * @throws UnsupportedOperationException if this encoding already uses a separator
    */
-  public abstract BaseEncoding withSeparator(String separator, int n);
+  public abstract BaseEncoding withSeparator(String separator, @NonNegative int n);
 
   /**
    * Returns an encoding that behaves equivalently to this encoding, but encodes and decodes with
@@ -432,6 +432,8 @@ public abstract class BaseEncoding {
     private final byte[] decodabet;
     private final boolean[] validPadding;
 
+    @SuppressWarnings("array.access.unsafe") /* c will be a valid index by the time decodabet is accessed with it. validPadding has
+    enough space because the loop stops when i = bytesPerChunk*/
     Alphabet(String name, char[] chars) {
       this.name = checkNotNull(name);
       this.chars = checkNotNull(chars);
@@ -445,7 +447,8 @@ public abstract class BaseEncoding {
        * e.g. for base64, bitsPerChar == 6, charsPerChunk == 4, and bytesPerChunk == 3. This makes
        * for the smallest chunk size that still has charsPerChunk * bitsPerChar be a multiple of 8.
        */
-      int gcd = Math.min(8, Integer.lowestOneBit(bitsPerChar));
+      @SuppressWarnings("assignment.type.incompatible") // lowestOneBit cannot return a value with first bit 1 when the value is non-negative
+      @NonNegative int gcd = Math.min(8, Integer.lowestOneBit(bitsPerChar));
       try {
         this.charsPerChunk = 8 / gcd;
         this.bytesPerChunk = bitsPerChar / gcd;
@@ -476,7 +479,8 @@ public abstract class BaseEncoding {
       return chars[bits];
     }
 
-    boolean isValidPaddingStartPosition( int index) {
+    @SuppressWarnings("array.access.unsafe") // The index used is smaller than charsPerChunk, which is the length of validPadding
+    boolean isValidPaddingStartPosition(int index) {
       return validPadding[index % charsPerChunk];
     }
 
@@ -589,7 +593,8 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    @NonNegative int maxEncodedSize(int bytes) {
+    @SuppressWarnings("return.type.incompatible") // Every operand is non-negative
+    @NonNegative int maxEncodedSize(@NonNegative int bytes) {
       return alphabet.charsPerChunk * divide(bytes, alphabet.bytesPerChunk, CEILING);
     }
 
@@ -639,6 +644,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
+    @SuppressWarnings("argument.type.incompatible") /* The offset and the length have been previously checked and the loop stops before the arguments become invalid*/
     void encodeTo(Appendable target, byte[] bytes, @IndexOrHigh("#2") int off, @NonNegative @LTLengthOf(value = "#2", offset = "#3 - 1") int len) throws IOException {
       checkNotNull(target);
       checkPositionIndexes(off, off + len, bytes.length);
@@ -647,6 +653,7 @@ public abstract class BaseEncoding {
       }
     }
 
+    @SuppressWarnings("argument.type.incompatible")
     void encodeChunkTo(Appendable target, byte[] bytes, @IndexOrHigh("#2") int off, @NonNegative @LTLengthOf(value = "#2", offset = "#3 - 1") int len) throws IOException {
       checkNotNull(target);
       checkPositionIndexes(off, off + len, bytes.length);
@@ -673,7 +680,8 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    @NonNegative int maxDecodedSize(int chars) {
+    @SuppressWarnings("return.type.incompatible") // Every operand is non-negative
+    @NonNegative int maxDecodedSize(@NonNegative int chars) {
       return (int) ((alphabet.bitsPerChar * (long) chars + 7L) / 8L);
     }
 
@@ -709,6 +717,8 @@ public abstract class BaseEncoding {
     }
 
     @Override
+    @SuppressWarnings({"argument.type.incompatible", "array.access.unsafe", "return.type.incompatible"})
+    /* chars will not be accessed with an invalid index because of the loop stop condition. */
     @IndexFor("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
       checkNotNull(target);
       chars = trimTrailingPadding(chars);
@@ -800,7 +810,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    public BaseEncoding withSeparator(String separator, int afterEveryChars) {
+    public BaseEncoding withSeparator(String separator, @NonNegative int afterEveryChars) {
       for (int i = 0; i < separator.length(); i++) {
         checkArgument(
             !alphabet.matches(separator.charAt(i)),
@@ -880,6 +890,9 @@ public abstract class BaseEncoding {
       this(new Alphabet(name, alphabetChars.toCharArray()));
     }
 
+    @SuppressWarnings({"array.access.unsafe", "argument.type.incompatible"}) /* Since encoding has a length of 512, it is safe to
+    access it with indexes from 0 to 255 and 256 to 511, respectively. The calls to encode are safe because it has been previously
+    verified that the length of chars array is exactly 16*/
     private Base16Encoding(Alphabet alphabet) {
       super(alphabet, null);
       checkArgument(alphabet.chars.length == 16);
@@ -890,6 +903,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
+    @SuppressWarnings("array.access.unsafe") // encoding has length 512, so it cn be accessed with b + 256
     void encodeTo(Appendable target, byte[] bytes, @IndexOrHigh("#2") int off, @NonNegative @LTLengthOf(value = "#2", offset = "#3 - 1") int len) throws IOException {
       checkNotNull(target);
       checkPositionIndexes(off, off + len, bytes.length);
@@ -901,6 +915,8 @@ public abstract class BaseEncoding {
     }
 
     @Override
+    @SuppressWarnings({"return.type.incompatible", "array.access.unsafe"}) /* bytesWritten grows slower than i, which stops
+    when it exceeds the length of target */
     @IndexFor("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
       checkNotNull(target);
       if (chars.length() % 2 == 1) {
@@ -951,6 +967,9 @@ public abstract class BaseEncoding {
     }
 
     @Override
+    @SuppressWarnings({"argument.type.incompatible", "array.access.unsafe", "return.type.incompatible"})
+    /* i will be a valid index for chars because it is verified at every step. charAt() returns a char value, which is known to be
+    a valid index for alphabet. bytesWritten grows just like variable i, so it will not exceed the length of chars. */
     @IndexFor("#1") int decodeTo(byte[] target, CharSequence chars) throws DecodingException {
       checkNotNull(target);
       chars = trimTrailingPadding(chars);
@@ -1085,7 +1104,7 @@ public abstract class BaseEncoding {
 
     @Override
     @SuppressWarnings("return.type.incompatible") // Every operand in the return expression is non-negative
-    @NonNegative int maxEncodedSize(int bytes) {
+    @NonNegative int maxEncodedSize(@NonNegative int bytes) {
       int unseparatedSize = delegate.maxEncodedSize(bytes);
       return unseparatedSize
           + separator.length() * divide(Math.max(0, unseparatedSize - 1), afterEveryChars, FLOOR);
@@ -1103,7 +1122,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    @NonNegative int maxDecodedSize(int chars) {
+    @NonNegative int maxDecodedSize(@NonNegative int chars) {
       return delegate.maxDecodedSize(chars);
     }
 
@@ -1148,7 +1167,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    public BaseEncoding withSeparator(String separator, int afterEveryChars) {
+    public BaseEncoding withSeparator(String separator, @NonNegative int afterEveryChars) {
       throw new UnsupportedOperationException("Already have a separator");
     }
 
