@@ -40,6 +40,8 @@ import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.common.value.qual.ArrayLen;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * A binary encoding scheme for reversibly translating between byte sequences and printable ASCII
@@ -424,17 +426,17 @@ public abstract class BaseEncoding {
   private static final class Alphabet {
     private final String name;
     // this is meant to be immutable -- don't modify it!
-    private final char[] chars;
-    final int mask;
+    private final char @MinLen(1) [] chars;
+    final @IndexFor("this.chars") int mask;
     final int bitsPerChar;
     final int charsPerChunk;
     final int bytesPerChunk;
     private final byte[] decodabet;
     private final boolean[] validPadding;
 
-    @SuppressWarnings("array.access.unsafe") /* c will be a valid index by the time decodabet is accessed with it. validPadding has
-    enough space because the loop stops when i = bytesPerChunk*/
-    Alphabet(String name, char[] chars) {
+    @SuppressWarnings({"array.access.unsafe", "assignment.type.incompatible"}) /* c will be a valid index by the time decodabet is accessed with it. validPadding has
+    enough space because the loop stops when i = bytesPerChunk. chars is the same as this.chars, so the assignment of this.mask is safe.*/
+    Alphabet(String name, char @MinLen(1) [] chars) {
       this.name = checkNotNull(name);
       this.chars = checkNotNull(chars);
       try {
@@ -579,7 +581,7 @@ public abstract class BaseEncoding {
 
     final @Nullable Character paddingChar;
 
-    StandardBaseEncoding(String name, String alphabetChars, @Nullable Character paddingChar) {
+    StandardBaseEncoding(String name, @MinLen(1) String alphabetChars, @Nullable Character paddingChar) {
       this(new Alphabet(name, alphabetChars.toCharArray()), paddingChar);
     }
 
@@ -653,7 +655,6 @@ public abstract class BaseEncoding {
       }
     }
 
-    @SuppressWarnings("argument.type.incompatible")
     void encodeChunkTo(Appendable target, byte[] bytes, @IndexOrHigh("#2") int off, @NonNegative @LTLengthOf(value = "#2", offset = "#3 - 1") int len) throws IOException {
       checkNotNull(target);
       checkPositionIndexes(off, off + len, bytes.length);
@@ -667,7 +668,7 @@ public abstract class BaseEncoding {
       final int bitOffset = (len + 1) * 8 - alphabet.bitsPerChar;
       int bitsProcessed = 0;
       while (bitsProcessed < len * 8) {
-        int charIndex = (int) (bitBuffer >>> (bitOffset - bitsProcessed)) & alphabet.mask;
+        @IndexFor("alphabet.chars") int charIndex = (int) (bitBuffer >>> (bitOffset - bitsProcessed)) & alphabet.mask;
         target.append(alphabet.encode(charIndex));
         bitsProcessed += alphabet.bitsPerChar;
       }
@@ -886,7 +887,7 @@ public abstract class BaseEncoding {
   static final class Base16Encoding extends StandardBaseEncoding {
     final char[] encoding = new char[512];
 
-    Base16Encoding(String name, String alphabetChars) {
+    Base16Encoding(String name, @MinLen(1) String alphabetChars) {
       this(new Alphabet(name, alphabetChars.toCharArray()));
     }
 
@@ -938,7 +939,7 @@ public abstract class BaseEncoding {
   }
 
   static final class Base64Encoding extends StandardBaseEncoding {
-    Base64Encoding(String name, String alphabetChars, @Nullable Character paddingChar) {
+    Base64Encoding(String name, @ArrayLen(64) String alphabetChars, @Nullable Character paddingChar) {
       this(new Alphabet(name, alphabetChars.toCharArray()), paddingChar);
     }
 
@@ -948,7 +949,8 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    @SuppressWarnings("argument.type.incompatible") // i is between off and off + len, so the last method call is safe.
+    @SuppressWarnings("argument.type.incompatible") /* i is between off and off + len, so the last method call is safe.
+    alphabet.chars has length 64, all arguments of encode() are 6-bits long */
     void encodeTo(Appendable target, byte[] bytes, @IndexOrHigh("#2") int off, @NonNegative @LTLengthOf(value = "#2", offset = "#3 - 1") int len) throws IOException {
       checkNotNull(target);
       checkPositionIndexes(off, off + len, bytes.length);
