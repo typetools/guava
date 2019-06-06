@@ -28,6 +28,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.checker.signedness.qual.*;
 
 /**
  * Static utility methods pertaining to {@code int} primitives that interpret values as
@@ -72,7 +73,7 @@ public final class UnsignedInts {
    * @return a negative value if {@code a} is less than {@code b}; a positive value if {@code a} is
    *     greater than {@code b}; or zero if they are equal
    */
-  public static int compare(int a, int b) {
+  public static int compare(@Unsigned int a, @Unsigned int b) {
     return Ints.compare(flip(a), flip(b));
   }
 
@@ -81,7 +82,7 @@ public final class UnsignedInts {
    *
    * <p><b>Java 8 users:</b> use {@link Integer#toUnsignedLong(int)} instead.
    */
-  public static @NonNegative long toLong(int value) {
+  public static @NonNegative @Unsigned long toLong(int value) {
     return value & INT_MASK;
   }
 
@@ -95,7 +96,7 @@ public final class UnsignedInts {
    *     2<sup>32</sup>
    * @since 21.0
    */
-  public static int checkedCast(@IntRange(from = 0, to = (2l << 32) - 1) long value) {
+  public static @Unsigned int checkedCast(@IntRange(from = 0, to = (2l << 32) - 1) long value) {
     checkArgument((value >> Integer.SIZE) == 0, "out of range: %s", value);
     return (int) value;
   }
@@ -109,7 +110,7 @@ public final class UnsignedInts {
    *     value} cast to {@code int} otherwise
    * @since 21.0
    */
-  public static int saturatedCast(long value) {
+  public static @Unsigned int saturatedCast(long value) {
     if (value <= 0) {
       return 0;
     } else if (value >= (1L << 32)) {
@@ -127,7 +128,7 @@ public final class UnsignedInts {
    *     the array according to {@link #compare}
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static int min(int @MinLen(1)... array) {
+  public static @Unsigned int min(int @Unsigned @MinLen(1)... array) {
     checkArgument(array.length > 0);
     int min = flip(array[0]);
     for (int i = 1; i < array.length; i++) {
@@ -147,7 +148,7 @@ public final class UnsignedInts {
    *     in the array according to {@link #compare}
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static int max(int @MinLen(1)... array) {
+  public static @Unsigned int max(int @Unsigned @MinLen(1)... array) {
     checkArgument(array.length > 0);
     int max = flip(array[0]);
     for (int i = 1; i < array.length; i++) {
@@ -200,7 +201,7 @@ public final class UnsignedInts {
     INSTANCE;
 
     @Override
-    public int compare(int[] left, int[] right) {
+    public int compare(@Unsigned int[] left, @Unsigned int[] right) {
       int minLength = Math.min(left.length, right.length);
       for (int i = 0; i < minLength; i++) {
         if (left[i] != right[i]) {
@@ -221,7 +222,7 @@ public final class UnsignedInts {
    *
    * @since 23.1
    */
-  public static void sort(int[] array) {
+  public static void sort(@Unsigned int[] array) {
     checkNotNull(array);
     sort(array, 0, array.length);
   }
@@ -232,7 +233,7 @@ public final class UnsignedInts {
    *
    * @since 23.1
    */
-  public static void sort(int[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
+  public static void sort(@Unsigned int[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     for (int i = fromIndex; i < toIndex; i++) {
@@ -250,7 +251,7 @@ public final class UnsignedInts {
    *
    * @since 23.1
    */
-  public static void sortDescending(int[] array) {
+  public static void sortDescending(@Unsigned int[] array) {
     checkNotNull(array);
     sortDescending(array, 0, array.length);
   }
@@ -261,7 +262,7 @@ public final class UnsignedInts {
    *
    * @since 23.1
    */
-  public static void sortDescending(int[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
+  public static void sortDescending(@Unsigned int[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     for (int i = fromIndex; i < toIndex; i++) {
@@ -283,7 +284,7 @@ public final class UnsignedInts {
    * @param divisor the divisor (denominator)
    * @throws ArithmeticException if divisor is 0
    */
-  public static int divide(int dividend, int divisor) {
+  public static int divide(@Unsigned int dividend, @Unsigned int divisor) {
     return (int) (toLong(dividend) / toLong(divisor));
   }
 
@@ -297,7 +298,7 @@ public final class UnsignedInts {
    * @param divisor the divisor (denominator)
    * @throws ArithmeticException if divisor is 0
    */
-  public static int remainder(int dividend, int divisor) {
+  public static int remainder(@Unsigned int dividend, @Unsigned int divisor) {
     return (int) (toLong(dividend) % toLong(divisor));
   }
 
@@ -340,7 +341,7 @@ public final class UnsignedInts {
    *     Integer#parseInt(String)})
    */
   @CanIgnoreReturnValue
-  public static int parseUnsignedInt(String s) {
+  public static @Unsigned int parseUnsignedInt(String s) {
     return parseUnsignedInt(s, 10);
   }
 
@@ -358,7 +359,7 @@ public final class UnsignedInts {
    *     Integer#parseInt(String)})
    */
   @CanIgnoreReturnValue
-  public static int parseUnsignedInt(String string, @Positive int radix) {
+  public static @Unsigned int parseUnsignedInt(String string, @Positive int radix) {
     checkNotNull(string);
     long result = Long.parseLong(string, radix);
     if ((result & INT_MASK) != result) {
@@ -373,7 +374,7 @@ public final class UnsignedInts {
    *
    * <p><b>Java 8 users:</b> use {@link Integer#toUnsignedString(int)} instead.
    */
-  public static String toString(int x) {
+  public static String toString(@Unsigned int x) {
     return toString(x, 10);
   }
 
@@ -388,7 +389,7 @@ public final class UnsignedInts {
    * @throws IllegalArgumentException if {@code radix} is not between {@link Character#MIN_RADIX}
    *     and {@link Character#MAX_RADIX}.
    */
-  public static String toString(int x, @Positive int radix) {
+  public static String toString(@Unsigned int x, @Positive int radix) {
     long asLong = x & INT_MASK;
     return Long.toString(asLong, radix);
   }
