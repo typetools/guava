@@ -27,6 +27,7 @@ import java.util.Comparator;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.checker.signedness.qual.*;
 
 /**
  * Static utility methods pertaining to {@code long} primitives that interpret values as
@@ -78,7 +79,7 @@ public final class UnsignedLongs {
    * @return a negative value if {@code a} is less than {@code b}; a positive value if {@code a} is
    *     greater than {@code b}; or zero if they are equal
    */
-  public static int compare(long a, long b) {
+  public static int compare(@Unsigned long a, @Unsigned long b) {
     return Longs.compare(flip(a), flip(b));
   }
 
@@ -90,7 +91,7 @@ public final class UnsignedLongs {
    *     the array according to {@link #compare}
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static long min(long @MinLen(1)... array) {
+  public static @Unsigned long min(long @Unsigned @MinLen(1)... array) {
     checkArgument(array.length > 0);
     long min = flip(array[0]);
     for (int i = 1; i < array.length; i++) {
@@ -110,7 +111,7 @@ public final class UnsignedLongs {
    *     in the array according to {@link #compare}
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static long max(long @MinLen(1)... array) {
+  public static @Unsigned long max(long @Unsigned @MinLen(1)... array) {
     checkArgument(array.length > 0);
     long max = flip(array[0]);
     for (int i = 1; i < array.length; i++) {
@@ -164,7 +165,7 @@ public final class UnsignedLongs {
     INSTANCE;
 
     @Override
-    public int compare(long[] left, long[] right) {
+    public int compare(@Unsigned long[] left, @Unsigned long[] right) {
       int minLength = Math.min(left.length, right.length);
       for (int i = 0; i < minLength; i++) {
         if (left[i] != right[i]) {
@@ -185,7 +186,7 @@ public final class UnsignedLongs {
    *
    * @since 23.1
    */
-  public static void sort(long[] array) {
+  public static void sort(@Unsigned long[] array) {
     checkNotNull(array);
     sort(array, 0, array.length);
   }
@@ -196,7 +197,7 @@ public final class UnsignedLongs {
    *
    * @since 23.1
    */
-  public static void sort(long[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
+  public static void sort(@Unsigned long[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     for (int i = fromIndex; i < toIndex; i++) {
@@ -214,7 +215,7 @@ public final class UnsignedLongs {
    *
    * @since 23.1
    */
-  public static void sortDescending(long[] array) {
+  public static void sortDescending(@Unsigned long[] array) {
     checkNotNull(array);
     sortDescending(array, 0, array.length);
   }
@@ -225,7 +226,7 @@ public final class UnsignedLongs {
    *
    * @since 23.1
    */
-  public static void sortDescending(long[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
+  public static void sortDescending(@Unsigned long[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
     for (int i = fromIndex; i < toIndex; i++) {
@@ -247,7 +248,7 @@ public final class UnsignedLongs {
    * @param divisor the divisor (denominator)
    * @throws ArithmeticException if divisor is 0
    */
-  public static long divide(long dividend, long divisor) {
+  public static long divide(@Unsigned long dividend, @Unsigned long divisor) {
     if (divisor < 0) { // i.e., divisor >= 2^63:
       if (compare(dividend, divisor) < 0) {
         return 0; // dividend < divisor
@@ -283,7 +284,7 @@ public final class UnsignedLongs {
    * @throws ArithmeticException if divisor is 0
    * @since 11.0
    */
-  public static long remainder(long dividend, long divisor) {
+  public static long remainder(@Unsigned long dividend, @Unsigned long divisor) {
     if (divisor < 0) { // i.e., divisor >= 2^63:
       if (compare(dividend, divisor) < 0) {
         return dividend; // dividend < divisor
@@ -319,7 +320,7 @@ public final class UnsignedLongs {
    *     Long#parseLong(String)})
    */
   @CanIgnoreReturnValue
-  public static long parseUnsignedLong(String string) {
+  public static @Unsigned long parseUnsignedLong(String string) {
     return parseUnsignedLong(string, 10);
   }
 
@@ -337,7 +338,7 @@ public final class UnsignedLongs {
    *     Long#parseLong(String)})
    */
   @CanIgnoreReturnValue
-  public static long parseUnsignedLong(String string, @IntRange(from = Character.MIN_RADIX, to = Character.MAX_RADIX) int radix) {
+  public static @Unsigned long parseUnsignedLong(String string, @IntRange(from = Character.MIN_RADIX, to = Character.MAX_RADIX) int radix) {
     checkNotNull(string);
     if (string.length() == 0) {
       throw new NumberFormatException("empty string");
@@ -441,7 +442,7 @@ public final class UnsignedLongs {
    *
    * <p><b>Java 8 users:</b> use {@link Long#toUnsignedString(long)} instead.
    */
-  public static String toString(long x) {
+  public static String toString(@Unsigned long x) {
     return toString(x, 10);
   }
 
@@ -465,7 +466,7 @@ public final class UnsignedLongs {
     "lowerbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/193
     "lowerbound:array.access.unsafe.low", "lowerbound:compound.assignment.type.incompatible" // ulong converted to string is at most 64 chars
   })
-  public static String toString(long x, @IntRange(from = Character.MIN_RADIX,to = Character.MAX_RADIX) int radix) {
+  public static String toString(@Unsigned long x, @IntRange(from = Character.MIN_RADIX,to = Character.MAX_RADIX) int radix) {
     checkArgument(
         radix >= Character.MIN_RADIX && radix <= Character.MAX_RADIX,
         "radix (%s) must be between Character.MIN_RADIX and Character.MAX_RADIX",
