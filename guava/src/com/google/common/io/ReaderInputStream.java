@@ -127,9 +127,9 @@ final class ReaderInputStream extends InputStream {
   // TODO(chrisn): Consider trying to encode/flush directly to the argument byte
   // buffer when possible.
   @Override
-  @SuppressWarnings({"argument.type.incompatible", "return.type.incompatible"}) /* The call to drain is safe because both
-  both off and len have been checked before and totalBytesRead can't exceed len, because that is the stopping condition.
-  The return type is safe because the while loop stops at off+len index, which has been previously checked*/
+  @SuppressWarnings({"argument.type.incompatible", "return.type.incompatible"}) /*
+  #1. The call to drain is safe because both off and len have been checked before and totalBytesRead can't exceed len, because that is the stopping condition.
+  #2. The return type is safe because the while loop stops at len index, which has been previously checked */
   public @GTENegativeOne @LTEqLengthOf("#1") int read(byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     // Obey InputStream contract.
     checkPositionIndexes(off, off + len, b.length);
@@ -146,9 +146,9 @@ final class ReaderInputStream extends InputStream {
       // We stay in draining mode until there are no bytes left in the output buffer. Then we go
       // back to encoding/flushing.
       if (draining) {
-        totalBytesRead += drain(b, off + totalBytesRead, len - totalBytesRead);
+        totalBytesRead += drain(b, off + totalBytesRead, len - totalBytesRead); // #1
         if (totalBytesRead == len || doneFlushing) {
-          return (totalBytesRead > 0) ? totalBytesRead : -1;
+          return (totalBytesRead > 0) ? totalBytesRead : -1; // #2
         }
         draining = false;
         byteBuffer.clear();

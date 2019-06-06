@@ -18,10 +18,10 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkPositionIndexes;
 
+import com.google.common.annotations.GwtIncompatible;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.CharBuffer;
-import com.google.common.annotations.GwtIncompatible;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
@@ -57,14 +57,13 @@ final class CharSequenceReader extends Reader {
     return remaining() > 0;
   }
 
-  private int remaining() {
+  @SuppressWarnings("return.type.incompatible")
+  private @IndexOrHigh("this.seq") int remaining() {
     return seq.length() - pos;
   }
 
   @Override
-  @SuppressWarnings({"return.type.incompatible", "argument.type.incompatible"}) /*charsToRead is at most the length of the buffer
-  because remaining() cannot return a value greater than the size of the array and it was previously verified to be non-negative.
-  pos is a valid index for seq because the loop stops at charsToRead steps, which has been verified before. */
+  @SuppressWarnings("argument.type.incompatible") // pos is a valid index for seq because the loop stops at charsToRead steps, which cannot exceed the limit of target or seq.
   public synchronized @GTENegativeOne int read(CharBuffer target) throws IOException {
     checkNotNull(target);
     checkOpen();
@@ -87,9 +86,9 @@ final class CharSequenceReader extends Reader {
   }
 
   @Override
-  @SuppressWarnings({"return.type.incompatible", "argument.type.incompatible"}) /* charsToRead is at most the length of cbuf
-  because remaining() cannot return a value greater than the size of the array and it was previously verified to be non-negative.
-  pos is a valid index for seq because the loop stops at charsToRead steps, which has been verified before. */
+  @SuppressWarnings({"argument.type.incompatible", "return.type.incompatible"}) /*
+  #1. pos is a valid index for seq because the loop stops at charsToRead steps, which cannot exceed the limit of seq.
+  #2. charsToRead is at most equal to len, which is known to be below the length of cbuf */
   public synchronized @GTENegativeOne @LTEqLengthOf("#1") int read(char[] cbuf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     checkPositionIndexes(off, off + len, cbuf.length);
     checkOpen();
@@ -98,13 +97,12 @@ final class CharSequenceReader extends Reader {
     }
     int charsToRead = Math.min(len, remaining());
     for (int i = 0; i < charsToRead; i++) {
-      cbuf[off + i] = seq.charAt(pos++);
+      cbuf[off + i] = seq.charAt(pos++); // #1
     }
-    return charsToRead;
+    return charsToRead; // #2
   }
 
   @Override
-  @SuppressWarnings("return.type.incompatible")
   public synchronized @NonNegative long skip(@NonNegative long n) throws IOException {
     checkArgument(n >= 0, "n (%s) may not be negative", n);
     checkOpen();

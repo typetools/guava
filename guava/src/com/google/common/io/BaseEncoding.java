@@ -482,11 +482,11 @@ public abstract class BaseEncoding {
     }
 
     @SuppressWarnings("array.access.unsafe") // The index used is smaller than charsPerChunk, which is the length of validPadding
-    boolean isValidPaddingStartPosition(int index) {
+    boolean isValidPaddingStartPosition(@NonNegative int index) {
       return validPadding[index % charsPerChunk];
     }
 
-    @SuppressWarnings("array.access.unsafe") // decodabet won't be accessed with an invalid index because it was previously checked.
+    @SuppressWarnings("array.access.unsafe") // decodabet won't be accessed with an invalid index because a char is greater than 0.
     boolean canDecode(char ch) {
       return ch <= Ascii.MAX && decodabet[ch] != -1;
     }
@@ -904,7 +904,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    @SuppressWarnings("array.access.unsafe") // encoding has length 512, so it cn be accessed with b + 256
+    @SuppressWarnings("array.access.unsafe") // encoding has length 512, so it can be accessed with b + 256
     void encodeTo(Appendable target, byte[] bytes, @IndexOrHigh("#2") int off, @NonNegative @LTLengthOf(value = "#2", offset = "#3 - 1") int len) throws IOException {
       checkNotNull(target);
       checkPositionIndexes(off, off + len, bytes.length);

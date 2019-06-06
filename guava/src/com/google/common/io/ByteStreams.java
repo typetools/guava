@@ -44,6 +44,7 @@ import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
@@ -239,7 +240,7 @@ public final class ByteStreams {
     }
 
     byte[] bytes = new byte[(int) expectedSize];
-    int remaining = (int) expectedSize;
+    @LessThan("expectedSize + 1") int remaining = (int) expectedSize;
 
     while (remaining > 0) {
       @SuppressWarnings("assignment.type.incompatible") /* off can't go below 0 because remaining doesn't get bigger,
@@ -698,7 +699,7 @@ public final class ByteStreams {
   private static final class LimitedInputStream extends FilterInputStream {
 
     private @NonNegative long left;
-    private long mark = -1;
+    private @GTENegativeOne long mark = -1;
 
     LimitedInputStream(InputStream in, @NonNegative long limit) {
       super(in);
@@ -748,7 +749,7 @@ public final class ByteStreams {
     }
 
     @Override
-    @SuppressWarnings("ssignment.type.incompatible") /* mark is surely non-negative because of the check before*/
+    @SuppressWarnings("assignment.type.incompatible") /* mark is surely non-negative because of the check before*/
     public synchronized void reset() throws IOException {
       if (!in.markSupported()) {
         throw new IOException("Mark not supported");

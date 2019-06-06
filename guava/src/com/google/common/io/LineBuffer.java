@@ -49,28 +49,28 @@ abstract class LineBuffer {
    * @throws IOException if an I/O error occurs
    * @see #finish
    */
-  @SuppressWarnings({"array.access.unsafe.high", "argument.type.incompatible"}) /* The first if block doesn't get executed if pos = cbuf.length.
-  Also, pos - start is within bounds because the for loop ends at off + len, which has been checked previously. This is also why off + len - start
-  is valid.*/
+  @SuppressWarnings({"array.access.unsafe.high", "argument.type.incompatible", "assignment.type.incompatible"}) /*
+  #1. The first if block doesn't get executed if pos = cbuf.length.
+  #2. If pos = cbuf.length, the first if block doesn't get executed.
+  #3 and #4. pos - start is within bounds because the for loop ends at off + len, which is the precondition.
+  #5. off + len - start is valid because off + len cannot exceed the limit of the buffer. */
   protected void add(char[] cbuf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     int pos = off;
     if (sawReturn && len > 0) {
       // Last call to add ended with a CR; we can handle the line now.
-      if (finishLine(cbuf[pos] == '\n')) {
+      if (finishLine(cbuf[pos] == '\n')) { // #1
         pos++;
       }
     }
 
-    @SuppressWarnings("assignment.type.incompatible") // Is pos = cbuf.length, the if block above doesn't get executed
-    @IndexOrHigh("#1") int start = pos;
+    @IndexOrHigh("#1") int start = pos; // #2
     for (int end = off + len; pos < end; pos++) {
       switch (cbuf[pos]) {
         case '\r':
-          line.append(cbuf, start, pos - start);
+          line.append(cbuf, start, pos - start); // #3
           sawReturn = true;
           if (pos + 1 < end) {
             if (finishLine(cbuf[pos + 1] == '\n')) {
-
               pos++;
             }
           }
@@ -78,7 +78,7 @@ abstract class LineBuffer {
           break;
 
         case '\n':
-          line.append(cbuf, start, pos - start);
+          line.append(cbuf, start, pos - start); // #4
           finishLine(true);
           start = pos + 1;
           break;
@@ -87,7 +87,7 @@ abstract class LineBuffer {
           // do nothing
       }
     }
-    line.append(cbuf, start, off + len - start);
+    line.append(cbuf, start, off + len - start); // #5
   }
 
   /** Called when a line is complete. */
