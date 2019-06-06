@@ -168,7 +168,7 @@ public abstract class ByteSource {
    * @since 19.0
    */
   @Beta
-  public Optional<Long> sizeIfKnown() {
+  public Optional<@NonNegative Long> sizeIfKnown() {
     return Optional.absent();
   }
 
@@ -282,12 +282,11 @@ public abstract class ByteSource {
    *
    * @throws IOException if an I/O error occurs while reading from this source
    */
-  @SuppressWarnings("argument.type.incompatible") /* size.get() is always non-negative, but the checker is weak in boxed primitives */
   public byte[] read() throws IOException {
     Closer closer = Closer.create();
     try {
       InputStream in = closer.register(openStream());
-      Optional<Long> size = sizeIfKnown();
+      Optional<@NonNegative Long> size = sizeIfKnown();
       return size.isPresent()
           ? ByteStreams.toByteArray(in, size.get())
           : ByteStreams.toByteArray(in);
@@ -542,8 +541,9 @@ public abstract class ByteSource {
     }
 
     @Override
-    public Optional<Long> sizeIfKnown() {
-      Optional<Long> optionalUnslicedSize = ByteSource.this.sizeIfKnown();
+    @SuppressWarnings("return.type.incompatible") // off is at most equal to unslicedSize and length is non-negative
+    public Optional<@NonNegative Long> sizeIfKnown() {
+      Optional<@NonNegative Long> optionalUnslicedSize = ByteSource.this.sizeIfKnown();
       if (optionalUnslicedSize.isPresent()) {
         long unslicedSize = optionalUnslicedSize.get();
         long off = Math.min(offset, unslicedSize);
@@ -597,7 +597,7 @@ public abstract class ByteSource {
     }
 
     @Override
-    public Optional<Long> sizeIfKnown() {
+    public Optional<@NonNegative Long> sizeIfKnown() {
       return Optional.of((long) length);
     }
 
@@ -694,7 +694,8 @@ public abstract class ByteSource {
     }
 
     @Override
-    public Optional<Long> sizeIfKnown() {
+    @SuppressWarnings("return.type.incompatible") // Long.MAX_VALUE is non-negative
+    public Optional<@NonNegative Long> sizeIfKnown() {
       if (!(sources instanceof Collection)) {
         // Infinite Iterables can cause problems here. Of course, it's true that most of the other
         // methods on this class also have potential problems with infinite  Iterables. But unlike
@@ -703,9 +704,9 @@ public abstract class ByteSource {
         // underlying source to know what its size actually is.
         return Optional.absent();
       }
-      long result = 0L;
+      @NonNegative long result = 0L;
       for (ByteSource source : sources) {
-        Optional<Long> sizeIfKnown = source.sizeIfKnown();
+        Optional<@NonNegative Long> sizeIfKnown = source.sizeIfKnown();
         if (!sizeIfKnown.isPresent()) {
           return Optional.absent();
         }

@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Stream;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -121,7 +122,7 @@ public final class MoreFiles {
     }
 
     @Override
-    public Optional<Long> sizeIfKnown() {
+    public Optional<@NonNegative Long> sizeIfKnown() {
       BasicFileAttributes attrs;
       try {
         attrs = readAttributes();

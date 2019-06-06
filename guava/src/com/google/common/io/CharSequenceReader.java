@@ -57,8 +57,8 @@ final class CharSequenceReader extends Reader {
     return remaining() > 0;
   }
 
-  @SuppressWarnings("return.type.incompatible")
-  private @IndexOrHigh("this.seq") int remaining() {
+  @SuppressWarnings("return.type.incompatible") // The method is private and every place it is used returns a non-negative value.
+  private @NonNegative int remaining() {
     return seq.length() - pos;
   }
 

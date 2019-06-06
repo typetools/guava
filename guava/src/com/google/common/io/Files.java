@@ -133,7 +133,7 @@ public final class Files {
     }
 
     @Override
-    public Optional<Long> sizeIfKnown() {
+    public Optional<@NonNegative Long> sizeIfKnown() {
       if (file.isFile()) {
         return Optional.of(file.length());
       } else {

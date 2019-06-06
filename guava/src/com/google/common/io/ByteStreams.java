@@ -922,7 +922,8 @@ public final class ByteStreams {
     }
     int total = 0;
     while (total < len) {
-      @SuppressWarnings("argument.type.incompatible") /* the offset and length of the call add up to off + len, which has been checked before */
+      @SuppressWarnings("argument.type.incompatible") /* if the offset and length passed to this method are invalid,
+      an exception would be thrown anyways, so there is no need to check them before */
       int result = in.read(b, off + total, len - total);
       if (result == -1) {
         break;
