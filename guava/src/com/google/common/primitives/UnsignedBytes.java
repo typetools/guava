@@ -30,8 +30,8 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
-import sun.misc.Unsafe;
 import org.checkerframework.checker.signedness.qual.*;
+import sun.misc.Unsafe;
 
 /**
  * Static utility methods pertaining to {@code byte} primitives that interpret values as
