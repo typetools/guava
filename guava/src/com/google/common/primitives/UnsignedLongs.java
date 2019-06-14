@@ -248,7 +248,7 @@ public final class UnsignedLongs {
    * @param divisor the divisor (denominator)
    * @throws ArithmeticException if divisor is 0
    */
-  public static long divide(@Unsigned long dividend, @Unsigned long divisor) {
+  public static @Unsigned long divide(@Unsigned long dividend, @Unsigned long divisor) {
     if (divisor < 0) { // i.e., divisor >= 2^63:
       if (compare(dividend, divisor) < 0) {
         return 0; // dividend < divisor
@@ -284,7 +284,7 @@ public final class UnsignedLongs {
    * @throws ArithmeticException if divisor is 0
    * @since 11.0
    */
-  public static long remainder(@Unsigned long dividend, @Unsigned long divisor) {
+  public static @Unsigned long remainder(@Unsigned long dividend, @Unsigned long divisor) {
     if (divisor < 0) { // i.e., divisor >= 2^63:
       if (compare(dividend, divisor) < 0) {
         return dividend; // dividend < divisor
