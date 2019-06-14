@@ -82,7 +82,7 @@ public final class UnsignedInts {
    *
    * <p><b>Java 8 users:</b> use {@link Integer#toUnsignedLong(int)} instead.
    */
-  public static @NonNegative @Unsigned long toLong(int value) {
+  public static @NonNegative @Unsigned long toLong(@UnknownSignedness int value) {
     return value & INT_MASK;
   }
 
@@ -284,7 +284,7 @@ public final class UnsignedInts {
    * @param divisor the divisor (denominator)
    * @throws ArithmeticException if divisor is 0
    */
-  public static int divide(@Unsigned int dividend, @Unsigned int divisor) {
+  public static @Unsigned int divide(@Unsigned int dividend, @Unsigned int divisor) {
     return (int) (toLong(dividend) / toLong(divisor));
   }
 
@@ -298,7 +298,7 @@ public final class UnsignedInts {
    * @param divisor the divisor (denominator)
    * @throws ArithmeticException if divisor is 0
    */
-  public static int remainder(@Unsigned int dividend, @Unsigned int divisor) {
+  public static @Unsigned int remainder(@Unsigned int dividend, @Unsigned int divisor) {
     return (int) (toLong(dividend) % toLong(divisor));
   }
 
