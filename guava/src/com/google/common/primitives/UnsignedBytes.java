@@ -78,7 +78,7 @@ public final class UnsignedBytes {
    *
    * @since 6.0
    */
-  public static @NonNegative @Unsigned int toInt(byte value) {
+  public static @NonNegative @Unsigned int toInt(@UnknownSignedness byte value) {
     return value & UNSIGNED_MASK;
   }
 
@@ -104,7 +104,7 @@ public final class UnsignedBytes {
    * @return {@code (byte) 255} if {@code value >= 255}, {@code (byte) 0} if {@code value <= 0}, and
    *     {@code value} cast to {@code byte} otherwise
    */
-  public static @Unsigned byte saturatedCast(long value) {
+  public static @Unsigned byte saturatedCast(@UnknownSignedness long value) {
     if (value > toInt(MAX_VALUE)) {
       return MAX_VALUE; // -1
     }
