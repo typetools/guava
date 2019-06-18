@@ -27,7 +27,7 @@ import java.util.Comparator;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
-import org.checkerframework.checker.signedness.qual.*;
+import org.checkerframework.checker.signedness.qual.Unsigned;
 
 /**
  * Static utility methods pertaining to {@code long} primitives that interpret values as
