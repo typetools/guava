@@ -78,7 +78,7 @@ public final class UnsignedBytes {
    *
    * @since 6.0
    */
-  public static @NonNegative @SignednessGlb int toInt(@Unsigned byte value) {
+  public static @NonNegative @SignednessGlb int toInt(@UnknownSignedness byte value) {
     return value & UNSIGNED_MASK;
   }
 
