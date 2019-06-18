@@ -82,7 +82,7 @@ public final class UnsignedInts {
    *
    * <p><b>Java 8 users:</b> use {@link Integer#toUnsignedLong(int)} instead.
    */
-  public static @NonNegative @SignednessGlb long toLong(@Unsigned int value) {
+  public static @NonNegative @SignednessGlb long toLong(@UnknownSignedness int value) {
     return value & INT_MASK;
   }
 
