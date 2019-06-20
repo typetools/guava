@@ -60,7 +60,7 @@ public final class UnsignedInts {
 
   private UnsignedInts() {}
 
-  static int flip(int value) {
+  static @PolySigned int flip(int value) {
     return value ^ Integer.MIN_VALUE;
   }
 
