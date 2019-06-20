@@ -462,7 +462,7 @@ public final class UnsignedBytes {
     }
   }
 
-  private static byte flip(byte b) {
+  private static @PolySigned byte flip(byte b) {
     return (byte) (b ^ 0x80);
   }
 
