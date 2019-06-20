@@ -429,6 +429,11 @@ public final class Ascii {
    *
    * @since 14.0
    */
+  /*
+   Index Checker treats CharSequence and String differently as CharSequence could be a mutable-length collection.
+   Therefore, it considers chars length and newChars length, both as different which gives error
+   and should be suppressed.
+  */
   @SuppressWarnings("index")
   public static String toLowerCase(CharSequence chars) {
     if (chars instanceof String) {
@@ -480,6 +485,11 @@ public final class Ascii {
    *
    * @since 14.0
    */
+  /*
+   Index Checker treats CharSequence and String differently as CharSequence could be a mutable-length collection.
+   Therefore, it considers chars length and newChars length, both as different which gives error
+   and should be suppressed.
+  */
   @SuppressWarnings("index")
   public static String toUpperCase(CharSequence chars) {
     if (chars instanceof String) {
