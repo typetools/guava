@@ -64,7 +64,7 @@ public final class UnsignedLongs {
    * longs, that is, {@code a <= b} as unsigned longs if and only if {@code flip(a) <= flip(b)} as
    * signed longs.
    */
-  private static long flip(long a) {
+  private static @PolySigned long flip(long a) {
     return a ^ Long.MIN_VALUE;
   }
 
