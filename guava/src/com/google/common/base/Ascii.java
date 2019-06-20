@@ -429,6 +429,7 @@ public final class Ascii {
    *
    * @since 14.0
    */
+  @SuppressWarnings("index")
   public static String toLowerCase(CharSequence chars) {
     if (chars instanceof String) {
       return toLowerCase((String) chars);
@@ -479,6 +480,7 @@ public final class Ascii {
    *
    * @since 14.0
    */
+  @SuppressWarnings("index")
   public static String toUpperCase(CharSequence chars) {
     if (chars instanceof String) {
       return toUpperCase((String) chars);
