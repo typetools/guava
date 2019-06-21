@@ -29,9 +29,6 @@ script:
     export TRAVIS_BRANCH=${TRAVIS_BRANCH} &&
     ./.travis-build.sh $GROUP
 
-
-./.travis-build.sh
-
 after_success:
   - util/deploy_snapshot.sh
   - util/update_snapshot_docs.sh
