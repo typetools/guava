@@ -25,7 +25,6 @@ echo SLUGOWNER=$SLUGOWNER
 
 echo TRAVIS_PULL_REQUEST_BRANCH = $TRAVIS_PULL_REQUEST_BRANCH
 echo TRAVIS_BRANCH = $TRAVIS_BRANCH
-echo ROOT=$ROOT
 
 ## Build Checker Framework
 [ -d /tmp/plume-scripts ] || (cd /tmp && git clone --depth 1 -q https://github.com/plume-lib/plume-scripts.git)
