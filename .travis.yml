@@ -21,6 +21,7 @@ install: true
 # script: travis_wait 60 mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn verify -U -Dmaven.javadoc.skip=true -f $ROOT_POM
 script:
   - >-
+    export SLUGOWNER=$SLUGOWNER &&
     export TRAVIS_REPO_SLUG=$TRAVIS_REPO_SLUG &&
     export TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR &&
     export TRAVIS_COMMIT_RANGE=$TRAVIS_COMMIT_RANGE &&
