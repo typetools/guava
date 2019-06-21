@@ -3,9 +3,26 @@
 ## This file compiles guava, using the development version of the
 ## Checker Framework (from GitHub) rather than a released version.
 
-set -x
+# Fail the whole script if any command fails
+set -e
 
-echo SLUGOWNER = $SLUGOWNER
+## Diagnostic output
+# Output lines of this script as they are read.
+set -o verbose
+# Output expanded lines of this script as they are executed.
+set -o xtrace
+
+export SHELLOPTS
+
+SLUGOWNER=${TRAVIS_PULL_REQUEST_SLUG%/*}
+if [[ "$SLUGOWNER" == "" ]]; then
+  SLUGOWNER=${TRAVIS_REPO_SLUG%/*}
+fi
+if [[ "$SLUGOWNER" == "" ]]; then
+  SLUGOWNER=typetools
+fi
+echo SLUGOWNER=$SLUGOWNER
+
 echo TRAVIS_PULL_REQUEST_BRANCH = $TRAVIS_PULL_REQUEST_BRANCH
 echo TRAVIS_BRANCH = $TRAVIS_BRANCH
 
