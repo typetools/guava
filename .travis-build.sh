@@ -3,6 +3,8 @@
 ## This file compiles guava, using the development version of the
 ## Checker Framework (from GitHub) rather than a released version.
 
+set -x
+
 ## Build Checker Framework
 [ -d /tmp/plume-scripts ] || (cd /tmp && git clone --depth 1 -q https://github.com/plume-lib/plume-scripts.git)
 REPO=`/tmp/plume-scripts/git-find-fork ${SLUGOWNER} typetools checker-framework`
