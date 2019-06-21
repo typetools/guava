@@ -20,14 +20,14 @@ install: true
 # Upstream version:
 # script: travis_wait 60 mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn verify -U -Dmaven.javadoc.skip=true -f $ROOT_POM
 script:
-- >-
-  export TRAVIS_REPO_SLUG=$TRAVIS_REPO_SLUG &&
-  export TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR &&
-  export TRAVIS_COMMIT_RANGE=$TRAVIS_COMMIT_RANGE &&
-  export TRAVIS_PULL_REQUEST_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH} &&
-  export TRAVIS_PULL_REQUEST_SLUG=${TRAVIS_PULL_REQUEST_SLUG} &&
-  export TRAVIS_BRANCH=${TRAVIS_BRANCH} &&
-  ./.travis-build.sh $GROUP
+  - >-
+    export TRAVIS_REPO_SLUG=$TRAVIS_REPO_SLUG &&
+    export TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR &&
+    export TRAVIS_COMMIT_RANGE=$TRAVIS_COMMIT_RANGE &&
+    export TRAVIS_PULL_REQUEST_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH} &&
+    export TRAVIS_PULL_REQUEST_SLUG=${TRAVIS_PULL_REQUEST_SLUG} &&
+    export TRAVIS_BRANCH=${TRAVIS_BRANCH} &&
+    ./.travis-build.sh $GROUP
 
 
 ./.travis-build.sh
