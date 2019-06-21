@@ -12,4 +12,4 @@ BRANCH=`/tmp/plume-scripts/git-find-branch ${REPO} ${TRAVIS_PULL_REQUEST_BRANCH:
 export CHECKERFRAMEWORK=$ROOT/checker-framework
 
 cd guava
-mvn -P checkerframework-local -Dmaven.test.skip=true -Danimal.sniffer.skip=true
+mvn package -P checkerframework-local -Dmaven.test.skip=true -Danimal.sniffer.skip=true
