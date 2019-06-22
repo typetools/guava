@@ -33,9 +33,6 @@ BRANCH=`/tmp/plume-scripts/git-find-branch ${REPO} ${TRAVIS_PULL_REQUEST_BRANCH:
 (cd .. && git clone -b ${BRANCH} --single-branch --depth 1 -q ${REPO} checker-framework) || (cd .. && git clone -b ${BRANCH} --single-branch --depth 1 -q ${REPO} checker-framework)
 # This also builds annotation-tools and jsr308-langtools
 (cd ../checker-framework/ && ./.travis-build-without-test.sh downloadjdk)
-pwd
 export CHECKERFRAMEWORK=`readlink -f ../checker-framework`
-
-ls $CHECKERFRAMEWORK/checker/dist
 
 (cd guava && mvn package -P checkerframework-local -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
