@@ -408,7 +408,7 @@ public final class Quantiles {
             "upperbound:assignment.type.incompatible",/* (3): Since scale is a positive int, index is in [0, scale],
             and (dataset.length - 1) is non-negative int, we can do long-arithmetic on index * (dataset.length - 1) / scale to get a rounded ratio and a remainder
              which can be expressed as ints, without risk of overflow */
-        "upperbound:array.access.unsafe.high",// (4) if `remainder` is not 0, highest possible value for quotient is `dataset.length - 2`
+        "upperbound:array.access.unsafe.high", // (4) if `remainder` is not 0, highest possible value for quotient is `dataset.length - 2`
         "unary.increment.type.incompatible"
     })
     public Map<Integer, Double> computeInPlace(double @MinLen(1)... dataset) {
