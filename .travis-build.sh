@@ -3,6 +3,10 @@
 ## This file compiles guava, using the development version of the
 ## Checker Framework (from GitHub) rather than a released version.
 
+# Optional argument $1 is "-P checkerframework-local" to use a locally-built
+# clone of the Checker Framework repository.
+export GROUP=$1
+
 # Fail the whole script if any command fails
 set -e
 
@@ -35,4 +39,4 @@ BRANCH=`/tmp/plume-scripts/git-find-branch ${REPO} ${TRAVIS_PULL_REQUEST_BRANCH:
 (cd ../checker-framework/ && ./.travis-build-without-test.sh downloadjdk)
 export CHECKERFRAMEWORK=`readlink -f ../checker-framework`
 
-(cd guava && mvn package -P checkerframework-local -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
+(cd guava && mvn package $GROUP -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
