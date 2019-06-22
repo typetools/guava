@@ -42,14 +42,20 @@ development version in the GitHub repository
 the GitHub version may have renamed annotation or added/removed/changed
 error messages.
 
-This repository contains a branch, `cf-master`, whose Travis job
-type-checks against the GitHub version of the Checker Framework.  Pull
-requests should be made against that branch when they depend on forthcoming
-Checker Framework issues.
+When a pull request depends on forthcoming Checker Framework features,
+make pull requests against a branch named `cf-master` whose Travis job
+clones the Checker Framework from the GitHub and uses that for type-checking.
 
-Whenever a Checker Framework release is made, most of the changes in the
-`cf-master` branch of this repository (excepting only those in the Travis
-setup) should be merged into the `master` branch of this repository.
+To create the `cf-master` branch if it does not exist:
+It should differ only in file `.travis.yml`, which should pass
+```
+  "-P checkerframework-local"
+```
+(with the quotes) to `./.travis-build.sh`.
+
+Whenever a Checker Framework release is made, undo the change in
+`.travis.yml`, pull-request the `cf-master` branch into `master`, and
+delete the `cf-master` branch.
 
 
 To update to a newer version of the upstream library
