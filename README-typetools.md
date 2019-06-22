@@ -42,7 +42,7 @@ https://github.com/typetools/checker-framework/tree/master .  For example,
 the GitHub version may have renamed or added annotations or error messages.
 
 When a pull request depends on forthcoming Checker Framework features, make
-pull requests against a branch named `cf-master` whose Travis job uses the
+pull requests against a branch named `cf-master`.  Its Travis job uses the
 Checker Framework from GitHub, rather than a Checker Framework release.
 
 To create the `cf-master` branch if it does not exist:
