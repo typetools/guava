@@ -38,13 +38,12 @@ Typechecking against the master branch of the Checker Framework
 
 The released version of the Checker Framework may be incompatible with the
 development version in the GitHub repository
-1https://github.com/typetools/checker-framework/tree/master .  For example,
-the GitHub version may have renamed annotation or added/removed/changed
-error messages.
+https://github.com/typetools/checker-framework/tree/master .  For example,
+the GitHub version may have renamed or added annotations or error messages.
 
-When a pull request depends on forthcoming Checker Framework features,
-make pull requests against a branch named `cf-master` whose Travis job
-clones the Checker Framework from the GitHub and uses that for type-checking.
+When a pull request depends on forthcoming Checker Framework features, make
+pull requests against a branch named `cf-master` whose Travis job uses the
+Checker Framework from GitHub, rather than a Checker Framework release.
 
 To create the `cf-master` branch if it does not exist:
 It should differ only in file `.travis.yml`, which should pass
