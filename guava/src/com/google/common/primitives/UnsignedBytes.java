@@ -33,6 +33,7 @@ import org.checkerframework.common.value.qual.MinLen;
 import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.checker.signedness.qual.SignednessGlb;
+import org.checkerframework.checker.signedness.qual.PolySigned;
 import sun.misc.Unsafe;
 
 /**
@@ -462,7 +463,7 @@ public final class UnsignedBytes {
     }
   }
 
-  private static byte flip(byte b) {
+  private static @PolySigned byte flip(@PolySigned byte b) {
     return (byte) (b ^ 0x80);
   }
 
