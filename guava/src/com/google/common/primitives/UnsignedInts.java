@@ -31,6 +31,7 @@ import org.checkerframework.common.value.qual.MinLen;
 import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.checker.signedness.qual.SignednessGlb;
+import org.checkerframework.checker.signedness.qual.PolySigned;
 
 /**
  * Static utility methods pertaining to {@code int} primitives that interpret values as
@@ -60,7 +61,7 @@ public final class UnsignedInts {
 
   private UnsignedInts() {}
 
-  static int flip(int value) {
+  static @PolySigned int flip(@PolySigned int value) {
     return value ^ Integer.MIN_VALUE;
   }
 
