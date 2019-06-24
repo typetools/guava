@@ -28,6 +28,7 @@ import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 import org.checkerframework.checker.signedness.qual.Unsigned;
+import org.checkerframework.checker.signedness.qual.PolySigned;
 
 /**
  * Static utility methods pertaining to {@code long} primitives that interpret values as
@@ -64,7 +65,7 @@ public final class UnsignedLongs {
    * longs, that is, {@code a <= b} as unsigned longs if and only if {@code flip(a) <= flip(b)} as
    * signed longs.
    */
-  private static long flip(long a) {
+  private static @PolySigned long flip(@PolySigned long a) {
     return a ^ Long.MIN_VALUE;
   }
 
