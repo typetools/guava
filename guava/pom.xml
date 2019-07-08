@@ -135,25 +135,25 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.6.1</version>
         <configuration>
-	  <source>1.8</source>
-	  <target>1.8</target>
-	  <compilerArguments>
-	    <Xmaxerrs>10000</Xmaxerrs>
-	    <Xmaxwarns>10000</Xmaxwarns>
-	  </compilerArguments>
-	  <annotationProcessors>
-	    <annotationProcessor>${checkerframework.checkers}</annotationProcessor>
-	  </annotationProcessors>
-	  <compilerArgs>
-	    <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
-	    <arg>${addtionalargs}</arg>
-	    <arg>${checkerframework.extraargs}</arg>
-	    <arg>${checkerframework.extraargs2}</arg>
-	    <arg>-AsuppressWarnings=${checkerframework.suppress}</arg>
-	    <arg>-AuseDefaultsForUncheckedCode=source,bytecode</arg>
-	    <arg>-Awarns</arg>
-	    <arg>-AprintErrorStack</arg>
-	  </compilerArgs>
+            <source>1.8</source>
+            <target>1.8</target>
+            <compilerArguments>
+              <Xmaxerrs>10000</Xmaxerrs>
+              <Xmaxwarns>10000</Xmaxwarns>
+            </compilerArguments>
+            <annotationProcessors>
+              <annotationProcessor>${checkerframework.checkers}</annotationProcessor>
+            </annotationProcessors>
+            <compilerArgs>
+              <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
+              <arg>${addtionalargs}</arg>
+              <arg>${checkerframework.extraargs}</arg>
+              <arg>${checkerframework.extraargs2}</arg>
+              <arg>-AsuppressWarnings=${checkerframework.suppress}</arg>
+              <arg>-AuseDefaultsForUncheckedCode=source,bytecode</arg>
+              <arg>-Awarns</arg>
+              <arg>-AprintErrorStack</arg>
+            </compilerArgs>
         </configuration>
         <executions>
           <!-- Runs the Index Checker on selected packages. -->
@@ -290,21 +290,21 @@
         <dependency>
           <groupId>org.checkerframework</groupId>
           <artifactId>checker-qual</artifactId>
-          <version>2.9.0</version>
+          <version>0.0.0</version>
           <scope>system</scope>
           <systemPath>${CHECKERFRAMEWORK}/checker/dist/checker-qual.jar</systemPath>
         </dependency>
         <dependency>
           <groupId>org.checkerframework</groupId>
           <artifactId>checker</artifactId>
-          <version>2.9.0</version>
+          <version>0.0.0</version>
           <scope>system</scope>
           <systemPath>${CHECKERFRAMEWORK}/checker/dist/checker.jar</systemPath>
         </dependency>
         <dependency>
           <groupId>org.checkerframework</groupId>
           <artifactId>jdk8</artifactId>
-          <version>2.9.0</version>
+          <version>0.0.0</version>
           <scope>system</scope>
           <systemPath>${CHECKERFRAMEWORK}/checker/dist/jdk8.jar</systemPath>
         </dependency>
