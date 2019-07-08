@@ -429,7 +429,6 @@ public final class Ascii {
    *
    * @since 14.0
    */
-  @SuppressWarnings("index") // https://github.com/typetools/checker-framework/issues/2561
   public static String toLowerCase(CharSequence chars) {
     if (chars instanceof String) {
       return toLowerCase((String) chars);
@@ -480,7 +479,6 @@ public final class Ascii {
    *
    * @since 14.0
    */
-  @SuppressWarnings("index") // https://github.com/typetools/checker-framework/issues/2561
   public static String toUpperCase(CharSequence chars) {
     if (chars instanceof String) {
       return toUpperCase((String) chars);
