@@ -31,7 +31,7 @@ import org.checkerframework.common.value.qual.MinLen;
 import org.checkerframework.checker.signedness.qual.PolySigned;
 import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
-import org.checkerframework.checker.signedness.qual.SignednessGlb;
+import org.checkerframework.checker.signedness.qual.SignedPositive;
 
 /**
  * Static utility methods pertaining to {@code int} primitives that interpret values as
@@ -85,7 +85,7 @@ public final class UnsignedInts {
    *
    * <p><b>Java 8 users:</b> use {@link Integer#toUnsignedLong(int)} instead.
    */
-  public static @NonNegative @SignednessGlb long toLong(@UnknownSignedness int value) {
+  public static @NonNegative @SignedPositive long toLong(@UnknownSignedness int value) {
     return value & INT_MASK;
   }
 
