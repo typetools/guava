@@ -99,7 +99,7 @@ public final class UnsignedInts {
    *     2<sup>32</sup>
    * @since 21.0
    */
-  public static @Unsigned int checkedCast(@IntRange(from = 0, to = (2l << 32) - 1) long value) {
+  public static @Unsigned int checkedCast(@IntRange(from = 0, to = (2L << 32) - 1) long value) {
     checkArgument((value >> Integer.SIZE) == 0, "out of range: %s", value);
     return (int) value;
   }
