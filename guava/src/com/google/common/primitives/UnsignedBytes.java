@@ -61,7 +61,7 @@ public final class UnsignedBytes {
    * @since 10.0
    */
   @SuppressWarnings("cast.unsafe") // https://github.com/kelloggm/checker-framework/issues/149
-  public static final byte MAX_POWER_OF_TWO = (byte) 0x80;
+  public static final @Unsigned byte MAX_POWER_OF_TWO = (byte) 0x80;
 
   /**
    * The largest value that fits into an unsigned byte.
@@ -69,7 +69,7 @@ public final class UnsignedBytes {
    * @since 13.0
    */
   @SuppressWarnings("cast.unsafe") // https://github.com/kelloggm/checker-framework/issues/149
-  public static final byte MAX_VALUE = (byte) 0xFF;
+  public static final @Unsigned byte MAX_VALUE = (byte) 0xFF;
 
   private static final int UNSIGNED_MASK = 0xFF;
 
@@ -278,12 +278,12 @@ public final class UnsignedBytes {
    *
    * @since 2.0
    */
-  public static Comparator<byte[]> lexicographicalComparator() {
+  public static Comparator<@Unsigned byte[]> lexicographicalComparator() {
     return LexicographicalComparatorHolder.BEST_COMPARATOR;
   }
 
   @VisibleForTesting
-  static Comparator<byte[]> lexicographicalComparatorJavaImpl() {
+  static Comparator<@Unsigned byte[]> lexicographicalComparatorJavaImpl() {
     return LexicographicalComparatorHolder.PureJavaComparator.INSTANCE;
   }
 
@@ -299,7 +299,7 @@ public final class UnsignedBytes {
     static final String UNSAFE_COMPARATOR_NAME =
         LexicographicalComparatorHolder.class.getName() + "$UnsafeComparator";
 
-    static final Comparator<byte[]> BEST_COMPARATOR = getBestComparator();
+    static final Comparator<@Unsigned byte[]> BEST_COMPARATOR = getBestComparator();
 
     @VisibleForTesting
     enum UnsafeComparator implements Comparator<byte[]> {
@@ -419,7 +419,7 @@ public final class UnsignedBytes {
       }
     }
 
-    enum PureJavaComparator implements Comparator<byte[]> {
+    enum PureJavaComparator implements Comparator<@Unsigned byte[]> {
       INSTANCE;
 
       @Override
