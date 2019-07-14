@@ -249,7 +249,7 @@ public final class UnsignedBytes {
    *     (but not at the start or end)
    * @param array an array of {@code byte} values, possibly empty
    */
-  public static String join(String separator, byte... array) {
+  public static String join(String separator, @Unsigned byte... array) {
     checkNotNull(separator);
     if (array.length == 0) {
       return "";
