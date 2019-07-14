@@ -58,7 +58,7 @@ import org.checkerframework.checker.signedness.qual.PolySigned;
 public final class UnsignedLongs {
   private UnsignedLongs() {}
 
-  public static final long MAX_VALUE = -1L; // Equivalent to 2^64 - 1
+  public static final @Unsigned long MAX_VALUE = -1L; // Equivalent to 2^64 - 1
 
   /**
    * A (self-inverse) bijection which converts the ordering on unsigned longs to the ordering on
@@ -132,7 +132,7 @@ public final class UnsignedLongs {
    *     (but not at the start or end)
    * @param array an array of unsigned {@code long} values, possibly empty
    */
-  public static String join(String separator, long... array) {
+  public static String join(String separator, @Unsigned long... array) {
     checkNotNull(separator);
     if (array.length == 0) {
       return "";
@@ -158,11 +158,11 @@ public final class UnsignedLongs {
    * support only identity equality), but it is consistent with {@link Arrays#equals(long[],
    * long[])}.
    */
-  public static Comparator<long[]> lexicographicalComparator() {
+  public static Comparator<@Unsigned long[]> lexicographicalComparator() {
     return LexicographicalComparator.INSTANCE;
   }
 
-  enum LexicographicalComparator implements Comparator<long[]> {
+  enum LexicographicalComparator implements Comparator<@Unsigned long[]> {
     INSTANCE;
 
     @Override
