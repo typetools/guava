@@ -171,7 +171,7 @@ public final class UnsignedInts {
    *     (but not at the start or end)
    * @param array an array of unsigned {@code int} values, possibly empty
    */
-  public static String join(String separator, int... array) {
+  public static String join(String separator, @Unsigned int... array) {
     checkNotNull(separator);
     if (array.length == 0) {
       return "";
@@ -196,11 +196,11 @@ public final class UnsignedInts {
    * <p>The returned comparator is inconsistent with {@link Object#equals(Object)} (since arrays
    * support only identity equality), but it is consistent with {@link Arrays#equals(int[], int[])}.
    */
-  public static Comparator<int[]> lexicographicalComparator() {
+  public static Comparator<@Unsigned int[]> lexicographicalComparator() {
     return LexicographicalComparator.INSTANCE;
   }
 
-  enum LexicographicalComparator implements Comparator<int[]> {
+  enum LexicographicalComparator implements Comparator<@Unsigned int[]> {
     INSTANCE;
 
     @Override
