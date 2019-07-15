@@ -302,7 +302,7 @@ public final class UnsignedBytes {
     static final Comparator<@Unsigned byte[]> BEST_COMPARATOR = getBestComparator();
 
     @VisibleForTesting
-    enum UnsafeComparator implements Comparator<byte[]> {
+    enum UnsafeComparator implements Comparator<@Unsigned byte[]> {
       INSTANCE;
 
       static final boolean BIG_ENDIAN = ByteOrder.nativeOrder().equals(ByteOrder.BIG_ENDIAN);
@@ -449,13 +449,13 @@ public final class UnsignedBytes {
      * caught by catch(Throwable).
      */
     @SuppressWarnings("upperbound:array.access.unsafe.high") // exception caught
-    static Comparator<byte[]> getBestComparator() {
+    static Comparator<@Unsigned byte[]> getBestComparator() {
       try {
         Class<?> theClass = Class.forName(UNSAFE_COMPARATOR_NAME);
 
         // yes, UnsafeComparator does implement Comparator<byte[]>
         @SuppressWarnings("unchecked")
-        Comparator<byte[]> comparator = (Comparator<byte[]>) theClass.getEnumConstants()[0];
+        Comparator<@Unsigned byte[]> comparator = (Comparator<@Unsigned byte[]>) theClass.getEnumConstants()[0];
         return comparator;
       } catch (Throwable t) { // ensure we really catch *everything*
         return lexicographicalComparatorJavaImpl();
