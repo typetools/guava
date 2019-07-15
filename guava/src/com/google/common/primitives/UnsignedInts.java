@@ -321,7 +321,7 @@ public final class UnsignedInts {
    * @since 13.0
    */
   @CanIgnoreReturnValue
-  public static int decode(String stringValue) {
+  public static @Unsigned int decode(String stringValue) {
     ParseRequest request = ParseRequest.fromString(stringValue);
 
     try {
