@@ -381,7 +381,7 @@ public final class UnsignedLongs {
    * @since 13.0
    */
   @CanIgnoreReturnValue
-  public static long decode(String stringValue) {
+  public static @Unsigned long decode(String stringValue) {
     ParseRequest request = ParseRequest.fromString(stringValue);
 
     try {
