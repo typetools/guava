@@ -131,7 +131,7 @@ public final class UnsignedInts {
    *     the array according to {@link #compare}
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static @Unsigned int min(int @Unsigned @MinLen(1)... array) {
+  public static @Unsigned int min(@Unsigned int @MinLen(1)... array) {
     checkArgument(array.length > 0);
     int min = flip(array[0]);
     for (int i = 1; i < array.length; i++) {
@@ -151,7 +151,7 @@ public final class UnsignedInts {
    *     in the array according to {@link #compare}
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static @Unsigned int max(int @Unsigned @MinLen(1)... array) {
+  public static @Unsigned int max(@Unsigned int @MinLen(1)... array) {
     checkArgument(array.length > 0);
     int max = flip(array[0]);
     for (int i = 1; i < array.length; i++) {
