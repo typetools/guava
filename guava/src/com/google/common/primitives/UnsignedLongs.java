@@ -92,7 +92,7 @@ public final class UnsignedLongs {
    *     the array according to {@link #compare}
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static @Unsigned long min(long @Unsigned @MinLen(1)... array) {
+  public static @Unsigned long min(@Unsigned long @MinLen(1)... array) {
     checkArgument(array.length > 0);
     long min = flip(array[0]);
     for (int i = 1; i < array.length; i++) {
@@ -112,7 +112,7 @@ public final class UnsignedLongs {
    *     in the array according to {@link #compare}
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static @Unsigned long max(long @Unsigned @MinLen(1)... array) {
+  public static @Unsigned long max(@Unsigned long @MinLen(1)... array) {
     checkArgument(array.length > 0);
     long max = flip(array[0]);
     for (int i = 1; i < array.length; i++) {
