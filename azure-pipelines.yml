@@ -19,6 +19,7 @@ jobs:
         typechecker: regex
       signatureJob:
         typechecker: signature
+    maxParallel: 10
   steps:
   - checkout: self
     fetchDepth: 25
