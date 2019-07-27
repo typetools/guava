@@ -25,7 +25,7 @@ jobs:
   - bash: echo $(typechecker)
     name: echovar
   - bash: ./typecheck.sh $(typechecker)
-    displayName: test-all-tests.sh
+    displayName: typecheck.sh $(typechecker)
 
 trigger:
   batch: true
