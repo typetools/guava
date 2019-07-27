@@ -23,19 +23,19 @@ export CHECKERFRAMEWORK=`(cd ../checker-framework/ && pwd -P)`
 # but run the other jobs anyway.
 
 if [[ "$1" == "formatter" ]]; then
-  (cd guava && mvn compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.formatter.FormatterChecker)
+  (cd guava && mvn -B compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.formatter.FormatterChecker)
 elif [[ "$1" == "index" ]]; then
-  (cd guava && mvn compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.index.IndexChecker)
+  (cd guava && mvn -B compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.index.IndexChecker)
 elif [[ "$1" == "interning" ]]; then
-  (cd guava && mvn compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.interning.InterningChecker)
+  (cd guava && mvn -B compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.interning.InterningChecker)
 elif [[ "$1" == "lock" ]]; then
-  (cd guava && mvn compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.lock.LockChecker)
+  (cd guava && mvn -B compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.lock.LockChecker)
 elif [[ "$1" == "nullness" ]]; then
-  (cd guava && mvn compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.nullness.NullnessChecker)
+  (cd guava && mvn -B compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.nullness.NullnessChecker)
 elif [[ "$1" == "regex" ]]; then
-  (cd guava && mvn compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.regex.RegexChecker)
+  (cd guava && mvn -B compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.regex.RegexChecker)
 elif [[ "$1" == "signature" ]]; then
-  (cd guava && mvn compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.signature.SignatureChecker)
+  (cd guava && mvn -B compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.signature.SignatureChecker)
 elif [[ "$1" == "nothing" ]]; then
   true
 else
