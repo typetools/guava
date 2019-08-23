@@ -311,7 +311,6 @@
       </dependencies>
     </profile>
   <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
-  <profiles>
     <profile>
       <id>jdk8</id>
       <activation>
