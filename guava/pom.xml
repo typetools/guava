@@ -23,7 +23,6 @@
     <checkerframework.suppress>index</checkerframework.suppress>
     <!-- Packages under com.google.common, that will be additionally checked by the Index Checker -->
     <checkerframework.index.packages>base|primitives|escape|math</checkerframework.index.packages>
-    <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
     <!-- Additional argument passed to the java compiler. Use to pass additional arguments to the checker framework. Example: -Ashowchecks -->
     <checkerframework.extraargs></checkerframework.extraargs>
     <!-- Additional argument passed to the java compiler. Use to pass additional arguments to the checker framework. Example: -Aannotations -->
@@ -80,12 +79,7 @@
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker</artifactId>
-      <version>2.9.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.checkerframework</groupId>
-      <artifactId>jdk8</artifactId>
-      <version>2.9.0</version>
+      <version>2.11.1</version>
     </dependency>
   </dependencies>
   <build>
@@ -133,7 +127,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.6.1</version>
+        <version>3.8.1</version>
         <configuration>
             <source>1.8</source>
             <target>1.8</target>
@@ -145,7 +139,6 @@
               <annotationProcessor>${checkerframework.checkers}</annotationProcessor>
             </annotationProcessors>
             <compilerArgs>
-              <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
               <arg>${addtionalargs}</arg>
               <arg>${checkerframework.extraargs}</arg>
               <arg>${checkerframework.extraargs2}</arg>
@@ -169,7 +162,7 @@
                 <annotationProcessor>org.checkerframework.checker.index.IndexChecker</annotationProcessor>
               </annotationProcessors>
               <compilerArgs>
-                <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
+                <arg>-XDignore.symbol.file</arg>
                 <arg>${index.only.arg}</arg>
                 <arg>-AprintErrorStack</arg>
                 <arg>-proc:only</arg>
@@ -301,14 +294,27 @@
           <scope>system</scope>
           <systemPath>${CHECKERFRAMEWORK}/checker/dist/checker.jar</systemPath>
         </dependency>
-        <dependency>
-          <groupId>org.checkerframework</groupId>
-          <artifactId>jdk8</artifactId>
-          <version>0.0.0</version>
-          <scope>system</scope>
-          <systemPath>${CHECKERFRAMEWORK}/checker/dist/jdk8.jar</systemPath>
-        </dependency>
       </dependencies>
+    </profile>
+    <profile>
+      <id>jdk11</id>
+      <activation>
+        <jdk>11</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <fork>true</fork>
+              <compilerArgs combine.children="append">
+                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+              </compilerArgs>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
     <profile>
@@ -318,6 +324,7 @@
       </activation>
       <properties>
         <javac.version>9+181-r4173-1</javac.version>
+    <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
       </properties>
       <dependencies>
         <dependency>
@@ -325,6 +332,11 @@
           <artifactId>javac</artifactId>
           <version>9+181-r4173-1</version>
         </dependency>
+    <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>jdk8</artifactId>
+      <version>2.11.1</version>
+    </dependency>
       </dependencies>
       <build>
         <plugins>
@@ -334,6 +346,7 @@
             <configuration>
               <fork>true</fork>
               <compilerArgs combine.children="append">
+              <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
                 <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${javac.version}/javac-${javac.version}.jar</arg>
               </compilerArgs>
             </configuration>
