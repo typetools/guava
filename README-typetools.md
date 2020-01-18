@@ -19,8 +19,12 @@ To create file `guava/target/guava-HEAD-jre-SNAPSHOT.jar`:
 Typechecking
 ------------
 
-Only the packages `com.google.common.primitives` and `com.google.common.base` are annotated by Index Checker annotations. 
-In order to get implicit annotations in class files, the Index Checker runs on all files during compilation, but warnings are suppressed. The Index Checker is run in another phase to typecheck just the two annotated packages. If there are errors, then the build fails.
+Only the packages `com.google.common.primitives` and
+`com.google.common.base` are annotated by Index Checker annotations.  In
+order to get implicit annotations in class files, the Index Checker runs on
+all files during compilation, but warnings are suppressed. The Index
+Checker is run in another phase to typecheck just the two annotated
+packages. If there are errors, then the build fails.
 
 The Maven properties in guava/pom.xml can be used to change the behavior:
 
@@ -60,13 +64,12 @@ the `cf-master` branch into `master`, and delete the `cf-master` branch.
 To update to a newer version of the upstream library
 ----------------------------------------------------
 
-Pull in the latest Guava version; for example:
-```
-git fetch --tags https://github.com/google/guava
-git pull https://github.com/google/guava v28.1
-```
+If there has been a release since the last time this repository was pulled, then
+follow the instructions at "To upload to Maven Central".
 
-Use the latest Checker Framework version by changing `pom.xml` and `guava/pom.xml`.
+**After** doing that, you can run
+
+git pull https://github.com/google/guava
 
 
 To upload to Maven Central
@@ -74,8 +77,21 @@ To upload to Maven Central
 
 This must be done on a CSE machine, which has access to the necessary passwords.
 
+Pull in the latest Guava version; for example:
+```
+git fetch --tags https://github.com/google/guava
+git pull https://github.com/google/guava v28.1
+```
+
+(If you have already pulled commits subsequent to the release, but want to
+re-release some version of Guava because you have added annotations or because
+the Checker Framework has changed, then you will need to do something special.
+Those instructions are not yet written.)
+
+Use the latest Checker Framework version by changing `pom.xml` and `guava/pom.xml`.
+
 # Update the version number
-#  * here, and
+#  * multiple places in this file, and
 #  * in file guava/cfMavenCentral.xml.
 # If it's not the same as the upstream version, then also edit pom.xml and guava/pom.xml.
 
