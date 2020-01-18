@@ -404,8 +404,7 @@ public class ImmutableListMultimap<K, V> extends ImmutableMultimap<K, V>
   @Override
   public ImmutableList<V> get(@Nullable K key) {
     // This cast is safe as its type is known in constructor.
-    @Nullable
-    ImmutableList<V> list = (@Nullable ImmutableList<V>) map.get(key);
+    @Nullable ImmutableList<V> list = (@Nullable ImmutableList<V>) map.get(key);
     return (list == null) ? ImmutableList.<V>of() : list;
   }
 
