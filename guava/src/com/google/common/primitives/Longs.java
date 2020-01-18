@@ -344,7 +344,6 @@ public final class Longs {
     private AsciiDigits() {}
 
     private static final @IntRange(from = -1, to = 36) byte @MinLen(128)[] asciiDigits;
-
     
     static {
       @IntRange(from = -1, to = 36) byte [] result = new byte[128];
@@ -393,6 +392,7 @@ public final class Longs {
    * @param string the string representation of a long value
    * @return the long value represented by {@code string}, or {@code null} if {@code string} has a
    *     length of zero or cannot be parsed as a long value
+   * @throws NullPointerException if {@code string} is {@code null}
    * @since 14.0
    */
   @Beta
@@ -417,6 +417,7 @@ public final class Longs {
    *     {@code string} has a length of zero or cannot be parsed as a long value
    * @throws IllegalArgumentException if {@code radix < Character.MIN_RADIX} or {@code radix >
    *     Character.MAX_RADIX}
+   * @throws NullPointerException if {@code string} is {@code null}
    * @since 19.0
    */
   @Beta

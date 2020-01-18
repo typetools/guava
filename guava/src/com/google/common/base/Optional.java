@@ -15,6 +15,7 @@
 package com.google.common.base;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import com.google.errorprone.annotations.DoNotMock;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
@@ -85,6 +86,7 @@ import org.checkerframework.framework.qual.Covariant;
  */
 @AnnotatedFor({"nullness"})
 @Covariant(0)
+@DoNotMock("Use Optional.of(value) or Optional.absent()")
 @GwtCompatible(serializable = true)
 public abstract @NonNull class Optional<T> implements Serializable {
   /**

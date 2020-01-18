@@ -14,8 +14,10 @@
 
 package com.google.common.base;
 
-import com.google.common.annotations.GwtIncompatible;
 import org.checkerframework.framework.qual.AnnotatedFor;
+
+import com.google.common.annotations.GwtIncompatible;
+import com.google.errorprone.annotations.DoNotMock;
 
 /**
  * Implemented by references that have code to run after garbage collection of their referents.
@@ -25,6 +27,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @since 2.0
  */
 @AnnotatedFor({"nullness"})
+@DoNotMock("Use an instance of one of the Finalizable*Reference classes")
 @GwtIncompatible
 public interface FinalizableReference {
   /**

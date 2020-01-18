@@ -4,16 +4,19 @@ language: java
 
 jdk:
   - openjdk8
-#  - openjdk11
+  - openjdk11
 
 install: mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn install -U -DskipTests=true -f $ROOT_POM
 
-# https://docs.travis-ci.com/user/common-build-problems/#Build-times-out-because-no-output-was-received
+# https://docs.travis-ci.com/user/common-build-problems/#build-times-out-because-no-output-was-received
 script: travis_wait 60 mvn -B verify -U -Dmaven.javadoc.skip=true -f $ROOT_POM
 
 after_success:
   - util/deploy_snapshot.sh
   - util/update_snapshot_docs.sh
+
+after_failure:
+  - util/print_surefire_reports.sh
 
 cache:
   directories:
