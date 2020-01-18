@@ -9,7 +9,7 @@ To build this project
 Optionally change `guava/pom.xml` to use a locally-built version of the Checker Framework.
 
 To create file `guava/target/guava-HEAD-jre-SNAPSHOT.jar`:
-(This takes about 25 minutes.)
+(This takes about 25 minutes, because it performs pluggable type-checking.)
 
 ```
 (cd guava && mvn package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
@@ -56,20 +56,27 @@ It should differ only in file `.travis.yml`, which should pass
 ```
 (with the quotes) to `./.travis-build.sh`.
 
-Whenever a Checker Framework release is made, undo the change in
-`.travis.yml`, update the Checker Framework version number, pull-request
-the `cf-master` branch into `master`, and delete the `cf-master` branch.
+Whenever a Checker Framework release is made:
+ * undo the change in `.travis.yml`,
+ * update the Checker Framework version number,
+ * pull-request the `cf-master` branch into `master`, and
+ * delete the `cf-master` branch.
 
 
 To update to a newer version of the upstream library
 ----------------------------------------------------
 
-If there has been a release since the last time this repository was pulled, then
-follow the instructions at "To upload to Maven Central".
+If there has been a release (https://github.com/google/guava/releases)
+since the last time this repository was pulled, then follow the
+instructions at "To upload to Maven Central".
 
 **After** doing that, you can run
 
+```
 git pull https://github.com/google/guava
+```
+
+and then re-build to ensure that typechecking still works.
 
 
 To upload to Maven Central
@@ -77,23 +84,28 @@ To upload to Maven Central
 
 This must be done on a CSE machine, which has access to the necessary passwords.
 
-Pull in the latest Guava version; for example:
+If you want to re-release some version of Guava because you have added
+annotations or because the Checker Framework has changed, then you will
+need to do something special.  (Because you have probably pulled, from
+upstream, commits subsequent to the release.)  Those instructions are not
+yet written.
+
+Use the latest Checker Framework release
+(https://github.com/typetools/checker-framework/releases) by changing
+`pom.xml` and `guava/pom.xml`.  Re-build to ensure that typechecking still
+works.  Commit and push.  If a `cf-master` branch exists in this
+repository, follow the instructions above to merge it into master.
+
+Pull in the latest Guava version (https://github.com/google/guava/releases):
 ```
 git fetch --tags https://github.com/google/guava
 git pull https://github.com/google/guava v28.1
 ```
 
-(If you have already pulled commits subsequent to the release, but want to
-re-release some version of Guava because you have added annotations or because
-the Checker Framework has changed, then you will need to do something special.
-Those instructions are not yet written.)
-
-Use the latest Checker Framework version by changing `pom.xml` and `guava/pom.xml`.
-
-# Update the version number
-#  * multiple places in this file, and
-#  * in file guava/cfMavenCentral.xml.
-# If it's not the same as the upstream version, then also edit pom.xml and guava/pom.xml.
+Update the version number
+ * multiple places in this file, and
+ * in file guava/cfMavenCentral.xml .
+If it's not the same as the upstream version, then also edit pom.xml and guava/pom.xml.
 
 PACKAGE=guava-28.1-jre
 
