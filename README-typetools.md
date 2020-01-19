@@ -136,7 +136,7 @@ repository, follow the instructions above to merge it into master.
 Pull in the latest Guava version (https://github.com/google/guava/releases):
 ```
 git fetch --tags https://github.com/google/guava
-git pull https://github.com/google/guava v28.1
+git pull https://github.com/google/guava v28.2
 ```
 
 Update the version number
@@ -144,7 +144,7 @@ Update the version number
  * in file guava/cfMavenCentral.xml .
 If it's not the same as the upstream version, then also edit pom.xml and guava/pom.xml.
 
-PACKAGE=guava-28.1-jre
+PACKAGE=guava-28.2-jre
 
 cd guava
 
