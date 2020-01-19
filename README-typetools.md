@@ -122,8 +122,8 @@ To upload to Maven Central
 This must be done on a CSE machine, which has access to the necessary passwords.
 
 If you want to re-release some version of Guava because you have added
-annotations or because the Checker Framework has changed, then you will
-need to do something special.  (Because you have probably pulled, from
+annotations or because the Checker Framework has changed, then *you will
+need to do something special*.  (Because you have probably pulled, from
 upstream, commits subsequent to the release.)  Those instructions are not
 yet written.
 
@@ -144,6 +144,7 @@ Update the version number
  * in file guava/cfMavenCentral.xml .
 If it's not the same as the upstream version, then also edit pom.xml and guava/pom.xml.
 
+```
 PACKAGE=guava-28.2-jre
 
 cd guava
@@ -165,5 +166,6 @@ mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/stagin
 mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=cfMavenCentral.xml -Dgpg.publicKeyring=/projects/swlab1/checker-framework/hosting-info/pubring.gpg -Dgpg.secretKeyring=/projects/swlab1/checker-framework/hosting-info/secring.gpg -Dgpg.keyname=ADF4D638 -Dgpg.passphrase="`cat /projects/swlab1/checker-framework/hosting-info/release-private.password`" -Dfile=target/${PACKAGE}-sources.jar -Dclassifier=sources \
 && \
 mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=cfMavenCentral.xml -Dgpg.publicKeyring=/projects/swlab1/checker-framework/hosting-info/pubring.gpg -Dgpg.secretKeyring=/projects/swlab1/checker-framework/hosting-info/secring.gpg -Dgpg.keyname=ADF4D638 -Dgpg.passphrase="`cat /projects/swlab1/checker-framework/hosting-info/release-private.password`" -Dfile=target/site/apidocs/${PACKAGE}-javadoc.jar -Dclassifier=javadoc
+```
 
-# Complete the release at https://oss.sonatype.org/#stagingRepositories
+Complete the release at https://oss.sonatype.org/#stagingRepositories
