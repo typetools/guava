@@ -50,6 +50,11 @@ final class ConfigurableMutableValueGraph<N, V> extends ConfigurableValueGraph<N
   }
 
   @Override
+  public ElementOrder<N> incidentEdgeOrder() {
+    return incidentEdgeOrder;
+  }
+
+  @Override
   @CanIgnoreReturnValue
   public boolean addNode(N node) {
     checkNotNull(node, "node");
@@ -171,6 +176,6 @@ final class ConfigurableMutableValueGraph<N, V> extends ConfigurableValueGraph<N
   private GraphConnections<N, V> newConnections() {
     return isDirected()
         ? DirectedGraphConnections.<N, V>of(incidentEdgeOrder)
-        : UndirectedGraphConnections.<N, V>of();
+        : UndirectedGraphConnections.<N, V>of(incidentEdgeOrder);
   }
 }

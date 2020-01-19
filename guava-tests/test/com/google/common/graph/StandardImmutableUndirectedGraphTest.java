@@ -22,10 +22,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-/** Tests for a directed {@link ConfigurableMutableGraph}. */
+/** Tests for an undirected {@link ConfigurableMutableGraph}. */
 @AndroidIncompatible
 @RunWith(Parameterized.class)
-public final class StandardImmutableDirectedGraphTest extends AbstractStandardDirectedGraphTest {
+public final class StandardImmutableUndirectedGraphTest
+    extends AbstractStandardUndirectedGraphTest {
 
   @Parameters(name = "allowsSelfLoops={0}")
   public static Collection<Object[]> parameters() {
@@ -35,7 +36,7 @@ public final class StandardImmutableDirectedGraphTest extends AbstractStandardDi
   private final boolean allowsSelfLoops;
   private ImmutableGraph.Builder<Integer> graphBuilder;
 
-  public StandardImmutableDirectedGraphTest(boolean allowsSelfLoops) {
+  public StandardImmutableUndirectedGraphTest(boolean allowsSelfLoops) {
     this.allowsSelfLoops = allowsSelfLoops;
   }
 
@@ -51,7 +52,7 @@ public final class StandardImmutableDirectedGraphTest extends AbstractStandardDi
 
   @Override
   public Graph<Integer> createGraph() {
-    graphBuilder = GraphBuilder.directed().allowsSelfLoops(allowsSelfLoops()).immutable();
+    graphBuilder = GraphBuilder.undirected().allowsSelfLoops(allowsSelfLoops()).immutable();
     return graphBuilder.build();
   }
 
