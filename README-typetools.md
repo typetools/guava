@@ -15,6 +15,8 @@ To create file `guava/target/guava-HEAD-jre-SNAPSHOT.jar`:
 (cd guava && mvn package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
 ```
 
+To use a locally-built Checker Framework, add `-P checkerframework-local`.
+
 
 Typechecking
 ------------
