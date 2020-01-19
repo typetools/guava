@@ -78,6 +78,43 @@ git pull https://github.com/google/guava
 
 and then re-build to ensure that typechecking still works.
 
+If you wish to see a simplified diff between this fork of Guava and upstream (to make sure that you did not make any mistakes when resolving merge conflicts):
+
+ * Clone both upstream and this fork.
+ * Make a copy of each clone, because you will destructively edit each one.
+ * Run the following commands in each temporary clone:
+```
+   rm -rf .git
+   mvn -B clean
+   preplace '^\@AnnotatedFor.*\n' ''
+   preplace '^ *\@(Pure|Deterministic|SideEffectFree)\n' ''
+   # preplace '^ *\@SuppressWarnings.*\n' ''
+   preplace '^import org.checker.*\n' ''
+   preplace '\@GTENegativeOne ' ''
+   preplace '\@IndexFor\([^()]+\) ' ''
+   preplace '\@IndexOr(Low|High)\([^()]+\) ' ''
+   preplace '\@IntRange\([^()]+\) ' ''
+   preplace '\@IntVal\([^()]+\) ' ''
+   preplace '\@(|LT|LTEq)LengthOf\([^()]+\) ' ''
+   preplace '\@MinLen\([^()]+\) ?' ''
+   preplace '\@NonNegative ' ''
+   preplace '\@NonNull ' ''
+   preplace '\@Nullable ' ''
+   preplace '\@PolyNull ' ''
+   preplace '\@PolySigned ' ''
+   preplace '\@Positive ' ''
+   preplace '\@SameLen\("[^"]+"\) ' ''
+   preplace '\@SignedPositive ' ''
+   preplace '\@Unsigned ' ''
+   preplace '\@UnknownSignedness ' ''
+   preplace ' extends Object>' '>'
+   preplace ' extends Object,' ','
+   preplace ' \[\]' '[]'
+   preplace ' \.\.\.' '...'
+   preplace '; *// *\([0-9]+\)$' ';'
+```
+ * Diff the two temporary clones.
+
 
 To upload to Maven Central
 --------------------------
