@@ -68,9 +68,10 @@ Whenever a Checker Framework release is made:
 To update to a newer version of the upstream library
 ----------------------------------------------------
 
-If there has been a release (https://github.com/google/guava/releases)
-since the last time this repository was pulled, then follow the
-instructions at "To upload to Maven Central".
+Check for a release at
+  https://github.com/google/guava/releases
+.  If there has been one since the last time this repository was pulled,
+then follow the instructions at "To upload to Maven Central".
 
 **After** doing that, you can run
 
