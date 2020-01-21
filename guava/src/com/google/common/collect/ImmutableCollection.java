@@ -214,8 +214,7 @@ public abstract class ImmutableCollection<E extends @NonNull Object> extends Abs
   }
 
   /** If this collection is backed by an array of its elements in insertion order, returns it. */
-  @Nullable
-  Object[] internalArray() {
+  Object @Nullable [] internalArray() {
     return null;
   }
 
