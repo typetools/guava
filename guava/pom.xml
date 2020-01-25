@@ -332,6 +332,7 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <configuration>
               <fork>true</fork>
+              <maxmem>3000m</maxmem>
               <compilerArgs combine.children="append">
                 <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
               </compilerArgs>
@@ -369,6 +370,7 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <configuration>
               <fork>true</fork>
+              <maxmem>3000m</maxmem>
               <compilerArgs combine.children="append">
               <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
                 <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${javac.version}/javac-${javac.version}.jar</arg>
