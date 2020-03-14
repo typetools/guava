@@ -300,7 +300,7 @@
         </dependency>
       </dependencies>
     </profile>
-    <!-- Profile to use the version of Checker Framework installed locally-->
+    <!-- Profile to use the version of Checker Framework installed locally. -->
     <profile>
       <id>checkerframework-local</id>
       <dependencies>
