@@ -134,7 +134,7 @@
               <annotationProcessor>${checkerframework.checkers}</annotationProcessor>
             </annotationProcessors>
             <compilerArgs>
-              <arg>${addtionalargs}</arg>
+              <arg>${additionalargs}</arg>
               <arg>${checkerframework.extraargs}</arg>
               <arg>${checkerframework.extraargs2}</arg>
               <arg>-AsuppressWarnings=${checkerframework.suppress}</arg>
