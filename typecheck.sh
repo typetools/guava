@@ -1,5 +1,4 @@
 #!/bin/bash
-ROOT="$( cd "$(dirname "$0")"/.. ; pwd -P )"
 
 # Runs typechecking in a continuous integration job.
 
