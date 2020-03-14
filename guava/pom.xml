@@ -140,7 +140,6 @@
               <arg>-AsuppressWarnings=${checkerframework.suppress}</arg>
               <arg>-AuseDefaultsForUncheckedCode=source,bytecode</arg>
               <arg>-Awarns</arg>
-              <arg>-AprintErrorStack</arg>
             </compilerArgs>
         </configuration>
         <executions>
@@ -159,7 +158,6 @@
               <compilerArgs>
                 <arg>-XDignore.symbol.file</arg>
                 <arg>${index.only.arg}</arg>
-                <arg>-AprintErrorStack</arg>
                 <arg>-proc:only</arg>
                 <arg>-AonlyDefs=^com\.google\.common\.(?:${checkerframework.index.packages})\.</arg>
               </compilerArgs>
