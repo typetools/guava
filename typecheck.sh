@@ -11,9 +11,10 @@ set -e
 
 ## Build Checker Framework
 (cd .. && git clone --depth 1 https://github.com/typetools/checker-framework.git)
-export CHECKERFRAMEWORK=`(cd ../checker-framework/ && pwd -P)`
+CHECKERFRAMEWORK=$(cd ../checker-framework/ && pwd -P)
+export CHECKERFRAMEWORK
 # This also builds annotation-tools and jsr308-langtools
-(cd ${CHECKERFRAMEWORK} && ./.travis-build-without-test.sh downloadjdk)
+(cd "${CHECKERFRAMEWORK}" && checker/bin-devel/build.sh downloadjdk)
 
 # As of 7/27/2019, there are only annotations for:
 #  * index
