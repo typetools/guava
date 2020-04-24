@@ -74,7 +74,7 @@
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker</artifactId>
-      <version>3.1.0</version>
+      <version>3.3.0</version>
     </dependency>
   </dependencies>
   <build>
@@ -360,7 +360,7 @@
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>jdk8</artifactId>
-      <version>3.1.0</version>
+      <version>3.3.0</version>
     </dependency>
       </dependencies>
       <build>
