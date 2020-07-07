@@ -73,13 +73,15 @@ Check for a release at
 .  If there has been one since the last time this repository was pulled,
 then follow the instructions at "To upload to Maven Central".
 
-**After** doing that, you can run
+**After** doing that, you may run
 
 ```
 git pull https://github.com/google/guava
 ```
 
 and then re-build to ensure that typechecking still works.
+Doing this `git pull` permits incremental resolution of merge conflicts,
+but makes it difficult to re-release a given version of Guava.
 
 If you wish to see a simplified diff between this fork of Guava and upstream (to make sure that you did not make any mistakes when resolving merge conflicts):
 
