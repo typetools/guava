@@ -27,6 +27,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.common.value.qual.IntRange;
+import org.checkerframework.common.value.qual.PolyValue;
 
 /**
  * A wrapper class for unsigned {@code int} values, supporting arithmetic operations.
@@ -179,13 +180,13 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * will be equal to {@code this - 2^32}.
    */
   @Override
-  public int intValue() {
+  public @PolyValue int intValue(@PolyValue UnsignedInteger this) {
     return value;
   }
 
   /** Returns the value of this {@code UnsignedInteger} as a {@code long}. */
   @Override
-  public @NonNegative long longValue() {
+  public @NonNegative @PolyValue long longValue(@PolyValue UnsignedInteger this) {
     return toLong(value);
   }
 
@@ -194,7 +195,7 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * primitive conversion from {@code int} to {@code float}, and correctly rounded.
    */
   @Override
-  public float floatValue() {
+  public @PolyValue float floatValue(@PolyValue UnsignedInteger this) {
     return longValue();
   }
 
@@ -203,7 +204,7 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * primitive conversion from {@code int} to {@code double}, and correctly rounded.
    */
   @Override
-  public double doubleValue() {
+  public @PolyValue double doubleValue(@PolyValue UnsignedInteger this) {
     return longValue();
   }
 
