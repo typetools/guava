@@ -142,7 +142,7 @@ into master.
 Pull in the latest Guava version (https://github.com/google/guava/releases):
 ```
 git fetch --tags https://github.com/google/guava
-git pull https://github.com/google/guava v28.2
+git pull https://github.com/google/guava v29.0
 ```
 
 Update the version number
@@ -151,7 +151,7 @@ Update the version number
 If it's not the same as the upstream version, then also edit pom.xml and guava/pom.xml.
 
 ```
-PACKAGE=guava-28.2-jre
+PACKAGE=guava-29.0-jre
 
 cd guava
 

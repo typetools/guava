@@ -154,6 +154,7 @@ public final class GraphBuilder<N> extends AbstractGraphBuilder<N> {
    *
    * @throws IllegalArgumentException if {@code incidentEdgeOrder} is not either {@code
    *     ElementOrder.unordered()} or {@code ElementOrder.stable()}.
+   * @since 29.0
    */
   public <N1 extends N> GraphBuilder<N1> incidentEdgeOrder(ElementOrder<N1> incidentEdgeOrder) {
     checkArgument(
@@ -169,7 +170,7 @@ public final class GraphBuilder<N> extends AbstractGraphBuilder<N> {
 
   /** Returns an empty {@link MutableGraph} with the properties of this {@link GraphBuilder}. */
   public <N1 extends N> MutableGraph<N1> build() {
-    return new ConfigurableMutableGraph<N1>(this);
+    return new StandardMutableGraph<N1>(this);
   }
 
   GraphBuilder<N> copy() {

@@ -51,7 +51,6 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.function.Consumer;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -151,7 +150,7 @@ public final class Sets {
                 Accumulator::toImmutableSet,
                 Collector.Characteristics.UNORDERED);
 
-    @MonotonicNonNull private EnumSet<E> set;
+    private @Nullable EnumSet<E> set;
 
     void add(E e) {
       if (set == null) {
@@ -1844,7 +1843,7 @@ public final class Sets {
       throw new UnsupportedOperationException();
     }
 
-    private transient @MonotonicNonNull UnmodifiableNavigableSet<E> descendingSet;
+    private transient @Nullable UnmodifiableNavigableSet<E> descendingSet;
 
     @Override
     public NavigableSet<E> descendingSet() {

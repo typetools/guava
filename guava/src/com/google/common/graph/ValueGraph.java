@@ -155,6 +155,8 @@ public interface ValueGraph<N, V> extends BaseGraph<N> {
    * Returns an {@link ElementOrder} that specifies the order of iteration for the elements of
    * {@link #edges()}, {@link #adjacentNodes(Object)}, {@link #predecessors(Object)}, {@link
    * #successors(Object)} and {@link #incidentEdges(Object)}.
+   *
+   * @since 29.0
    */
   @Override
   ElementOrder<N> incidentEdgeOrder();

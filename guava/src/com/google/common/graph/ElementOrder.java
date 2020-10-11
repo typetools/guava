@@ -114,6 +114,8 @@ public final class ElementOrder<T> {
    *         <li>{@code edgesConnecting(nodeU, nodeV)}: Edge insertion order
    *       </ul>
    * </ul>
+   *
+   * @since 29.0
    */
   public static <S> ElementOrder<S> stable() {
     return new ElementOrder<S>(Type.STABLE, null);
@@ -136,7 +138,7 @@ public final class ElementOrder<T> {
    * determined by {@code comparator}.
    */
   public static <S> ElementOrder<S> sorted(Comparator<S> comparator) {
-    return new ElementOrder<S>(Type.SORTED, comparator);
+    return new ElementOrder<S>(Type.SORTED, checkNotNull(comparator));
   }
 
   /** Returns the type of ordering used. */

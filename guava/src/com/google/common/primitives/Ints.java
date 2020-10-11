@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkPositionIndexes;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Converter;
 import java.io.Serializable;
 import java.util.AbstractList;
@@ -55,8 +56,8 @@ import org.checkerframework.common.value.qual.MinLen;
  * @author Kevin Bourrillion
  * @since 1.0
  */
-@GwtCompatible
-public final class Ints {
+@GwtCompatible(emulated = true)
+public final class Ints extends IntsMethodsForWeb {
   private Ints() {}
 
   /**
@@ -233,6 +234,8 @@ public final class Ints {
    *     the array
    * @throws IllegalArgumentException if {@code array} is empty
    */
+  @GwtIncompatible(
+      "Available in GWT! Annotation is to avoid conflict with GWT specialization of base class.")
   public static int min(int @MinLen(1)... array) {
     checkArgument(array.length > 0);
     int min = array[0];
@@ -252,6 +255,8 @@ public final class Ints {
    *     in the array
    * @throws IllegalArgumentException if {@code array} is empty
    */
+  @GwtIncompatible(
+      "Available in GWT! Annotation is to avoid conflict with GWT specialization of base class.")
   public static int max(int @MinLen(1)... array) {
     checkArgument(array.length > 0);
     int max = array[0];

@@ -256,7 +256,7 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
    */
   @DoNotMock
   public static class Builder<K, V> {
-    @MonotonicNonNull Comparator<? super V> valueComparator;
+    @Nullable Comparator<? super V> valueComparator;
     Entry<K, V>[] entries;
     int size;
     boolean entriesUsed;

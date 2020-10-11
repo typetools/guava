@@ -22,7 +22,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-/** Tests for an undirected {@link ConfigurableMutableGraph}. */
+/** Tests for an undirected {@link StandardMutableGraph}. */
 @AndroidIncompatible
 @RunWith(Parameterized.class)
 public final class StandardImmutableUndirectedGraphTest
@@ -41,18 +41,8 @@ public final class StandardImmutableUndirectedGraphTest
   }
 
   @Override
-  boolean allowsSelfLoops() {
-    return allowsSelfLoops;
-  }
-
-  @Override
-  ElementOrder<Integer> incidentEdgeOrder() {
-    return ElementOrder.stable();
-  }
-
-  @Override
   public Graph<Integer> createGraph() {
-    graphBuilder = GraphBuilder.undirected().allowsSelfLoops(allowsSelfLoops()).immutable();
+    graphBuilder = GraphBuilder.undirected().allowsSelfLoops(allowsSelfLoops).immutable();
     return graphBuilder.build();
   }
 

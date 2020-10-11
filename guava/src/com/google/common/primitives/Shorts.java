@@ -54,7 +54,7 @@ import org.checkerframework.common.value.qual.MinLen;
  * @since 1.0
  */
 @GwtCompatible(emulated = true)
-public final class Shorts {
+public final class Shorts extends ShortsMethodsForWeb {
   private Shorts() {}
 
   /**
@@ -229,6 +229,8 @@ public final class Shorts {
    *     the array
    * @throws IllegalArgumentException if {@code array} is empty
    */
+  @GwtIncompatible(
+      "Available in GWT! Annotation is to avoid conflict with GWT specialization of base class.")
   public static short min(short @MinLen(1)... array) {
     checkArgument(array.length > 0);
     short min = array[0];
@@ -248,6 +250,8 @@ public final class Shorts {
    *     in the array
    * @throws IllegalArgumentException if {@code array} is empty
    */
+  @GwtIncompatible(
+      "Available in GWT! Annotation is to avoid conflict with GWT specialization of base class.")
   public static short max(short @MinLen(1)... array) {
     checkArgument(array.length > 0);
     short max = array[0];

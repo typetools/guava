@@ -76,10 +76,6 @@ public abstract class AbstractGraphTest {
   /** Creates and returns an instance of the graph to be tested. */
   abstract Graph<Integer> createGraph();
 
-  abstract boolean allowsSelfLoops();
-
-  abstract ElementOrder<Integer> incidentEdgeOrder();
-
   /**
    * A proxy method that adds the node {@code n} to the graph being tested. In case of Immutable
    * graph implementations, this method should replace {@link #graph} with a new graph that includes
@@ -93,10 +89,6 @@ public abstract class AbstractGraphTest {
    * this edge.
    */
   abstract void putEdge(Integer n1, Integer n2);
-
-  final void putEdge(EndpointPair<Integer> endpoints) {
-    putEdge(endpoints.nodeU(), endpoints.nodeV());
-  }
 
   final boolean graphIsMutable() {
     return graphAsMutableGraph != null;
@@ -226,11 +218,6 @@ public abstract class AbstractGraphTest {
   @Test
   public void nodes_noNodes() {
     assertThat(graph.nodes()).isEmpty();
-  }
-
-  @Test
-  public void incidentEdgeOrder_matchesTheValueAtConstruction() {
-    assertThat(graph.incidentEdgeOrder()).isEqualTo(incidentEdgeOrder());
   }
 
   @Test
