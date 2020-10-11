@@ -17,12 +17,11 @@ package com.google.common.hash;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.Beta;
-import org.checkerframework.checker.index.qual.LTLengthOf;
-import org.checkerframework.checker.index.qual.NonNegative;
-
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * An {@link OutputStream} that maintains a hash of the data written to it.

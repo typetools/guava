@@ -361,7 +361,7 @@ public abstract class HashCode {
     checkArgument(
         string.length() % 2 == 0,
         "input string (%s) must have an even number of characters",
-		string);
+        string);
     byte[] bytes = new byte[string.length() / 2];
     for (int i = 0; i < string.length(); i += 2) {
       int ch1 = decode(string.charAt(i)) << 4;

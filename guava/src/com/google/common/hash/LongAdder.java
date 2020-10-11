@@ -11,12 +11,12 @@
 
 package com.google.common.hash;
 
-import org.checkerframework.common.value.qual.MinLen;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicLong;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * One or more variables that together maintain an initially zero {@code long} sum. When updates

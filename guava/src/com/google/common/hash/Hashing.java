@@ -65,8 +65,6 @@ public final class Hashing {
    * @return a hash function, described above, that produces hash codes of length {@code
    *     minimumBits} or greater
    */
-  @SuppressWarnings("upperbound:array.access.unsafe.high.constant")// if lowest minimumBits is 1, checkPositiveAndMakeMultipleOf32(minimumBits) return
-  //lowest value of 32.
   public static HashFunction goodFastHash(@Positive int minimumBits) {
     int bits = checkPositiveAndMakeMultipleOf32(minimumBits);
 
@@ -572,7 +570,7 @@ public final class Hashing {
   }
 
   /** Checks that the passed argument is positive, and ceils it to a multiple of 32. */
-  static @NonNegative int checkPositiveAndMakeMultipleOf32(int bits) {
+  static @IntRange(from=32) int checkPositiveAndMakeMultipleOf32(int bits) {
     checkArgument(bits > 0, "Number of bits must be positive");
     return (bits + 31) & ~31;
   }

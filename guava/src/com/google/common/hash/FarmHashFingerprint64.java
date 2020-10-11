@@ -163,9 +163,6 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
         rotateRight(a + b, 43) + rotateRight(c, 30) + d, a + rotateRight(b + K2, 18) + c, mul);
   }
 
-  @SuppressWarnings({"lowerbound:argument.type.incompatible"/*(1): if 17 <= length <= 32 and offset is non negative,
-          offset + length - 8 >= 0 and offset + length - 16 >= 0.
-          */})
   private static long hashLength33To64(byte[] bytes, @NonNegative  @LTLengthOf(value = "#1", offset = "#3 - 1") int offset, @IntRange(from = 33, to = 64) @LTLengthOf(value = "#1", offset = "#2 - 1") int length) {
     long mul = K2 + length * 2;
     long a = load64(bytes, offset) * K2;
