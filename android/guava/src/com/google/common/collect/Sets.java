@@ -784,7 +784,7 @@ public final class Sets {
 
       @Override
       public boolean isEmpty() {
-        return Collections.disjoint(set1, set2);
+        return Collections.disjoint(set2, set1);
       }
 
       @Override
@@ -1228,6 +1228,7 @@ public final class Sets {
    * @return the Cartesian product, as an immutable set containing immutable lists
    * @throws NullPointerException if {@code sets}, any one of the {@code sets}, or any element of a
    *     provided set is null
+   * @throws IllegalArgumentException if the cartesian product size exceeds the {@code int} range
    * @since 2.0
    */
   public static <B> Set<List<B>> cartesianProduct(List<? extends Set<? extends B>> sets) {
@@ -1284,6 +1285,7 @@ public final class Sets {
    * @return the Cartesian product, as an immutable set containing immutable lists
    * @throws NullPointerException if {@code sets}, any one of the {@code sets}, or any element of a
    *     provided set is null
+   * @throws IllegalArgumentException if the cartesian product size exceeds the {@code int} range
    * @since 2.0
    */
   @SafeVarargs
@@ -1447,9 +1449,9 @@ public final class Sets {
     final ImmutableMap<E, Integer> inputSet;
 
     PowerSet(Set<E> input) {
-      this.inputSet = Maps.indexMap(input);
       checkArgument(
-          inputSet.size() <= 30, "Too many elements to create power set: %s > 30", inputSet.size());
+          input.size() <= 30, "Too many elements to create power set: %s > 30", input.size());
+      this.inputSet = Maps.indexMap(input);
     }
 
     @Override

@@ -42,6 +42,7 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collector;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -61,7 +62,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
 @SuppressWarnings("serial") // we're overriding default serialization
-public abstract class ImmutableList<E> extends ImmutableCollection<E>
+public abstract class ImmutableList<E extends @NonNull Object> extends ImmutableCollection<E>
     implements List<E>, RandomAccess {
 
   /**
@@ -70,8 +71,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    *
    * @since 21.0
    */
-  @Beta
-  public static <E> Collector<E, ?, ImmutableList<E>> toImmutableList() {
+  public static <E extends @NonNull Object> Collector<E, ?, ImmutableList<E>> toImmutableList() {
     return CollectCollectors.toImmutableList();
   }
 
@@ -82,18 +82,18 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    */
   // Casting to any type is safe because the list will never hold any elements.
   @SuppressWarnings("unchecked")
-  public static <E> ImmutableList<E> of() {
+  public static <E extends @NonNull Object> ImmutableList<E> of() {
     return (ImmutableList<E>) EMPTY;
   }
 
   /**
    * Returns an immutable list containing a single element. This list behaves and performs
-   * comparably to {@link Collections#singleton}, but will not accept a null element. It is
+   * comparably to {@link Collections#singletonList}, but will not accept a null element. It is
    * preferable mainly for consistency and maintainability of your code.
    *
    * @throws NullPointerException if {@code element} is null
    */
-  public static <E> ImmutableList<E> of(E element) {
+  public static <E extends @NonNull Object> ImmutableList<E> of(E element) {
     return new SingletonImmutableList<E>(element);
   }
 
@@ -102,7 +102,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    *
    * @throws NullPointerException if any element is null
    */
-  public static <E> ImmutableList<E> of(E e1, E e2) {
+  public static <E extends @NonNull Object> ImmutableList<E> of(E e1, E e2) {
     return construct(e1, e2);
   }
 
@@ -111,7 +111,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    *
    * @throws NullPointerException if any element is null
    */
-  public static <E> ImmutableList<E> of(E e1, E e2, E e3) {
+  public static <E extends @NonNull Object> ImmutableList<E> of(E e1, E e2, E e3) {
     return construct(e1, e2, e3);
   }
 
@@ -120,7 +120,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    *
    * @throws NullPointerException if any element is null
    */
-  public static <E> ImmutableList<E> of(E e1, E e2, E e3, E e4) {
+  public static <E extends @NonNull Object> ImmutableList<E> of(E e1, E e2, E e3, E e4) {
     return construct(e1, e2, e3, e4);
   }
 
@@ -129,7 +129,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    *
    * @throws NullPointerException if any element is null
    */
-  public static <E> ImmutableList<E> of(E e1, E e2, E e3, E e4, E e5) {
+  public static <E extends @NonNull Object> ImmutableList<E> of(E e1, E e2, E e3, E e4, E e5) {
     return construct(e1, e2, e3, e4, e5);
   }
 
@@ -138,7 +138,8 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    *
    * @throws NullPointerException if any element is null
    */
-  public static <E> ImmutableList<E> of(E e1, E e2, E e3, E e4, E e5, E e6) {
+  public static <E extends @NonNull Object> ImmutableList<E> of(
+      E e1, E e2, E e3, E e4, E e5, E e6) {
     return construct(e1, e2, e3, e4, e5, e6);
   }
 
@@ -147,7 +148,8 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    *
    * @throws NullPointerException if any element is null
    */
-  public static <E> ImmutableList<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7) {
+  public static <E extends @NonNull Object> ImmutableList<E> of(
+      E e1, E e2, E e3, E e4, E e5, E e6, E e7) {
     return construct(e1, e2, e3, e4, e5, e6, e7);
   }
 
@@ -156,7 +158,8 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    *
    * @throws NullPointerException if any element is null
    */
-  public static <E> ImmutableList<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8) {
+  public static <E extends @NonNull Object> ImmutableList<E> of(
+      E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8) {
     return construct(e1, e2, e3, e4, e5, e6, e7, e8);
   }
 
@@ -165,7 +168,8 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    *
    * @throws NullPointerException if any element is null
    */
-  public static <E> ImmutableList<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9) {
+  public static <E extends @NonNull Object> ImmutableList<E> of(
+      E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9) {
     return construct(e1, e2, e3, e4, e5, e6, e7, e8, e9);
   }
 
@@ -174,7 +178,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    *
    * @throws NullPointerException if any element is null
    */
-  public static <E> ImmutableList<E> of(
+  public static <E extends @NonNull Object> ImmutableList<E> of(
       E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9, E e10) {
     return construct(e1, e2, e3, e4, e5, e6, e7, e8, e9, e10);
   }
@@ -184,7 +188,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    *
    * @throws NullPointerException if any element is null
    */
-  public static <E> ImmutableList<E> of(
+  public static <E extends @NonNull Object> ImmutableList<E> of(
       E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9, E e10, E e11) {
     return construct(e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11);
   }
@@ -201,11 +205,10 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * @since 3.0 (source-compatible since 2.0)
    */
   @SafeVarargs // For Eclipse. For internal javac we have disabled this pointless type of warning.
-  public static <E> ImmutableList<E> of(
+  public static <E extends @NonNull Object> ImmutableList<E> of(
       E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9, E e10, E e11, E e12, E... others) {
     checkArgument(
-        others.length <= Integer.MAX_VALUE - 12,
-        "the total number of elements must fit in an int");
+        others.length <= Integer.MAX_VALUE - 12, "the total number of elements must fit in an int");
     Object[] array = new Object[12 + others.length];
     array[0] = e1;
     array[1] = e2;
@@ -228,9 +231,10 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * {@link Collection}, this method behaves exactly as {@link #copyOf(Collection)}; otherwise, it
    * behaves exactly as {@code copyOf(elements.iterator()}.
    *
-   * @throws NullPointerException if any of {@code elements} is null
+   * @throws NullPointerException if {@code elements} contains a null element
    */
-  public static <E> ImmutableList<E> copyOf(Iterable<? extends E> elements) {
+  public static <E extends @NonNull Object> ImmutableList<E> copyOf(
+      Iterable<? extends E> elements) {
     checkNotNull(elements); // TODO(kevinb): is this here only for GWT?
     return (elements instanceof Collection)
         ? copyOf((Collection<? extends E>) elements)
@@ -252,9 +256,10 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * <p>This method is safe to use even when {@code elements} is a synchronized or concurrent
    * collection that is currently being modified by another thread.
    *
-   * @throws NullPointerException if any of {@code elements} is null
+   * @throws NullPointerException if {@code elements} contains a null element
    */
-  public static <E> ImmutableList<E> copyOf(Collection<? extends E> elements) {
+  public static <E extends @NonNull Object> ImmutableList<E> copyOf(
+      Collection<? extends E> elements) {
     if (elements instanceof ImmutableCollection) {
       @SuppressWarnings("unchecked") // all supported methods are covariant
       ImmutableList<E> list = ((ImmutableCollection<E>) elements).asList();
@@ -266,9 +271,10 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
   /**
    * Returns an immutable list containing the given elements, in order.
    *
-   * @throws NullPointerException if any of {@code elements} is null
+   * @throws NullPointerException if {@code elements} contains a null element
    */
-  public static <E> ImmutableList<E> copyOf(Iterator<? extends E> elements) {
+  public static <E extends @NonNull Object> ImmutableList<E> copyOf(
+      Iterator<? extends E> elements) {
     // We special-case for 0 or 1 elements, but going further is madness.
     if (!elements.hasNext()) {
       return of();
@@ -284,10 +290,10 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
   /**
    * Returns an immutable list containing the given elements, in order.
    *
-   * @throws NullPointerException if any of {@code elements} is null
+   * @throws NullPointerException if {@code elements} contains a null element
    * @since 3.0
    */
-  public static <E> ImmutableList<E> copyOf(E[] elements) {
+  public static <E extends @NonNull Object> ImmutableList<E> copyOf(E[] elements) {
     switch (elements.length) {
       case 0:
         return of();
@@ -336,7 +342,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * @throws NullPointerException if any element in the input is null
    * @since 21.0
    */
-  public static <E> ImmutableList<E> sortedCopyOf(
+  public static <E extends @NonNull Object> ImmutableList<E> sortedCopyOf(
       Comparator<? super E> comparator, Iterable<? extends E> elements) {
     checkNotNull(comparator);
     @SuppressWarnings("unchecked") // all supported methods are covariant
@@ -844,7 +850,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
     /**
      * Adds each element of {@code elements} to the {@code ImmutableList}.
      *
-     * @param elements the {@code Iterable} to add to the {@code ImmutableList}
+     * @param elements the {@code Iterator} to add to the {@code ImmutableList}
      * @return this {@code Builder} object
      * @throws NullPointerException if {@code elements} is null or contains a null element
      */

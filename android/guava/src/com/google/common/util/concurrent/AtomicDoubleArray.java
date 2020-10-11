@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicLongArray;
  * java.util.concurrent.atomic} package specification for description of the properties of atomic
  * variables.
  *
- * <p><a name="bitEquals"></a>This class compares primitive {@code double} values in methods such as
+ * <p><a id="bitEquals"></a>This class compares primitive {@code double} values in methods such as
  * {@link #compareAndSet} by comparing their bitwise representation using {@link
  * Double#doubleToRawLongBits}, which differs from both the primitive double {@code ==} operator and
  * from {@link Double#equals}, as if implemented by:
@@ -206,6 +206,7 @@ public class AtomicDoubleArray implements java.io.Serializable {
    *
    * @return the String representation of the current values of array
    */
+  @Override
   public String toString() {
     int iMax = length() - 1;
     if (iMax == -1) {

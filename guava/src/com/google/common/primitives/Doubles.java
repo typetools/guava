@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.RandomAccess;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.regex.Pattern;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
@@ -551,8 +550,8 @@ public final class Doubles {
       this.end = end;
     }
 
-     @Override
-      public @Positive @LTLengthOf(value = {"this","array"}, offset={"-1","start - 1"}) int size() { // INDEX: Annotation on a public method refers to private member.
+    @Override
+    public @Positive @LTLengthOf(value = {"this","array"}, offset={"-1","start - 1"}) int size() { // INDEX: Annotation on a public method refers to private member.
       return end - start;
     }
 
@@ -680,16 +679,32 @@ public final class Doubles {
    * that pass this regex are valid -- only a performance hit is incurred, not a semantics bug.
    */
   @GwtIncompatible // regular expressions
-  static final Pattern FLOATING_POINT_PATTERN = fpPattern();
+  static final
+  java.util.regex.Pattern
+      FLOATING_POINT_PATTERN = fpPattern();
 
   @GwtIncompatible // regular expressions
-  private static Pattern fpPattern() {
-    String decimal = "(?:\\d++(?:\\.\\d*+)?|\\.\\d++)";
-    String completeDec = decimal + "(?:[eE][+-]?\\d++)?[fFdD]?";
-    String hex = "(?:\\p{XDigit}++(?:\\.\\p{XDigit}*+)?|\\.\\p{XDigit}++)";
-    String completeHex = "0[xX]" + hex + "[pP][+-]?\\d++[fFdD]?";
+  private static
+  java.util.regex.Pattern
+      fpPattern() {
+    /*
+     * We use # instead of * for possessive quantifiers. This lets us strip them out when building
+     * the regex for RE2 (which doesn't support them) but leave them in when building it for
+     * java.util.regex (where we want them in order to avoid catastrophic backtracking).
+     */
+    String decimal = "(?:\\d+#(?:\\.\\d*#)?|\\.\\d+#)";
+    String completeDec = decimal + "(?:[eE][+-]?\\d+#)?[fFdD]?";
+    String hex = "(?:[0-9a-fA-F]+#(?:\\.[0-9a-fA-F]*#)?|\\.[0-9a-fA-F]+#)";
+    String completeHex = "0[xX]" + hex + "[pP][+-]?\\d+#[fFdD]?";
     String fpPattern = "[+-]?(?:NaN|Infinity|" + completeDec + "|" + completeHex + ")";
-    return Pattern.compile(fpPattern);
+    fpPattern =
+        fpPattern.replace(
+            "#",
+            "+"
+            );
+    return
+    java.util.regex.Pattern
+        .compile(fpPattern);
   }
 
   /**
@@ -706,6 +721,7 @@ public final class Doubles {
    * @param string the string representation of a {@code double} value
    * @return the floating point value represented by {@code string}, or {@code null} if {@code
    *     string} has a length of zero or cannot be parsed as a {@code double} value
+   * @throws NullPointerException if {@code string} is {@code null}
    * @since 14.0
    */
   @Beta

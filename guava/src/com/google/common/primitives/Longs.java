@@ -346,19 +346,18 @@ public final class Longs {
     private AsciiDigits() {}
 
     private static final @IntRange(from = -1, to = 36) byte @MinLen(128)[] asciiDigits;
-
     
     static {
       @IntRange(from = -1, to = 36) byte [] result = new byte[128];
       Arrays.fill(result, (byte) -1);
-      for (int i = 0; i <= 9; i++) {
+      for (int i = 0; i < 10; i++) {
         @SuppressWarnings({
           "unused",
           "lessthan:cast.unsafe", // https://github.com/kelloggm/checker-framework/issues/222
         })
         byte _unused3 = result['0' + i] = (byte) i;
       }
-      for (int i = 0; i <= 26; i++) {
+      for (int i = 0; i < 26; i++) {
         @SuppressWarnings({
           "unused",
           "upperbound:array.access.unsafe.high.range", // https://github.com/typetools/checker-framework/issues/1669
@@ -367,7 +366,7 @@ public final class Longs {
         byte _unused1 = result['A' + i] = (byte) (10 + i);
         @SuppressWarnings({
           "unused",
-          "upperbound:array.access.unsafe.high.range", // https://github.com/typetools/checker-framework/issues/1669
+          "upperbound:array.access.unsafe.high", // https://github.com/typetools/checker-framework/issues/1669
           "assignment.type.incompatible" // https://github.com/typetools/checker-framework/issues/1669
         })
         byte _unused2 = result['a' + i] = (byte) (10 + i);
@@ -395,6 +394,7 @@ public final class Longs {
    * @param string the string representation of a long value
    * @return the long value represented by {@code string}, or {@code null} if {@code string} has a
    *     length of zero or cannot be parsed as a long value
+   * @throws NullPointerException if {@code string} is {@code null}
    * @since 14.0
    */
   @Beta
@@ -419,6 +419,7 @@ public final class Longs {
    *     {@code string} has a length of zero or cannot be parsed as a long value
    * @throws IllegalArgumentException if {@code radix < Character.MIN_RADIX} or {@code radix >
    *     Character.MAX_RADIX}
+   * @throws NullPointerException if {@code string} is {@code null}
    * @since 19.0
    */
   @Beta

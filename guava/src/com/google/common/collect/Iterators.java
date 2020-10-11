@@ -302,7 +302,6 @@ public final class Iterators {
    * @throws IllegalArgumentException if the iterator contains multiple elements. The state of the
    *     iterator is unspecified.
    */
-  @CanIgnoreReturnValue // TODO(kak): Consider removing this?
   public static <T> T getOnlyElement(Iterator<T> iterator) {
     T first = iterator.next();
     if (!iterator.hasNext()) {
@@ -328,7 +327,6 @@ public final class Iterators {
    * @throws IllegalArgumentException if the iterator contains multiple elements. The state of the
    *     iterator is unspecified.
    */
-  @CanIgnoreReturnValue // TODO(kak): Consider removing this?
   public static <T> @Nullable T getOnlyElement(
       Iterator<? extends T> iterator, @Nullable T defaultValue) {
     return iterator.hasNext() ? getOnlyElement(iterator) : defaultValue;
@@ -1078,6 +1076,9 @@ public final class Iterators {
    * <p>This method has no equivalent in {@link Iterables} because viewing an {@code Enumeration} as
    * an {@code Iterable} is impossible. However, the contents can be <i>copied</i> into a collection
    * using {@link Collections#list}.
+   *
+   * <p><b>Java 9 users:</b> use {@code enumeration.asIterator()} instead, unless it is important to
+   * return an {@code UnmodifiableIterator} instead of a plain {@code Iterator}.
    */
   public static <T> UnmodifiableIterator<T> forEnumeration(final Enumeration<T> enumeration) {
     checkNotNull(enumeration);

@@ -18,11 +18,11 @@ package com.google.common.collect;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Tables.AbstractCell;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.DoNotMock;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Spliterator;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collector;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -60,7 +61,6 @@ public abstract class ImmutableTable<R, C, V> extends AbstractTable<R, C, V>
    *
    * @since 21.0
    */
-  @Beta
   public static <T, R, C, V> Collector<T, ?, ImmutableTable<R, C, V>> toImmutableTable(
       Function<? super T, ? extends R> rowFunction,
       Function<? super T, ? extends C> columnFunction,
@@ -69,11 +69,11 @@ public abstract class ImmutableTable<R, C, V> extends AbstractTable<R, C, V>
     checkNotNull(columnFunction, "columnFunction");
     checkNotNull(valueFunction, "valueFunction");
     return Collector.of(
-        () -> new ImmutableTable.Builder<R, C, V>(),
+        (Supplier<Builder<R, C, V>>) Builder::new,
         (builder, t) ->
             builder.put(rowFunction.apply(t), columnFunction.apply(t), valueFunction.apply(t)),
-        (b1, b2) -> b1.combine(b2),
-        b -> b.build());
+        Builder::combine,
+        Builder::build);
   }
 
   /**
@@ -265,6 +265,7 @@ public abstract class ImmutableTable<R, C, V> extends AbstractTable<R, C, V>
    *
    * @since 11.0
    */
+  @DoNotMock
   public static final class Builder<R, C, V> {
     private final List<Cell<R, C, V>> cells = Lists.newArrayList();
     @MonotonicNonNull private Comparator<? super R> rowComparator;

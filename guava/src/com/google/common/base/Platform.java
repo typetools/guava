@@ -16,13 +16,12 @@ package com.google.common.base;
 
 import com.google.common.annotations.GwtCompatible;
 import java.lang.ref.WeakReference;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.ServiceConfigurationError;
-import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -40,6 +39,7 @@ final class Platform {
   private Platform() {}
 
   /** Calls {@link System#nanoTime()}. */
+  @SuppressWarnings("GoodTime") // reading system time without TimeSource
   static long systemNanoTime() {
     return System.nanoTime();
   }
@@ -48,6 +48,9 @@ final class Platform {
     return matcher.precomputedInternal();
   }
 
+  @SuppressWarnings("nullness:argument.type.incompatible") // ref.get returns null in case the object
+  // that it refers to is cleared or garbage collected which is unlikely during normal program
+  // execution. Optional.of always return a non-null value for non-null argument.
   static <T extends Enum<T>> Optional<T> getEnumIfPresent(Class<T> enumClass, String value) {
     WeakReference<? extends Enum<?>> ref = Enums.getEnumConstants(enumClass).get(value);
     return ref == null ? Optional.<T>absent() : Optional.of(enumClass.cast(ref.get()));
@@ -57,6 +60,7 @@ final class Platform {
     return String.format(Locale.ROOT, "%.4g", value);
   }
 
+  @EnsuresNonNullIf(expression = "#1", result = false)
   static boolean stringIsNullOrEmpty(@Nullable String string) {
     return string == null || string.isEmpty();
   }
@@ -65,7 +69,7 @@ final class Platform {
     return (string == null) ? "" : string;
   }
 
-  static String emptyToNull(@Nullable String string) {
+  static @Nullable String emptyToNull(@Nullable String string) {
     return stringIsNullOrEmpty(string) ? null : string;
   }
 
@@ -74,25 +78,11 @@ final class Platform {
     return patternCompiler.compile(pattern);
   }
 
-  static boolean usingJdkPatternCompiler() {
-    return patternCompiler instanceof JdkPatternCompiler;
+  static boolean patternCompilerIsPcreLike() {
+    return patternCompiler.isPcreLike();
   }
 
   private static PatternCompiler loadPatternCompiler() {
-    ServiceLoader<PatternCompiler> loader = ServiceLoader.load(PatternCompiler.class);
-    // Returns the first PatternCompiler that loads successfully.
-    try {
-      for (Iterator<PatternCompiler> it = loader.iterator(); it.hasNext(); ) {
-        try {
-          return it.next();
-        } catch (ServiceConfigurationError e) {
-          logPatternCompilerError(e);
-        }
-      }
-    } catch (ServiceConfigurationError e) { // from hasNext()
-      logPatternCompilerError(e);
-    }
-    // Fall back to the JDK regex library.
     return new JdkPatternCompiler();
   }
 
@@ -105,5 +95,32 @@ final class Platform {
     public CommonPattern compile(String pattern) {
       return new JdkPattern(Pattern.compile(pattern));
     }
+
+    @Override
+    public boolean isPcreLike() {
+      return true;
+    }
+  }
+
+  static void checkGwtRpcEnabled() {
+    String propertyName = "guava.gwt.emergency_reenable_rpc";
+
+    if (!Boolean.parseBoolean(System.getProperty(propertyName, "false"))) {
+      throw new UnsupportedOperationException(
+          Strings.lenientFormat(
+              "We are removing GWT-RPC support for Guava types. You can temporarily reenable"
+                  + " support by setting the system property %s to true. For more about system"
+                  + " properties, see %s. For more about Guava's GWT-RPC support, see %s.",
+              propertyName,
+              "https://stackoverflow.com/q/5189914/28465",
+              "https://groups.google.com/d/msg/guava-announce/zHZTFg7YF3o/rQNnwdHeEwAJ"));
+    }
+    logger.log(
+        java.util.logging.Level.WARNING,
+        "Later in 2020, we will remove GWT-RPC support for Guava types. You are seeing this"
+            + " warning because you are sending a Guava type over GWT-RPC, which will break. You"
+            + " can identify which type by looking at the class name in the attached stack trace.",
+        new Throwable());
+
   }
 }

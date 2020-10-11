@@ -1,0 +1,40 @@
+# Workaround for https://status.dev.azure.com/_event/179641421
+trigger:
+  branches:
+    include:
+    - '*'
+pr:
+  branches:
+    include:
+    - '*'
+
+
+jobs:
+- job: typecheck
+  pool:
+    vmImage: 'ubuntu-latest'
+  container: mdernst/cf-ubuntu-jdk8:latest
+  strategy:
+    matrix:
+      formatterJob:
+        typechecker: formatter
+      indexJob:
+        typechecker: index
+      interningJob:
+        typechecker: interning
+      lockJob:
+        typechecker: lock
+      nullnessJob:
+        typechecker: nullness
+      regexJob:
+        typechecker: regex
+      signatureJob:
+        typechecker: signature
+    maxParallel: 10
+  steps:
+  - checkout: self
+    fetchDepth: 25
+  - bash: echo $(typechecker)
+    name: echovar
+  - bash: ./typecheck.sh $(typechecker)
+    displayName: typecheck.sh $(typechecker)

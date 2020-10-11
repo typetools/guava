@@ -40,6 +40,7 @@ import java.util.SortedSet;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.stream.Collector;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -53,7 +54,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
 @SuppressWarnings("serial") // we're overriding default serialization
-public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements Set<E> {
+public abstract class ImmutableSet<E extends @NonNull Object> extends ImmutableCollection<E>
+    implements Set<E> {
   static final int SPLITERATOR_CHARACTERISTICS =
       ImmutableCollection.SPLITERATOR_CHARACTERISTICS | Spliterator.DISTINCT;
 
@@ -65,7 +67,6 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    *
    * @since 21.0
    */
-  @Beta
   public static <E> Collector<E, ?, ImmutableSet<E>> toImmutableSet() {
     return CollectCollectors.toImmutableSet();
   }
@@ -94,7 +95,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * the first are ignored.
    */
   public static <E> ImmutableSet<E> of(E e1, E e2) {
-    return construct(2, e1, e2);
+    return construct(2, 2, e1, e2);
   }
 
   /**
@@ -103,7 +104,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * the first are ignored.
    */
   public static <E> ImmutableSet<E> of(E e1, E e2, E e3) {
-    return construct(3, e1, e2, e3);
+    return construct(3, 3, e1, e2, e3);
   }
 
   /**
@@ -112,7 +113,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * the first are ignored.
    */
   public static <E> ImmutableSet<E> of(E e1, E e2, E e3, E e4) {
-    return construct(4, e1, e2, e3, e4);
+    return construct(4, 4, e1, e2, e3, e4);
   }
 
   /**
@@ -121,7 +122,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * the first are ignored.
    */
   public static <E> ImmutableSet<E> of(E e1, E e2, E e3, E e4, E e5) {
-    return construct(5, e1, e2, e3, e4, e5);
+    return construct(5, 5, e1, e2, e3, e4, e5);
   }
 
   /**
@@ -136,8 +137,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
   @SafeVarargs // For Eclipse. For internal javac we have disabled this pointless type of warning.
   public static <E> ImmutableSet<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E... others) {
     checkArgument(
-        others.length <= Integer.MAX_VALUE - 6,
-        "the total number of elements must fit in an int");
+        others.length <= Integer.MAX_VALUE - 6, "the total number of elements must fit in an int");
     final int paramCount = 6;
     Object[] elements = new Object[paramCount + others.length];
     elements[0] = e1;
@@ -147,7 +147,32 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
     elements[4] = e5;
     elements[5] = e6;
     System.arraycopy(others, 0, elements, paramCount, others.length);
-    return construct(elements.length, elements);
+    return construct(elements.length, elements.length, elements);
+  }
+
+  /**
+   * Constructs an {@code ImmutableSet} from the first {@code n} elements of the specified array,
+   * which we have no particular reason to believe does or does not contain duplicates. If {@code k}
+   * is the size of the returned {@code ImmutableSet}, then the unique elements of {@code elements}
+   * will be in the first {@code k} positions, and {@code elements[i] == null} for {@code k <= i <
+   * n}.
+   *
+   * <p>This may modify {@code elements}. Additionally, if {@code n == elements.length} and {@code
+   * elements} contains no duplicates, {@code elements} may be used without copying in the returned
+   * {@code ImmutableSet}, in which case the caller must not modify it.
+   *
+   * <p>{@code elements} may contain only values of type {@code E}.
+   *
+   * @throws NullPointerException if any of the first {@code n} elements of {@code elements} is null
+   */
+  private static <E> ImmutableSet<E> constructUnknownDuplication(int n, Object... elements) {
+    // Guess the size is "halfway between" all duplicates and no duplicates, on a log scale.
+    return construct(
+        n,
+        Math.max(
+            ImmutableCollection.Builder.DEFAULT_INITIAL_CAPACITY,
+            IntMath.sqrt(n, RoundingMode.CEILING)),
+        elements);
   }
 
   /**
@@ -164,7 +189,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    *
    * @throws NullPointerException if any of the first {@code n} elements of {@code elements} is null
    */
-  private static <E> ImmutableSet<E> construct(int n, Object... elements) {
+  private static <E> ImmutableSet<E> construct(int n, int expectedSize, Object... elements) {
     switch (n) {
       case 0:
         return of();
@@ -173,8 +198,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
         E elem = (E) elements[0];
         return of(elem);
       default:
-        SetBuilderImpl<E> builder =
-            new RegularSetBuilderImpl<E>(ImmutableCollection.Builder.DEFAULT_INITIAL_CAPACITY);
+        SetBuilderImpl<E> builder = new RegularSetBuilderImpl<E>(expectedSize);
         for (int i = 0; i < n; i++) {
           @SuppressWarnings("unchecked")
           E e = (E) checkNotNull(elements[i]);
@@ -212,7 +236,12 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
       return copyOfEnumSet((EnumSet) elements);
     }
     Object[] array = elements.toArray();
-    return construct(array.length, array);
+    if (elements instanceof Set) {
+      // assume probably no duplicates (though it might be using different equality semantics)
+      return construct(array.length, array.length, array);
+    } else {
+      return constructUnknownDuplication(array.length, array);
+    }
   }
 
   /**
@@ -266,7 +295,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
       case 1:
         return of(elements[0]);
       default:
-        return construct(elements.length, elements.clone());
+        return constructUnknownDuplication(elements.length, elements.clone());
     }
   }
 
@@ -451,7 +480,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    *
    * @since 2.0
    */
-  public static class Builder<E> extends ImmutableCollection.Builder<E> {
+  public static class Builder<E extends @NonNull Object> extends ImmutableCollection.Builder<E> {
     private SetBuilderImpl<E> impl;
     boolean forceCopy;
 
@@ -645,10 +674,12 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
   static final double HASH_FLOODING_FPP = 0.001;
 
   // NB: yes, this is surprisingly high, but that's what the experiments said was necessary
-  static final int MAX_RUN_MULTIPLIER = 12;
+  // The higher it is, the worse constant factors we are willing to accept.
+  static final int MAX_RUN_MULTIPLIER = 13;
 
   /**
-   * Checks the whole hash table for poor hash distribution. Takes O(n).
+   * Checks the whole hash table for poor hash distribution. Takes O(n) in the worst case, O(n / log
+   * n) on average.
    *
    * <p>The online hash flooding detecting in RegularSetBuilderImpl.add can detect e.g. many exactly
    * matching hash codes, which would cause construction to take O(n^2), but can't detect e.g. hash
@@ -660,11 +691,20 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
    * <p>Note that for a RegularImmutableSet with elements with truly random hash codes, contains
    * operations take expected O(1) time but with high probability take O(log n) for at least some
    * element. (https://en.wikipedia.org/wiki/Linear_probing#Analysis)
+   *
+   * <p>This method may return {@code true} up to {@link #HASH_FLOODING_FPP} of the time even on
+   * truly random input.
+   *
+   * <p>If this method returns false, there are definitely no runs of length at least {@code
+   * maxRunBeforeFallback(hashTable.length)} nonnull elements. If there are no runs of length at
+   * least {@code maxRunBeforeFallback(hashTable.length) / 2} nonnull elements, this method
+   * definitely returns false. In between those constraints, the result of this method is undefined,
+   * subject to the above {@link #HASH_FLOODING_FPP} constraint.
    */
   static boolean hashFloodingDetected(Object[] hashTable) {
     int maxRunBeforeFallback = maxRunBeforeFallback(hashTable.length);
 
-    // Test for a run wrapping around the end of the table, then check for runs in the middle.
+    // Test for a run wrapping around the end of the table of length at least maxRunBeforeFallback.
     int endOfStartRun;
     for (endOfStartRun = 0; endOfStartRun < hashTable.length; ) {
       if (hashTable[endOfStartRun] == null) {
@@ -684,22 +724,28 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
         return true;
       }
     }
-    for (int i = endOfStartRun + 1; i < startOfEndRun; i++) {
-      for (int runLength = 0; i < startOfEndRun && hashTable[i] != null; i++) {
-        runLength++;
-        if (runLength > maxRunBeforeFallback) {
-          return true;
+
+    // Now, break the remainder of the table into blocks of maxRunBeforeFallback/2 elements and
+    // check that each has at least one null.
+    int testBlockSize = maxRunBeforeFallback / 2;
+    blockLoop:
+    for (int i = endOfStartRun + 1; i + testBlockSize <= startOfEndRun; i += testBlockSize) {
+      for (int j = 0; j < testBlockSize; j++) {
+        if (hashTable[i + j] == null) {
+          continue blockLoop;
         }
       }
+      return true;
     }
     return false;
   }
 
   /**
    * If more than this many consecutive positions are filled in a table of the specified size,
-   * report probable hash flooding.
+   * report probable hash flooding. ({@link #hashFloodingDetected} may also report hash flooding if
+   * fewer consecutive positions are filled; see that method for details.)
    */
-  static int maxRunBeforeFallback(int tableSize) {
+  private static int maxRunBeforeFallback(int tableSize) {
     return MAX_RUN_MULTIPLIER * IntMath.log2(tableSize, RoundingMode.UNNECESSARY);
   }
 
@@ -775,6 +821,8 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
       int targetTableSize = chooseTableSize(distinct);
       if (targetTableSize * 2 < hashTable.length) {
         hashTable = rebuildHashTable(targetTableSize, dedupedElements, distinct);
+        maxRunBeforeFallback = maxRunBeforeFallback(targetTableSize);
+        expandTableThreshold = (int) (DESIRED_LOAD_FACTOR * targetTableSize);
       }
       return hashFloodingDetected(hashTable) ? new JdkBackedSetBuilderImpl<E>(this) : this;
     }

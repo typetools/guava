@@ -21,6 +21,8 @@ import static com.google.common.util.concurrent.Platform.isInstanceOfThrowableCl
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Function;
+import com.google.common.util.concurrent.internal.InternalFutureFailureAccess;
+import com.google.common.util.concurrent.internal.InternalFutures;
 import com.google.errorprone.annotations.ForOverride;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -29,7 +31,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 /** Implementations of {@code Futures.catching*}. */
 @GwtCompatible
 abstract class AbstractCatchingFuture<V, X extends Throwable, F, T>
-    extends AbstractFuture.TrustedFuture<V> implements Runnable {
+    extends FluentFuture.TrustedFuture<V> implements Runnable {
   static <V, X extends Throwable> ListenableFuture<V> create(
       ListenableFuture<? extends V> input,
       Class<X> exceptionType,
@@ -70,10 +72,9 @@ abstract class AbstractCatchingFuture<V, X extends Throwable, F, T>
     ListenableFuture<? extends V> localInputFuture = inputFuture;
     Class<X> localExceptionType = exceptionType;
     F localFallback = fallback;
-    if (localInputFuture == null
-        | localExceptionType == null
-        | localFallback == null
-        | isCancelled()) {
+    if (localInputFuture == null | localExceptionType == null | localFallback == null
+        // This check, unlike all the others, is a volatile read
+        || isCancelled()) {
       return;
     }
     inputFuture = null;
@@ -82,9 +83,25 @@ abstract class AbstractCatchingFuture<V, X extends Throwable, F, T>
     V sourceResult = null;
     Throwable throwable = null;
     try {
-      sourceResult = getDone(localInputFuture);
+      if (localInputFuture instanceof InternalFutureFailureAccess) {
+        throwable =
+            InternalFutures.tryInternalFastPathGetFailure(
+                (InternalFutureFailureAccess) localInputFuture);
+      }
+      if (throwable == null) {
+        sourceResult = getDone(localInputFuture);
+      }
     } catch (ExecutionException e) {
-      throwable = checkNotNull(e.getCause());
+      throwable = e.getCause();
+      if (throwable == null) {
+        throwable =
+            new NullPointerException(
+                "Future type "
+                    + localInputFuture.getClass()
+                    + " threw "
+                    + e.getClass()
+                    + " without a cause");
+      }
     } catch (Throwable e) { // this includes cancellation exception
       throwable = e;
     }
@@ -95,7 +112,7 @@ abstract class AbstractCatchingFuture<V, X extends Throwable, F, T>
     }
 
     if (!isInstanceOfThrowableClass(throwable, localExceptionType)) {
-      setException(throwable);
+      setFuture(localInputFuture);
       // TODO(cpovirk): Test that fallback is not run in this case.
       return;
     }
@@ -177,7 +194,8 @@ abstract class AbstractCatchingFuture<V, X extends Throwable, F, T>
       checkNotNull(
           replacement,
           "AsyncFunction.apply returned null instead of a Future. "
-              + "Did you mean to return immediateFuture(null)?");
+              + "Did you mean to return immediateFuture(null)? %s",
+          fallback);
       return replacement;
     }
 

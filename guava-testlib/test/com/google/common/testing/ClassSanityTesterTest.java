@@ -86,7 +86,8 @@ public class ClassSanityTesterTest extends TestCase {
       tester.forAllPublicStaticMethods(NoPublicStaticMethods.class).testEquals();
     } catch (AssertionFailedError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "No public static methods that return java.lang.Object or subtype are found in "
                   + NoPublicStaticMethods.class
                   + ".");
@@ -140,7 +141,8 @@ public class ClassSanityTesterTest extends TestCase {
           .testNulls();
     } catch (AssertionFailedError expected) {
       assertThat(expected)
-          .hasMessage(
+          .hasMessageThat()
+          .isEqualTo(
               "No public static methods that return java.lang.Iterable or subtype are found in "
                   + BadNullsFactory.class
                   + ".");
@@ -287,8 +289,7 @@ public class ClassSanityTesterTest extends TestCase {
   }
 
   public static class FactoryThatReturnsNullAndAnnotated {
-    @Nullable
-    public static Object bad() {
+    public static @Nullable Object bad() {
       return null;
     }
   }
@@ -757,8 +758,7 @@ public class ClassSanityTesterTest extends TestCase {
 
     // keep trying
     @SuppressWarnings("unused")
-    @Nullable
-    public static GoodEquals createMayReturnNull(int a, int b) {
+    public static @Nullable GoodEquals createMayReturnNull(int a, int b) {
       return null;
     }
 
@@ -1189,8 +1189,7 @@ public class ClassSanityTesterTest extends TestCase {
   static class FactoryMethodReturnsNullAndAnnotated {
     private FactoryMethodReturnsNullAndAnnotated() {}
 
-    @Nullable
-    public static FactoryMethodReturnsNullAndAnnotated returnsNull() {
+    public static @Nullable FactoryMethodReturnsNullAndAnnotated returnsNull() {
       return null;
     }
   }

@@ -18,6 +18,7 @@ import static com.google.common.base.Strings.lenientFormat;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
@@ -49,8 +50,8 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * <p>so that a hypothetical bad caller of this method, such as:
  *
  * <pre>{@code
- *   void exampleBadCaller() {
- *     double d = sqrt(-1.0);
+ * void exampleBadCaller() {
+ *   double d = sqrt(-1.0);
  * }
  * }</pre>
  *
@@ -883,7 +884,8 @@ public final class Preconditions {
    * @see Verify#verifyNotNull Verify.verifyNotNull()
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(T reference) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(@NonNullDecl T reference) {
     if (reference == null) {
       throw new NullPointerException();
     }
@@ -901,7 +903,9 @@ public final class Preconditions {
    * @see Verify#verifyNotNull Verify.verifyNotNull()
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(T reference, @NullableDecl Object errorMessage) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T reference, @NullableDecl Object errorMessage) {
     if (reference == null) {
       throw new NullPointerException(String.valueOf(errorMessage));
     }
@@ -924,8 +928,9 @@ public final class Preconditions {
    * @see Verify#verifyNotNull Verify.verifyNotNull()
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T reference,
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T reference,
       @NullableDecl String errorMessageTemplate,
       @NullableDecl Object... errorMessageArgs) {
     if (reference == null) {
@@ -942,7 +947,9 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(T obj, @NullableDecl String errorMessageTemplate, char p1) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj, @NullableDecl String errorMessageTemplate, char p1) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1));
     }
@@ -957,7 +964,9 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(T obj, @NullableDecl String errorMessageTemplate, int p1) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj, @NullableDecl String errorMessageTemplate, int p1) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1));
     }
@@ -972,7 +981,9 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(T obj, @NullableDecl String errorMessageTemplate, long p1) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj, @NullableDecl String errorMessageTemplate, long p1) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1));
     }
@@ -987,8 +998,9 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj, @NullableDecl String errorMessageTemplate, @NullableDecl Object p1) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj, @NullableDecl String errorMessageTemplate, @NullableDecl Object p1) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1));
     }
@@ -1003,8 +1015,9 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj, @NullableDecl String errorMessageTemplate, char p1, char p2) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj, @NullableDecl String errorMessageTemplate, char p1, char p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1019,8 +1032,9 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj, @NullableDecl String errorMessageTemplate, char p1, int p2) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj, @NullableDecl String errorMessageTemplate, char p1, int p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1035,8 +1049,9 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj, @NullableDecl String errorMessageTemplate, char p1, long p2) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj, @NullableDecl String errorMessageTemplate, char p1, long p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1051,8 +1066,12 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj, @NullableDecl String errorMessageTemplate, char p1, @NullableDecl Object p2) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj,
+      @NullableDecl String errorMessageTemplate,
+      char p1,
+      @NullableDecl Object p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1067,8 +1086,9 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj, @NullableDecl String errorMessageTemplate, int p1, char p2) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj, @NullableDecl String errorMessageTemplate, int p1, char p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1083,8 +1103,9 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj, @NullableDecl String errorMessageTemplate, int p1, int p2) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj, @NullableDecl String errorMessageTemplate, int p1, int p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1099,8 +1120,9 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj, @NullableDecl String errorMessageTemplate, int p1, long p2) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj, @NullableDecl String errorMessageTemplate, int p1, long p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1115,8 +1137,12 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj, @NullableDecl String errorMessageTemplate, int p1, @NullableDecl Object p2) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj,
+      @NullableDecl String errorMessageTemplate,
+      int p1,
+      @NullableDecl Object p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1131,8 +1157,9 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj, @NullableDecl String errorMessageTemplate, long p1, char p2) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj, @NullableDecl String errorMessageTemplate, long p1, char p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1147,8 +1174,9 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj, @NullableDecl String errorMessageTemplate, long p1, int p2) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj, @NullableDecl String errorMessageTemplate, long p1, int p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1163,8 +1191,9 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj, @NullableDecl String errorMessageTemplate, long p1, long p2) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj, @NullableDecl String errorMessageTemplate, long p1, long p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1179,8 +1208,12 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj, @NullableDecl String errorMessageTemplate, long p1, @NullableDecl Object p2) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj,
+      @NullableDecl String errorMessageTemplate,
+      long p1,
+      @NullableDecl Object p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1195,8 +1228,12 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj, @NullableDecl String errorMessageTemplate, @NullableDecl Object p1, char p2) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj,
+      @NullableDecl String errorMessageTemplate,
+      @NullableDecl Object p1,
+      char p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1211,8 +1248,12 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj, @NullableDecl String errorMessageTemplate, @NullableDecl Object p1, int p2) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj,
+      @NullableDecl String errorMessageTemplate,
+      @NullableDecl Object p1,
+      int p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1227,8 +1268,12 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj, @NullableDecl String errorMessageTemplate, @NullableDecl Object p1, long p2) {
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj,
+      @NullableDecl String errorMessageTemplate,
+      @NullableDecl Object p1,
+      long p2) {
     if (obj == null) {
       throw new NullPointerException(lenientFormat(errorMessageTemplate, p1, p2));
     }
@@ -1243,8 +1288,9 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj,
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj,
       @NullableDecl String errorMessageTemplate,
       @NullableDecl Object p1,
       @NullableDecl Object p2) {
@@ -1262,8 +1308,9 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj,
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj,
       @NullableDecl String errorMessageTemplate,
       @NullableDecl Object p1,
       @NullableDecl Object p2,
@@ -1282,8 +1329,9 @@ public final class Preconditions {
    * @since 20.0 (varargs overload since 2.0)
    */
   @CanIgnoreReturnValue
-  public static <T> T checkNotNull(
-      T obj,
+  @NonNullDecl
+  public static <T extends Object> T checkNotNull(
+      @NonNullDecl T obj,
       @NullableDecl String errorMessageTemplate,
       @NullableDecl Object p1,
       @NullableDecl Object p2,
@@ -1412,12 +1460,12 @@ public final class Preconditions {
   }
 
   /**
-   * Ensures that {@code start} and {@code end} specify a valid <i>positions</i> in an array, list
-   * or string of size {@code size}, and are in order. A position index may range from zero to
-   * {@code size}, inclusive.
+   * Ensures that {@code start} and {@code end} specify valid <i>positions</i> in an array, list or
+   * string of size {@code size}, and are in order. A position index may range from zero to {@code
+   * size}, inclusive.
    *
    * @param start a user-supplied index identifying a starting position in an array, list or string
-   * @param end a user-supplied index identifying a ending position in an array, list or string
+   * @param end a user-supplied index identifying an ending position in an array, list or string
    * @param size the size of that array, list or string
    * @throws IndexOutOfBoundsException if either index is negative or is greater than {@code size},
    *     or if {@code end} is less than {@code start}

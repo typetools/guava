@@ -18,6 +18,7 @@ package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.DoNotMock;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -32,6 +33,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @author Mick Killianey
  * @since 2.0
  */
+@DoNotMock("Use Iterators.peekingIterator")
 @GwtCompatible
 @AnnotatedFor({"nullness"})
 public interface PeekingIterator<E> extends Iterator<E> {

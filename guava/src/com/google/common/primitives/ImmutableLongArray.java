@@ -53,8 +53,8 @@ import org.checkerframework.dataflow.qual.Pure;
  * <p>Advantages compared to {@code long[]}:
  *
  * <ul>
- *   <li>All the many well-known advantages of immutability (read <i>Effective Java</i>, second
- *       edition, Item 15).
+ *   <li>All the many well-known advantages of immutability (read <i>Effective Java</i>, third
+ *       edition, Item 17).
  *   <li>Has the value-based (not identity-based) {@link #equals}, {@link #hashCode}, and {@link
  *       #toString} behavior you expect.
  *   <li>Offers useful operations beyond just {@code get} and {@code length}, so you don't have to
@@ -150,8 +150,7 @@ public final class ImmutableLongArray implements Serializable {
   @SuppressWarnings("upperbound:array.access.unsafe.high.constant") // https://github.com/kelloggm/checker-framework/issues/182
   public static ImmutableLongArray of(long first, long... rest) {
     checkArgument(
-        rest.length <= Integer.MAX_VALUE - 1,
-        "the total number of elements must fit in an int");
+        rest.length <= Integer.MAX_VALUE - 1, "the total number of elements must fit in an int");
     long[] array = new long[rest.length + 1];
     array[0] = first;
     System.arraycopy(rest, 0, array, 1, rest.length);
@@ -573,7 +572,7 @@ public final class ImmutableLongArray implements Serializable {
      * i is incremented in a for-each loop by that, and that has the same size as parent.array
      * therefore i is an index for parent.array
      */
-    @SuppressWarnings("upperbound:array.access.unsafe.high.range") // index incremented in for-each over list of same length
+    @SuppressWarnings("upperbound:array.access.unsafe.high") // index incremented in for-each over list of same length
     public boolean equals(@Nullable Object object) {
       if (object instanceof AsList) {
         AsList that = (AsList) object;

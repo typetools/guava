@@ -20,17 +20,17 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.graph.GraphConstants.NODE_NOT_IN_GRAPH;
 
 import com.google.common.annotations.Beta;
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import java.util.ArrayDeque;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.Iterator;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
@@ -193,20 +193,7 @@ public final class Graphs {
    */
   public static <N> Set<N> reachableNodes(Graph<N> graph, N node) {
     checkArgument(graph.nodes().contains(node), NODE_NOT_IN_GRAPH, node);
-    Set<N> visitedNodes = new LinkedHashSet<N>();
-    Queue<N> queuedNodes = new ArrayDeque<N>();
-    visitedNodes.add(node);
-    queuedNodes.add(node);
-    // Perform a breadth-first traversal rooted at the input node.
-    while (!queuedNodes.isEmpty()) {
-      N currentNode = queuedNodes.remove();
-      for (N successor : graph.successors(currentNode)) {
-        if (visitedNodes.add(successor)) {
-          queuedNodes.add(successor);
-        }
-      }
-    }
-    return Collections.unmodifiableSet(visitedNodes);
+    return ImmutableSet.copyOf(Traverser.forGraph(graph).breadthFirst(node));
   }
 
   // Graph mutation methods
@@ -261,6 +248,13 @@ public final class Graphs {
     return new TransposedNetwork<>(network);
   }
 
+  static <N> EndpointPair<N> transpose(EndpointPair<N> endpoints) {
+    if (endpoints.isOrdered()) {
+      return EndpointPair.ordered(endpoints.target(), endpoints.source());
+    }
+    return endpoints;
+  }
+
   // NOTE: this should work as long as the delegate graph's implementation of edges() (like that of
   // AbstractGraph) derives its behavior from calling successors().
   private static class TransposedGraph<N> extends ForwardingGraph<N> {
@@ -286,6 +280,23 @@ public final class Graphs {
     }
 
     @Override
+    public Set<EndpointPair<N>> incidentEdges(N node) {
+      return new IncidentEdgeSet<N>(this, node) {
+        @Override
+        public Iterator<EndpointPair<N>> iterator() {
+          return Iterators.transform(
+              delegate().incidentEdges(node).iterator(),
+              new Function<EndpointPair<N>, EndpointPair<N>>() {
+                @Override
+                public EndpointPair<N> apply(EndpointPair<N> edge) {
+                  return EndpointPair.of(delegate(), edge.nodeV(), edge.nodeU());
+                }
+              });
+        }
+      };
+    }
+
+    @Override
     public int inDegree(N node) {
       return delegate().outDegree(node); // transpose
     }
@@ -298,6 +309,11 @@ public final class Graphs {
     @Override
     public boolean hasEdgeConnecting(N nodeU, N nodeV) {
       return delegate().hasEdgeConnecting(nodeV, nodeU); // transpose
+    }
+
+    @Override
+    public boolean hasEdgeConnecting(EndpointPair<N> endpoints) {
+      return delegate().hasEdgeConnecting(transpose(endpoints));
     }
   }
 
@@ -341,9 +357,20 @@ public final class Graphs {
     }
 
     @Override
+    public boolean hasEdgeConnecting(EndpointPair<N> endpoints) {
+      return delegate().hasEdgeConnecting(transpose(endpoints));
+    }
+
+    @Override
     @NullableDecl
     public V edgeValueOrDefault(N nodeU, N nodeV, @NullableDecl V defaultValue) {
       return delegate().edgeValueOrDefault(nodeV, nodeU, defaultValue); // transpose
+    }
+
+    @Override
+    @NullableDecl
+    public V edgeValueOrDefault(EndpointPair<N> endpoints, @NullableDecl V defaultValue) {
+      return delegate().edgeValueOrDefault(transpose(endpoints), defaultValue);
     }
   }
 
@@ -401,13 +428,28 @@ public final class Graphs {
     }
 
     @Override
+    public Set<E> edgesConnecting(EndpointPair<N> endpoints) {
+      return delegate().edgesConnecting(transpose(endpoints));
+    }
+
+    @Override
     public E edgeConnectingOrNull(N nodeU, N nodeV) {
       return delegate().edgeConnectingOrNull(nodeV, nodeU); // transpose
     }
 
     @Override
+    public E edgeConnectingOrNull(EndpointPair<N> endpoints) {
+      return delegate().edgeConnectingOrNull(transpose(endpoints));
+    }
+
+    @Override
     public boolean hasEdgeConnecting(N nodeU, N nodeV) {
       return delegate().hasEdgeConnecting(nodeV, nodeU); // transpose
+    }
+
+    @Override
+    public boolean hasEdgeConnecting(EndpointPair<N> endpoints) {
+      return delegate().hasEdgeConnecting(transpose(endpoints));
     }
   }
 

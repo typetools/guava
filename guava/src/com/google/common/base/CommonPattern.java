@@ -15,27 +15,32 @@
 package com.google.common.base;
 
 import com.google.common.annotations.GwtCompatible;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * The subset of the {@link java.util.regex.Pattern} API which is used by this package, and also
  * shared with the {@code re2j} library. For internal use only. Please refer to the {@code Pattern}
  * javadoc for details.
  */
+@AnnotatedFor({"nullness"})
 @GwtCompatible
 abstract class CommonPattern {
-  abstract CommonMatcher matcher(CharSequence t);
+  public abstract CommonMatcher matcher(CharSequence t);
 
-  abstract String pattern();
+  public abstract String pattern();
 
-  abstract int flags();
+  public abstract int flags();
 
-  // Re-declare these as abstract to force subclasses to override.
+  // Re-declare this as abstract to force subclasses to override.
   @Override
   public abstract String toString();
 
-  @Override
-  public abstract int hashCode();
+  public static CommonPattern compile(String pattern) {
+    return Platform.compilePattern(pattern);
+  }
 
-  @Override
-  public abstract boolean equals(Object o);
+  public static boolean isPcreLike() {
+    return Platform.patternCompilerIsPcreLike();
+  }
 }

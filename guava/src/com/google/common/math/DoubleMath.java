@@ -21,7 +21,7 @@ import static com.google.common.math.DoubleUtils.getSignificand;
 import static com.google.common.math.DoubleUtils.isFinite;
 import static com.google.common.math.DoubleUtils.isNormal;
 import static com.google.common.math.DoubleUtils.scaleNormalize;
-import static com.google.common.math.MathPreconditions.checkInRange;
+import static com.google.common.math.MathPreconditions.checkInRangeForRoundingInputs;
 import static com.google.common.math.MathPreconditions.checkNonNegative;
 import static com.google.common.math.MathPreconditions.checkRoundingUnnecessary;
 import static java.lang.Math.abs;
@@ -38,6 +38,8 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Iterator;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * A class for arithmetic on doubles that is not covered by {@link java.lang.Math}.
@@ -51,6 +53,7 @@ public final class DoubleMath {
    * This method returns a value y such that rounding y DOWN (towards zero) gives the same result as
    * rounding x according to the specified mode.
    */
+  @SuppressWarnings("expression.unparsable.type.invalid")//Link to issue: https://github.com/typetools/checker-framework/issues/2030
   @GwtIncompatible // #isMathematicalInteger, com.google.common.math.DoubleUtils
   static double roundIntermediate(double x, RoundingMode mode) {
     if (!isFinite(x)) {
@@ -130,7 +133,8 @@ public final class DoubleMath {
   @GwtIncompatible // #roundIntermediate
   public static int roundToInt(double x, RoundingMode mode) {
     double z = roundIntermediate(x, mode);
-    checkInRange(z > MIN_INT_AS_DOUBLE - 1.0 & z < MAX_INT_AS_DOUBLE + 1.0);
+    checkInRangeForRoundingInputs(
+        z > MIN_INT_AS_DOUBLE - 1.0 & z < MAX_INT_AS_DOUBLE + 1.0, x, mode);
     return (int) z;
   }
 
@@ -154,7 +158,8 @@ public final class DoubleMath {
   @GwtIncompatible // #roundIntermediate
   public static long roundToLong(double x, RoundingMode mode) {
     double z = roundIntermediate(x, mode);
-    checkInRange(MIN_LONG_AS_DOUBLE - z < 1.0 & z < MAX_LONG_AS_DOUBLE_PLUS_ONE);
+    checkInRangeForRoundingInputs(
+        MIN_LONG_AS_DOUBLE - z < 1.0 & z < MAX_LONG_AS_DOUBLE_PLUS_ONE, x, mode);
     return (long) z;
   }
 
@@ -296,7 +301,7 @@ public final class DoubleMath {
    *
    * @throws IllegalArgumentException if {@code n < 0}
    */
-  public static double factorial(int n) {
+  public static double factorial(@NonNegative int n) {
     checkNonNegative("n", n);
     if (n > MAX_FACTORIAL) {
       return Double.POSITIVE_INFINITY;
@@ -402,7 +407,7 @@ public final class DoubleMath {
   @Deprecated
   // com.google.common.math.DoubleUtils
   @GwtIncompatible
-  public static double mean(double... values) {
+  public static double mean(double @MinLen(1)... values) {
     checkArgument(values.length > 0, "Cannot take mean of 0 values");
     long count = 1;
     double mean = checkFinite(values[0]);
@@ -454,7 +459,7 @@ public final class DoubleMath {
    *     values.
    */
   @Deprecated
-  public static double mean(long... values) {
+  public static double mean(long @MinLen(1)... values) {
     checkArgument(values.length > 0, "Cannot take mean of 0 values");
     long count = 1;
     double mean = values[0];

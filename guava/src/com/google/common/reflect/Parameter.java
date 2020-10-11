@@ -85,6 +85,7 @@ public final class Parameter implements AnnotatedElement {
 
   /** @since 18.0 */
   // @Override on JDK8
+  @Override
   public <A extends Annotation> A[] getAnnotationsByType(Class<A> annotationType) {
     return getDeclaredAnnotationsByType(annotationType);
   }
@@ -93,11 +94,12 @@ public final class Parameter implements AnnotatedElement {
   // @Override on JDK8
   @Override
   public Annotation[] getDeclaredAnnotations() {
-    return annotations.toArray(new Annotation[annotations.size()]);
+    return annotations.toArray(new Annotation[0]);
   }
 
   /** @since 18.0 */
   // @Override on JDK8
+  @Override
   public <A extends Annotation> @Nullable A getDeclaredAnnotation(Class<A> annotationType) {
     checkNotNull(annotationType);
     return FluentIterable.from(annotations).filter(annotationType).first().orNull();
@@ -105,6 +107,7 @@ public final class Parameter implements AnnotatedElement {
 
   /** @since 18.0 */
   // @Override on JDK8
+  @Override
   public <A extends Annotation> A[] getDeclaredAnnotationsByType(Class<A> annotationType) {
     return FluentIterable.from(annotations).filter(annotationType).toArray(annotationType);
   }

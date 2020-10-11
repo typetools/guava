@@ -22,11 +22,13 @@ import static com.google.common.collect.ObjectArrays.checkElementsNotNull;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.DoNotMock;
 import java.io.Serializable;
 import java.util.AbstractCollection;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
@@ -84,9 +86,10 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * appropriate {@code copyOf} method itself.
  *
  * <p>Expressing the immutability guarantee directly in the type that user code references is a
- * powerful advantage. Although Java 9 offers certain immutable collection factory methods, like <a
+ * powerful advantage. Although Java offers certain immutable collection factory methods, such as
+ * {@link Collections#singleton(Object)} and <a
  * href="https://docs.oracle.com/javase/9/docs/api/java/util/Set.html#immutable">{@code Set.of}</a>,
- * we recommend continuing to use these immutable collection classes for this reason.
+ * we recommend using <i>these</i> classes instead for this reason (as well as for consistency).
  *
  * <h4>Creation</h4>
  *
@@ -155,6 +158,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * @since 2.0
  */
+@DoNotMock("Use ImmutableList.of or another implementation")
 @GwtCompatible(emulated = true)
 @SuppressWarnings("serial") // we're overriding default serialization
 // TODO(kevinb): I think we should push everything down to "BaseImmutableCollection" or something,
@@ -171,13 +175,7 @@ public abstract class ImmutableCollection<E> extends AbstractCollection<E> imple
 
   @Override
   public final Object[] toArray() {
-    int size = size();
-    if (size == 0) {
-      return EMPTY_ARRAY;
-    }
-    Object[] result = new Object[size];
-    copyIntoArray(result, 0);
-    return result;
+    return toArray(EMPTY_ARRAY);
   }
 
   @CanIgnoreReturnValue
@@ -185,13 +183,40 @@ public abstract class ImmutableCollection<E> extends AbstractCollection<E> imple
   public final <T> T[] toArray(T[] other) {
     checkNotNull(other);
     int size = size();
+
     if (other.length < size) {
+      Object[] internal = internalArray();
+      if (internal != null) {
+        return Platform.copy(internal, internalArrayStart(), internalArrayEnd(), other);
+      }
       other = ObjectArrays.newArray(other, size);
     } else if (other.length > size) {
       other[size] = null;
     }
     copyIntoArray(other, 0);
     return other;
+  }
+
+  /** If this collection is backed by an array of its elements in insertion order, returns it. */
+  @NullableDecl
+  Object[] internalArray() {
+    return null;
+  }
+
+  /**
+   * If this collection is backed by an array of its elements in insertion order, returns the offset
+   * where this collection's elements start.
+   */
+  int internalArrayStart() {
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * If this collection is backed by an array of its elements in insertion order, returns the offset
+   * where this collection's elements end.
+   */
+  int internalArrayEnd() {
+    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -318,6 +343,7 @@ public abstract class ImmutableCollection<E> extends AbstractCollection<E> imple
    *
    * @since 10.0
    */
+  @DoNotMock
   public abstract static class Builder<E> {
     static final int DEFAULT_INITIAL_CAPACITY = 4;
 

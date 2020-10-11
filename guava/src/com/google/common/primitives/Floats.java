@@ -541,6 +541,7 @@ public final class Floats {
       this.start = start;
       this.end = end;
     }
+
     @Override
     public @Positive @LTLengthOf(value = {"this","array"}, offset={"-1","start - 1"}) int size() { // INDEX: Annotation on a public method refers to private member.
       return end - start;
@@ -672,6 +673,7 @@ public final class Floats {
    * @param string the string representation of a {@code float} value
    * @return the floating point value represented by {@code string}, or {@code null} if {@code
    *     string} has a length of zero or cannot be parsed as a {@code float} value
+   * @throws NullPointerException if {@code string} is {@code null}
    * @since 14.0
    */
   @Beta

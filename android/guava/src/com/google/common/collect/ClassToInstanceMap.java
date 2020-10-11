@@ -18,6 +18,7 @@ package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.DoNotMock;
 import java.util.Map;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
@@ -40,6 +41,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @author Kevin Bourrillion
  * @since 2.0
  */
+@DoNotMock("Use ImmutableClassToInstanceMap or MutableClassToInstanceMap")
 @GwtCompatible
 public interface ClassToInstanceMap<B> extends Map<Class<? extends B>, B> {
   /**
@@ -47,7 +49,6 @@ public interface ClassToInstanceMap<B> extends Map<Class<? extends B>, B> {
    * is present. This will only return a value that was bound to this specific class, not a value
    * that may have been bound to a subtype.
    */
-  @CanIgnoreReturnValue // TODO(kak): Consider removing this?
   <T extends B> T getInstance(Class<T> type);
 
   /**

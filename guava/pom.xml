@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.google.guava</groupId>
     <artifactId>guava-parent</artifactId>
-    <version>25.1-jre</version>
+    <version>28.2-jre</version>
   </parent>
   <artifactId>guava</artifactId>
   <packaging>bundle</packaging>
@@ -18,12 +18,11 @@
   <properties>
     <!-- Use -Dcheckerframework.checkers=checker to switch which checkers are run. -->
     <!-- Running the Index Checker takes very long but is needed to put implicit annotations in class files. -->
-    <checkerframework.checkers>org.checkerframework.checker.nullness.NullnessChecker,org.checkerframework.checker.index.IndexChecker</checkerframework.checkers>
+    <checkerframework.checkers>org.checkerframework.checker.index.IndexChecker,org.checkerframework.checker.nullness.NullnessChecker,org.checkerframework.checker.signedness.SignednessChecker</checkerframework.checkers>
     <!-- Index checker warnings are disabled by default, because not all code is annotated by index checker annotations. -->
     <checkerframework.suppress>index</checkerframework.suppress>
     <!-- Packages under com.google.common, that will be additionally checked by the Index Checker -->
-    <checkerframework.index.packages>base|primitives</checkerframework.index.packages>
-    <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
+    <checkerframework.index.packages>base|primitives|escape|math</checkerframework.index.packages>
     <!-- Additional argument passed to the java compiler. Use to pass additional arguments to the checker framework. Example: -Ashowchecks -->
     <checkerframework.extraargs></checkerframework.extraargs>
     <!-- Additional argument passed to the java compiler. Use to pass additional arguments to the checker framework. Example: -Aannotations -->
@@ -34,6 +33,16 @@
     <index.only.arg></index.only.arg>
   </properties>
   <dependencies>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>failureaccess</artifactId>
+      <version>1.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>listenablefuture</artifactId>
+      <version>9999.0-empty-to-avoid-conflict-with-guava</version>
+    </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
@@ -50,11 +59,6 @@
       <groupId>com.google.j2objc</groupId>
       <artifactId>j2objc-annotations</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.codehaus.mojo</groupId>
-      <artifactId>animal-sniffer-annotations</artifactId>
-      <version>${animal.sniffer.version}</version>
-    </dependency>
     <!-- TODO(cpovirk): does this comment belong on the <dependency> in <profiles>? -->
     <!-- TODO(cpovirk): want this only for dependency plugin but seems not to work there? Maven runs without failure, but the resulting Javadoc is missing the hoped-for inherited text -->
     <!-- Annotations from the Checker Framework: nullness, interning, locking, ... -->
@@ -64,18 +68,13 @@
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker-qual</artifactId>
-      <version>2.5.1</version>
+      <version>2.5.5</version>
     </dependency>
     -->
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker</artifactId>
-      <version>2.5.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.checkerframework</groupId>
-      <artifactId>jdk8</artifactId>
-      <version>2.5.1</version>
+      <version>3.3.0</version>
     </dependency>
   </dependencies>
   <build>
@@ -106,8 +105,13 @@
         </executions>
         <configuration>
           <instructions>
-            <Export-Package>!com.google.common.base.internal,com.google.common.*</Export-Package>
+            <Export-Package>
+              !com.google.common.base.internal,
+              !com.google.common.util.concurrent.internal,
+              com.google.common.*
+            </Export-Package>
             <Import-Package>
+              com.google.common.util.concurrent.internal,
               javax.annotation;resolution:=optional,
               javax.crypto.*;resolution:=optional,
               sun.misc.*;resolution:=optional
@@ -118,7 +122,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.3</version>
+        <version>3.8.1</version>
         <configuration>
             <source>1.8</source>
             <target>1.8</target>
@@ -126,18 +130,18 @@
               <Xmaxerrs>10000</Xmaxerrs>
               <Xmaxwarns>10000</Xmaxwarns>
             </compilerArguments>
+            <showWarnings>true</showWarnings>
+	    <verbose>true</verbose>d
             <annotationProcessors>
               <annotationProcessor>${checkerframework.checkers}</annotationProcessor>
             </annotationProcessors>
             <compilerArgs>
-              <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
-              <arg>${addtionalargs}</arg>
+              <arg>${additionalargs}</arg>
               <arg>${checkerframework.extraargs}</arg>
               <arg>${checkerframework.extraargs2}</arg>
               <arg>-AsuppressWarnings=${checkerframework.suppress}</arg>
               <arg>-AuseDefaultsForUncheckedCode=source,bytecode</arg>
               <arg>-Awarns</arg>
-              <arg>-AprintErrorStack</arg>
             </compilerArgs>
         </configuration>
         <executions>
@@ -154,9 +158,8 @@
                 <annotationProcessor>org.checkerframework.checker.index.IndexChecker</annotationProcessor>
               </annotationProcessors>
               <compilerArgs>
-                <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
+                <arg>-XDignore.symbol.file</arg>
                 <arg>${index.only.arg}</arg>
-                <arg>-AprintErrorStack</arg>
                 <arg>-proc:only</arg>
                 <arg>-AonlyDefs=^com\.google\.common\.(?:${checkerframework.index.packages})\.</arg>
               </compilerArgs>
@@ -184,6 +187,8 @@
               <includeArtifactIds>srczip</includeArtifactIds>
               <outputDirectory>${project.build.directory}/jdk-sources</outputDirectory>
               <silent>false</silent>
+              <!-- Exclude module-info files (since we're using -source 8 to avoid other modules problems) and FileDescriptor (which uses a language feature not available in Java 8). -->
+              <excludes>**/module-info.java,**/java/io/FileDescriptor.java</excludes>
             </configuration>
           </execution>
         </executions>
@@ -200,8 +205,39 @@
           <!-- (We need JDK *sources*, not just -link, so that {@inheritDoc} works.) -->
           <sourcepath>${project.build.sourceDirectory}:${project.build.directory}/jdk-sources</sourcepath>
 
-          <subpackages>com.google.common</subpackages>
-          <excludePackageNames>com.google.common.base.internal</excludePackageNames>
+          <!-- Passing `-subpackages com.google.common` breaks things, so we explicitly exclude everything else instead. -->
+          <!-- excludePackageNames requires specification of packages separately from "all subpackages".
+               https://issues.apache.org/jira/browse/MJAVADOC-584 -->
+          <excludePackageNames>
+            com.google.common.base.internal,com.google.common.base.internal.*,com.google.thirdparty.publicsuffix,com.google.thirdparty.publicsuffix.*,com.oracle.*,com.sun.*,java.*,javax.*,jdk,jdk.*,org.*,sun.*
+          </excludePackageNames>
+          <!-- Ignore some tags that are found in Java 11 sources but not recognized... under -source 8, I think it was? I can no longer reproduce the failure. -->
+          <tags>
+            <tag>
+              <name>apiNote</name>
+              <placement>X</placement>
+            </tag>
+            <tag>
+              <name>implNote</name>
+              <placement>X</placement>
+            </tag>
+            <tag>
+              <name>implSpec</name>
+              <placement>X</placement>
+            </tag>
+            <tag>
+              <name>jls</name>
+              <placement>X</placement>
+            </tag>
+            <tag>
+              <name>revised</name>
+              <placement>X</placement>
+            </tag>
+            <tag>
+              <name>spec</name>
+              <placement>X</placement>
+            </tag>
+          </tags>
 
           <!-- TODO(cpovirk): Move this to the parent after making the package-list files available there. -->
           <!-- We add the link ourselves, both so that we can choose Java 9 over the version that -source suggests and so that we can solve the JSR305 problem described below. -->
@@ -247,7 +283,7 @@
   </build>
   <profiles>
     <profile>
-      <id>srczip</id>
+      <id>srczip-parent</id>
       <activation>
         <file>
           <exists>${java.home}/../src.zip</exists>
@@ -264,7 +300,7 @@
         </dependency>
       </dependencies>
     </profile>
-    <!-- Profile to use the version of Checker Framework installed locally-->
+    <!-- Profile to use the version of Checker Framework installed locally. -->
     <profile>
       <id>checkerframework-local</id>
       <dependencies>
@@ -282,14 +318,96 @@
           <scope>system</scope>
           <systemPath>${CHECKERFRAMEWORK}/checker/dist/checker.jar</systemPath>
         </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>jdk11</id>
+      <activation>
+        <jdk>11</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <fork>true</fork>
+              <maxmem>6000m</maxmem>
+              <compilerArgs combine.children="append">
+                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+              </compilerArgs>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
+    <profile>
+      <id>jdk8</id>
+      <activation>
+        <jdk>1.8</jdk>
+      </activation>
+      <properties>
+        <javac.version>9+181-r4173-1</javac.version>
+    <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
+      </properties>
+      <dependencies>
         <dependency>
-          <groupId>org.checkerframework</groupId>
-          <artifactId>jdk8</artifactId>
-          <version>0.0.0</version>
+          <groupId>com.google.errorprone</groupId>
+          <artifactId>javac</artifactId>
+          <version>9+181-r4173-1</version>
+        </dependency>
+    <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>jdk8</artifactId>
+      <version>3.3.0</version>
+    </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <fork>true</fork>
+              <maxmem>6000m</maxmem>
+              <compilerArgs combine.children="append">
+              <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
+                <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${javac.version}/javac-${javac.version}.jar</arg>
+              </compilerArgs>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>srczip-lib</id>
+      <activation>
+        <file>
+          <exists>${java.home}/lib/src.zip</exists>
+        </file>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>jdk</groupId>
+          <artifactId>srczip</artifactId>
+          <version>999</version>
           <scope>system</scope>
-          <systemPath>${CHECKERFRAMEWORK}/checker/dist/jdk8.jar</systemPath>
+          <systemPath>${java.home}/lib/src.zip</systemPath>
+          <optional>true</optional>
         </dependency>
       </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <!-- We need to point at the java.base subdirectory because Maven appears to assume that package foo.bar is located in foo/bar and not java.base/foo/bar when translating excludePackageNames into filenames to pass to javadoc. (Note that manually passing -exclude to javadoc appears to possibly not work at all for java.* types??) Also, referring only to java.base avoids a lot of other sources. -->
+              <sourcepath>${project.build.sourceDirectory}:${project.build.directory}/jdk-sources/java.base</sourcepath>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 </project>

@@ -18,6 +18,7 @@ package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
@@ -86,6 +87,11 @@ final class Platform {
     return result;
   }
 
+  /** Equivalent to Arrays.copyOfRange(source, from, to, arrayOfType.getClass()). */
+  static <T> T[] copy(Object[] source, int from, int to, T[] arrayOfType) {
+    return Arrays.copyOfRange(source, from, to, (Class<? extends T[]>) arrayOfType.getClass());
+  }
+
   /**
    * Configures the given map maker to use weak keys, if possible; does nothing otherwise (i.e., in
    * GWT). This is sometimes acceptable, when only server-side code could generate enough volume
@@ -102,6 +108,8 @@ final class Platform {
   static int reduceExponentIfGwt(int exponent) {
     return exponent;
   }
+
+  static void checkGwtRpcEnabled() {}
 
   private Platform() {}
 }
