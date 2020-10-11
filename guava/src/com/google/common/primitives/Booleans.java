@@ -396,7 +396,7 @@ public final class Booleans {
   @GwtCompatible
   private static class BooleanArrayAsList extends AbstractList<Boolean>
       implements RandomAccess, Serializable {
-    @HasSubsequence(value="this", from="this.start", to="this.end")
+    @HasSubsequence(subsequence="this", from="this.start", to="this.end")
     final boolean @MinLen(1) [] array;
     final @IndexFor("array") @LessThan("this.end") int start;
     final @IndexOrHigh("array") int end;

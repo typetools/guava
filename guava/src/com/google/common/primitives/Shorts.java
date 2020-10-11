@@ -577,7 +577,7 @@ public final class Shorts {
   @GwtCompatible
   private static class ShortArrayAsList extends AbstractList<Short>
       implements RandomAccess, Serializable {
-    @HasSubsequence(value="this", from="this.start", to="this.end")
+    @HasSubsequence(subsequence="this", from="this.start", to="this.end")
     final short @MinLen(1) [] array;
     final @IndexFor("array") @LessThan("this.end") int start;
     final @IndexOrHigh("array") int end;

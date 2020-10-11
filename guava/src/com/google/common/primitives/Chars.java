@@ -531,7 +531,7 @@ public final class Chars {
   @GwtCompatible
   private static class CharArrayAsList extends AbstractList<Character>
       implements RandomAccess, Serializable {
-    @HasSubsequence(value="this", from="this.start", to="this.end")
+    @HasSubsequence(subsequence="this", from="this.start", to="this.end")
     final char @MinLen(1) [] array;
     final @IndexFor("array") @LessThan("this.end") int start;
     final @IndexOrHigh("array") int end;

@@ -694,7 +694,7 @@ public final class Longs {
   @GwtCompatible
   private static class LongArrayAsList extends AbstractList<Long>
       implements RandomAccess, Serializable {
-    @HasSubsequence(value="this", from="this.start", to="this.end")
+    @HasSubsequence(subsequence="this", from="this.start", to="this.end")
     final long @MinLen(1) [] array;
     final @IndexFor("array") @LessThan("this.end") int start;
     final @IndexOrHigh("array") int end;

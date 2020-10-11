@@ -258,7 +258,7 @@ public final class Bytes {
   @GwtCompatible
   private static class ByteArrayAsList extends AbstractList<Byte>
       implements RandomAccess, Serializable {
-    @HasSubsequence(value="this", from="this.start", to="this.end")
+    @HasSubsequence(subsequence="this", from="this.start", to="this.end")
     final byte @MinLen(1) [] array;
     final @IndexFor("array") @LessThan("this.end") int start;
     final @IndexOrHigh("array") int end;

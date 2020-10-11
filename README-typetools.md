@@ -12,7 +12,7 @@ To create file `guava/target/guava-HEAD-jre-SNAPSHOT.jar`:
 (This takes about 25 minutes, because it performs pluggable type-checking.)
 
 ```
-(cd guava && mvn package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
+(cd guava && mvn -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
 ```
 
 To use a locally-built Checker Framework, add `-P checkerframework-local`.

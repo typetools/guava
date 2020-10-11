@@ -376,7 +376,7 @@ public final class ImmutableIntArray implements Serializable {
   // The array is never mutated after storing in this field and the construction strategies ensure
   // it doesn't escape this class
   @SuppressWarnings("Immutable")
-  @HasSubsequence(value="this", from="this.start", to="this.end")
+  @HasSubsequence(subsequence="this", from="this.start", to="this.end")
   private final int [] array;
 
   /*

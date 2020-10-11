@@ -525,7 +525,7 @@ public final class Floats {
   @GwtCompatible
   private static class FloatArrayAsList extends AbstractList<Float>
       implements RandomAccess, Serializable {
-    @HasSubsequence(value="this", from="this.start", to="this.end")
+    @HasSubsequence(subsequence="this", from="this.start", to="this.end")
     final float @MinLen(1) [] array;
     final @IndexFor("array") @LessThan("this.end") int start;
     final @IndexOrHigh("array") int end;

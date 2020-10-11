@@ -533,7 +533,7 @@ public final class Doubles {
   @GwtCompatible
   private static class DoubleArrayAsList extends AbstractList<Double>
       implements RandomAccess, Serializable {
-    @HasSubsequence(value="this", from="this.start", to="this.end")
+    @HasSubsequence(subsequence="this", from="this.start", to="this.end")
     final double @MinLen(1) [] array;
     final @IndexFor("array") @LessThan("this.end") int start;
     final @IndexOrHigh("array") int end;
