@@ -134,7 +134,7 @@ yet written.
 
 Use the latest Checker Framework release
 (https://github.com/typetools/checker-framework/releases) by changing
-`pom.xml` (in 1 place) and `guava/pom.xml` (in 2 places).  Re-build to
+`pom.xml` (in 1 place) and `guava/pom.xml` (in 1 place).  Re-build to
 ensure that typechecking still works.  Commit and push.  If a `cf-master`
 branch exists in this repository, follow the instructions above to merge it
 into master.
