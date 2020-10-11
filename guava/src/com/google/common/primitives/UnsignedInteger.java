@@ -116,7 +116,7 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * @throws NumberFormatException if the string does not contain a parsable unsigned {@code int}
    *     value
    */
-  public static UnsignedInteger valueOf(String string, @Positive int radix) {
+  public static UnsignedInteger valueOf(String string, @IntRange(from=2, to=36) int radix) {
     return fromIntBits(UnsignedInts.parseUnsignedInt(string, radix));
   }
 
@@ -249,7 +249,7 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * {@code radix < Character.MIN_RADIX} or {@code radix > Character.MAX_RADIX}, the radix {@code
    * 10} is used.
    */
-  public String toString(@Positive int radix) {
+  public String toString(@IntRange(from=2, to=36) int radix) {
     return UnsignedInts.toString(value, radix);
   }
 }

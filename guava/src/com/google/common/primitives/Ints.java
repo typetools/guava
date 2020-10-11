@@ -770,7 +770,7 @@ public final class Ints {
    * @since 19.0
    */
   @Beta
-  public static @Nullable Integer tryParse(String string, @Positive int radix) {
+  public static @Nullable Integer tryParse(String string, @IntRange(from=2, to=36) int radix) {
     Long result = Longs.tryParse(string, radix);
     if (result == null || result.longValue() != result.intValue()) {
       return null;
