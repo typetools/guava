@@ -26,6 +26,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -71,7 +74,8 @@ public final class FileBackedOutputStream extends OutputStream {
       return buf;
     }
 
-    int getCount() {
+    @SuppressWarnings("return.type.incompatible") // this.getBuffer() is the same as this.buf
+    @IndexOrHigh("this.getBuffer()") int getCount() {
       return count;
     }
   }
@@ -195,7 +199,7 @@ public final class FileBackedOutputStream extends OutputStream {
   }
 
   @Override
-  public synchronized void write(byte[] b, int off, int len) throws IOException {
+  public synchronized void write(byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     update(len);
     out.write(b, off, len);
   }

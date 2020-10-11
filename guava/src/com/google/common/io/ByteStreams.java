@@ -41,6 +41,12 @@ import java.nio.channels.WritableByteChannel;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LessThan;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * Provides utility methods for working with byte arrays and I/O streams.
@@ -165,7 +171,7 @@ public final class ByteStreams {
    * a total combined length of {@code totalLen} bytes) followed by all bytes remaining in the given
    * input stream.
    */
-  private static byte[] toByteArrayInternal(InputStream in, Deque<byte[]> bufs, int totalLen)
+  private static byte[] toByteArrayInternal(InputStream in, Deque<byte[]> bufs, @NonNegative int totalLen)
       throws IOException {
     // Starting with an 8k buffer, double the size of each sucessive buffer. Buffers are retained
     // in a deque so that there's no copying between buffers while reading and so all of the bytes
@@ -196,7 +202,9 @@ public final class ByteStreams {
     }
   }
 
-  private static byte[] combineBuffers(Deque<byte[]> bufs, int totalLen) {
+  @SuppressWarnings("argument.type.incompatible") /* resultOffset is greater than 0 because remaining gets closer to 0
+  totalLen stays the same. bytesToCopy is valid because it can't exceed the length of buf */
+  private static byte[] combineBuffers(Deque<byte[]> bufs, @NonNegative int totalLen) {
     byte[] result = new byte[totalLen];
     int remaining = totalLen;
     while (remaining > 0) {
@@ -226,17 +234,20 @@ public final class ByteStreams {
    * create an initial byte array, but if the actual number of bytes read from the stream differs,
    * the correct result will be returned anyway.
    */
-  static byte[] toByteArray(InputStream in, long expectedSize) throws IOException {
+  static byte[] toByteArray(InputStream in, @NonNegative long expectedSize) throws IOException {
     checkArgument(expectedSize >= 0, "expectedSize (%s) must be non-negative", expectedSize);
     if (expectedSize > MAX_ARRAY_LEN) {
       throw new OutOfMemoryError(expectedSize + " bytes is too large to fit in a byte array");
     }
 
     byte[] bytes = new byte[(int) expectedSize];
-    int remaining = (int) expectedSize;
+    @LessThan("expectedSize + 1") int remaining = (int) expectedSize;
 
     while (remaining > 0) {
-      int off = (int) expectedSize - remaining;
+      @SuppressWarnings("assignment.type.incompatible") /* off can't go below 0 because remaining doesn't get bigger,
+      only smaller. It can't go beyond an index for bytes because the loop stops when remaining is negative */
+      @IndexOrHigh("bytes") int off = (int) expectedSize - remaining;
+      @SuppressWarnings("argument.type.incompatible") /* off + remaining is at most expectedSize, which is the size of bytes. */
       int read = in.read(bytes, off, remaining);
       if (read == -1) {
         // end of stream before reading expectedSize bytes
@@ -267,7 +278,7 @@ public final class ByteStreams {
    */
   @CanIgnoreReturnValue
   @Beta
-  public static long exhaust(InputStream in) throws IOException {
+  public static @NonNegative long exhaust(InputStream in) throws IOException {
     long total = 0;
     long read;
     byte[] buf = createBuffer();
@@ -294,7 +305,9 @@ public final class ByteStreams {
    *     the array
    */
   @Beta
-  public static ByteArrayDataInput newDataInput(byte[] bytes, int start) {
+  @SuppressWarnings("argument.type.incompatible") /* bytes.length - start is a correct length for the array because start
+  is smaller than bytes.length and it doesn't exceed bytes.length when start is added as offset.*/
+  public static ByteArrayDataInput newDataInput(byte[] bytes, @IndexOrHigh("#1") int start) {
     checkPositionIndex(start, bytes.length);
     return newDataInput(new ByteArrayInputStream(bytes, start, bytes.length - start));
   }
@@ -328,7 +341,7 @@ public final class ByteStreams {
     }
 
     @Override
-    public void readFully(byte b[], int off, int len) {
+    public void readFully(byte b[], @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
       try {
         input.readFully(b, off, len);
       } catch (IOException e) {
@@ -337,7 +350,7 @@ public final class ByteStreams {
     }
 
     @Override
-    public int skipBytes(int n) {
+    public @NonNegative int skipBytes(int n) {
       try {
         return input.skipBytes(n);
       } catch (IOException e) {
@@ -366,7 +379,7 @@ public final class ByteStreams {
     }
 
     @Override
-    public int readUnsignedByte() {
+    public @NonNegative int readUnsignedByte() {
       try {
         return input.readUnsignedByte();
       } catch (IOException e) {
@@ -384,7 +397,7 @@ public final class ByteStreams {
     }
 
     @Override
-    public int readUnsignedShort() {
+    public @NonNegative int readUnsignedShort() {
       try {
         return input.readUnsignedShort();
       } catch (IOException e) {
@@ -469,7 +482,7 @@ public final class ByteStreams {
    * @throws IllegalArgumentException if {@code size} is negative
    */
   @Beta
-  public static ByteArrayDataOutput newDataOutput(int size) {
+  public static ByteArrayDataOutput newDataOutput(@NonNegative int size) {
     // When called at high frequency, boxing size generates too much garbage,
     // so avoid doing that if we can.
     if (size < 0) {
@@ -524,7 +537,7 @@ public final class ByteStreams {
     }
 
     @Override
-    public void write(byte[] b, int off, int len) {
+    public void write(byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
       try {
         output.write(b, off, len);
       } catch (IOException impossible) {
@@ -651,7 +664,7 @@ public final class ByteStreams {
 
         /** Discards the specified byte array. */
         @Override
-        public void write(byte[] b, int off, int len) {
+        public void write(byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
           checkNotNull(b);
         }
 
@@ -680,16 +693,16 @@ public final class ByteStreams {
    * @since 14.0 (since 1.0 as com.google.common.io.LimitInputStream)
    */
   @Beta
-  public static InputStream limit(InputStream in, long limit) {
+  public static InputStream limit(InputStream in, @NonNegative long limit) {
     return new LimitedInputStream(in, limit);
   }
 
   private static final class LimitedInputStream extends FilterInputStream {
 
-    private long left;
-    private long mark = -1;
+    private @NonNegative long left;
+    private @GTENegativeOne long mark = -1;
 
-    LimitedInputStream(InputStream in, long limit) {
+    LimitedInputStream(InputStream in, @NonNegative long limit) {
       super(in);
       checkNotNull(in);
       checkArgument(limit >= 0, "limit must be non-negative");
@@ -697,19 +710,20 @@ public final class ByteStreams {
     }
 
     @Override
-    public int available() throws IOException {
+    public @NonNegative int available() throws IOException {
       return (int) Math.min(in.available(), left);
     }
 
     // it's okay to mark even if mark isn't supported, as reset won't work
     @Override
-    public synchronized void mark(int readLimit) {
+    public synchronized void mark(@NonNegative int readLimit) {
       in.mark(readLimit);
       mark = left;
     }
 
     @Override
-    public int read() throws IOException {
+    @SuppressWarnings("compound.assignment.type.incompatible") /* left can't go below 0 because it was previously checked*/
+    public @GTENegativeOne int read() throws IOException {
       if (left == 0) {
         return -1;
       }
@@ -722,7 +736,7 @@ public final class ByteStreams {
     }
 
     @Override
-    public int read(byte[] b, int off, int len) throws IOException {
+    public @GTENegativeOne @LTEqLengthOf("#1") int read(byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
       if (left == 0) {
         return -1;
       }
@@ -736,6 +750,7 @@ public final class ByteStreams {
     }
 
     @Override
+    @SuppressWarnings("assignment.type.incompatible") /* mark is surely non-negative because of the check before*/
     public synchronized void reset() throws IOException {
       if (!in.markSupported()) {
         throw new IOException("Mark not supported");
@@ -749,7 +764,7 @@ public final class ByteStreams {
     }
 
     @Override
-    public long skip(long n) throws IOException {
+    public @NonNegative long skip(long n) throws IOException {
       n = Math.min(n, left);
       long skipped = in.skip(n);
       left -= skipped;
@@ -784,7 +799,7 @@ public final class ByteStreams {
    * @throws IOException if an I/O error occurs.
    */
   @Beta
-  public static void readFully(InputStream in, byte[] b, int off, int len) throws IOException {
+  public static void readFully(InputStream in, byte[] b, @IndexOrHigh("#2") int off, @NonNegative @LTLengthOf(value = "#2", offset = "#3 - 1") int len) throws IOException {
     int read = read(in, b, off, len);
     if (read != len) {
       throw new EOFException(
@@ -853,7 +868,7 @@ public final class ByteStreams {
    * specifies} it can do in its Javadoc despite the fact that it is violating the contract of
    * {@code InputStream.skip()}.
    */
-  private static long skipSafely(InputStream in, long n) throws IOException {
+  private static @NonNegative long skipSafely(InputStream in, long n) throws IOException {
     int available = in.available();
     return available == 0 ? 0 : in.skip(Math.min(available, n));
   }
@@ -909,7 +924,7 @@ public final class ByteStreams {
   @CanIgnoreReturnValue
   // Sometimes you don't care how many bytes you actually read, I guess.
   // (You know that it's either going to read len bytes or stop at EOF.)
-  public static int read(InputStream in, byte[] b, int off, int len) throws IOException {
+  public static int read(InputStream in, byte[] b, @IndexOrHigh("#2") int off, @NonNegative @LTLengthOf(value = "#2", offset = "#3 - 1") int len) throws IOException {
     checkNotNull(in);
     checkNotNull(b);
     if (len < 0) {
@@ -918,6 +933,8 @@ public final class ByteStreams {
     checkPositionIndexes(off, off + len, b.length);
     int total = 0;
     while (total < len) {
+      @SuppressWarnings("argument.type.incompatible") /* if the offset and length passed to this method are invalid,
+      an exception would be thrown anyways, so there is no need to check them before */
       int result = in.read(b, off + total, len - total);
       if (result == -1) {
         break;

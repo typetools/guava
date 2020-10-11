@@ -22,6 +22,11 @@ import com.google.common.annotations.GwtIncompatible;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.CharBuffer;
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * A {@link Reader} that reads the characters in a {@link CharSequence}. Like {@code StringReader},
@@ -52,12 +57,14 @@ final class CharSequenceReader extends Reader {
     return remaining() > 0;
   }
 
-  private int remaining() {
+  @SuppressWarnings("return.type.incompatible") // The method is private and every place it is used returns a non-negative value.
+  private @NonNegative int remaining() {
     return seq.length() - pos;
   }
 
   @Override
-  public synchronized int read(CharBuffer target) throws IOException {
+  @SuppressWarnings("argument.type.incompatible") // pos is a valid index for seq because the loop stops at charsToRead steps, which cannot exceed the limit of target or seq.
+  public synchronized @GTENegativeOne int read(CharBuffer target) throws IOException {
     checkNotNull(target);
     checkOpen();
     if (!hasRemaining()) {
@@ -71,13 +78,18 @@ final class CharSequenceReader extends Reader {
   }
 
   @Override
-  public synchronized int read() throws IOException {
+  @SuppressWarnings({"return.type.incompatible", "argument.type.incompatible"}) /* charAt returns a char, which is known to be non-negative Ascii.
+  pos is a valid index for seq because hasRemaining() would otherwise return false */
+  public synchronized @GTENegativeOne int read() throws IOException {
     checkOpen();
     return hasRemaining() ? seq.charAt(pos++) : -1;
   }
 
   @Override
-  public synchronized int read(char[] cbuf, int off, int len) throws IOException {
+  @SuppressWarnings({"argument.type.incompatible", "return.type.incompatible"}) /*
+  #1. pos is a valid index for seq because the loop stops at charsToRead steps, which cannot exceed the limit of seq.
+  #2. charsToRead is at most equal to len, which is known to be below the length of cbuf */
+  public synchronized @GTENegativeOne @LTEqLengthOf("#1") int read(char[] cbuf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     checkPositionIndexes(off, off + len, cbuf.length);
     checkOpen();
     if (!hasRemaining()) {
@@ -85,13 +97,13 @@ final class CharSequenceReader extends Reader {
     }
     int charsToRead = Math.min(len, remaining());
     for (int i = 0; i < charsToRead; i++) {
-      cbuf[off + i] = seq.charAt(pos++);
+      cbuf[off + i] = seq.charAt(pos++); // #1
     }
-    return charsToRead;
+    return charsToRead; // #2
   }
 
   @Override
-  public synchronized long skip(long n) throws IOException {
+  public synchronized @NonNegative long skip(@NonNegative long n) throws IOException {
     checkArgument(n >= 0, "n (%s) may not be negative", n);
     checkOpen();
     int charsToSkip = (int) Math.min(remaining(), n); // safe because remaining is an int
@@ -111,7 +123,7 @@ final class CharSequenceReader extends Reader {
   }
 
   @Override
-  public synchronized void mark(int readAheadLimit) throws IOException {
+  public synchronized void mark(@NonNegative int readAheadLimit) throws IOException {
     checkArgument(readAheadLimit >= 0, "readAheadLimit (%s) may not be negative", readAheadLimit);
     checkOpen();
     mark = pos;

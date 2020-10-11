@@ -52,6 +52,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * Provides utility methods for working with {@linkplain File files}.
@@ -131,7 +133,7 @@ public final class Files {
     }
 
     @Override
-    public Optional<Long> sizeIfKnown() {
+    public Optional<@NonNegative Long> sizeIfKnown() {
       if (file.isFile()) {
         return Optional.of(file.length());
       } else {
@@ -682,12 +684,12 @@ public final class Files {
    * @since 2.0
    */
   @Beta
-  public static MappedByteBuffer map(File file, MapMode mode, long size) throws IOException {
+  public static MappedByteBuffer map(File file, MapMode mode, @NonNegative long size) throws IOException {
     checkArgument(size >= 0, "size (%s) may not be negative", size);
     return mapInternal(file, mode, size);
   }
 
-  private static MappedByteBuffer mapInternal(File file, MapMode mode, long size)
+  private static MappedByteBuffer mapInternal(File file, MapMode mode, @GTENegativeOne long size)
       throws IOException {
     checkNotNull(file);
     checkNotNull(mode);
