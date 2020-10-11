@@ -36,6 +36,7 @@ final class Platform {
   private Platform() {}
 
   /** Calls {@link System#nanoTime()}. */
+  @SuppressWarnings("GoodTime") // reading system time without TimeSource
   static long systemNanoTime() {
     return System.nanoTime();
   }
@@ -70,8 +71,8 @@ final class Platform {
     return patternCompiler.compile(pattern);
   }
 
-  static boolean usingJdkPatternCompiler() {
-    return patternCompiler instanceof JdkPatternCompiler;
+  static boolean patternCompilerIsPcreLike() {
+    return patternCompiler.isPcreLike();
   }
 
   private static PatternCompiler loadPatternCompiler() {
@@ -92,5 +93,12 @@ final class Platform {
     public CommonPattern compile(String pattern) {
       return new JdkPattern(Pattern.compile(pattern));
     }
+
+    @Override
+    public boolean isPcreLike() {
+      return true;
+    }
   }
+
+  static void checkGwtRpcEnabled() {}
 }

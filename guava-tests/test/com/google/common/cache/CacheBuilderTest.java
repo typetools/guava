@@ -171,6 +171,14 @@ public class CacheBuilderTest extends TestCase {
     }
   }
 
+  @GwtIncompatible // digs into internals of the non-GWT implementation
+  public void testMaximumSize_largerThanInt() {
+    CacheBuilder<Object, Object> builder =
+        CacheBuilder.newBuilder().initialCapacity(512).maximumSize(Long.MAX_VALUE);
+    LocalCache<?, ?> cache = ((LocalCache.LocalManualCache<?, ?>) builder.build()).localCache;
+    assertThat(cache.segments.length * cache.segments[0].table.length()).isEqualTo(512);
+  }
+
   @GwtIncompatible // maximumWeight
   public void testMaximumWeight_negative() {
     CacheBuilder<Object, Object> builder = CacheBuilder.newBuilder();
@@ -269,24 +277,13 @@ public class CacheBuilderTest extends TestCase {
   }
 
   @GwtIncompatible // java.time.Duration
-  public void testLargeDurations() {
+  public void testLargeDurationsAreOk() {
     java.time.Duration threeHundredYears = java.time.Duration.ofDays(365 * 300);
-    CacheBuilder<Object, Object> builder = CacheBuilder.newBuilder();
-    try {
-      builder.expireAfterWrite(threeHundredYears);
-      fail();
-    } catch (ArithmeticException expected) {
-    }
-    try {
-      builder.expireAfterAccess(threeHundredYears);
-      fail();
-    } catch (ArithmeticException expected) {
-    }
-    try {
-      builder.refreshAfterWrite(threeHundredYears);
-      fail();
-    } catch (ArithmeticException expected) {
-    }
+    CacheBuilder<Object, Object> builder =
+        CacheBuilder.newBuilder()
+            .expireAfterWrite(threeHundredYears)
+            .expireAfterAccess(threeHundredYears)
+            .refreshAfterWrite(threeHundredYears);
   }
 
   public void testTimeToLive_negative() {

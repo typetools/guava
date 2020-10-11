@@ -295,188 +295,6 @@ public abstract class CharMatcher implements Predicate<Character> {
     return SingleWidth.INSTANCE;
   }
 
-  // Legacy constants
-
-  /**
-   * Determines whether a character is whitespace according to the latest Unicode
-   * standard, as illustrated
-   * <a
-  // href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5Cp%7Bwhitespace%7D">here</a>.
-   * This is not the same definition used by other Java APIs. (See a
-   * <a href="https://goo.gl/Y6SLWx">comparison of several definitions of
-   * "whitespace"</a>.)
-   *
-   * <p><b>Note:</b> as the Unicode definition evolves, we will modify this constant
-   * to keep it up to date.
-   *
-   * @deprecated Use {@link #whitespace()} instead. This constant is scheduled to be
-   *     removed in June 2018.
-   */
-  @com.google.common.annotations.Beta
-  @Deprecated
-  public static final CharMatcher WHITESPACE = whitespace();
-
-  /**
-   * Determines whether a character is a breaking whitespace (that is, a whitespace
-   * which can be interpreted as a break between words for formatting purposes). See
-   * {@link #whitespace} for a discussion of that term.
-   *
-   * @since 2.0
-   * @deprecated Use {@link #breakingWhitespace()} instead. This constant is scheduled
-   *     to be removed in June 2018.
-   */
-  @com.google.common.annotations.Beta
-  @Deprecated
-  public static final CharMatcher BREAKING_WHITESPACE = breakingWhitespace();
-
-  /**
-   * Determines whether a character is ASCII, meaning that its code point is less than
-   * 128.
-   *
-   * @deprecated Use {@link #ascii()} instead. This constant is scheduled to be
-   *     removed in June 2018.
-   */
-  @com.google.common.annotations.Beta
-  @Deprecated
-  public static final CharMatcher ASCII = ascii();
-
-  /**
-   * Determines whether a character is a digit according to
-   * <a href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5Cp%7Bdigit%7D">
-   * Unicode</a>. If you only care to match ASCII digits, you can use
-   * {@code inRange('0', '9')}.
-   *
-   * @deprecated Many digits are supplementary characters; see the class
-   *     documentation. If you need to use this, use {@link #digit()} instead. This
-   * .   constant is scheduled to be removed in June 2018.
-   */
-  @com.google.common.annotations.Beta
-  @Deprecated
-  public static final CharMatcher DIGIT = digit();
-
-  /**
-   * Determines whether a character is a digit according to
-   * {@linkplain Character#isDigit(char) Java's definition}. If you only care to match
-   * ASCII digits, you can use {@code inRange('0', '9')}.
-   *
-   * @deprecated Many digits are supplementary characters; see the class
-   *     documentation. If you need to use this, use {@link #javaDigit()} instead.
-   *     This constant is scheduled to be removed in June 2018.
-   */
-  @com.google.common.annotations.Beta
-  @Deprecated
-  public static final CharMatcher JAVA_DIGIT = javaDigit();
-
-  /**
-   * Determines whether a character is a letter according to
-   * {@linkplain Character#isLetter(char) Java's definition}. If you only care to
-   * match letters of the Latin alphabet, you can use
-   * {@code inRange('a', 'z').or(inRange('A', 'Z'))}.
-   *
-   * @deprecated Most letters are supplementary characters; see the class
-   *     documentation. If you need to use this, use {@link #javaLetter()} instead.
-   *     This constant is scheduled to be removed in June 2018.
-   */
-  @com.google.common.annotations.Beta
-  @Deprecated
-  public static final CharMatcher JAVA_LETTER = javaLetter();
-
-  /**
-   * Determines whether a character is a letter or digit according to
-   * {@linkplain Character#isLetterOrDigit(char) Java's definition}.
-   *
-   * @deprecated Most letters and digits are supplementary characters; see the class
-   *     documentation. If you need to use this, use {@link #javaLetterOrDigit()}
-   *     instead. This constant is scheduled to be removed in June 2018.
-   */
-  @com.google.common.annotations.Beta
-  @Deprecated
-  public static final CharMatcher JAVA_LETTER_OR_DIGIT = javaLetterOrDigit();
-
-  /**
-   * Determines whether a character is upper case according to
-   * {@linkplain Character#isUpperCase(char) Java's definition}.
-   *
-   * @deprecated Some uppercase letters are supplementary characters; see the class
-   *     documentation. If you need to use this, use {@link #javaUpperCase()} instead.
-   *     This constant is scheduled to be removed in June 2018.
-   */
-  @com.google.common.annotations.Beta
-  @Deprecated
-  public static final CharMatcher JAVA_UPPER_CASE = javaUpperCase();
-
-  /**
-   * Determines whether a character is lower case according to
-   * {@linkplain Character#isLowerCase(char) Java's definition}.
-   *
-   * @deprecated Some lowercase letters are supplementary characters; see the class
-   *     documentation. If you need to use this, use {@link #javaLowerCase()} instead.
-   *     This constant is scheduled to be removed in June 2018.
-   */
-  @com.google.common.annotations.Beta
-  @Deprecated
-  public static final CharMatcher JAVA_LOWER_CASE = javaLowerCase();
-
-  /**
-   * Determines whether a character is an ISO control character as specified by
-   * {@link Character#isISOControl(char)}.
-   *
-   * @deprecated Use {@link #javaIsoControl()} instead. This constant is scheduled to
-   *     be removed in June 2018.
-   */
-  @com.google.common.annotations.Beta
-  @Deprecated
-  public static final CharMatcher JAVA_ISO_CONTROL = javaIsoControl();
-
-  /**
-   * Determines whether a character is invisible; that is, if its Unicode category is
-   * any of SPACE_SEPARATOR, LINE_SEPARATOR, PARAGRAPH_SEPARATOR, CONTROL, FORMAT,
-   * SURROGATE, and PRIVATE_USE according to ICU4J.
-   *
-   * @deprecated Most invisible characters are supplementary characters; see the class
-   *     documentation. If you need to use this, use {@link #invisible()} instead.
-   *     This constant is scheduled to be removed in June 2018.
-   */
-  @com.google.common.annotations.Beta
-  @Deprecated
-  public static final CharMatcher INVISIBLE = invisible();
-
-  /**
-   * Determines whether a character is single-width (not double-width). When in doubt,
-   * this matcher errs on the side of returning {@code false} (that is, it tends to
-   * assume a character is double-width).
-   *
-   * <p><b>Note:</b> as the reference file evolves, we will modify this constant to
-   * keep it up to date.
-   *
-   * @deprecated Many such characters are supplementary characters; see the class
-   *     documentation. If you need to use this, use {@link #singleWidth()} instead.
-   *     This constant is scheduled to be removed in June 2018.
-   */
-  @com.google.common.annotations.Beta
-  @Deprecated
-  public static final CharMatcher SINGLE_WIDTH = singleWidth();
-
-  /**
-   * Matches any character.
-   *
-   * @deprecated Use {@link #any()} instead. This constant is scheduled to be
-   *     removed in June 2018.
-   */
-  @com.google.common.annotations.Beta
-  @Deprecated
-  public static final CharMatcher ANY = any();
-
-  /**
-   * Matches no characters.
-   *
-   * @deprecated Use {@link #none()} instead. This constant is scheduled to be
-   *     removed in June 2018.
-   */
-  @com.google.common.annotations.Beta
-  @Deprecated
-  public static final CharMatcher NONE = none();
-
   // Static factories
 
   /** Returns a {@code char} matcher that matches only one specified BMP character. */
@@ -561,6 +379,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 
   /** Returns a matcher that matches any character not matched by this matcher. */
   // @Override under Java 8 but not under Java 7
+  @Override
   public CharMatcher negate() {
     return new Negated(this);
   }
@@ -634,6 +453,7 @@ public abstract class CharMatcher implements Predicate<Character> {
   /**
    * Helper method for {@link #precomputedInternal} that doesn't test if the negation is cheaper.
    */
+  @SuppressWarnings("index")  // table has bits if totalCharacters is sufficiently large
   @GwtIncompatible // SmallCharMatcher
   private static CharMatcher precomputedPositive(
       int totalCharacters, BitSet table, String description) {
@@ -788,7 +608,7 @@ public abstract class CharMatcher implements Predicate<Character> {
   /*
    * count is incremented at most sequence.length() times
    */
-  @SuppressWarnings("compound.assignment.type.incompatible") // variable incremented at most IndexOrHigh times
+  @SuppressWarnings("unary.increment.type.incompatible") // variable incremented at most IndexOrHigh times
   public @IndexOrHigh("#1") int countIn(CharSequence sequence) {
     @IndexOrHigh("#1") int count = 0;
     for (int i = 0; i < sequence.length(); i++) {
@@ -816,7 +636,7 @@ public abstract class CharMatcher implements Predicate<Character> {
      * if equal, pos is not incremented anymore
      * therefore both pos++ are safe
      */
-    "upperbound:compound.assignment.type.incompatible", // index incremented in nested loop with break
+    "upperbound:unary.increment.type.incompatible", // index incremented in nested loop with break
     "upperbound:array.access.unsafe.high", "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/204
     /*
      * spread <= pos, therefore pos-spread >= 0
@@ -1157,6 +977,7 @@ public abstract class CharMatcher implements Predicate<Character> {
    * Returns the Java Unicode escape sequence for the given {@code char}, in the form "\u12AB" where
    * "12AB" is the four hexadecimal digits representing the 16-bit code unit.
    */
+  @SuppressWarnings("index") // https://github.com/typetools/checker-framework/issues/2540
   private static String showCharacter(char c) {
     String hex = "0123456789ABCDEF";
     char[] tmp = {'\\', 'u', '\0', '\0', '\0', '\0'};
@@ -1452,6 +1273,10 @@ public abstract class CharMatcher implements Predicate<Character> {
   @VisibleForTesting
   static final class Whitespace extends NamedFastMatcher {
 
+    // TABLE is a precomputed hashset of whitespace characters. MULTIPLIER serves as a hash function
+    // whose key property is that it maps 25 characters into the 32-slot table without collision.
+    // Basically this is an opportunistic fast implementation as opposed to "good code". For most
+    // other use-cases, the reduction in readability isn't worth it.
     static final String TABLE =
         "\u2002\u3000\r\u0085\u200A\u2005\u2000\u3000"
             + "\u2029\u000B\u3000\u2008\u2003\u205F\u3000\u1680"
@@ -1585,6 +1410,7 @@ public abstract class CharMatcher implements Predicate<Character> {
       return ZEROES.toCharArray();
     }
 
+    @SuppressWarnings("index") // https://github.com/typetools/checker-framework/issues/2540
     private static char @SameLen("ZEROES")[] nines() {
       char[] nines = new char[ZEROES.length()];
       for (int i = 0; i < ZEROES.length(); i++) {

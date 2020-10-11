@@ -59,8 +59,9 @@ public class ImmutableListMultimap<K, V> extends ImmutableMultimap<K, V>
    * whose keys and values are the result of applying the provided mapping functions to the input
    * elements.
    *
-   * <p>For streams with {@linkplain java.util.stream#Ordering defined encounter order}, that order
-   * is preserved, but entries are <a href="ImmutableMultimap.html#iteration">grouped by key</a>.
+   * <p>For streams with defined encounter order (as defined in the Ordering section of the {@link
+   * java.util.stream} Javadoc), that order is preserved, but entries are <a
+   * href="ImmutableMultimap.html#iteration">grouped by key</a>.
    *
    * <p>Example:
    *
@@ -81,7 +82,6 @@ public class ImmutableListMultimap<K, V> extends ImmutableMultimap<K, V>
    *
    * @since 21.0
    */
-  @Beta
   public static <T, K, V> Collector<T, ?, ImmutableListMultimap<K, V>> toImmutableListMultimap(
       Function<? super T, ? extends K> keyFunction,
       Function<? super T, ? extends V> valueFunction) {
@@ -125,7 +125,6 @@ public class ImmutableListMultimap<K, V> extends ImmutableMultimap<K, V>
    *
    * @since 21.0
    */
-  @Beta
   public static <T, K, V>
       Collector<T, ?, ImmutableListMultimap<K, V>> flatteningToImmutableListMultimap(
           Function<? super T, ? extends K> keyFunction,
@@ -405,8 +404,7 @@ public class ImmutableListMultimap<K, V> extends ImmutableMultimap<K, V>
   @Override
   public ImmutableList<V> get(@Nullable K key) {
     // This cast is safe as its type is known in constructor.
-    @Nullable
-    ImmutableList<V> list = (@Nullable ImmutableList<V>) map.get(key);
+    @Nullable ImmutableList<V> list = (@Nullable ImmutableList<V>) map.get(key);
     return (list == null) ? ImmutableList.<V>of() : list;
   }
 

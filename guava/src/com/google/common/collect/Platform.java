@@ -18,6 +18,7 @@ package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -30,6 +31,9 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @GwtCompatible(emulated = true)
 final class Platform {
+  private static final java.util.logging.Logger logger =
+      java.util.logging.Logger.getLogger(Platform.class.getName());
+
   /** Returns the platform preferred implementation of a map based on a hash table. */
   static <K, V> Map<K, V> newHashMapWithExpectedSize(int expectedSize) {
     return Maps.newHashMapWithExpectedSize(expectedSize);
@@ -88,6 +92,11 @@ final class Platform {
     return result;
   }
 
+  /** Equivalent to Arrays.copyOfRange(source, from, to, arrayOfType.getClass()). */
+  static <T> T[] copy(Object[] source, int from, int to, T[] arrayOfType) {
+    return Arrays.copyOfRange(source, from, to, (Class<? extends T[]>) arrayOfType.getClass());
+  }
+
   /**
    * Configures the given map maker to use weak keys, if possible; does nothing otherwise (i.e., in
    * GWT). This is sometimes acceptable, when only server-side code could generate enough volume
@@ -103,6 +112,28 @@ final class Platform {
 
   static int reduceExponentIfGwt(int exponent) {
     return exponent;
+  }
+
+  static void checkGwtRpcEnabled() {
+    String propertyName = "guava.gwt.emergency_reenable_rpc";
+
+    if (!Boolean.parseBoolean(System.getProperty(propertyName, "false"))) {
+      throw new UnsupportedOperationException(
+          com.google.common.base.Strings.lenientFormat(
+              "We are removing GWT-RPC support for Guava types. You can temporarily reenable"
+                  + " support by setting the system property %s to true. For more about system"
+                  + " properties, see %s. For more about Guava's GWT-RPC support, see %s.",
+              propertyName,
+              "https://stackoverflow.com/q/5189914/28465",
+              "https://groups.google.com/d/msg/guava-announce/zHZTFg7YF3o/rQNnwdHeEwAJ"));
+    }
+    logger.log(
+        java.util.logging.Level.WARNING,
+        "Later in 2020, we will remove GWT-RPC support for Guava types. You are seeing this"
+            + " warning because you are sending a Guava type over GWT-RPC, which will break. You"
+            + " can identify which type by looking at the class name in the attached stack trace.",
+        new Throwable());
+
   }
 
   private Platform() {}

@@ -79,6 +79,7 @@ public final class MoreExecutors {
    */
   @Beta
   @GwtIncompatible // TODO
+  @SuppressWarnings("GoodTime") // should accept a java.time.Duration
   public static ExecutorService getExitingExecutorService(
       ThreadPoolExecutor executor, long terminationTimeout, TimeUnit timeUnit) {
     return new Application().getExitingExecutorService(executor, terminationTimeout, timeUnit);
@@ -118,6 +119,7 @@ public final class MoreExecutors {
    */
   @Beta
   @GwtIncompatible // TODO
+  @SuppressWarnings("GoodTime") // should accept a java.time.Duration
   public static ScheduledExecutorService getExitingScheduledExecutorService(
       ScheduledThreadPoolExecutor executor, long terminationTimeout, TimeUnit timeUnit) {
     return new Application()
@@ -157,6 +159,7 @@ public final class MoreExecutors {
    */
   @Beta
   @GwtIncompatible // TODO
+  @SuppressWarnings("GoodTime") // should accept a java.time.Duration
   public static void addDelayedShutdownHook(
       ExecutorService service, long terminationTimeout, TimeUnit timeUnit) {
     new Application().addDelayedShutdownHook(service, terminationTimeout, timeUnit);
@@ -389,21 +392,6 @@ public final class MoreExecutors {
     return DirectExecutor.INSTANCE;
   }
 
-  /** See {@link #directExecutor} for behavioral notes. */
-  private enum DirectExecutor implements Executor {
-    INSTANCE;
-
-    @Override
-    public void execute(Runnable command) {
-      command.run();
-    }
-
-    @Override
-    public String toString() {
-      return "MoreExecutors.directExecutor()";
-    }
-  }
-
   /**
    * Returns an {@link Executor} that runs each task executed sequentially, such that no two tasks
    * are running concurrently. Submitted tasks have a happens-before order as defined in the Java
@@ -616,8 +604,8 @@ public final class MoreExecutors {
     }
 
     @GwtIncompatible // TODO
-    private static final class NeverSuccessfulListenableFutureTask extends AbstractFuture<Void>
-        implements Runnable {
+    private static final class NeverSuccessfulListenableFutureTask
+        extends AbstractFuture.TrustedFuture<Void> implements Runnable {
       private final Runnable delegate;
 
       public NeverSuccessfulListenableFutureTask(Runnable delegate) {
@@ -651,6 +639,7 @@ public final class MoreExecutors {
    * An implementation of {@link ExecutorService#invokeAny} for {@link ListeningExecutorService}
    * implementations.
    */
+  @SuppressWarnings("GoodTime") // should accept a java.time.Duration
   @GwtIncompatible static <T> T invokeAnyImpl(
       ListeningExecutorService executorService,
       Collection<? extends Callable<T>> tasks,
@@ -750,15 +739,17 @@ public final class MoreExecutors {
   /**
    * Returns a default thread factory used to create new threads.
    *
-   * <p>On AppEngine, returns {@code ThreadManager.currentRequestThreadFactory()}. Otherwise,
-   * returns {@link Executors#defaultThreadFactory()}.
+   * <p>When running on AppEngine with access to <a
+   * href="https://cloud.google.com/appengine/docs/standard/java/javadoc/">AppEngine legacy
+   * APIs</a>, this method returns {@code ThreadManager.currentRequestThreadFactory()}. Otherwise,
+   * it returns {@link Executors#defaultThreadFactory()}.
    *
    * @since 14.0
    */
   @Beta
   @GwtIncompatible // concurrency
   public static ThreadFactory platformThreadFactory() {
-    if (!isAppEngine()) {
+    if (!isAppEngineWithApiClasses()) {
       return Executors.defaultThreadFactory();
     }
     try {
@@ -766,7 +757,16 @@ public final class MoreExecutors {
           Class.forName("com.google.appengine.api.ThreadManager")
               .getMethod("currentRequestThreadFactory")
               .invoke(null);
-    } catch (IllegalAccessException | ClassNotFoundException | NoSuchMethodException e) {
+      /*
+       * Do not merge the 3 catch blocks below. javac would infer a type of
+       * ReflectiveOperationException, which Animal Sniffer would reject. (Old versions of Android
+       * don't *seem* to mind, but there might be edge cases of which we're unaware.)
+       */
+    } catch (IllegalAccessException e) {
+      throw new RuntimeException("Couldn't invoke ThreadManager.currentRequestThreadFactory", e);
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException("Couldn't invoke ThreadManager.currentRequestThreadFactory", e);
+    } catch (NoSuchMethodException e) {
       throw new RuntimeException("Couldn't invoke ThreadManager.currentRequestThreadFactory", e);
     } catch (InvocationTargetException e) {
       throw Throwables.propagate(e.getCause());
@@ -774,8 +774,13 @@ public final class MoreExecutors {
   }
 
   @GwtIncompatible // TODO
-  private static boolean isAppEngine() {
+  private static boolean isAppEngineWithApiClasses() {
     if (System.getProperty("com.google.appengine.runtime.environment") == null) {
+      return false;
+    }
+    try {
+      Class.forName("com.google.appengine.api.utils.SystemProperty");
+    } catch (ClassNotFoundException e) {
       return false;
     }
     try {
@@ -835,10 +840,6 @@ public final class MoreExecutors {
   static Executor renamingDecorator(final Executor executor, final Supplier<String> nameSupplier) {
     checkNotNull(executor);
     checkNotNull(nameSupplier);
-    if (isAppEngine()) {
-      // AppEngine doesn't support thread renaming, so don't even try
-      return executor;
-    }
     return new Executor() {
       @Override
       public void execute(Runnable command) {
@@ -864,10 +865,6 @@ public final class MoreExecutors {
       final ExecutorService service, final Supplier<String> nameSupplier) {
     checkNotNull(service);
     checkNotNull(nameSupplier);
-    if (isAppEngine()) {
-      // AppEngine doesn't support thread renaming, so don't even try.
-      return service;
-    }
     return new WrappingExecutorService(service) {
       @Override
       protected <T> Callable<T> wrapTask(Callable<T> callable) {
@@ -898,10 +895,6 @@ public final class MoreExecutors {
       final ScheduledExecutorService service, final Supplier<String> nameSupplier) {
     checkNotNull(service);
     checkNotNull(nameSupplier);
-    if (isAppEngine()) {
-      // AppEngine doesn't support thread renaming, so don't even try.
-      return service;
-    }
     return new WrappingScheduledExecutorService(service) {
       @Override
       protected <T> Callable<T> wrapTask(Callable<T> callable) {
@@ -942,6 +935,7 @@ public final class MoreExecutors {
   @Beta
   @CanIgnoreReturnValue
   @GwtIncompatible // concurrency
+  @SuppressWarnings("GoodTime") // should accept a java.time.Duration
   public static boolean shutdownAndAwaitTermination(
       ExecutorService service, long timeout, TimeUnit unit) {
     long halfTimeoutNanos = unit.toNanos(timeout) / 2;

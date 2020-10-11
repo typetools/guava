@@ -69,6 +69,11 @@ public abstract class AbstractValueGraph<N, V> extends AbstractBaseGraph<N>
       }
 
       @Override
+      public ElementOrder<N> incidentEdgeOrder() {
+        return AbstractValueGraph.this.incidentEdgeOrder();
+      }
+
+      @Override
       public Set<N> adjacentNodes(N node) {
         return AbstractValueGraph.this.adjacentNodes(node);
       }
@@ -103,6 +108,11 @@ public abstract class AbstractValueGraph<N, V> extends AbstractBaseGraph<N>
   @Override
   public Optional<V> edgeValue(N nodeU, N nodeV) {
     return Optional.ofNullable(edgeValueOrDefault(nodeU, nodeV, null));
+  }
+
+  @Override
+  public Optional<V> edgeValue(EndpointPair<N> endpoints) {
+    return Optional.ofNullable(edgeValueOrDefault(endpoints, null));
   }
 
   @Override

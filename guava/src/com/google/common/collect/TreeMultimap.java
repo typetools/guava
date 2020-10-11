@@ -117,10 +117,8 @@ public class TreeMultimap<K, V> extends AbstractSortedKeySortedSetMultimap<K, V>
   }
 
   private TreeMultimap(
-      @Nullable
-      Comparator<? super K> keyComparator,
-      @Nullable
-      Comparator<? super V> valueComparator,
+      @Nullable Comparator<? super K> keyComparator,
+      @Nullable Comparator<? super V> valueComparator,
       Multimap<? extends K, ? extends V> multimap) {
     this(keyComparator, valueComparator);
     putAll(multimap);

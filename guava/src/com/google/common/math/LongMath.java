@@ -288,6 +288,7 @@ public final class LongMath {
    *
    * @throws IllegalArgumentException if {@code k < 0}
    */
+  @SuppressWarnings("index") // https://github.com/typetools/checker-framework/issues/2541
   @GwtIncompatible // TODO
   public static long pow(long b, int k) {
     checkNonNegative("exponent", k);
@@ -622,6 +623,7 @@ public final class LongMath {
    * @throws ArithmeticException if {@code b} to the {@code k}th power overflows in signed {@code
    *     long} arithmetic
    */
+  @SuppressWarnings("index") // https://github.com/typetools/checker-framework/issues/2541
   @GwtIncompatible // TODO
   public static long checkedPow(long b, int k) {
     checkNonNegative("exponent", k);
@@ -736,6 +738,7 @@ public final class LongMath {
    *
    * @since 20.0
    */
+  @SuppressWarnings("index") // https://github.com/typetools/checker-framework/issues/2541
   @Beta
   public static long saturatedPow(long b, int k) {
     checkNonNegative("exponent", k);
@@ -829,8 +832,9 @@ public final class LongMath {
    *
    * @throws IllegalArgumentException if {@code n < 0}, {@code k < 0}, or {@code k > n}
    */
-  @SuppressWarnings("lowerbound:compound.assignment.type.incompatible")/*(1): k = n - k. Entering for loop, i <= k, Since
-  n is non negative and k <= n, n - n - k is always >= 0 */
+  @SuppressWarnings({"lowerbound:unary.decrement.type.incompatible", // k = n - k is non-negative
+                    "array.access.unsafe.low" // looks like a bug, possibly related to the above
+                    })
   public static long binomial(@NonNegative @LTLengthOf("this.factorials") int n, @NonNegative @LessThan("#1 + 1") int k) {
     checkNonNegative("n", n);
     checkNonNegative("k", k);

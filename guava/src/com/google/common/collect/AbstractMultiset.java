@@ -20,6 +20,7 @@ import static com.google.common.collect.Multisets.setCountImpl;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.concurrent.LazyInit;
 import com.google.j2objc.annotations.WeakOuter;
 import java.util.AbstractCollection;
 import java.util.Collection;
@@ -130,7 +131,7 @@ abstract class AbstractMultiset<E> extends AbstractCollection<E> implements Mult
 
   // Views
 
-  private transient @MonotonicNonNull Set<E> elementSet;
+  @LazyInit @MonotonicNonNull private transient Set<E> elementSet;
 
   @SideEffectFree
   @Override
@@ -165,7 +166,7 @@ abstract class AbstractMultiset<E> extends AbstractCollection<E> implements Mult
 
   abstract Iterator<E> elementIterator();
 
-  private transient @MonotonicNonNull Set<Entry<E>> entrySet;
+  @LazyInit @MonotonicNonNull private transient Set<Entry<E>> entrySet;
 
   @SideEffectFree
   @Override

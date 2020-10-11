@@ -536,6 +536,7 @@ public final class Floats {
       this.start = start;
       this.end = end;
     }
+
     @Override
     @SuppressWarnings({
               "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
@@ -679,6 +680,7 @@ public final class Floats {
    * @param string the string representation of a {@code float} value
    * @return the floating point value represented by {@code string}, or {@code null} if {@code
    *     string} has a length of zero or cannot be parsed as a {@code float} value
+   * @throws NullPointerException if {@code string} is {@code null}
    * @since 14.0
    */
   @Beta

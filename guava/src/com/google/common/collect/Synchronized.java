@@ -437,7 +437,6 @@ final class Synchronized {
       }
     }
 
-    @GwtIncompatible("List.subList")
     @SideEffectFree
     @Override
     public void replaceAll(UnaryOperator<E> operator) {
@@ -592,7 +591,7 @@ final class Synchronized {
   }
 
   static <K, V> Multimap<K, V> multimap(Multimap<K, V> multimap, @Nullable Object mutex) {
-    if (multimap instanceof SynchronizedMultimap || multimap instanceof ImmutableMultimap) {
+    if (multimap instanceof SynchronizedMultimap || multimap instanceof BaseImmutableMultimap) {
       return multimap;
     }
     return new SynchronizedMultimap<>(multimap, mutex);
@@ -796,7 +795,7 @@ final class Synchronized {
 
   static <K, V> ListMultimap<K, V> listMultimap(
       ListMultimap<K, V> multimap, @Nullable Object mutex) {
-    if (multimap instanceof SynchronizedListMultimap || multimap instanceof ImmutableListMultimap) {
+    if (multimap instanceof SynchronizedListMultimap || multimap instanceof BaseImmutableMultimap) {
       return multimap;
     }
     return new SynchronizedListMultimap<>(multimap, mutex);
@@ -838,7 +837,7 @@ final class Synchronized {
   }
 
   static <K, V> SetMultimap<K, V> setMultimap(SetMultimap<K, V> multimap, @Nullable Object mutex) {
-    if (multimap instanceof SynchronizedSetMultimap || multimap instanceof ImmutableSetMultimap) {
+    if (multimap instanceof SynchronizedSetMultimap || multimap instanceof BaseImmutableMultimap) {
       return multimap;
     }
     return new SynchronizedSetMultimap<>(multimap, mutex);

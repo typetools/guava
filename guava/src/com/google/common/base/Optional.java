@@ -15,6 +15,7 @@
 package com.google.common.base;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import com.google.errorprone.annotations.DoNotMock;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
@@ -85,6 +86,7 @@ import org.checkerframework.framework.qual.Covariant;
  */
 @AnnotatedFor({"nullness"})
 @Covariant(0)
+@DoNotMock("Use Optional.of(value) or Optional.absent()")
 @GwtCompatible(serializable = true)
 public abstract @NonNull class Optional<T> implements Serializable {
   /**
@@ -277,6 +279,8 @@ public abstract @NonNull class Optional<T> implements Serializable {
    * possibleFoo.ifPresent(foo -> doSomethingWith(foo));
    * }</pre>
    *
+   * <p><b>Java 9 users:</b> some use cases can be written with calls to {@code optional.stream()}.
+   *
    * @since 11.0
    */
   public abstract Set<@NonNull T> asSet();
@@ -330,6 +334,8 @@ public abstract @NonNull class Optional<T> implements Serializable {
    * <p><b>Comparison to {@code java.util.Optional}:</b> this method has no equivalent in Java 8's
    * {@code Optional} class; use {@code
    * optionals.stream().filter(Optional::isPresent).map(Optional::get)} instead.
+   *
+   * <p><b>Java 9 users:</b> use {@code optionals.stream().flatMap(Optional::stream)} instead.
    *
    * @since 11.0 (generics widened in 13.0)
    */

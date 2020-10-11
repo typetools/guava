@@ -41,9 +41,17 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 final class ConfigurableMutableValueGraph<N, V> extends ConfigurableValueGraph<N, V>
     implements MutableValueGraph<N, V> {
 
+  private final ElementOrder<N> incidentEdgeOrder;
+
   /** Constructs a mutable graph with the properties specified in {@code builder}. */
   ConfigurableMutableValueGraph(AbstractGraphBuilder<? super N> builder) {
     super(builder);
+    incidentEdgeOrder = builder.incidentEdgeOrder.cast();
+  }
+
+  @Override
+  public ElementOrder<N> incidentEdgeOrder() {
+    return incidentEdgeOrder;
   }
 
   @Override
@@ -100,6 +108,13 @@ final class ConfigurableMutableValueGraph<N, V> extends ConfigurableValueGraph<N
 
   @Override
   @CanIgnoreReturnValue
+  public V putEdgeValue(EndpointPair<N> endpoints, V value) {
+    validateEndpoints(endpoints);
+    return putEdgeValue(endpoints.nodeU(), endpoints.nodeV(), value);
+  }
+
+  @Override
+  @CanIgnoreReturnValue
   public boolean removeNode(N node) {
     checkNotNull(node, "node");
 
@@ -151,9 +166,16 @@ final class ConfigurableMutableValueGraph<N, V> extends ConfigurableValueGraph<N
     return previousValue;
   }
 
+  @Override
+  @CanIgnoreReturnValue
+  public V removeEdge(EndpointPair<N> endpoints) {
+    validateEndpoints(endpoints);
+    return removeEdge(endpoints.nodeU(), endpoints.nodeV());
+  }
+
   private GraphConnections<N, V> newConnections() {
     return isDirected()
-        ? DirectedGraphConnections.<N, V>of()
-        : UndirectedGraphConnections.<N, V>of();
+        ? DirectedGraphConnections.<N, V>of(incidentEdgeOrder)
+        : UndirectedGraphConnections.<N, V>of(incidentEdgeOrder);
   }
 }

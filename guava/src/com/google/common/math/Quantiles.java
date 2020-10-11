@@ -27,7 +27,7 @@ import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import java.math.RoundingMode;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexFor;
@@ -192,6 +192,7 @@ public final class Quantiles {
      * @param indexes the quantile indexes, each of which must be in the inclusive range [0, q] for
      *     q-quantiles; the order of the indexes is unimportant, duplicates will be ignored, and the
      *     set will be snapshotted when this method is called
+     * @throws IllegalArgumentException if {@code indexes} is empty
      */
     public ScaleAndIndexes indexes(@NonNegative int @MinLen(1)... indexes) {
       return new ScaleAndIndexes(scale, indexes.clone());
@@ -204,6 +205,7 @@ public final class Quantiles {
      * @param indexes the quantile indexes, each of which must be in the inclusive range [0, q] for
      *     q-quantiles; the order of the indexes is unimportant, duplicates will be ignored, and the
      *     set will be snapshotted when this method is called
+     * @throws IllegalArgumentException if {@code indexes} is empty
      */
     @SuppressWarnings({"value:argument.type.incompatible", "lowerbound:argument.type.incompatible"})//parameter `indexes` is of mutable length data structures(Collection)
     public ScaleAndIndexes indexes(Collection<Integer> indexes) {
@@ -333,6 +335,7 @@ public final class Quantiles {
       for (int index : indexes) {
         checkIndex(index, scale);
       }
+      checkArgument(indexes.length > 0, "Indexes must be a non empty array");
       this.scale = scale;
       this.indexes = indexes;
     }
@@ -343,8 +346,10 @@ public final class Quantiles {
      * @param dataset the dataset to do the calculation on, which must be non-empty, which will be
      *     cast to doubles (with any associated lost of precision), and which will not be mutated by
      *     this call (it is copied instead)
-     * @return an unmodifiable map of results: the keys will be the specified quantile indexes, and
-     *     the values the corresponding quantile values
+     * @return an unmodifiable, ordered map of results: the keys will be the specified quantile
+     *     indexes, and the values the corresponding quantile values. When iterating, entries in the
+     *     map are ordered by quantile index in the same order they were passed to the {@code
+     *     indexes} method.
      */
 
     @SuppressWarnings("value:argument.type.incompatible")// `dataset` is of mutable length data structures type( `Collection`)
@@ -358,8 +363,10 @@ public final class Quantiles {
      *
      * @param dataset the dataset to do the calculation on, which must be non-empty, which will not
      *     be mutated by this call (it is copied instead)
-     * @return an unmodifiable map of results: the keys will be the specified quantile indexes, and
-     *     the values the corresponding quantile values
+     * @return an unmodifiable, ordered map of results: the keys will be the specified quantile
+     *     indexes, and the values the corresponding quantile values. When iterating, entries in the
+     *     map are ordered by quantile index in the same order they were passed to the {@code
+     *     indexes} method.
      */
     public Map<Integer, Double> compute(double @MinLen(1)... dataset) {
       return computeInPlace(dataset.clone());
@@ -371,8 +378,10 @@ public final class Quantiles {
      * @param dataset the dataset to do the calculation on, which must be non-empty, which will be
      *     cast to doubles (with any associated lost of precision), and which will not be mutated by
      *     this call (it is copied instead)
-     * @return an unmodifiable map of results: the keys will be the specified quantile indexes, and
-     *     the values the corresponding quantile values
+     * @return an unmodifiable, ordered map of results: the keys will be the specified quantile
+     *     indexes, and the values the corresponding quantile values. When iterating, entries in the
+     *     map are ordered by quantile index in the same order they were passed to the {@code
+     *     indexes} method.
      */
     public Map<Integer, Double> compute(long @MinLen(1)... dataset) {
       return computeInPlace(longsToDoubles(dataset));
@@ -383,8 +392,10 @@ public final class Quantiles {
      *
      * @param dataset the dataset to do the calculation on, which must be non-empty, which will be
      *     cast to doubles, and which will not be mutated by this call (it is copied instead)
-     * @return an unmodifiable map of results: the keys will be the specified quantile indexes, and
-     *     the values the corresponding quantile values
+     * @return an unmodifiable, ordered map of results: the keys will be the specified quantile
+     *     indexes, and the values the corresponding quantile values. When iterating, entries in the
+     *     map are ordered by quantile index in the same order they were passed to the {@code
+     *     indexes} method.
      */
     public Map<Integer, Double> compute(int @MinLen(1)... dataset) {
       return computeInPlace(intsToDoubles(dataset));
@@ -395,8 +406,10 @@ public final class Quantiles {
      *
      * @param dataset the dataset to do the calculation on, which must be non-empty, and which will
      *     be arbitrarily reordered by this method call
-     * @return an unmodifiable map of results: the keys will be the specified quantile indexes, and
-     *     the values the corresponding quantile values
+     * @return an unmodifiable, ordered map of results: the keys will be the specified quantile
+     *     indexes, and the values the corresponding quantile values. When iterating, entries in the
+     *     map are ordered by quantile index in the same order that the indexes were passed to the
+     *     {@code indexes} method.
      */
     @SuppressWarnings({"upperbound:compound.assignment.type.incompatible",/* (1): Since `requiredSelections.length = indexes.length * 2`, and the for loop
             iterate from 0 to indexes.length, increment on requiredSelectionsCount is safe thoughout the loop.
@@ -408,12 +421,13 @@ public final class Quantiles {
             "upperbound:assignment.type.incompatible",/* (3): Since scale is a positive int, index is in [0, scale],
             and (dataset.length - 1) is non-negative int, we can do long-arithmetic on index * (dataset.length - 1) / scale to get a rounded ratio and a remainder
              which can be expressed as ints, without risk of overflow */
-            "upperbound:array.access.unsafe.high"// (4) if `remainder` is not 0, highest possible value for quotient is `dataset.length - 2`
+        "upperbound:array.access.unsafe.high", // (4) if `remainder` is not 0, highest possible value for quotient is `dataset.length - 2`
+        "unary.increment.type.incompatible"
     })
     public Map<Integer, Double> computeInPlace(double @MinLen(1)... dataset) {
       checkArgument(dataset.length > 0, "Cannot calculate quantiles of an empty dataset");
       if (containsNaN(dataset)) {
-        Map<Integer, Double> nanMap = new HashMap<>();
+        Map<Integer, Double> nanMap = new LinkedHashMap<>();
         for (int index : indexes) {
           nanMap.put(index, NaN);
         }
@@ -452,7 +466,7 @@ public final class Quantiles {
       sort(requiredSelections, 0, requiredSelectionsCount);
       selectAllInPlace(
           requiredSelections, 0, requiredSelectionsCount - 1, dataset, 0, dataset.length - 1);// (2)
-      Map<Integer, Double> ret = new HashMap<>();
+      Map<Integer, Double> ret = new LinkedHashMap<>();
       for (int i = 0; i < indexes.length; i++) {
         @IndexFor("dataset") int quotient = quotients[i];
         int remainder = remainders[i];
@@ -585,7 +599,7 @@ public final class Quantiles {
    * equal to the value at {@code ret} and the values with indexes in ({@code ret}, {@code to}] are
    * greater than or equal to that.
    */
-  @SuppressWarnings("lowerbound:compound.assignment.type.incompatible")/*(1): Both partitionPoint and i are initialized to the same value `to`.
+  @SuppressWarnings("lowerbound:unary.decrement.type.incompatible")/*(1): Both partitionPoint and i are initialized to the same value `to`.
   partitionPoint is decremented at most one more time than i is decremented, therefore partitionPoint >= i-1.
   i > from, therefore partitionPoint >= from. Since from is non-negative, therefore partitionPoint is non-negative. */
   private static @IndexFor("#1") int partition(double[] array, @IndexFor("#1") int from, @IndexFor("#1") int to) {

@@ -39,6 +39,7 @@ final class MessageDigestHashFunction extends AbstractHashFunction implements Se
 
   @SuppressWarnings("Immutable") // cloned before each use
   private final MessageDigest prototype;
+
   private final @Positive int bytes;
   private final boolean supportsClone;
   private final String toString;
