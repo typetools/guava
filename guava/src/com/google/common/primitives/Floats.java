@@ -216,7 +216,7 @@ public final class Floats extends FloatsMethodsForWeb {
    */
   @GwtIncompatible(
       "Available in GWT! Annotation is to avoid conflict with GWT specialization of base class.")
-  public static float min(float @MinLen(1)... array) {
+  public static float min(float @MinLen(1) ... array) {
     checkArgument(array.length > 0);
     float min = array[0];
     for (int i = 1; i < array.length; i++) {
@@ -236,7 +236,7 @@ public final class Floats extends FloatsMethodsForWeb {
    */
   @GwtIncompatible(
       "Available in GWT! Annotation is to avoid conflict with GWT specialization of base class.")
-  public static float max(float @MinLen(1)... array) {
+  public static float max(float @MinLen(1) ... array) {
     checkArgument(array.length > 0);
     float max = array[0];
     for (int i = 1; i < array.length; i++) {

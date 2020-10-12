@@ -236,7 +236,7 @@ public final class Ints extends IntsMethodsForWeb {
    */
   @GwtIncompatible(
       "Available in GWT! Annotation is to avoid conflict with GWT specialization of base class.")
-  public static int min(int @MinLen(1)... array) {
+  public static int min(int @MinLen(1) ... array) {
     checkArgument(array.length > 0);
     int min = array[0];
     for (int i = 1; i < array.length; i++) {
@@ -257,7 +257,7 @@ public final class Ints extends IntsMethodsForWeb {
    */
   @GwtIncompatible(
       "Available in GWT! Annotation is to avoid conflict with GWT specialization of base class.")
-  public static int max(int @MinLen(1)... array) {
+  public static int max(int @MinLen(1) ... array) {
     checkArgument(array.length > 0);
     int max = array[0];
     for (int i = 1; i < array.length; i++) {
