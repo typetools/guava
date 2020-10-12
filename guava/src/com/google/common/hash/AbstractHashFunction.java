@@ -74,8 +74,6 @@ abstract class AbstractHashFunction implements HashFunction {
   }
 
   @Override
-  @SuppressWarnings("lowerbound:argument.type.incompatible")//ByteBuffer#remaining is annotated to return non negative value
-  //Link to PR: https://github.com/typetools/checker-framework/pull/2080 ( status: waiting for merge)
   public HashCode hashBytes(ByteBuffer input) {
     return newHasher(input.remaining()).putBytes(input).hash();
   }

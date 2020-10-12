@@ -631,7 +631,6 @@ public final class Hashing {
     }
 
     @Override
-    @SuppressWarnings("argument.type.incompatible")//
     HashCode makeHash(Hasher[] hashers) {
       byte[] bytes = new byte[bits() / 8];
       int i = 0;
