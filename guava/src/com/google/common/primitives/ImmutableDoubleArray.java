@@ -42,6 +42,8 @@ import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
+import org.checkerframework.checker.index.qual.HasSubsequence;
+import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 
@@ -377,7 +379,8 @@ public final class ImmutableDoubleArray implements Serializable {
   // The array is never mutated after storing in this field and the construction strategies ensure
   // it doesn't escape this class
   @SuppressWarnings("Immutable")
-  private final double[] array;
+  @HasSubsequence(subsequence="this", from="this.start", to="this.end")
+  private final double [] array;
 
   /*
    * TODO(kevinb): evaluate the trade-offs of going bimorphic to save these two fields from most
@@ -385,28 +388,22 @@ public final class ImmutableDoubleArray implements Serializable {
    * optimizing, because the rest have the option of calling `trimmed`.
    */
 
-  private final transient @IndexOrHigh("array") int start; // it happens that we only serialize instances where this is 0
+  private final transient @IndexOrHigh("array") @LessThan("this.end + 1") int start; // it happens that we only serialize instances where this is 0
   private final @IndexOrHigh("array") int end; // exclusive
 
   private ImmutableDoubleArray(double[] array) {
     this(array, 0, array.length);
   }
 
-  private ImmutableDoubleArray(double[] array, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
+  @SuppressWarnings(
+          "index") // these three fields need to be initialized in some order, and any ordering leads to the first two issuing errors - since each field is dependent on at least one of the others
+  private ImmutableDoubleArray(double[] array, @IndexOrHigh("#1") @LessThan("#3 + 1") int start, @IndexOrHigh("#1") int end) {
     this.array = array;
     this.start = start;
     this.end = end;
   }
 
   /** Returns the number of values in this array. */
-  @SuppressWarnings({
-    "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-    /*
-     * In a fixed-size collection whose length is defined as end-start,
-     * end-start is IndexOrHigh("this")
-     */
-    "upperbound:return.type.incompatible" // custom coll. with size end-start
-  })
   @Pure
   public @NonNegative @LTLengthOf(value = {"array", "this"}, offset = {"start-1", "-1"}) int length() { // INDEX: Annotation on a public method refers to private member.
     return end - start;
@@ -430,7 +427,6 @@ public final class ImmutableDoubleArray implements Serializable {
    * where i is IndexFor("this")
    * i+start is IndexFor("array")
    */
-  @SuppressWarnings("upperbound:array.access.unsafe.high") // custom coll. with size end-start
   @Pure
   public double get(@IndexFor("this") int index) {
     Preconditions.checkElementIndex(index, length());
@@ -442,16 +438,7 @@ public final class ImmutableDoubleArray implements Serializable {
    * such index exists. Values are compared as if by {@link Double#equals}. Equivalent to {@code
    * asList().indexOf(target)}.
    */
-  @SuppressWarnings({
-    "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-    /*
-     * In a fixed-size collection whose length is defined as end-start,
-     * where i is less than end,
-     * i-start is IndexFor("this")
-     * Might require: https://github.com/kelloggm/checker-framework/issues/158
-     */
-    "upperbound:return.type.incompatible" // custom coll. with size end-start
-  })
+  @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/232
   public @IndexOrLow("this") int indexOf(double target) {
     for (int i = start; i < end; i++) {
       if (areEqual(array[i], target)) {
@@ -466,16 +453,6 @@ public final class ImmutableDoubleArray implements Serializable {
    * such index exists. Values are compared as if by {@link Double#equals}. Equivalent to {@code
    * asList().lastIndexOf(target)}.
    */
-  @SuppressWarnings({
-    "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-    /*
-     * In a fixed-size collection whose length is defined as end-start,
-     * where i is less than end,
-     * i-start is IndexFor("this")
-     * Might require: https://github.com/kelloggm/checker-framework/issues/158
-     */
-    "upperbound:return.type.incompatible" // custom coll. with size end-start
-  })
   public @IndexOrLow("this") int lastIndexOf(double target) {
     for (int i = end - 1; i >= start; i--) {
       if (areEqual(array[i], target)) {
@@ -518,8 +495,7 @@ public final class ImmutableDoubleArray implements Serializable {
    * does (no actual copying is performed). To reduce memory usage, use {@code subArray(start,
    * end).trimmed()}.
    */
-  // array should be @LongerThanEq(value="this", offset="start")
-  @SuppressWarnings("upperbound:argument.type.incompatible") // custom coll. with size end-start
+  @SuppressWarnings("index") // needs https://github.com/kelloggm/checker-framework/issues/229
   public ImmutableDoubleArray subArray(@IndexOrHigh("this") int startIndex, @IndexOrHigh("this") int endIndex) {
     Preconditions.checkPositionIndexes(startIndex, endIndex, length());
     return startIndex == endIndex
