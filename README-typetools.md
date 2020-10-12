@@ -126,29 +126,34 @@ To upload to Maven Central
 
 This must be done on a CSE machine, which has access to the necessary passwords.
 
-If you want to re-release some version of Guava because you have added
-annotations or because the Checker Framework has changed, then *you will
+Re-releasing:  If you want to re-release some version of Guava because you have
+added annotations or because the Checker Framework has changed, then *you will
 need to do something special*.  (Because you have probably pulled, from
 upstream, commits subsequent to the release.)  Those instructions are not
 yet written.
 
-Use the latest Checker Framework release
+1. Use the latest Checker Framework release
 (https://github.com/typetools/checker-framework/releases) by changing
 `pom.xml` (in 1 place) and `guava/pom.xml` (in 1 place).  Re-build to
 ensure that typechecking still works.  Commit and push.  If a `cf-master`
 branch exists in this repository, follow the instructions above to merge it
 into master.
 
-Pull in the latest Guava version (https://github.com/google/guava/releases):
+2. Pull in the latest Guava version (https://github.com/google/guava/releases):
 ```
 git fetch --tags https://github.com/google/guava
 git pull https://github.com/google/guava v29.0
 ```
 
-Update the version number
+3. Update the version number
  * multiple places in this file, and
  * in file guava/cfMavenCentral.xml .
+
 If it's not the same as the upstream version, then also edit pom.xml and guava/pom.xml.
+
+4. Run the following commands.
+
+JAVA_HOME must be a JDK 8 JDK.
 
 ```
 PACKAGE=guava-29.0-jre
@@ -174,4 +179,4 @@ mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/stagin
 mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=cfMavenCentral.xml -Dgpg.publicKeyring=/projects/swlab1/checker-framework/hosting-info/pubring.gpg -Dgpg.secretKeyring=/projects/swlab1/checker-framework/hosting-info/secring.gpg -Dgpg.keyname=ADF4D638 -Dgpg.passphrase="`cat /projects/swlab1/checker-framework/hosting-info/release-private.password`" -Dfile=target/site/apidocs/${PACKAGE}-javadoc.jar -Dclassifier=javadoc
 ```
 
-Complete the release at https://oss.sonatype.org/#stagingRepositories
+5. Complete the release at https://oss.sonatype.org/#stagingRepositories
