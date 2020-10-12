@@ -362,7 +362,7 @@ public final class UnsignedInts {
    *     Integer#parseInt(String)})
    */
   @CanIgnoreReturnValue
-  public static @Unsigned int parseUnsignedInt(String string, @Positive int radix) {
+  public static @Unsigned int parseUnsignedInt(String string, @IntRange(from=2, to=36) int radix) {
     checkNotNull(string);
     long result = Long.parseLong(string, radix);
     if ((result & INT_MASK) != result) {
@@ -392,7 +392,7 @@ public final class UnsignedInts {
    * @throws IllegalArgumentException if {@code radix} is not between {@link Character#MIN_RADIX}
    *     and {@link Character#MAX_RADIX}.
    */
-  public static String toString(@Unsigned int x, @Positive int radix) {
+  public static String toString(@Unsigned int x, @IntRange(from=2, to=36) int radix) {
     long asLong = x & INT_MASK;
     return Long.toString(asLong, radix);
   }

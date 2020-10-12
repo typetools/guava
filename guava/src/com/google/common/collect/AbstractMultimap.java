@@ -29,7 +29,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -115,7 +114,7 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V> {
     return result;
   }
 
-  private transient @MonotonicNonNull Collection<Entry<K, V>> entries;
+  private transient @Nullable Collection<Entry<K, V>> entries;
 
   @SideEffectFree
   @Override
@@ -166,7 +165,7 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V> {
         entryIterator(), size(), (this instanceof SetMultimap) ? Spliterator.DISTINCT : 0);
   }
 
-  private transient @MonotonicNonNull Set<K> keySet;
+  private transient @Nullable Set<K> keySet;
 
   @SideEffectFree
   @Override
@@ -178,7 +177,7 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V> {
   @SideEffectFree
   abstract Set<K> createKeySet();
 
-  private transient @MonotonicNonNull Multiset<K> keys;
+  private transient @Nullable Multiset<K> keys;
 
   @Override
   public Multiset<K> keys() {
@@ -188,7 +187,7 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V> {
 
   abstract Multiset<K> createKeys();
 
-  private transient @MonotonicNonNull Collection<V> values;
+  private transient @Nullable Collection<V> values;
 
   @SideEffectFree
   @Override
@@ -237,7 +236,7 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V> {
     return Spliterators.spliterator(valueIterator(), size(), 0);
   }
 
-  private transient @MonotonicNonNull Map<K, Collection<V>> asMap;
+  private transient @Nullable Map<K, Collection<V>> asMap;
 
   @Override
   public Map<K, Collection<V>> asMap() {

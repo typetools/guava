@@ -40,7 +40,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.stream.Collector;
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -137,7 +136,7 @@ public final class Multisets {
       return (Multiset<E>) delegate;
     }
 
-    @MonotonicNonNull transient Set<E> elementSet;
+    transient @Nullable Set<E> elementSet;
 
     Set<E> createElementSet() {
       return Collections.<E>unmodifiableSet(delegate.elementSet());
@@ -150,7 +149,7 @@ public final class Multisets {
       return (es == null) ? elementSet = createElementSet() : es;
     }
 
-    @MonotonicNonNull transient Set<Multiset.Entry<E>> entrySet;
+    transient @Nullable Set<Multiset.Entry<E>> entrySet;
 
     @SideEffectFree
     @SuppressWarnings("unchecked")
@@ -1065,7 +1064,7 @@ public final class Multisets {
   static final class MultisetIteratorImpl<E> implements Iterator<E> {
     private final Multiset<E> multiset;
     private final Iterator<Entry<E>> entryIterator;
-    @MonotonicNonNull private Entry<E> currentEntry;
+    private @Nullable Entry<E> currentEntry;
 
     /** Count of subsequent elements equal to current element */
     private int laterCount;

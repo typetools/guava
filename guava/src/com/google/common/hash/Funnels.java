@@ -19,7 +19,10 @@ import com.google.common.base.Preconditions;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.nio.charset.Charset;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * Funnels for common types. All implementations are serializable.
@@ -40,7 +43,7 @@ public final class Funnels {
     INSTANCE;
 
     @Override
-    public void funnel(byte[] from, PrimitiveSink into) {
+    public void funnel(byte @MinLen(1)[] from, PrimitiveSink into) {
       into.putBytes(from);
     }
 
@@ -65,7 +68,7 @@ public final class Funnels {
     INSTANCE;
 
     @Override
-    public void funnel(CharSequence from, PrimitiveSink into) {
+    public void funnel(@MinLen(1) CharSequence from, PrimitiveSink into) {
       into.putUnencodedChars(from);
     }
 
@@ -93,7 +96,7 @@ public final class Funnels {
     }
 
     @Override
-    public void funnel(CharSequence from, PrimitiveSink into) {
+    public void funnel(@MinLen(1) CharSequence from, PrimitiveSink into) {
       into.putString(from, charset);
     }
 
@@ -251,13 +254,14 @@ public final class Funnels {
       sink.putByte((byte) b);
     }
 
+    @SuppressWarnings("override.param.invalid")//OutputStream#write() should be annotated as void write(byte @MinLen(1)[] bytes)
     @Override
-    public void write(byte[] bytes) {
+    public void write(byte @MinLen(1)[] bytes) {
       sink.putBytes(bytes);
     }
 
     @Override
-    public void write(byte[] bytes, int off, int len) {
+    public void write(byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
       sink.putBytes(bytes, off, len);
     }
 

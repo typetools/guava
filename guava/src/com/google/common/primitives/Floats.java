@@ -41,6 +41,8 @@ import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
+import org.checkerframework.checker.index.qual.HasSubsequence;
+import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.common.value.qual.MinLen;
 
@@ -55,7 +57,7 @@ import org.checkerframework.common.value.qual.MinLen;
  * @since 1.0
  */
 @GwtCompatible(emulated = true)
-public final class Floats {
+public final class Floats extends FloatsMethodsForWeb {
   private Floats() {}
 
   /**
@@ -141,7 +143,7 @@ public final class Floats {
   }
 
   // TODO(kevinb): consider making this public
-  private static @IndexOrLow("#1") int indexOf(float[] array, float target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
+  private static @IndexOrLow("#1") @LessThan("#4") int indexOf(float[] array, float target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = start; i < end; i++) {
       if (array[i] == target) {
         return i;
@@ -196,7 +198,7 @@ public final class Floats {
   }
 
   // TODO(kevinb): consider making this public
-  private static @IndexOrLow("#1") int lastIndexOf(float[] array, float target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
+  private static @IndexOrLow("#1") @LessThan("#4") int lastIndexOf(float[] array, float target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = end - 1; i >= start; i--) {
       if (array[i] == target) {
         return i;
@@ -214,7 +216,9 @@ public final class Floats {
    *     the array
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static float min(float @MinLen(1)... array) {
+  @GwtIncompatible(
+      "Available in GWT! Annotation is to avoid conflict with GWT specialization of base class.")
+  public static float min(float @MinLen(1) ... array) {
     checkArgument(array.length > 0);
     float min = array[0];
     for (int i = 1; i < array.length; i++) {
@@ -232,7 +236,9 @@ public final class Floats {
    *     in the array
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static float max(float @MinLen(1)... array) {
+  @GwtIncompatible(
+      "Available in GWT! Annotation is to avoid conflict with GWT specialization of base class.")
+  public static float max(float @MinLen(1) ... array) {
     checkArgument(array.length > 0);
     float max = array[0];
     for (int i = 1; i < array.length; i++) {
@@ -523,25 +529,25 @@ public final class Floats {
   @GwtCompatible
   private static class FloatArrayAsList extends AbstractList<Float>
       implements RandomAccess, Serializable {
-    final float @MinLen(1)[] array;
-    final @IndexFor("array") int start;
+    @HasSubsequence(subsequence="this", from="this.start", to="this.end")
+    final float @MinLen(1) [] array;
+    final @IndexFor("array") @LessThan("this.end") int start;
     final @IndexOrHigh("array") int end;
 
     FloatArrayAsList(float @MinLen(1)[] array) {
       this(array, 0, array.length);
     }
 
-    FloatArrayAsList(float @MinLen(1)[] array, @IndexFor("#1") int start, @IndexOrHigh("#1") int end) {
+    @SuppressWarnings(
+            "index") // these three fields need to be initialized in some order, and any ordering leads to the first two issuing errors - since each field is dependent on at least one of the others
+    FloatArrayAsList(float @MinLen(1)[] array, @IndexFor("#1") @LessThan("#3") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
       this.end = end;
     }
 
     @Override
-    @SuppressWarnings({
-              "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-              "upperbound:return.type.incompatible"}) // custom coll. with size end-start
-    public @Positive @LTLengthOf(value = {"this","array"}, offset={"0","start - 1"}) int size() { // INDEX: Annotation on a public method refers to private member.
+    public @Positive @LTLengthOf(value = {"this","array"}, offset={"-1","start - 1"}) int size() { // INDEX: Annotation on a public method refers to private member.
       return end - start;
     }
 
@@ -551,8 +557,6 @@ public final class Floats {
     }
 
     @Override
-    // array should be @LongerThanEq(value="this", offset="start")
-    @SuppressWarnings("upperbound:array.access.unsafe.high") // custom coll. with size end-start
     public Float get(@IndexFor("this") int index) {
       checkElementIndex(index, size());
       return array[start + index];
@@ -565,10 +569,8 @@ public final class Floats {
     }
 
     @Override
-    @SuppressWarnings({
-            "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-            "upperbound:return.type.incompatible" // custom coll. with size end-start
-    })
+    @SuppressWarnings(
+            "lowerbound:return.type.incompatible") // needs https://github.com/kelloggm/checker-framework/issues/227 on static indexOf method
     public @IndexOrLow("this") int indexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Float) {
@@ -581,10 +583,8 @@ public final class Floats {
     }
 
     @Override
-    @SuppressWarnings({
-            "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-            "upperbound:return.type.incompatible" // custom coll. with size end-start
-    })
+    @SuppressWarnings(
+            "lowerbound:return.type.incompatible") // needs https://github.com/kelloggm/checker-framework/issues/227 on static indexOf method
     public @IndexOrLow("this") int lastIndexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Float) {
@@ -597,8 +597,6 @@ public final class Floats {
     }
 
     @Override
-    // array should be @LongerThanEq(value="this", offset="start")
-    @SuppressWarnings("upperbound:array.access.unsafe.high") // custom coll. with size end-start
     public Float set(@IndexFor("this") int index, Float element) {
       checkElementIndex(index, size());
       float oldValue = array[start + index];
@@ -608,8 +606,7 @@ public final class Floats {
     }
 
     @Override
-    // array should be @LongerThanEq(value="this", offset="start")
-    @SuppressWarnings("upperbound:argument.type.incompatible") // custom coll. with size end-start
+    @SuppressWarnings("index") // needs https://github.com/kelloggm/checker-framework/issues/229
     public List<Float> subList(@IndexOrHigh("this") int fromIndex, @IndexOrHigh("this") int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);

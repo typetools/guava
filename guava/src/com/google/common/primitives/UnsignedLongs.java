@@ -408,7 +408,7 @@ public final class UnsignedLongs {
 
     static {
       BigInteger overflow = new BigInteger("10000000000000000", 16);
-      for (int i = Character.MIN_RADIX; i <= Character.MAX_RADIX; i++) {
+      for (@IntRange(from=2, to=36) int i = Character.MIN_RADIX; i <= Character.MAX_RADIX; i++) {
         maxValueDivs[i] = divide(MAX_VALUE, i);
         maxValueMods[i] = (int) remainder(MAX_VALUE, i);
         maxSafeDigits[i] = overflow.toString(i).length() - 1;

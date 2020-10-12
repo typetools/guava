@@ -24,6 +24,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import com.google.errorprone.annotations.Immutable;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -64,7 +65,7 @@ final class SipHashFunction extends AbstractHashFunction implements Serializable
   }
 
   @Override
-  public int bits() {
+  public @NonNegative int bits() {
     return 64;
   }
 
@@ -143,7 +144,7 @@ final class SipHashFunction extends AbstractHashFunction implements Serializable
     }
 
     @Override
-    public HashCode makeHash() {
+    protected HashCode makeHash() {
       // End with a byte encoding the positive integer b mod 256.
       finalM ^= b << 56;
       processM(finalM);

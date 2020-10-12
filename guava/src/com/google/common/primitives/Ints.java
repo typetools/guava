@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkPositionIndexes;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Converter;
 import java.io.Serializable;
 import java.util.AbstractList;
@@ -41,6 +42,8 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.PolyLowerBound;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
+import org.checkerframework.checker.index.qual.HasSubsequence;
+import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
@@ -55,8 +58,8 @@ import org.checkerframework.common.value.qual.MinLen;
  * @author Kevin Bourrillion
  * @since 1.0
  */
-@GwtCompatible
-public final class Ints {
+@GwtCompatible(emulated = true)
+public final class Ints extends IntsMethodsForWeb {
   private Ints() {}
 
   /**
@@ -164,7 +167,7 @@ public final class Ints {
   }
 
   // TODO(kevinb): consider making this public
-  private static @IndexOrLow("#1") int indexOf(int[] array, int target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
+  private static @IndexOrLow("#1") @LessThan("#4") int indexOf(int[] array, int target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = start; i < end; i++) {
       if (array[i] == target) {
         return i;
@@ -216,7 +219,7 @@ public final class Ints {
   }
 
   // TODO(kevinb): consider making this public
-  private static @IndexOrLow("#1") int lastIndexOf(int[] array, int target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
+  private static @IndexOrLow("#1") @LessThan("#4") int lastIndexOf(int[] array, int target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = end - 1; i >= start; i--) {
       if (array[i] == target) {
         return i;
@@ -233,7 +236,9 @@ public final class Ints {
    *     the array
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static int min(int @MinLen(1)... array) {
+  @GwtIncompatible(
+      "Available in GWT! Annotation is to avoid conflict with GWT specialization of base class.")
+  public static int min(int @MinLen(1) ... array) {
     checkArgument(array.length > 0);
     int min = array[0];
     for (int i = 1; i < array.length; i++) {
@@ -252,7 +257,9 @@ public final class Ints {
    *     in the array
    * @throws IllegalArgumentException if {@code array} is empty
    */
-  public static int max(int @MinLen(1)... array) {
+  @GwtIncompatible(
+      "Available in GWT! Annotation is to avoid conflict with GWT specialization of base class.")
+  public static int max(int @MinLen(1) ... array) {
     checkArgument(array.length > 0);
     int max = array[0];
     for (int i = 1; i < array.length; i++) {
@@ -579,25 +586,25 @@ public final class Ints {
   @GwtCompatible
   private static class IntArrayAsList extends AbstractList<Integer>
       implements RandomAccess, Serializable {
-    final int @MinLen(1)[] array;
-    final @IndexFor("array") int start;
+    @HasSubsequence(subsequence="this", from="this.start", to="this.end")
+    final int @MinLen(1) [] array;
+    final @IndexFor("array") @LessThan("this.end") int start;
     final @IndexOrHigh("array") int end;
 
     IntArrayAsList(int @MinLen(1)[] array) {
       this(array, 0, array.length);
     }
 
-    IntArrayAsList(int @MinLen(1)[] array, @IndexFor("#1") int start, @IndexOrHigh("#1") int end) {
+    @SuppressWarnings(
+            "index") // these three fields need to be initialized in some order, and any ordering leads to the first two issuing errors - since each field is dependent on at least one of the others
+    IntArrayAsList(int @MinLen(1)[] array, @IndexFor("#1") @LessThan("#3") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
       this.end = end;
     }
 
     @Override
-    @SuppressWarnings({
-              "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-              "upperbound:return.type.incompatible"}) // custom coll. with size end-start
-    public @Positive @LTLengthOf(value = {"this","array"}, offset={"0","start - 1"}) int size() { // INDEX: Annotation on a public method refers to private member.
+    public @Positive @LTLengthOf(value = {"this","array"}, offset={"-1","start - 1"}) int size() { // INDEX: Annotation on a public method refers to private member.
       return end - start;
     }
 
@@ -607,8 +614,6 @@ public final class Ints {
     }
 
     @Override
-    // array should be @LongerThanEq(value="this", offset="start")
-    @SuppressWarnings("upperbound:array.access.unsafe.high") // custom coll. with size end-start
     public Integer get(@IndexFor("this") int index) {
       checkElementIndex(index, size());
       return array[start + index];
@@ -626,10 +631,8 @@ public final class Ints {
     }
 
     @Override
-    @SuppressWarnings({
-            "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-            "upperbound:return.type.incompatible" // custom coll. with size end-start
-    })
+    @SuppressWarnings(
+            "lowerbound:return.type.incompatible") // needs https://github.com/kelloggm/checker-framework/issues/227 on static indexOf method
     public @IndexOrLow("this") int indexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Integer) {
@@ -642,10 +645,8 @@ public final class Ints {
     }
 
     @Override
-    @SuppressWarnings({
-            "lowerbound:return.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-            "upperbound:return.type.incompatible" // custom coll. with size end-start
-    })
+    @SuppressWarnings(
+            "lowerbound:return.type.incompatible") // needs https://github.com/kelloggm/checker-framework/issues/227 on static indexOf method
     public @IndexOrLow("this")int lastIndexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Integer) {
@@ -658,8 +659,6 @@ public final class Ints {
     }
 
     @Override
-    // array should be @LongerThanEq(value="this", offset="start")
-    @SuppressWarnings("upperbound:array.access.unsafe.high") // custom coll. with size end-start
     public Integer set(@IndexFor("this") int index, Integer element) {
       checkElementIndex(index, size());
       int oldValue = array[start + index];
@@ -669,8 +668,7 @@ public final class Ints {
     }
 
     @Override
-    // array should be @LongerThanEq(value="this", offset="start")
-    @SuppressWarnings("upperbound:argument.type.incompatible") // custom coll. with size end-start
+    @SuppressWarnings("index") // needs https://github.com/kelloggm/checker-framework/issues/229
     public List<Integer> subList(@IndexOrHigh("this") int fromIndex, @IndexOrHigh("this") int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);
@@ -770,7 +768,7 @@ public final class Ints {
    * @since 19.0
    */
   @Beta
-  public static @Nullable Integer tryParse(String string, @Positive int radix) {
+  public static @Nullable Integer tryParse(String string, @IntRange(from=2, to=36) int radix) {
     Long result = Longs.tryParse(string, radix);
     if (result == null || result.longValue() != result.intValue()) {
       return null;

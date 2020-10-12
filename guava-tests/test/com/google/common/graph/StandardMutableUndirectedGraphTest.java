@@ -22,7 +22,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-/** Tests for an undirected {@link ConfigurableMutableGraph}. */
+/** Tests for an undirected {@link StandardMutableGraph}. */
 @AndroidIncompatible
 @RunWith(Parameterized.class)
 public class StandardMutableUndirectedGraphTest extends AbstractStandardUndirectedGraphTest {
@@ -45,16 +45,6 @@ public class StandardMutableUndirectedGraphTest extends AbstractStandardUndirect
       boolean allowsSelfLoops, ElementOrder<Integer> incidentEdgeOrder) {
     this.allowsSelfLoops = allowsSelfLoops;
     this.incidentEdgeOrder = incidentEdgeOrder;
-  }
-
-  @Override
-  boolean allowsSelfLoops() {
-    return allowsSelfLoops;
-  }
-
-  @Override
-  ElementOrder<Integer> incidentEdgeOrder() {
-    return incidentEdgeOrder;
   }
 
   @Override

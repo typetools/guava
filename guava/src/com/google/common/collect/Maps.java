@@ -68,7 +68,6 @@ import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.stream.Collector;
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -1614,8 +1613,8 @@ public final class Maps {
       implements BiMap<K, V>, Serializable {
     final Map<K, V> unmodifiableMap;
     final BiMap<? extends K, ? extends V> delegate;
-    @MonotonicNonNull @RetainedWith BiMap<V, K> inverse;
-    @MonotonicNonNull transient Set<V> values;
+    @RetainedWith @Nullable BiMap<V, K> inverse;
+    transient @Nullable Set<V> values;
 
     UnmodifiableBiMap(BiMap<? extends K, ? extends V> delegate, @Nullable BiMap<V, K> inverse) {
       unmodifiableMap = Collections.unmodifiableMap(delegate);
@@ -3388,7 +3387,7 @@ public final class Maps {
       throw new UnsupportedOperationException();
     }
 
-    private transient @MonotonicNonNull UnmodifiableNavigableMap<K, V> descendingMap;
+    private transient @Nullable UnmodifiableNavigableMap<K, V> descendingMap;
 
     @Override
     public NavigableMap<K, V> descendingMap() {
@@ -3513,7 +3512,7 @@ public final class Maps {
      */
     abstract Set<Entry<K, V>> createEntrySet();
 
-    private transient @MonotonicNonNull Set<Entry<K, V>> entrySet;
+    private transient @Nullable Set<Entry<K, V>> entrySet;
 
     @Override
     public Set<Entry<K, V>> entrySet() {
@@ -3521,7 +3520,7 @@ public final class Maps {
       return (result == null) ? entrySet = createEntrySet() : result;
     }
 
-    private transient @MonotonicNonNull Set<K> keySet;
+    private transient @Nullable Set<K> keySet;
 
     @Override
     public Set<K> keySet() {
@@ -3533,7 +3532,7 @@ public final class Maps {
       return new KeySet<>(this);
     }
 
-    private transient @MonotonicNonNull Collection<V> values;
+    private transient @Nullable Collection<V> values;
 
     @Override
     public Collection<V> values() {
@@ -4062,7 +4061,7 @@ public final class Maps {
       return forward();
     }
 
-    private transient @MonotonicNonNull Comparator<? super K> comparator;
+    private transient @Nullable Comparator<? super K> comparator;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -4158,7 +4157,7 @@ public final class Maps {
       return forward();
     }
 
-    private transient @MonotonicNonNull Set<Entry<K, V>> entrySet;
+    private transient @Nullable Set<Entry<K, V>> entrySet;
 
     @Override
     public Set<Entry<K, V>> entrySet() {
@@ -4189,7 +4188,7 @@ public final class Maps {
       return navigableKeySet();
     }
 
-    private transient @MonotonicNonNull NavigableSet<K> navigableKeySet;
+    private transient @Nullable NavigableSet<K> navigableKeySet;
 
     @Override
     public NavigableSet<K> navigableKeySet() {

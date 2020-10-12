@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -31,8 +32,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 final class NaturalOrdering extends Ordering<Comparable> implements Serializable {
   static final NaturalOrdering INSTANCE = new NaturalOrdering();
 
-  private transient @MonotonicNonNull Ordering<Comparable> nullsFirst;
-  private transient @MonotonicNonNull Ordering<Comparable> nullsLast;
+  private transient @Nullable Ordering<Comparable> nullsFirst;
+  private transient @Nullable Ordering<Comparable> nullsLast;
 
   @Pure
   @Override

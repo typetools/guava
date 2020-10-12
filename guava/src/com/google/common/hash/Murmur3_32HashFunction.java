@@ -39,7 +39,10 @@ import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.common.value.qual.MinLen;
 
 /**
  * See MurmurHash3_x86_32 in <a
@@ -69,7 +72,7 @@ final class Murmur3_32HashFunction extends AbstractHashFunction implements Seria
   }
 
   @Override
-  public int bits() {
+  public @NonNegative int bits() {
     return 32;
   }
 
@@ -140,9 +143,12 @@ final class Murmur3_32HashFunction extends AbstractHashFunction implements Seria
     return fmix(h1, Chars.BYTES * input.length());
   }
 
-  @SuppressWarnings("deprecation") // need to use Charsets for Android tests to pass
+  @SuppressWarnings({"deprecation", // need to use Charsets for Android tests to pass
+          "value:argument.type.incompatible"// Since CharSequence input is annotated to have  minimum length of 1,
+          // `input.toString().getBytes(charset)` return a byte array with minimum length of 1.
+  })
   @Override
-  public HashCode hashString(CharSequence input, Charset charset) {
+  public HashCode hashString(@MinLen(1) CharSequence input, Charset charset) {
     if (Charsets.UTF_8.equals(charset)) {
       int utf16Length = input.length();
       int h1 = seed;
@@ -186,7 +192,7 @@ final class Murmur3_32HashFunction extends AbstractHashFunction implements Seria
           int codePoint = Character.codePointAt(input, i);
           if (codePoint == c) {
             // not a valid code point; let the JDK handle invalid Unicode
-            return hashBytes(input.toString().getBytes(charset));
+            return hashBytes(input.toString().getBytes(charset));//(1)
           }
           i++;
           buffer |= codePointToFourUtf8Bytes(codePoint) << shift;
@@ -205,12 +211,12 @@ final class Murmur3_32HashFunction extends AbstractHashFunction implements Seria
       h1 ^= k1;
       return fmix(h1, len);
     } else {
-      return hashBytes(input.toString().getBytes(charset));
+      return hashBytes(input.toString().getBytes(charset));//(1)
     }
   }
 
   @Override
-  public HashCode hashBytes(byte[] input, int off, int len) {
+  public HashCode hashBytes(byte[] input, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
     checkPositionIndexes(off, off + len, input.length);
     int h1 = seed;
     int i;
@@ -227,7 +233,7 @@ final class Murmur3_32HashFunction extends AbstractHashFunction implements Seria
     return fmix(h1, len);
   }
 
-  private static int getIntLittleEndian(byte[] input, int offset) {
+  private static int getIntLittleEndian(byte[] input, @NonNegative @LTLengthOf(value = "#1", offset = "3") int offset) {
     return Ints.fromBytes(input[offset + 3], input[offset + 2], input[offset + 1], input[offset]);
   }
 
@@ -290,7 +296,7 @@ final class Murmur3_32HashFunction extends AbstractHashFunction implements Seria
     }
 
     @Override
-    public Hasher putBytes(byte[] bytes, int off, int len) {
+    public Hasher putBytes(byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
       checkPositionIndexes(off, off + len, bytes.length);
       int i;
       for (i = 0; i + 4 <= len; i += 4) {
@@ -335,9 +341,12 @@ final class Murmur3_32HashFunction extends AbstractHashFunction implements Seria
       return this;
     }
 
-    @SuppressWarnings("deprecation") // need to use Charsets for Android tests to pass
+    @SuppressWarnings({"deprecation", // need to use Charsets for Android tests to pass
+            "value:argument.type.incompatible"/*(1) if `charset` is equals to UTF_8, then `putbytes()` is executed.
+            Since `charset` is equals to `Charsets.UTF_8`, getBytes(charset) return non negative array range.
+            */})
     @Override
-    public Hasher putString(CharSequence input, Charset charset) {
+    public Hasher putString(@MinLen(1) CharSequence input, Charset charset) {
       if (Charsets.UTF_8.equals(charset)) {
         int utf16Length = input.length();
         int i = 0;
@@ -368,7 +377,7 @@ final class Murmur3_32HashFunction extends AbstractHashFunction implements Seria
             int codePoint = Character.codePointAt(input, i);
             if (codePoint == c) {
               // fall back to JDK getBytes instead of trying to handle invalid surrogates ourselves
-              putBytes(input.subSequence(i, utf16Length).toString().getBytes(charset));
+              putBytes(input.subSequence(i, utf16Length).toString().getBytes(charset));//(1)
               return this;
             }
             i++;
