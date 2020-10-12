@@ -192,7 +192,7 @@ public final class UnsignedBytes {
    * @since 13.0
    */
   @Beta
-  public static String toString(@Unsigned byte x, @Positive int radix) {
+  public static String toString(@Unsigned byte x, @IntRange(from=2, to=36) int radix) {
     checkArgument(
         radix >= Character.MIN_RADIX && radix <= Character.MAX_RADIX,
         "radix (%s) must be between Character.MIN_RADIX and Character.MAX_RADIX",
@@ -230,7 +230,7 @@ public final class UnsignedBytes {
    */
   @Beta
   @CanIgnoreReturnValue
-  public static @Unsigned byte parseUnsignedByte(String string, @Positive int radix) {
+  public static @Unsigned byte parseUnsignedByte(String string, @IntRange(from=2, to=36) int radix) {
     int parse = Integer.parseInt(checkNotNull(string), radix);
     // We need to throw a NumberFormatException, so we have to duplicate checkedCast. =(
     if (parse >> Byte.SIZE == 0) {

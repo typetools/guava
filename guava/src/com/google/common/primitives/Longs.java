@@ -422,7 +422,7 @@ public final class Longs {
    */
   @Beta
   @SuppressWarnings("upperbound") // annotation inferred by contract doesn't propagate through checkNotNull
-  public static @Nullable Long tryParse(String string, @Positive int radix) {
+  public static @Nullable Long tryParse(String string, @IntRange(from=2, to=36) int radix) {
     if (checkNotNull(string).isEmpty()) {
       return null;
     }
