@@ -18,6 +18,10 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.errorprone.annotations.Immutable;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
+
 import java.io.Serializable;
 import java.util.zip.Checksum;
 
@@ -29,11 +33,11 @@ import java.util.zip.Checksum;
 @Immutable
 final class ChecksumHashFunction extends AbstractHashFunction implements Serializable {
   private final ImmutableSupplier<? extends Checksum> checksumSupplier;
-  private final int bits;
+  private final @NonNegative int bits;
   private final String toString;
 
   ChecksumHashFunction(
-      ImmutableSupplier<? extends Checksum> checksumSupplier, int bits, String toString) {
+      ImmutableSupplier<? extends Checksum> checksumSupplier, @NonNegative int bits, String toString) {
     this.checksumSupplier = checkNotNull(checksumSupplier);
     checkArgument(bits == 32 || bits == 64, "bits (%s) must be either 32 or 64", bits);
     this.bits = bits;
@@ -41,7 +45,7 @@ final class ChecksumHashFunction extends AbstractHashFunction implements Seriali
   }
 
   @Override
-  public int bits() {
+  public @NonNegative int bits() {
     return bits;
   }
 
@@ -69,7 +73,7 @@ final class ChecksumHashFunction extends AbstractHashFunction implements Seriali
     }
 
     @Override
-    protected void update(byte[] bytes, int off, int len) {
+    protected void update(byte[] bytes, @NonNegative @LTLengthOf(value = "#1",offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int len) {
       checksum.update(bytes, off, len);
     }
 

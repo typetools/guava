@@ -31,6 +31,7 @@ import com.google.errorprone.annotations.Immutable;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -55,7 +56,7 @@ final class Murmur3_128HashFunction extends AbstractHashFunction implements Seri
   }
 
   @Override
-  public int bits() {
+  public @NonNegative int bits() {
     return 128;
   }
 
@@ -165,6 +166,7 @@ final class Murmur3_128HashFunction extends AbstractHashFunction implements Seri
       h2 ^= mixK2(k2);
     }
 
+    @SuppressWarnings("value:argument.type.incompatible")//ByteBuffer#array() should be annotated as  byte @MinLen(1)[] array().
     @Override
     protected HashCode makeHash() {
       h1 ^= length;

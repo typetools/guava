@@ -17,6 +17,9 @@ package com.google.common.hash;
 import com.google.common.annotations.Beta;
 import com.google.common.primitives.Ints;
 import com.google.errorprone.annotations.Immutable;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.common.value.qual.MinLen;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
@@ -137,7 +140,7 @@ public interface HashFunction {
    * size of the input (in bytes). This is only important for non-streaming hash functions (hash
    * functions that need to buffer their whole input before processing any of it).
    */
-  Hasher newHasher(int expectedInputSize);
+  Hasher newHasher(@NonNegative int expectedInputSize);
 
   /**
    * Shortcut for {@code newHasher().putInt(input).hash()}; returns the hash code for the given
@@ -159,7 +162,7 @@ public interface HashFunction {
    * Shortcut for {@code newHasher().putBytes(input).hash()}. The implementation <i>might</i>
    * perform better than its longhand equivalent, but should not perform worse.
    */
-  HashCode hashBytes(byte[] input);
+  HashCode hashBytes(byte @MinLen(1)[] input);
 
   /**
    * Shortcut for {@code newHasher().putBytes(input, off, len).hash()}. The implementation
@@ -168,7 +171,7 @@ public interface HashFunction {
    * @throws IndexOutOfBoundsException if {@code off < 0} or {@code off + len > bytes.length} or
    *     {@code len < 0}
    */
-  HashCode hashBytes(byte[] input, int off, int len);
+  HashCode hashBytes(byte[] input, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len);
 
   /**
    * Shortcut for {@code newHasher().putBytes(input).hash()}. The implementation <i>might</i>
@@ -191,7 +194,7 @@ public interface HashFunction {
    *
    * @since 15.0 (since 11.0 as hashString(CharSequence)).
    */
-  HashCode hashUnencodedChars(CharSequence input);
+  HashCode hashUnencodedChars(@MinLen(1) CharSequence input);
 
   /**
    * Shortcut for {@code newHasher().putString(input, charset).hash()}. Characters are encoded using
@@ -203,7 +206,7 @@ public interface HashFunction {
    * faster, produces the same output across Java releases, and hashes every {@code char} in the
    * input, even if some are invalid.
    */
-  HashCode hashString(CharSequence input, Charset charset);
+  HashCode hashString(@MinLen(1) CharSequence input, Charset charset);
 
   /**
    * Shortcut for {@code newHasher().putObject(instance, funnel).hash()}. The implementation
@@ -217,5 +220,5 @@ public interface HashFunction {
    * Returns the number of bits (a multiple of 32) that each hash code produced by this hash
    * function has.
    */
-  int bits();
+  @NonNegative int bits();
 }

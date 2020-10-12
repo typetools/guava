@@ -19,6 +19,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 import com.google.errorprone.annotations.Immutable;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
+
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
@@ -37,10 +40,13 @@ final class MessageDigestHashFunction extends AbstractHashFunction implements Se
   @SuppressWarnings("Immutable") // cloned before each use
   private final MessageDigest prototype;
 
-  private final int bytes;
+  private final @Positive int bytes;
   private final boolean supportsClone;
   private final String toString;
 
+  @SuppressWarnings("lowerbound:assignment.type.incompatible")/* `prototype.getDigestLength()` returns the digest length in bytes
+  ( return 0 as the default behavior).
+  */
   MessageDigestHashFunction(String algorithmName, String toString) {
     this.prototype = getMessageDigest(algorithmName);
     this.bytes = prototype.getDigestLength();
@@ -48,7 +54,7 @@ final class MessageDigestHashFunction extends AbstractHashFunction implements Se
     this.supportsClone = supportsClone(prototype);
   }
 
-  MessageDigestHashFunction(String algorithmName, int bytes, String toString) {
+  MessageDigestHashFunction(String algorithmName, @Positive int bytes, String toString) {
     this.toString = checkNotNull(toString);
     this.prototype = getMessageDigest(algorithmName);
     int maxLength = prototype.getDigestLength();
@@ -68,7 +74,7 @@ final class MessageDigestHashFunction extends AbstractHashFunction implements Se
   }
 
   @Override
-  public int bits() {
+  public @NonNegative int bits() {
     return bytes * Byte.SIZE;
   }
 
@@ -99,10 +105,10 @@ final class MessageDigestHashFunction extends AbstractHashFunction implements Se
 
   private static final class SerializedForm implements Serializable {
     private final String algorithmName;
-    private final int bytes;
+    private final @Positive int bytes;
     private final String toString;
 
-    private SerializedForm(String algorithmName, int bytes, String toString) {
+    private SerializedForm(String algorithmName, @Positive int bytes, String toString) {
       this.algorithmName = algorithmName;
       this.bytes = bytes;
       this.toString = toString;
@@ -122,10 +128,10 @@ final class MessageDigestHashFunction extends AbstractHashFunction implements Se
   /** Hasher that updates a message digest. */
   private static final class MessageDigestHasher extends AbstractByteHasher {
     private final MessageDigest digest;
-    private final int bytes;
+    private final @Positive int bytes;
     private boolean done;
 
-    private MessageDigestHasher(MessageDigest digest, int bytes) {
+    private MessageDigestHasher(MessageDigest digest, @Positive int bytes) {
       this.digest = digest;
       this.bytes = bytes;
     }
@@ -152,6 +158,9 @@ final class MessageDigestHashFunction extends AbstractHashFunction implements Se
       checkState(!done, "Cannot re-use a Hasher after calling hash() on it");
     }
 
+    @SuppressWarnings("value:argument.type.incompatible")/* `bytes` is positive, if `digest.getDigestLength()` returns
+    a positive and equals to `bytes`, `digest.digest()` returns array with min length of 1.
+    */
     @Override
     public HashCode hash() {
       checkNotDone();

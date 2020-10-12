@@ -18,6 +18,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.errorprone.annotations.Immutable;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.common.value.qual.MinLen;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
@@ -59,7 +62,7 @@ abstract class AbstractCompositeHashFunction extends AbstractHashFunction {
   }
 
   @Override
-  public Hasher newHasher(int expectedInputSize) {
+  public Hasher newHasher(@NonNegative int expectedInputSize) {
     checkArgument(expectedInputSize >= 0);
     Hasher[] hashers = new Hasher[functions.length];
     for (int i = 0; i < hashers.length; i++) {
@@ -79,7 +82,7 @@ abstract class AbstractCompositeHashFunction extends AbstractHashFunction {
       }
 
       @Override
-      public Hasher putBytes(byte[] bytes) {
+      public Hasher putBytes(byte @MinLen(1)[] bytes) {
         for (Hasher hasher : hashers) {
           hasher.putBytes(bytes);
         }
@@ -87,7 +90,7 @@ abstract class AbstractCompositeHashFunction extends AbstractHashFunction {
       }
 
       @Override
-      public Hasher putBytes(byte[] bytes, int off, int len) {
+      public Hasher putBytes(byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
         for (Hasher hasher : hashers) {
           hasher.putBytes(bytes, off, len);
         }
@@ -169,7 +172,7 @@ abstract class AbstractCompositeHashFunction extends AbstractHashFunction {
       }
 
       @Override
-      public Hasher putString(CharSequence chars, Charset charset) {
+      public Hasher putString(@MinLen(1) CharSequence chars, Charset charset) {
         for (Hasher hasher : hashers) {
           hasher.putString(chars, charset);
         }
