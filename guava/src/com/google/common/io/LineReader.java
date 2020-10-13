@@ -68,6 +68,7 @@ public final class LineReader {
    * @throws IOException if an I/O error occurs
    */
   @CanIgnoreReturnValue // to skip a line
+  @SuppressWarnings("argument.type.incompatible") // buf is the array representation of cbuf, so the call to add(char[], int, int) is safe.
   public String readLine() throws IOException {
     while (lines.peek() == null) {
       cbuf.clear();

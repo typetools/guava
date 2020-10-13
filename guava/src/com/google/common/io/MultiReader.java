@@ -19,6 +19,11 @@ import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
+import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -46,7 +51,7 @@ class MultiReader extends Reader {
   }
 
   @Override
-  public int read(char @Nullable [] cbuf, int off, int len) throws IOException {
+  public @GTENegativeOne @LTEqLengthOf("#1") int read(char @Nullable [] cbuf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     if (current == null) {
       return -1;
     }
@@ -59,7 +64,7 @@ class MultiReader extends Reader {
   }
 
   @Override
-  public long skip(long n) throws IOException {
+  public @NonNegative long skip(@NonNegative long n) throws IOException {
     Preconditions.checkArgument(n >= 0, "n is negative");
     if (n > 0) {
       while (current != null) {

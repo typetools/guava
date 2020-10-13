@@ -40,6 +40,9 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * A readable source of bytes, such as a file. Unlike an {@link InputStream}, a {@code ByteSource}
@@ -117,7 +120,7 @@ public abstract class ByteSource {
    *
    * @throws IllegalArgumentException if {@code offset} or {@code length} is negative
    */
-  public ByteSource slice(long offset, long length) {
+  public ByteSource slice(@NonNegative long offset, @NonNegative long length) {
     return new SlicedByteSource(offset, length);
   }
 
@@ -165,7 +168,7 @@ public abstract class ByteSource {
    * @since 19.0
    */
   @Beta
-  public Optional<Long> sizeIfKnown() {
+  public Optional<@NonNegative Long> sizeIfKnown() {
     return Optional.absent();
   }
 
@@ -216,7 +219,7 @@ public abstract class ByteSource {
   }
 
   /** Counts the bytes in the given input stream using skip if possible. */
-  private long countBySkipping(InputStream in) throws IOException {
+  private @NonNegative long countBySkipping(InputStream in) throws IOException {
     long count = 0;
     long skipped;
     while ((skipped = skipUpTo(in, Integer.MAX_VALUE)) > 0) {
@@ -280,7 +283,7 @@ public abstract class ByteSource {
     Closer closer = Closer.create();
     try {
       InputStream in = closer.register(openStream());
-      Optional<Long> size = sizeIfKnown();
+      Optional<@NonNegative Long> size = sizeIfKnown();
       return size.isPresent()
           ? ByteStreams.toByteArray(in, size.get())
           : ByteStreams.toByteArray(in);
@@ -481,10 +484,10 @@ public abstract class ByteSource {
   /** A view of a subsection of the containing byte source. */
   private final class SlicedByteSource extends ByteSource {
 
-    final long offset;
-    final long length;
+    final @NonNegative long offset;
+    final @NonNegative long length;
 
-    SlicedByteSource(long offset, long length) {
+    SlicedByteSource(@NonNegative long offset, @NonNegative long length) {
       checkArgument(offset >= 0, "offset (%s) may not be negative", offset);
       checkArgument(length >= 0, "length (%s) may not be negative", length);
       this.offset = offset;
@@ -526,7 +529,7 @@ public abstract class ByteSource {
     }
 
     @Override
-    public ByteSource slice(long offset, long length) {
+    public ByteSource slice(@NonNegative long offset, @NonNegative long length) {
       checkArgument(offset >= 0, "offset (%s) may not be negative", offset);
       checkArgument(length >= 0, "length (%s) may not be negative", length);
       long maxLength = this.length - offset;
@@ -541,8 +544,9 @@ public abstract class ByteSource {
     }
 
     @Override
-    public Optional<Long> sizeIfKnown() {
-      Optional<Long> optionalUnslicedSize = ByteSource.this.sizeIfKnown();
+    @SuppressWarnings("return.type.incompatible") // off is at most equal to unslicedSize and length is non-negative
+    public Optional<@NonNegative Long> sizeIfKnown() {
+      Optional<@NonNegative Long> optionalUnslicedSize = ByteSource.this.sizeIfKnown();
       if (optionalUnslicedSize.isPresent()) {
         long unslicedSize = optionalUnslicedSize.get();
         long off = Math.min(offset, unslicedSize);
@@ -560,15 +564,16 @@ public abstract class ByteSource {
   private static class ByteArrayByteSource extends ByteSource {
 
     final byte[] bytes;
-    final int offset;
-    final int length;
+    final @IndexOrHigh("this.bytes") int offset;
+    final @NonNegative @LTLengthOf(value = "this.bytes", offset = "this.offset - 1") int length;
 
     ByteArrayByteSource(byte[] bytes) {
       this(bytes, 0, bytes.length);
     }
 
     // NOTE: Preconditions are enforced by slice, the only non-trivial caller.
-    ByteArrayByteSource(byte[] bytes, int offset, int length) {
+    @SuppressWarnings("assignment.type.incompatible") /* bytes is the same as this.bytes, and offset is the same as this.offset */
+    ByteArrayByteSource(byte[] bytes, @IndexOrHigh("#1") int offset, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int length) {
       this.bytes = bytes;
       this.offset = offset;
       this.length = length;
@@ -595,7 +600,7 @@ public abstract class ByteSource {
     }
 
     @Override
-    public Optional<Long> sizeIfKnown() {
+    public Optional<@NonNegative Long> sizeIfKnown() {
       return Optional.of((long) length);
     }
 
@@ -623,7 +628,9 @@ public abstract class ByteSource {
     }
 
     @Override
-    public ByteSource slice(long offset, long length) {
+    @SuppressWarnings({"assignment.type.incompatible", "argument.type.incompatible"}) /* length is valid because offset
+     is smaller than the this.length */
+    public ByteSource slice(@NonNegative long offset, @NonNegative long length) {
       checkArgument(offset >= 0, "offset (%s) may not be negative", offset);
       checkArgument(length >= 0, "length (%s) may not be negative", length);
 
@@ -690,7 +697,8 @@ public abstract class ByteSource {
     }
 
     @Override
-    public Optional<Long> sizeIfKnown() {
+    @SuppressWarnings("return.type.incompatible") // Long.MAX_VALUE is non-negative
+    public Optional<@NonNegative Long> sizeIfKnown() {
       if (!(sources instanceof Collection)) {
         // Infinite Iterables can cause problems here. Of course, it's true that most of the other
         // methods on this class also have potential problems with infinite  Iterables. But unlike
@@ -699,9 +707,9 @@ public abstract class ByteSource {
         // underlying source to know what its size actually is.
         return Optional.absent();
       }
-      long result = 0L;
+      @NonNegative long result = 0L;
       for (ByteSource source : sources) {
-        Optional<Long> sizeIfKnown = source.sizeIfKnown();
+        Optional<@NonNegative Long> sizeIfKnown = source.sizeIfKnown();
         if (!sizeIfKnown.isPresent()) {
           return Optional.absent();
         }

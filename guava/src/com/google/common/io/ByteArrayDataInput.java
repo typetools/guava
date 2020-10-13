@@ -18,6 +18,9 @@ import com.google.common.annotations.GwtIncompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.io.DataInput;
 import java.io.IOException;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * An extension of {@code DataInput} for reading from in-memory byte arrays; its methods offer
@@ -37,12 +40,12 @@ public interface ByteArrayDataInput extends DataInput {
   void readFully(byte b[]);
 
   @Override
-  void readFully(byte b[], int off, int len);
+  void readFully(byte b[], @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len);
 
   // not guaranteed to skip n bytes so result should NOT be ignored
   // use ByteStreams.skipFully or one of the read methods instead
   @Override
-  int skipBytes(int n);
+  @NonNegative int skipBytes(int n);
 
   @CanIgnoreReturnValue // to skip a byte
   @Override
@@ -54,7 +57,7 @@ public interface ByteArrayDataInput extends DataInput {
 
   @CanIgnoreReturnValue // to skip a byte
   @Override
-  int readUnsignedByte();
+  @NonNegative int readUnsignedByte();
 
   @CanIgnoreReturnValue // to skip some bytes
   @Override
@@ -62,7 +65,7 @@ public interface ByteArrayDataInput extends DataInput {
 
   @CanIgnoreReturnValue // to skip some bytes
   @Override
-  int readUnsignedShort();
+  @NonNegative int readUnsignedShort();
 
   @CanIgnoreReturnValue // to skip some bytes
   @Override

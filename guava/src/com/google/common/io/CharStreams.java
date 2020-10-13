@@ -28,6 +28,9 @@ import java.io.Writer;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -292,7 +295,7 @@ public final class CharStreams {
     }
 
     @Override
-    public void write(char[] cbuf, int off, int len) {
+    public void write(char[] cbuf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
       checkPositionIndexes(off, off + len, cbuf.length);
     }
 
@@ -302,7 +305,7 @@ public final class CharStreams {
     }
 
     @Override
-    public void write(String str, int off, int len) {
+    public void write(String str, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
       checkPositionIndexes(off, off + len, str.length());
     }
 
@@ -312,7 +315,7 @@ public final class CharStreams {
     }
 
     @Override
-    public Writer append(@Nullable CharSequence csq, int start, int end) {
+    public Writer append(@Nullable CharSequence csq, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
       checkPositionIndexes(start, end, csq == null ? "null".length() : csq.length());
       return this;
     }
