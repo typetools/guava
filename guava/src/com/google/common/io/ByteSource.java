@@ -529,7 +529,6 @@ public abstract class ByteSource {
     }
 
     @Override
-    @SuppressWarnings("argument.type.incompatible")
     public ByteSource slice(@NonNegative long offset, @NonNegative long length) {
       checkArgument(offset >= 0, "offset (%s) may not be negative", offset);
       checkArgument(length >= 0, "length (%s) may not be negative", length);
