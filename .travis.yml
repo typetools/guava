@@ -11,7 +11,7 @@ addons:
     packages:
       - openjdk-8-source
 
-install: mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn install -U -DskipTests=true -f $ROOT_POM
+install: travis_wait 30 mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn install -U -DskipTests=true -f $ROOT_POM
 
 # https://docs.travis-ci.com/user/common-build-problems/#build-times-out-because-no-output-was-received
 script: travis_wait 60 mvn -B verify -U -Dmaven.javadoc.skip=true -f $ROOT_POM
