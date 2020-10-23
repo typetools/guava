@@ -147,13 +147,18 @@ git fetch --tags https://github.com/google/guava
 git pull https://github.com/google/guava v30.0
 ```
 
-3. Update the version number
+3. Ensure that the project shill builds:
+```
+(cd guava && mvn -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
+```
+
+4. Update the version number
  * multiple places in this file, and
  * in file guava/cfMavenCentral.xml .
 
 If it's not the same as the upstream version, then also edit pom.xml and guava/pom.xml.
 
-4. Run the following commands.
+5. Run the following commands.
 
 JAVA_HOME must be a JDK 8 JDK.
 
