@@ -157,7 +157,7 @@ If it's not the same as the upstream version, then also edit pom.xml and guava/p
 JAVA_HOME must be a JDK 8 JDK.
 
 ```
-PACKAGE=guava-29.0-jre
+PACKAGE=guava-30.0-jre
 
 cd guava
 
