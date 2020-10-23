@@ -88,7 +88,8 @@ If you wish to see a simplified diff between this fork of Guava and upstream (to
 
  * Clone both upstream and this fork.
  * Make a copy of each clone, because you will destructively edit each one.
- * Run the following commands in each temporary clone:
+ * Run the following commands in each temporary clone
+   (preplace is in https://github.com/plume-lib/plume-scripts):
 ```
    rm -rf .git
    mvn -B clean
