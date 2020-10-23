@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.google.guava</groupId>
   <artifactId>guava-parent</artifactId>
-  <version>29.0-android</version>
+  <version>30.0-android</version>
   <packaging>pom</packaging>
   <name>Guava Maven Parent</name>
   <description>Parent for guava artifacts</description>
@@ -70,6 +70,7 @@
         <directory>src</directory>
         <excludes>
           <exclude>**/*.java</exclude>
+          <exclude>**/*.sw*</exclude>
         </excludes>
       </resource>
     </resources>

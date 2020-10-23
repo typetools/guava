@@ -49,6 +49,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.Spliterator;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
@@ -107,7 +108,6 @@ public final class Multimaps {
    *
    * @since 21.0
    */
-  @Beta
   public static <T, K, V, M extends Multimap<K, V>> Collector<T, ?, M> toMultimap(
       java.util.function.Function<? super T, ? extends K> keyFunction,
       java.util.function.Function<? super T, ? extends V> valueFunction,
@@ -697,6 +697,11 @@ public final class Multimaps {
         entries = result = unmodifiableEntries(delegate.entries());
       }
       return result;
+    }
+
+    @Override
+    public void forEach(BiConsumer<? super K, ? super V> consumer) {
+      delegate.forEach(checkNotNull(consumer));
     }
 
     @Override

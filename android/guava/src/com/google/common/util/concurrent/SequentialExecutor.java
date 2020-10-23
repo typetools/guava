@@ -24,7 +24,7 @@ import static java.lang.System.identityHashCode;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.concurrent.GuardedBy;
-import com.google.j2objc.annotations.WeakOuter;
+import com.google.j2objc.annotations.RetainedWith;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.concurrent.Executor;
@@ -80,7 +80,7 @@ final class SequentialExecutor implements Executor {
   @GuardedBy("queue")
   private long workerRunCount = 0;
 
-  private final QueueWorker worker = new QueueWorker();
+  @RetainedWith private final QueueWorker worker = new QueueWorker();
 
   /** Use {@link MoreExecutors#newSequentialExecutor} */
   SequentialExecutor(Executor executor) {
@@ -119,6 +119,11 @@ final class SequentialExecutor implements Executor {
             @Override
             public void run() {
               task.run();
+            }
+
+            @Override
+            public String toString() {
+              return task.toString();
             }
           };
       queue.add(submittedTask);
@@ -164,8 +169,9 @@ final class SequentialExecutor implements Executor {
   }
 
   /** Worker that runs tasks from {@link #queue} until it is empty. */
-  @WeakOuter
   private final class QueueWorker implements Runnable {
+    Runnable task;
+
     @Override
     public void run() {
       try {
@@ -197,7 +203,6 @@ final class SequentialExecutor implements Executor {
       boolean hasSetRunning = false;
       try {
         while (true) {
-          Runnable task;
           synchronized (queue) {
             // Choose whether this thread will run or not after acquiring the lock on the first
             // iteration
@@ -228,6 +233,8 @@ final class SequentialExecutor implements Executor {
             task.run();
           } catch (RuntimeException e) {
             log.log(Level.SEVERE, "Exception while executing runnable " + task, e);
+          } finally {
+            task = null;
           }
         }
       } finally {
@@ -238,6 +245,16 @@ final class SequentialExecutor implements Executor {
           Thread.currentThread().interrupt();
         }
       }
+    }
+
+    @SuppressWarnings("GuardedBy")
+    @Override
+    public String toString() {
+      Runnable currentlyRunning = task;
+      if (currentlyRunning != null) {
+        return "SequentialExecutorWorker{running=" + currentlyRunning + "}";
+      }
+      return "SequentialExecutorWorker{state=" + workerRunningState + "}";
     }
   }
 

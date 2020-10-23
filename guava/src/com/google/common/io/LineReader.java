@@ -71,7 +71,7 @@ public final class LineReader {
   @SuppressWarnings("argument.type.incompatible") // buf is the array representation of cbuf, so the call to add(char[], int, int) is safe.
   public String readLine() throws IOException {
     while (lines.peek() == null) {
-      cbuf.clear();
+      Java8Compatibility.clear(cbuf);
       // The default implementation of Reader#read(CharBuffer) allocates a
       // temporary char[], so we call Reader#read(char[], int, int) instead.
       int read = (reader != null) ? reader.read(buf, 0, buf.length) : readable.read(cbuf);

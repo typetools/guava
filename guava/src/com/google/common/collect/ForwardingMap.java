@@ -84,8 +84,8 @@ public abstract class ForwardingMap<K, V> extends ForwardingObject implements Ma
   @CanIgnoreReturnValue
   @Override
   @SuppressWarnings("nullness") // Suppressed due to annotations on remove in Java.Map
-  public @Nullable V remove(@Nullable Object object) {
-    return delegate().remove(object);
+  public @Nullable V remove(@Nullable Object key) {
+    return delegate().remove(key);
   }
 
   @Override

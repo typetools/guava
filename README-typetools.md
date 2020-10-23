@@ -143,7 +143,7 @@ into master.
 2. Pull in the latest Guava version (https://github.com/google/guava/releases):
 ```
 git fetch --tags https://github.com/google/guava
-git pull https://github.com/google/guava v29.0
+git pull https://github.com/google/guava v30.0
 ```
 
 3. Update the version number

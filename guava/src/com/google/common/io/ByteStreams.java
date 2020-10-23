@@ -47,6 +47,8 @@ import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
+import java.util.Deque;
+import java.util.Queue;
 
 /**
  * Provides utility methods for working with byte arrays and I/O streams.
@@ -151,11 +153,11 @@ public final class ByteStreams {
     ByteBuffer buf = ByteBuffer.wrap(createBuffer());
     long total = 0;
     while (from.read(buf) != -1) {
-      buf.flip();
+      Java8Compatibility.flip(buf);
       while (buf.hasRemaining()) {
         total += to.write(buf);
       }
-      buf.clear();
+      Java8Compatibility.clear(buf);
     }
     return total;
   }
@@ -171,9 +173,9 @@ public final class ByteStreams {
    * a total combined length of {@code totalLen} bytes) followed by all bytes remaining in the given
    * input stream.
    */
-  private static byte[] toByteArrayInternal(InputStream in, Deque<byte[]> bufs, @NonNegative int totalLen)
+  private static byte[] toByteArrayInternal(InputStream in, Queue<byte[]> bufs, @NonNegative int totalLen)
       throws IOException {
-    // Starting with an 8k buffer, double the size of each sucessive buffer. Buffers are retained
+    // Starting with an 8k buffer, double the size of each successive buffer. Buffers are retained
     // in a deque so that there's no copying between buffers while reading and so all of the bytes
     // in each new allocated buffer are available for reading from the stream.
     for (int bufSize = BUFFER_SIZE;
@@ -204,11 +206,11 @@ public final class ByteStreams {
 
   @SuppressWarnings("argument.type.incompatible") /* resultOffset is greater than 0 because remaining gets closer to 0
   totalLen stays the same. bytesToCopy is valid because it can't exceed the length of buf */
-  private static byte[] combineBuffers(Deque<byte[]> bufs, @NonNegative int totalLen) {
+  private static byte[] combineBuffers(Queue<byte[]> bufs, @NonNegative int totalLen) {
     byte[] result = new byte[totalLen];
     int remaining = totalLen;
     while (remaining > 0) {
-      byte[] buf = bufs.removeFirst();
+      byte[] buf = bufs.remove();
       int bytesToCopy = Math.min(remaining, buf.length);
       int resultOffset = totalLen - remaining;
       System.arraycopy(buf, 0, result, resultOffset, bytesToCopy);
@@ -264,7 +266,7 @@ public final class ByteStreams {
     }
 
     // the stream was longer, so read the rest normally
-    Deque<byte[]> bufs = new ArrayDeque<byte[]>(TO_BYTE_ARRAY_DEQUE_SIZE + 2);
+    Queue<byte[]> bufs = new ArrayDeque<byte[]>(TO_BYTE_ARRAY_DEQUE_SIZE + 2);
     bufs.add(bytes);
     bufs.add(new byte[] {(byte) b});
     return toByteArrayInternal(in, bufs, bytes.length + 1);
