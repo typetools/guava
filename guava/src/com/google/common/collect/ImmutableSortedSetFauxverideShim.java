@@ -39,7 +39,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtIncompatible
-abstract class ImmutableSortedSetFauxverideShim<E> extends ImmutableSet<E> {
+abstract class ImmutableSortedSetFauxverideShim<E extends @NonNull Object> extends ImmutableSet<E> {
   /**
    * Not supported. Use {@link ImmutableSortedSet#toImmutableSortedSet} instead. This method exists
    * only to hide {@link ImmutableSet#toImmutableSet} from consumers of {@code ImmutableSortedSet}.

@@ -81,7 +81,7 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
   }
 
   /** An immutable map implementation backed by an indexed nullable array. */
-  private abstract static class ImmutableArrayMap<K, V> extends IteratorBasedImmutableMap<K, V> {
+  private abstract static class ImmutableArrayMap<K extends @NonNull Object, V extends @NonNull Object> extends IteratorBasedImmutableMap<K, V> {
     private final int size;
 
     ImmutableArrayMap(int size) {

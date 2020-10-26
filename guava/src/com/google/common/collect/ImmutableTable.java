@@ -47,7 +47,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @since 11.0
  */
 @GwtCompatible
-public abstract class ImmutableTable<R, C, V> extends AbstractTable<R, C, V>
+public abstract class ImmutableTable<R extends @NonNull Object, C extends @NonNull Object, V extends @NonNull Object> extends AbstractTable<R, C, V>
     implements Serializable {
 
   /**

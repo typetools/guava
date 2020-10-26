@@ -31,7 +31,7 @@ import java.io.Serializable;
  */
 @GwtCompatible(serializable = true, emulated = true)
 @SuppressWarnings("serial")
-abstract class ImmutableAsList<E> extends ImmutableList<E> {
+abstract class ImmutableAsList<E extends @NonNull Object> extends ImmutableList<E> {
   abstract ImmutableCollection<E> delegateCollection();
 
   @Override

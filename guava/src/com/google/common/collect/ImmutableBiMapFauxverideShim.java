@@ -29,7 +29,7 @@ import java.util.stream.Collector;
  * @author Louis Wasserman
  */
 @GwtIncompatible
-abstract class ImmutableBiMapFauxverideShim<K, V> extends ImmutableMap<K, V> {
+abstract class ImmutableBiMapFauxverideShim<K extends @NonNull Object, V extends @NonNull Object> extends ImmutableMap<K, V> {
   /**
    * Not supported. Use {@link ImmutableBiMap#toImmutableBiMap} instead. This method exists only to
    * hide {@link ImmutableMap#toImmutableMap(Function, Function)} from consumers of {@code

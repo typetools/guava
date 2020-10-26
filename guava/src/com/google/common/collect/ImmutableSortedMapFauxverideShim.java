@@ -29,7 +29,7 @@ import java.util.stream.Collector;
  * @author Chris Povirk
  */
 @GwtIncompatible
-abstract class ImmutableSortedMapFauxverideShim<K, V> extends ImmutableMap<K, V> {
+abstract class ImmutableSortedMapFauxverideShim<K extends @NonNull Object, V extends @NonNull Object> extends ImmutableMap<K, V> {
   /**
    * Not supported. Use {@link ImmutableSortedMap#toImmutableSortedMap}, which offers better
    * type-safety, instead. This method exists only to hide {@link ImmutableMap#toImmutableMap} from

@@ -48,7 +48,7 @@ import java.util.stream.Collector;
  * @since 12.0
  */
 @GwtIncompatible // hasn't been tested yet
-public abstract class ImmutableSortedMultiset<E> extends ImmutableSortedMultisetFauxverideShim<E>
+public abstract class ImmutableSortedMultiset<E extends @NonNull Object> extends ImmutableSortedMultisetFauxverideShim<E>
     implements SortedMultiset<E> {
   // TODO(lowasser): GWT compatibility
 

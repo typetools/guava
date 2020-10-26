@@ -63,7 +63,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
 @SuppressWarnings("serial") // we're overriding default serialization
-public abstract class ImmutableSortedSet<E> extends ImmutableSortedSetFauxverideShim<E>
+public abstract class ImmutableSortedSet<E extends @NonNull Object> extends ImmutableSortedSetFauxverideShim<E>
     implements NavigableSet<E>, SortedIterable<E> {
   static final int SPLITERATOR_CHARACTERISTICS =
       ImmutableSet.SPLITERATOR_CHARACTERISTICS | Spliterator.SORTED;

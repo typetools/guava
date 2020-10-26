@@ -28,7 +28,7 @@ import java.util.Map;
  * @since 13.0
  */
 @Beta
-public final class ImmutableTypeToInstanceMap<B> extends ForwardingMap<TypeToken<? extends B>, B>
+public final class ImmutableTypeToInstanceMap<B extends @NonNull Object> extends ForwardingMap<TypeToken<? extends B>, B>
     implements TypeToInstanceMap<B> {
 
   /** Returns an empty type to instance map. */

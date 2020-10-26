@@ -37,7 +37,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @Immutable(containerOf = "B")
 @GwtIncompatible
-public final class ImmutableClassToInstanceMap<B> extends ForwardingMap<Class<? extends B>, B>
+public final class ImmutableClassToInstanceMap<B extends @NonNull Object> extends ForwardingMap<Class<? extends B>, B>
     implements ClassToInstanceMap<B>, Serializable {
 
   private static final ImmutableClassToInstanceMap<Object> EMPTY =

@@ -56,7 +56,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
 @SuppressWarnings("serial") // we're overriding default serialization
-public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializationDependencies<E>
+public abstract class ImmutableMultiset<E extends @NonNull Object> extends ImmutableMultisetGwtSerializationDependencies<E>
     implements Multiset<E> {
 
   /**

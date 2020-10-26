@@ -150,7 +150,7 @@ public final class Tables {
     return new ImmutableCell<>(rowKey, columnKey, value);
   }
 
-  static final class ImmutableCell<R, C, V> extends AbstractCell<R, C, V> implements Serializable {
+  static final class ImmutableCell<R extends @NonNull Object, C extends @NonNull Object, V extends @NonNull Object> extends AbstractCell<R, C, V> implements Serializable {
     private final @Nullable R rowKey;
     private final @Nullable C columnKey;
     private final @Nullable V value;

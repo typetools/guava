@@ -33,7 +33,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Louis Wasserman
  */
 @GwtIncompatible // unnecessary
-class ImmutableMapEntry<K, V> extends ImmutableEntry<K, V> {
+class ImmutableMapEntry<K extends @NonNull Object, V extends @NonNull Object> extends ImmutableEntry<K, V> {
   /**
    * Creates an {@code ImmutableMapEntry} array to hold parameterized entries. The result must never
    * be upcast back to ImmutableMapEntry[] (or Object[], etc.), or allowed to escape the class.

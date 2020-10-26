@@ -62,7 +62,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
-public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxverideShim<K, V>
+public final class ImmutableSortedMap<K extends @NonNull Object, V extends @NonNull Object> extends ImmutableSortedMapFauxverideShim<K, V>
     implements NavigableMap<K, V> {
   /**
    * Returns a {@link Collector} that accumulates elements into an {@code ImmutableSortedMap} whose

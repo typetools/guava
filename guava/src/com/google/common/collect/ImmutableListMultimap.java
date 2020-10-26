@@ -52,7 +52,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
-public class ImmutableListMultimap<K, V> extends ImmutableMultimap<K, V>
+public class ImmutableListMultimap<K extends @NonNull Object, V extends @NonNull Object> extends ImmutableMultimap<K, V>
     implements ListMultimap<K, V> {
   /**
    * Returns a {@link Collector} that accumulates elements into an {@code ImmutableListMultimap}

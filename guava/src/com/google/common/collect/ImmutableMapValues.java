@@ -1,4 +1,4 @@
-/*
+xxxxs/*
  * Copyright (C) 2008 The Guava Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Kevin Bourrillion
  */
 @GwtCompatible(emulated = true)
-final class ImmutableMapValues<K, V> extends ImmutableCollection<V> {
+final class ImmutableMapValues<K extends @NonNull Object, V extends @NonNull Object> extends ImmutableCollection<V> {
   private final ImmutableMap<K, V> map;
 
   ImmutableMapValues(ImmutableMap<K, V> map) {

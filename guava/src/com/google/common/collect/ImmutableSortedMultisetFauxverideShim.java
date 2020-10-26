@@ -37,7 +37,7 @@ import java.util.stream.Collector;
  * @author Louis Wasserman
  */
 @GwtIncompatible
-abstract class ImmutableSortedMultisetFauxverideShim<E> extends ImmutableMultiset<E> {
+abstract class ImmutableSortedMultisetFauxverideShim<E extends @NonNull Object> extends ImmutableMultiset<E> {
   /**
    * Not supported. Use {@link ImmutableSortedMultiset#toImmutableSortedMultiset} instead. This
    * method exists only to hide {@link ImmutableMultiset#toImmutableMultiset} from consumers of

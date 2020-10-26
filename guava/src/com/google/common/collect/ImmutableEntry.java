@@ -25,7 +25,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 /** @see com.google.common.collect.Maps#immutableEntry(Object, Object) */
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true)
-class ImmutableEntry<K, V> extends AbstractMapEntry<K, V> implements Serializable {
+class ImmutableEntry<K extends @NonNull Object, V extends @NonNull Object> extends AbstractMapEntry<K, V> implements Serializable {
   final @Nullable K key;
   final @Nullable V value;
 

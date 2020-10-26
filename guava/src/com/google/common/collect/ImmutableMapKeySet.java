@@ -32,7 +32,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Kevin Bourrillion
  */
 @GwtCompatible(emulated = true)
-final class ImmutableMapKeySet<K, V> extends IndexedImmutableSet<K> {
+final class ImmutableMapKeySet<K extends @NonNull Object, V extends @NonNull Object> extends IndexedImmutableSet<K> {
   private final ImmutableMap<K, V> map;
 
   ImmutableMapKeySet(ImmutableMap<K, V> map) {
