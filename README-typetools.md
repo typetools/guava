@@ -6,8 +6,6 @@ The annotations are only in the main Guava project, not in the "Android" variant
 To build this project
 ---------------------
 
-Optionally change `guava/pom.xml` to use a locally-built version of the Checker Framework.
-
 To create file `guava/target/guava-HEAD-jre-SNAPSHOT.jar`:
 (This takes about 25 minutes, because it performs pluggable type-checking.)
 
@@ -15,7 +13,8 @@ To create file `guava/target/guava-HEAD-jre-SNAPSHOT.jar`:
 (cd guava && mvn -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
 ```
 
-To use a locally-built Checker Framework, add `-P checkerframework-local`.
+To use a locally-built Checker Framework, add `-P checkerframework-local`,
+or change `guava/pom.xml`.
 
 
 Typechecking
@@ -72,7 +71,7 @@ To update to a newer version of the upstream library
 Check for a release at
   https://github.com/google/guava/releases
 .  If there has been one since the last time this repository was pulled,
-then follow the instructions at "To upload to Maven Central".
+then follow the instructions at "To release to Maven Central".
 
 **After** checking and possibly uploading, run
 
@@ -123,7 +122,7 @@ If you wish to see a simplified diff between this fork of Guava and upstream (to
  * Diff the two temporary clones.
 
 
-To upload to Maven Central
+To release to Maven Central
 --------------------------
 
 Re-releasing:  If you want to re-release some version of Guava because you have
@@ -147,7 +146,7 @@ git fetch --tags https://github.com/google/guava
 git pull https://github.com/google/guava v30.1
 ```
 
-3. Ensure that the project shill builds:
+3. Ensure that the project still builds:
 ```
 (cd guava && mvn -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
 ```
@@ -178,8 +177,8 @@ mvn javadoc:javadoc && (cd target/site/apidocs && jar -cf ${PACKAGE}-javadoc.jar
 
 if [ -d /projects/swlab1/checker-framework/hosting-info ] ; then
   HOSTING_INFO_DIR=/projects/swlab1/checker-framework/hosting-info
-elif [ -d $USER/private/cf-hosting-info ]
-  HOSTING_INFO_DIR=$USER/private/cf-hosting-info
+elif [ -d $HOME/private/cf-hosting-info ] ; then
+  HOSTING_INFO_DIR=$HOME/private/cf-hosting-info
 else
   echo "Cannot set HOSTING_INFO_DIR."
   exit
