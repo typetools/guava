@@ -74,22 +74,14 @@ public final class Multisets {
    * <p>Note that {@code stream.collect(toMultiset(function, e -> 1, supplier))} is equivalent to
    * {@code stream.map(function).collect(Collectors.toCollection(supplier))}.
    *
+   *
    * @since 22.0
    */
   public static <T, E, M extends Multiset<E>> Collector<T, ?, M> toMultiset(
       java.util.function.Function<? super T, E> elementFunction,
       java.util.function.ToIntFunction<? super T> countFunction,
       java.util.function.Supplier<M> multisetSupplier) {
-    checkNotNull(elementFunction);
-    checkNotNull(countFunction);
-    checkNotNull(multisetSupplier);
-    return Collector.of(
-        multisetSupplier,
-        (ms, t) -> ms.add(elementFunction.apply(t), countFunction.applyAsInt(t)),
-        (ms1, ms2) -> {
-          ms1.addAll(ms2);
-          return ms1;
-        });
+    return CollectCollectors.toMultiset(elementFunction, countFunction, multisetSupplier);
   }
 
   /**

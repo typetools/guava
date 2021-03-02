@@ -64,10 +64,11 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
    * ImmutableMultiset}. Elements iterate in order by the <i>first</i> appearance of that element in
    * encounter order.
    *
+   *
    * @since 21.0
    */
   public static <E> Collector<E, ?, ImmutableMultiset<E>> toImmutableMultiset() {
-    return toImmutableMultiset(Function.identity(), e -> 1);
+    return CollectCollectors.toImmutableMultiset(Function.identity(), e -> 1);
   }
 
   /**
@@ -79,21 +80,12 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
    * occurrence in encounter order appears in the resulting multiset, with count equal to the sum of
    * the outputs of {@code countFunction.applyAsInt(t)} for each {@code t} mapped to that element.
    *
+   *
    * @since 22.0
    */
   public static <T, E> Collector<T, ?, ImmutableMultiset<E>> toImmutableMultiset(
       Function<? super T, ? extends E> elementFunction, ToIntFunction<? super T> countFunction) {
-    checkNotNull(elementFunction);
-    checkNotNull(countFunction);
-    return Collector.of(
-        LinkedHashMultiset::create,
-        (multiset, t) ->
-            multiset.add(checkNotNull(elementFunction.apply(t)), countFunction.applyAsInt(t)),
-        (multiset1, multiset2) -> {
-          multiset1.addAll(multiset2);
-          return multiset1;
-        },
-        (Multiset<E> multiset) -> copyFromEntries(multiset.entrySet()));
+    return CollectCollectors.toImmutableMultiset(elementFunction, countFunction);
   }
 
   /** Returns the empty immutable multiset. */

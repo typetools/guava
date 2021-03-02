@@ -144,7 +144,7 @@ yet written.
 2. Pull in the latest Guava version (https://github.com/google/guava/releases):
 ```
 git fetch --tags https://github.com/google/guava
-git pull https://github.com/google/guava v30.0
+git pull https://github.com/google/guava v30.1
 ```
 
 3. Ensure that the project shill builds:
@@ -164,7 +164,7 @@ JAVA_HOME must be a JDK 8 JDK.
 This step must be done on machine, such as a CSE machine, that has access to the necessary passwords.
 
 ```
-PACKAGE=guava-30.0-jre
+PACKAGE=guava-30.1-jre
 
 cd guava
 
