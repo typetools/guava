@@ -73,7 +73,7 @@ Check for a release at
 .  If there has been one since the last time this repository was pulled,
 then follow the instructions at "To release to Maven Central".
 
-**After** checking and possibly uploading, run
+**After** checking and possibly releasing, run
 
 ```
 git pull https://github.com/google/guava
