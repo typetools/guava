@@ -126,7 +126,7 @@ If you wish to see a simplified diff between this fork of Guava and upstream (to
 To upload to Maven Central
 --------------------------
 
-This must be done on a CSE machine, which has access to the necessary passwords.
+The last step must be done on a CSE machine, which has access to the necessary passwords.
 
 Re-releasing:  If you want to re-release some version of Guava because you have
 added annotations or because the Checker Framework has changed, then *you will
@@ -135,11 +135,13 @@ upstream, commits subsequent to the release.)  Those instructions are not
 yet written.
 
 1. Use the latest Checker Framework release
-(https://github.com/typetools/checker-framework/releases) by changing
-`pom.xml` (in 1 place) and `guava/pom.xml` (in 1 place).  Re-build to
-ensure that typechecking still works.  Commit and push.  If a `cf-master`
-branch exists in this repository, follow the instructions above to merge it
-into master.
+(https://github.com/typetools/checker-framework/releases):
+ * Change `pom.xml` (in 1 place) and `guava/pom.xml` (in 1 place).
+ * Re-build to ensure that typechecking still works:
+   (cd guava && mvn -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
+ * Commit and push.
+ * If a `cf-master` branch exists in this repository, follow the
+   instructions above to merge it into master.
 
 2. Pull in the latest Guava version (https://github.com/google/guava/releases):
 ```
@@ -161,6 +163,7 @@ If it's not the same as the upstream version, then also edit pom.xml and guava/p
 5. Run the following commands.
 
 JAVA_HOME must be a JDK 8 JDK.
+This step must be done on a CSE machine, which has access to the necessary passwords.
 
 ```
 PACKAGE=guava-30.0-jre
