@@ -161,6 +161,7 @@ If it's not the same as the upstream version, then also edit pom.xml and guava/p
 
 JAVA_HOME must be a JDK 8 JDK.
 This step must be done on machine, such as a CSE machine, that has access to the necessary passwords.
+(It failed on Mike's home machine.  I could not figure out why.)
 
 ```
 PACKAGE=guava-30.1-jre
