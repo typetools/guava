@@ -22,6 +22,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.DoNotCall;
 import com.google.errorprone.annotations.concurrent.LazyInit;
 import com.google.j2objc.annotations.WeakOuter;
 import java.io.Serializable;
@@ -64,7 +65,6 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
    * ImmutableMultiset}. Elements iterate in order by the <i>first</i> appearance of that element in
    * encounter order.
    *
-   *
    * @since 21.0
    */
   public static <E> Collector<E, ?, ImmutableMultiset<E>> toImmutableMultiset() {
@@ -79,7 +79,6 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
    * <p>If the mapped elements contain duplicates (according to {@link Object#equals}), the first
    * occurrence in encounter order appears in the resulting multiset, with count equal to the sum of
    * the outputs of {@code countFunction.applyAsInt(t)} for each {@code t} mapped to that element.
-   *
    *
    * @since 22.0
    */
@@ -275,6 +274,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
   @CanIgnoreReturnValue
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final int add(E element, int occurrences) {
     throw new UnsupportedOperationException();
   }
@@ -288,6 +288,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
   @CanIgnoreReturnValue
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final int remove(@Nullable Object element, int occurrences) {
     throw new UnsupportedOperationException();
   }
@@ -301,6 +302,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
   @CanIgnoreReturnValue
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final int setCount(E element, int count) {
     throw new UnsupportedOperationException();
   }
@@ -314,6 +316,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
   @CanIgnoreReturnValue
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final boolean setCount(E element, int oldCount, int newCount) {
     throw new UnsupportedOperationException();
   }

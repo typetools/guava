@@ -143,7 +143,7 @@ yet written.
 2. Pull in the latest Guava version (https://github.com/google/guava/releases):
 ```
 git fetch --tags https://github.com/google/guava
-git pull https://github.com/google/guava v30.1
+git pull https://github.com/google/guava v30.1.1
 ```
 
 3. Ensure that the project still builds:

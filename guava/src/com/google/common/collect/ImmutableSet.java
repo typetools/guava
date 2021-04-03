@@ -65,7 +65,6 @@ public abstract class ImmutableSet<E extends @NonNull Object> extends ImmutableC
    * the stream contains duplicates (according to {@link Object#equals(Object)}), only the first
    * duplicate in encounter order will appear in the result.
    *
-   *
    * @since 21.0
    */
   public static <E> Collector<E, ?, ImmutableSet<E>> toImmutableSet() {
@@ -318,7 +317,8 @@ public abstract class ImmutableSet<E extends @NonNull Object> extends ImmutableC
   public boolean equals(@Nullable Object object) {
     if (object == this) {
       return true;
-    } else if (object instanceof ImmutableSet
+    }
+    if (object instanceof ImmutableSet
         && isHashCodeFast()
         && ((ImmutableSet<?>) object).isHashCodeFast()
         && hashCode() != object.hashCode()) {

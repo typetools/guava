@@ -196,11 +196,10 @@ public abstract class BaseEncoding {
   private static byte[] extract(byte[] result, @IndexOrHigh("#1") int length) {
     if (length == result.length) {
       return result;
-    } else {
-      byte[] trunc = new byte[length];
-      System.arraycopy(result, 0, trunc, 0, length);
-      return trunc;
     }
+    byte[] trunc = new byte[length];
+    System.arraycopy(result, 0, trunc, 0, length);
+    return trunc;
   }
 
   /**
@@ -232,7 +231,8 @@ public abstract class BaseEncoding {
    *
    * @throws DecodingException if the input is not a valid encoded string according to this
    *     encoding.
-   */ final byte[] decodeChecked(CharSequence chars)
+   */
+  final byte[] decodeChecked(CharSequence chars)
       throws DecodingException {
     chars = trimTrailingPadding(chars);
     byte[] tmp = new byte[maxDecodedSize(chars.length())];
@@ -527,27 +527,25 @@ public abstract class BaseEncoding {
     Alphabet upperCase() {
       if (!hasLowerCase()) {
         return this;
-      } else {
-        checkState(!hasUpperCase(), "Cannot call upperCase() on a mixed-case alphabet");
-        char[] upperCased = new char[chars.length];
-        for (int i = 0; i < chars.length; i++) {
-          upperCased[i] = Ascii.toUpperCase(chars[i]);
-        }
-        return new Alphabet(name + ".upperCase()", upperCased);
       }
+      checkState(!hasUpperCase(), "Cannot call upperCase() on a mixed-case alphabet");
+      char[] upperCased = new char[chars.length];
+      for (int i = 0; i < chars.length; i++) {
+        upperCased[i] = Ascii.toUpperCase(chars[i]);
+      }
+      return new Alphabet(name + ".upperCase()", upperCased);
     }
 
     Alphabet lowerCase() {
       if (!hasUpperCase()) {
         return this;
-      } else {
-        checkState(!hasLowerCase(), "Cannot call lowerCase() on a mixed-case alphabet");
-        char[] lowerCased = new char[chars.length];
-        for (int i = 0; i < chars.length; i++) {
-          lowerCased[i] = Ascii.toLowerCase(chars[i]);
-        }
-        return new Alphabet(name + ".lowerCase()", lowerCased);
       }
+      checkState(!hasLowerCase(), "Cannot call lowerCase() on a mixed-case alphabet");
+      char[] lowerCased = new char[chars.length];
+      for (int i = 0; i < chars.length; i++) {
+        lowerCased[i] = Ascii.toLowerCase(chars[i]);
+      }
+      return new Alphabet(name + ".lowerCase()", lowerCased);
     }
 
     @SuppressWarnings("array.access.unsafe") // if c is not a valid index for decodabet, the second operand will not be processed.

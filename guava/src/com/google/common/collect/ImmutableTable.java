@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.MoreObjects;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.DoNotCall;
 import com.google.errorprone.annotations.DoNotMock;
 import java.io.Serializable;
 import java.util.Comparator;
@@ -55,7 +56,6 @@ public abstract class ImmutableTable<R, C, V> extends AbstractTable<R, C, V>
    * <p>The returned {@code Collector} will throw a {@code NullPointerException} at collection time
    * if the row, column, or value functions return null on any input.
    *
-   *
    * @since 21.0
    */
   public static <T, R, C, V> Collector<T, ?, ImmutableTable<R, C, V>> toImmutableTable(
@@ -73,7 +73,6 @@ public abstract class ImmutableTable<R, C, V> extends AbstractTable<R, C, V>
    *
    * <p>The returned {@code Collector} will throw a {@code NullPointerException} at collection time
    * if the row, column, value, or merging functions return null on any input.
-   *
    *
    * @since 21.0
    */
@@ -371,6 +370,7 @@ public abstract class ImmutableTable<R, C, V> extends AbstractTable<R, C, V>
    */
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final void clear() {
     throw new UnsupportedOperationException();
   }
@@ -384,6 +384,7 @@ public abstract class ImmutableTable<R, C, V> extends AbstractTable<R, C, V>
   @CanIgnoreReturnValue
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final V put(R rowKey, C columnKey, V value) {
     throw new UnsupportedOperationException();
   }
@@ -396,6 +397,7 @@ public abstract class ImmutableTable<R, C, V> extends AbstractTable<R, C, V>
    */
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final void putAll(Table<? extends R, ? extends C, ? extends V> table) {
     throw new UnsupportedOperationException();
   }
@@ -409,6 +411,7 @@ public abstract class ImmutableTable<R, C, V> extends AbstractTable<R, C, V>
   @CanIgnoreReturnValue
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final V remove(Object rowKey, Object columnKey) {
     throw new UnsupportedOperationException();
   }

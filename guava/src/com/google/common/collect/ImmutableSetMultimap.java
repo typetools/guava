@@ -23,6 +23,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.MoreObjects;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.DoNotCall;
 import com.google.errorprone.annotations.concurrent.LazyInit;
 import com.google.j2objc.annotations.RetainedWith;
 import com.google.j2objc.annotations.Weak;
@@ -82,7 +83,6 @@ public class ImmutableSetMultimap<K, V> extends ImmutableMultimap<K, V>
    *         .build();
    * }</pre>
    *
-   *
    * @since 21.0
    */
   public static <T, K, V> Collector<T, ?, ImmutableSetMultimap<K, V>> toImmutableSetMultimap(
@@ -128,7 +128,6 @@ public class ImmutableSetMultimap<K, V> extends ImmutableMultimap<K, V>
    *         .build();
    * }
    * }</pre>
-   *
    *
    * @since 21.0
    */
@@ -485,7 +484,8 @@ public class ImmutableSetMultimap<K, V> extends ImmutableMultimap<K, V>
   @CanIgnoreReturnValue
   @Deprecated
   @Override
-  public ImmutableSet<V> removeAll(@Nullable Object key) {
+  @DoNotCall("Always throws UnsupportedOperationException")
+  public final ImmutableSet<V> removeAll(@Nullable Object key) {
     throw new UnsupportedOperationException();
   }
 
@@ -498,7 +498,8 @@ public class ImmutableSetMultimap<K, V> extends ImmutableMultimap<K, V>
   @CanIgnoreReturnValue
   @Deprecated
   @Override
-  public ImmutableSet<V> replaceValues(K key, Iterable<? extends V> values) {
+  @DoNotCall("Always throws UnsupportedOperationException")
+  public final ImmutableSet<V> replaceValues(K key, Iterable<? extends V> values) {
     throw new UnsupportedOperationException();
   }
 

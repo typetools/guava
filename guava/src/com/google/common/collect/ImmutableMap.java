@@ -25,6 +25,7 @@ import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.DoNotCall;
 import com.google.errorprone.annotations.DoNotMock;
 import com.google.errorprone.annotations.concurrent.LazyInit;
 import com.google.j2objc.annotations.RetainedWith;
@@ -81,7 +82,6 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
    * from the {@code Collector} returned by {@link Collectors#toMap(Function, Function)}, which
    * throws an {@code IllegalStateException}.)
    *
-   *
    * @since 21.0
    */
   public static <T extends @NonNull Object, K extends @NonNull Object, V extends @NonNull Object>
@@ -98,7 +98,6 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
    * <p>If the mapped keys contain duplicates (according to {@link Object#equals(Object)}), the
    * values are merged using the specified merging function. Entries will appear in the encounter
    * order of the first occurrence of the key.
-   *
    *
    * @since 21.0
    */
@@ -530,6 +529,7 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
   @CanIgnoreReturnValue
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final V put(K k, V v) {
     throw new UnsupportedOperationException();
   }
@@ -543,6 +543,7 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
   @CanIgnoreReturnValue
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final V putIfAbsent(K key, V value) {
     throw new UnsupportedOperationException();
   }
@@ -555,6 +556,7 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
    */
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final boolean replace(K key, V oldValue, V newValue) {
     throw new UnsupportedOperationException();
   }
@@ -567,6 +569,7 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
    */
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final V replace(K key, V value) {
     throw new UnsupportedOperationException();
   }
@@ -579,6 +582,7 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
    */
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
     throw new UnsupportedOperationException();
   }
@@ -591,6 +595,7 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
    */
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final V computeIfPresent(
       K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
     throw new UnsupportedOperationException();
@@ -604,6 +609,7 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
    */
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final V compute(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
     throw new UnsupportedOperationException();
   }
@@ -616,6 +622,7 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
    */
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final V merge(
       K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
     throw new UnsupportedOperationException();
@@ -629,6 +636,7 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
    */
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final void putAll(Map<? extends K, ? extends V> map) {
     throw new UnsupportedOperationException();
   }
@@ -641,6 +649,7 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
    */
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final void replaceAll(BiFunction<? super K, ? super V, ? extends V> function) {
     throw new UnsupportedOperationException();
   }
@@ -653,6 +662,7 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
    */
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final V remove(@Nullable Object o) {
     throw new UnsupportedOperationException();
   }
@@ -665,6 +675,7 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
    */
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final boolean remove(Object key, Object value) {
     throw new UnsupportedOperationException();
   }
@@ -677,6 +688,7 @@ public abstract class ImmutableMap<K extends @NonNull Object, V extends @NonNull
    */
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final void clear() {
     throw new UnsupportedOperationException();
   }

@@ -65,10 +65,22 @@ final class Platform {
     return string == null || string.isEmpty();
   }
 
+  /**
+   * Returns the string if it is not null, or an empty string otherwise.
+   *
+   * @param string the string to test and possibly return
+   * @return {@code string} if it is not null; {@code ""} otherwise
+   */
   static String nullToEmpty(@Nullable String string) {
     return (string == null) ? "" : string;
   }
 
+  /**
+   * Returns the string if it is not empty, or a null string otherwise.
+   *
+   * @param string the string to test and possibly return
+   * @return {@code string} if it is not empty; {@code null} otherwise
+   */
   static @Nullable String emptyToNull(@Nullable String string) {
     return stringIsNullOrEmpty(string) ? null : string;
   }
@@ -121,6 +133,5 @@ final class Platform {
             + " warning because you are sending a Guava type over GWT-RPC, which will break. You"
             + " can identify which type by looking at the class name in the attached stack trace.",
         new Throwable());
-
   }
 }

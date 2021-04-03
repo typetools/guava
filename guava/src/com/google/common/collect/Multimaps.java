@@ -107,7 +107,6 @@ public final class Multimaps {
    * }
    * }</pre>
    *
-   *
    * @since 21.0
    */
   public static <T, K, V, M extends Multimap<K, V>> Collector<T, ?, M> toMultimap(
@@ -147,7 +146,6 @@ public final class Multimaps {
    *     FIRST_LETTER_MULTIMAP.putAll('c', Arrays.asList('h', 'e', 'r', 'r', 'y'));
    * }
    * }</pre>
-   *
    *
    * @since 21.0
    */

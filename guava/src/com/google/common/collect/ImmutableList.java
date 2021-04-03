@@ -28,6 +28,7 @@ import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.DoNotCall;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -68,7 +69,6 @@ public abstract class ImmutableList<E extends @NonNull Object> extends Immutable
   /**
    * Returns a {@code Collector} that accumulates the input elements into a new {@code
    * ImmutableList}, in encounter order.
-   *
    *
    * @since 21.0
    */
@@ -506,6 +506,7 @@ public abstract class ImmutableList<E extends @NonNull Object> extends Immutable
   @CanIgnoreReturnValue
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final boolean addAll(int index, Collection<? extends E> newElements) {
     throw new UnsupportedOperationException();
   }
@@ -519,6 +520,7 @@ public abstract class ImmutableList<E extends @NonNull Object> extends Immutable
   @CanIgnoreReturnValue
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final E set(int index, E element) {
     throw new UnsupportedOperationException();
   }
@@ -531,6 +533,7 @@ public abstract class ImmutableList<E extends @NonNull Object> extends Immutable
    */
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final void add(int index, E element) {
     throw new UnsupportedOperationException();
   }
@@ -544,6 +547,7 @@ public abstract class ImmutableList<E extends @NonNull Object> extends Immutable
   @CanIgnoreReturnValue
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final E remove(int index) {
     throw new UnsupportedOperationException();
   }
@@ -556,6 +560,7 @@ public abstract class ImmutableList<E extends @NonNull Object> extends Immutable
    */
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final void replaceAll(UnaryOperator<E> operator) {
     throw new UnsupportedOperationException();
   }
@@ -568,6 +573,7 @@ public abstract class ImmutableList<E extends @NonNull Object> extends Immutable
    */
   @Deprecated
   @Override
+  @DoNotCall("Always throws UnsupportedOperationException")
   public final void sort(Comparator<? super E> c) {
     throw new UnsupportedOperationException();
   }
