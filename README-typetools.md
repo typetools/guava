@@ -165,7 +165,7 @@ This step must be done on machine, such as a CSE machine, that has access to the
 Maybe he needs to export then import instead of copying.)
 
 ```
-PACKAGE=guava-30.1-jre
+PACKAGE=guava-30.1.1-jre
 
 cd guava
 

@@ -19,7 +19,7 @@
         </license>
     </licenses>
 
-    <version>30.1-jre</version>
+    <version>30.1.1-jre</version>
 
     <scm>
         <url>https://github.com/typetools/guava.git</url>
