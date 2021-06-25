@@ -135,7 +135,7 @@
             <annotationProcessors>
               <annotationProcessor>${checkerframework.checkers}</annotationProcessor>
             </annotationProcessors>
-            <compilerArgs>
+            <compilerArgs combine.children="append">
               <arg>${additionalargs}</arg>
               <arg>${checkerframework.extraargs}</arg>
               <arg>${checkerframework.extraargs2}</arg>
@@ -157,7 +157,7 @@
               <annotationProcessors>
                 <annotationProcessor>org.checkerframework.checker.index.IndexChecker</annotationProcessor>
               </annotationProcessors>
-              <compilerArgs>
+              <compilerArgs combine.children="append">
                 <arg>-XDignore.symbol.file</arg>
                 <arg>${index.only.arg}</arg>
                 <arg>-proc:only</arg>
