@@ -160,7 +160,7 @@ If it's not the same as the upstream version, then also edit pom.xml and guava/p
 5. Run the following commands.
 
 JAVA_HOME must be a JDK 8 JDK.
-This step must be done on machine, such as a CSE machine, that has access to the necessary passwords.
+This step must be done on a machine, such as a CSE machine, that has access to the necessary passwords.
 (It failed on Mike's home machine, when he copied the hosting-info/ directory.
 Maybe he needs to export then import instead of copying.)
 
