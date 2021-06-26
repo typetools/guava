@@ -160,7 +160,6 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <skip>true</skip>
-          <argLine>-Xmx4g</argLine>
         </configuration>
       </plugin>
       <plugin>

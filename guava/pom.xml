@@ -366,7 +366,7 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <configuration>
               <fork>true</fork>
-              <maxmem>8000m</maxmem>
+              <maxmem>6000m</maxmem>
               <compilerArgs combine.children="append">
                 <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
               </compilerArgs>
@@ -387,7 +387,7 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <configuration>
               <fork>true</fork>
-              <maxmem>8000m</maxmem>
+              <maxmem>6000m</maxmem>
               <compilerArgs combine.children="append">
                 <!-- -options: To not get a warning about missing bootstrap classpath for Java 8 (once we use Java 9) -->
                 <arg>-Xlint:-options</arg>
@@ -429,7 +429,7 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <configuration>
               <fork>true</fork>
-              <maxmem>8000m</maxmem>
+              <maxmem>6000m</maxmem>
               <compilerArgs combine.children="append">
               <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
                 <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${javac.version}/javac-${javac.version}.jar</arg>

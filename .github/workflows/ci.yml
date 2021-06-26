@@ -18,7 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ROOT_POM: ${{ matrix.root-pom }}
-      MAVEN_OPTS: -Xmx2g
     steps:
       - name: 'Check out repository'
         uses: actions/checkout@v2
@@ -38,7 +37,7 @@ jobs:
         run: mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn install -U -DskipTests=true -f $ROOT_POM
       - name: 'Test'
         shell: bash
-        run: mvn -B -P!standard-with-extra-repos verify -U -Dmaven.javadoc.skip=true -f $ROOT_POM
+        run: MAVEN_OPTS=-Xmx4g mvn -B -P!standard-with-extra-repos verify -U -Dmaven.javadoc.skip=true -f $ROOT_POM
       - name: 'Print Surefire reports'
         # Note: Normally a step won't run if the job has failed, but this causes it to
         if: ${{ failure() }}
