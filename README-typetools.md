@@ -45,9 +45,14 @@ Typechecking against the master branch of the Checker Framework
 The released version of the Checker Framework may be incompatible with the
 development version in the GitHub repository
 https://github.com/typetools/checker-framework/tree/master .  For example,
-the GitHub version may have renamed or added annotations or error messages.
+the development version may have renamed or added annotations or error messages.
 
-When a pull request depends on forthcoming Checker Framework features, make
+TODO:
+The following instructions are outdated.
+There is no .travis.yml file, though there is a `typecheck.sh` script.
+The `typecheck.sh` script passes `-P checkerframework-local`.
+
+When a pull request in the Guava repository depends on forthcoming Checker Framework features, make
 pull requests against a branch named `cf-master`.  Its Travis job uses the
 Checker Framework from GitHub, rather than a Checker Framework release.
 
