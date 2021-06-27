@@ -48,6 +48,10 @@
       <version>1.0.1</version>
     </dependency>
     <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>checker-qual</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>${project.version}</version>
@@ -102,10 +106,6 @@
       <version>${truth.version}</version>
       <classifier>gwt</classifier>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.checkerframework</groupId>
-      <artifactId>checker-qual</artifactId>
     </dependency>
   </dependencies>
   <build>
@@ -180,6 +180,20 @@
             </configuration>
           </execution>
           <execution>
+            <id>unpack-checker-qual-sources</id>
+            <phase>generate-resources</phase>
+            <goals><goal>unpack-dependencies</goal></goals>
+            <configuration>
+              <includeArtifactIds>checker-qual</includeArtifactIds>
+              <classifier>sources</classifier>
+              <excludeTransitive>true</excludeTransitive>
+              <excludes>META-INF/MANIFEST.MF</excludes>
+              <outputDirectory>${project.build.directory}/checker-qual-sources</outputDirectory>
+              <type>java-source</type>
+              <silent>false</silent>
+            </configuration>
+          </execution>
+          <execution>
             <id>unpack-guava-sources</id>
             <phase>generate-resources</phase>
             <goals><goal>unpack-dependencies</goal></goals>
@@ -244,6 +258,12 @@
             <classifier>sources</classifier>
           </dependency>
           <dependency>
+            <groupId>org.checkerframework</groupId>
+            <artifactId>checker-qual</artifactId>
+            <version>1.0.1</version>
+            <classifier>sources</classifier>
+          </dependency>
+          <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${project.version}</version>
@@ -297,6 +317,11 @@
                 <copy toDir="${project.build.directory}/guava-gwt-sources">
                   <fileset dir="${project.build.directory}/failureaccess-sources">
                     <include name="**/InternalFutureFailureAccess.java" />
+                  </fileset>
+                </copy>
+                <copy toDir="${project.build.directory}/guava-gwt-sources">
+                  <fileset dir="${project.build.directory}/checker-qual-sources">
+                    <include name="**/*.java" />
                   </fileset>
                 </copy>
                 <copy toDir="${project.build.directory}/guava-test-gwt-sources">
