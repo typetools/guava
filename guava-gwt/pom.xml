@@ -265,7 +265,6 @@
           <dependency>
             <groupId>org.checkerframework</groupId>
             <artifactId>checker-qual</artifactId>
-            <version>1.0.1</version>
             <classifier>sources</classifier>
           </dependency>
           <dependency>
