@@ -513,11 +513,15 @@ public class IterablesTest extends TestCase {
     for (@SuppressWarnings("unused") Object obj : iterable) {}
   }
 
+  // Per https://github.com/google/guava/issues/5630, the NullPointerTester tests will
+  // eventually be disabled under Android.
+  /*
   @GwtIncompatible // NullPointerTester
   public void testNullPointerExceptions() {
     NullPointerTester tester = new NullPointerTester();
     tester.testAllPublicStaticMethods(Iterables.class);
   }
+  */
 
   // More exhaustive tests are in IteratorsTest.
   public void testElementsEqual() throws Exception {

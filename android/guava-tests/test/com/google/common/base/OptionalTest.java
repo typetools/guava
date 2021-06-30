@@ -292,6 +292,9 @@ public final class OptionalTest extends TestCase {
     Number value = first.or(0.5); // fine
   }
 
+  // Per https://github.com/google/guava/issues/5630, the NullPointerTester tests will
+  // eventually be disabled under Android.
+  /*
   @GwtIncompatible // NullPointerTester
   public void testNullPointers() {
     NullPointerTester npTester = new NullPointerTester();
@@ -300,4 +303,5 @@ public final class OptionalTest extends TestCase {
     npTester.testAllPublicInstanceMethods(Optional.absent());
     npTester.testAllPublicInstanceMethods(Optional.of("training"));
   }
+  */
 }
