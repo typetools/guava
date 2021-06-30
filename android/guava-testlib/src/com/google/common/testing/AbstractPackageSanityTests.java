@@ -126,9 +126,14 @@ public abstract class AbstractPackageSanityTests extends TestCase {
   /* The names of the expected method that tests null checks. */
   private static final ImmutableList<String> NULL_TEST_METHOD_NAMES =
       ImmutableList.of(
+      // Per https://github.com/google/guava/issues/5630, the NullPointerTester tests will
+      // eventually be disabled under Android.
+      /*
           "testNulls", "testNull",
           "testNullPointers", "testNullPointer",
           "testNullPointerExceptions", "testNullPointerException");
+      */
+                       );
 
   /* The names of the expected method that tests serializable. */
   private static final ImmutableList<String> SERIALIZABLE_TEST_METHOD_NAMES =
