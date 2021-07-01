@@ -135,7 +135,7 @@
             <annotationProcessors>
               <annotationProcessor>${checkerframework.checkers}</annotationProcessor>
             </annotationProcessors>
-            <compilerArgs>
+            <compilerArgs combine.children="append">
               <arg>${additionalargs}</arg>
               <arg>${checkerframework.extraargs}</arg>
               <arg>${checkerframework.extraargs2}</arg>
@@ -157,7 +157,7 @@
               <annotationProcessors>
                 <annotationProcessor>org.checkerframework.checker.index.IndexChecker</annotationProcessor>
               </annotationProcessors>
-              <compilerArgs>
+              <compilerArgs combine.children="append">
                 <arg>-XDignore.symbol.file</arg>
                 <arg>${index.only.arg}</arg>
                 <arg>-proc:only</arg>
@@ -369,6 +369,36 @@
               <maxmem>6000m</maxmem>
               <compilerArgs combine.children="append">
                 <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+              </compilerArgs>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>jdk16</id>
+      <activation>
+        <jdk>16</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <fork>true</fork>
+              <maxmem>6000m</maxmem>
+              <compilerArgs combine.children="append">
+                <!-- -options: To not get a warning about missing bootstrap classpath for Java 8 (once we use Java 9) -->
+                <arg>-Xlint:-options</arg>
+                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
+                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
               </compilerArgs>
             </configuration>
           </plugin>

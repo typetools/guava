@@ -137,12 +137,16 @@ public class EnumsTest extends TestCase {
     assertEquals("POODLE", converter.reverse().convert(TestEnum.POODLE));
   }
 
+  // Per https://github.com/google/guava/issues/5630, the NullPointerTester tests will
+  // eventually be disabled under Android.
+  /*
   @GwtIncompatible // NullPointerTester
   public void testStringConverter_nullPointerTester() throws Exception {
     Converter<String, TestEnum> converter = Enums.stringConverter(TestEnum.class);
     NullPointerTester tester = new NullPointerTester();
     tester.testAllPublicInstanceMethods(converter);
   }
+  */
 
   public void testStringConverter_nullConversions() {
     Converter<String, TestEnum> converter = Enums.stringConverter(TestEnum.class);

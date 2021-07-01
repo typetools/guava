@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.google.guava</groupId>
     <artifactId>guava-parent</artifactId>
-    <version>HEAD-jre-SNAPSHOT</version>
+    <version>30.1.1-jre</version>
   </parent>
   <artifactId>guava-gwt</artifactId>
   <name>Guava GWT compatible libs</name>
@@ -23,9 +23,9 @@
   </properties>
   <repositories>
     <repository>
-      <id>sonatype-google-snapshots</id>
-      <name>sonatype-google-snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/google-snapshots/</url>
+      <id>sonatype-snapshots</id>
+      <name>sonatype-snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
