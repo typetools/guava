@@ -8,5 +8,10 @@ import java.lang.annotation.Target;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE_USE, ElementType.TYPE_PARAMETER})
+@Target({ElementType.TYPE_USE, ElementType.TYPE_PARAMETER,
+        // Added because Android's variant of
+        // com.google.common.reflect.Parameter lacks the
+        // getAnnotatedType() method.  However, this is not enough to make
+        // Guava's NullPointerTester tests pass.
+        ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
 public @interface Nullable {}
