@@ -74,7 +74,7 @@
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker</artifactId>
-      <version>3.12.0</version>
+      <version>3.13.0</version>
     </dependency>
   </dependencies>
   <build>
@@ -376,9 +376,9 @@
       </build>
     </profile>
     <profile>
-      <id>jdk16</id>
+      <id>jdk17</id>
       <activation>
-        <jdk>16</jdk>
+        <jdk>[16,)</jdk>
       </activation>
       <build>
         <plugins>

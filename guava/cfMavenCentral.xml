@@ -38,14 +38,6 @@
         </developer>
 
         <developer>
-            <id>wmdietl</id>
-            <name>Werner M. Dietl</name>
-            <email>wdietl@uwaterloo.ca</email>
-            <organization>University of Waterloo</organization>
-            <organizationUrl>http://uwaterloo.ca/</organizationUrl>
-        </developer>
-
-        <developer>
             <id>Suzanne Millstein</id>
             <name>Suzanne Millstein</name>
             <email>smillst@cs.washington.edu</email>
