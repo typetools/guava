@@ -69,7 +69,8 @@ To update to a newer version of the upstream library
 ----------------------------------------------------
 
 First, update to use the latest Checker Framework by editing file
-`guava/pom.xml`.  Ensure that type-checking succeeds.
+`pom.xml` (for `checker-qual`) and `guava/pom.xml` (for `checker`).
+Make a pull request to ensure that type-checking succeeds.
 
 Check for a release at
   https://github.com/google/guava/releases
