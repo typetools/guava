@@ -84,8 +84,9 @@ git pull https://github.com/google/guava
 ```
 
 and then re-build to ensure that typechecking still works.
-Doing this `git pull` permits incremental resolution of merge conflicts,
-but makes it difficult to re-release a given version of Guava.
+Note: Doing this `git pull` command
+makes it difficult to re-release a given version of Guava,
+compared to pulling in the tag corresponding to a release.
 
 If you wish to see a simplified diff between this fork of Guava and upstream (to make sure that you did not make any mistakes when resolving merge conflicts):
 
