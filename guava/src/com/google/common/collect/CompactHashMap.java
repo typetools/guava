@@ -48,6 +48,9 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * CompactHashMap is an implementation of a Map. All optional operations (put and remove) are
@@ -138,7 +141,7 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
    *   <li>null, if no entries have yet been added to the map
    * </ul>
    */
-  @Nullable private transient Object table;
+  private transient @Nullable Object table;
 
   /**
    * Contains the logical entries, in the range of [0, size()). The high bits of each int are the
@@ -439,14 +442,14 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
   }
 
   @Override
-  public boolean containsKey(@Nullable Object key) {
+  public boolean containsKey(@Nullable @UnknownSignedness Object key) {
     @Nullable Map<K, V> delegate = delegateOrNull();
     return (delegate != null) ? delegate.containsKey(key) : indexOf(key) != -1;
   }
 
   @SuppressWarnings("unchecked") // known to be a V
   @Override
-  public V get(@Nullable Object key) {
+  public V get(@Nullable @UnknownSignedness Object key) {
     @Nullable Map<K, V> delegate = delegateOrNull();
     if (delegate != null) {
       return delegate.get(key);
@@ -462,7 +465,7 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
   @CanIgnoreReturnValue
   @SuppressWarnings("unchecked") // known to be a V
   @Override
-  public @Nullable V remove(@Nullable Object key) {
+  public @Nullable V remove(@Nullable @UnknownSignedness Object key) {
     @Nullable Map<K, V> delegate = delegateOrNull();
     if (delegate != null) {
       return delegate.remove(key);
@@ -629,7 +632,7 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
     }
 
     @Override
-    public Object[] toArray() {
+    public @PolySigned Object[] toArray(CompactHashMap<@PolySigned K, @PolySigned V>.KeySetView this) {
       if (needsAllocArrays()) {
         return new Object[0];
       }
@@ -817,9 +820,8 @@ class CompactHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
       this.lastKnownIndex = index;
     }
 
-    @Nullable
     @Override
-    public K getKey() {
+    public @Nullable K getKey() {
       return key;
     }
 

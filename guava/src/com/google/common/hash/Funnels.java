@@ -22,6 +22,7 @@ import java.nio.charset.Charset;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.PolySigned;
 import org.checkerframework.common.value.qual.MinLen;
 
 /**
@@ -43,7 +44,7 @@ public final class Funnels {
     INSTANCE;
 
     @Override
-    public void funnel(byte @MinLen(1)[] from, PrimitiveSink into) {
+    public void funnel(byte [] from, PrimitiveSink into) {
       into.putBytes(from);
     }
 
@@ -68,7 +69,7 @@ public final class Funnels {
     INSTANCE;
 
     @Override
-    public void funnel(@MinLen(1) CharSequence from, PrimitiveSink into) {
+    public void funnel(CharSequence from, PrimitiveSink into) {
       into.putUnencodedChars(from);
     }
 
@@ -96,7 +97,7 @@ public final class Funnels {
     }
 
     @Override
-    public void funnel(@MinLen(1) CharSequence from, PrimitiveSink into) {
+    public void funnel(CharSequence from, PrimitiveSink into) {
       into.putString(from, charset);
     }
 
@@ -250,18 +251,18 @@ public final class Funnels {
     }
 
     @Override
-    public void write(int b) {
+    public void write(@PolySigned int b) {
       sink.putByte((byte) b);
     }
 
-    @SuppressWarnings("override.param.invalid")//OutputStream#write() should be annotated as void write(byte @MinLen(1)[] bytes)
+    @SuppressWarnings("override.param") // OutputStream#write() should be annotated as void write(byte @MinLen(1)[] bytes)
     @Override
     public void write(byte @MinLen(1)[] bytes) {
       sink.putBytes(bytes);
     }
 
     @Override
-    public void write(byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
+    public void write(@PolySigned byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
       sink.putBytes(bytes, off, len);
     }
 

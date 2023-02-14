@@ -516,7 +516,7 @@ public final class Hashing {
    * @throws IllegalArgumentException if {@code hashCodes} is empty, or the hash codes do not all
    *     have the same bit length
    */
-  @SuppressWarnings("value:argument.type.incompatible")// `hashCode.asBytes()` return an array with min length of 1.
+  @SuppressWarnings("value:argument")// `hashCode.asBytes()` return an array with min length of 1.
   //Since nextBytes.length is checked to have same bit length with resultBytes.length, resultBytes also needs min length of 1.
   public static HashCode combineOrdered(Iterable<HashCode> hashCodes) {
     Iterator<HashCode> iterator = hashCodes.iterator();
@@ -543,7 +543,7 @@ public final class Hashing {
    * @throws IllegalArgumentException if {@code hashCodes} is empty, or the hash codes do not all
    *     have the same bit length
    */
-  @SuppressWarnings("value:argument.type.incompatible")// `hashCode.asBytes()` return an array with min length of 1.
+  @SuppressWarnings("value:argument")// `hashCode.asBytes()` return an array with min length of 1.
   //Since nextBytes.length is checked to have same bit length with resultBytes.length, resultBytes also needs min length of 1.
   public static HashCode combineUnordered(Iterable<HashCode> hashCodes) {
     Iterator<HashCode> iterator = hashCodes.iterator();
@@ -561,6 +561,7 @@ public final class Hashing {
   }
 
   /** Checks that the passed argument is positive, and ceils it to a multiple of 32. */
+  @SuppressWarnings("value:return")// code verifies positive and >= 32
   static @IntRange(from=32) int checkPositiveAndMakeMultipleOf32(int bits) {
     checkArgument(bits > 0, "Number of bits must be positive");
     return (bits + 31) & ~31;
@@ -621,6 +622,7 @@ public final class Hashing {
     }
 
     @Override
+    @SuppressWarnings("value:argument") // fromBytesNoCopy verfies bytes contains at least 1 byte
     HashCode makeHash(Hasher[] hashers) {
       byte[] bytes = new byte[bits() / 8];
       int i = 0;
@@ -666,6 +668,7 @@ public final class Hashing {
       this.state = seed;
     }
 
+    @SuppressWarnings("signedness:shift.unsigned")
     public double nextDouble() {
       state = 2862933555777941757L * state + 1;
       return ((double) ((int) (state >>> 33) + 1)) / 0x1.0p31;

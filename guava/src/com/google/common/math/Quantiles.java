@@ -207,7 +207,7 @@ public final class Quantiles {
      *     set will be snapshotted when this method is called
      * @throws IllegalArgumentException if {@code indexes} is empty
      */
-    @SuppressWarnings({"value:argument.type.incompatible", "lowerbound:argument.type.incompatible"})//parameter `indexes` is of mutable length data structures(Collection)
+    @SuppressWarnings("value:argument") // parameter `indexes` is of mutable length data structures(Collection)
     public ScaleAndIndexes indexes(Collection<Integer> indexes) {
       return new ScaleAndIndexes(scale, Ints.toArray(indexes));
     }
@@ -238,7 +238,7 @@ public final class Quantiles {
      *     this call (it is copied instead)
      * @return the quantile value
      */
-    @SuppressWarnings("value:argument.type.incompatible")// `dataset` is of mutable length data structures type( `Collection`)
+    @SuppressWarnings("value:argument") // `dataset` is of mutable length data structures type( `Collection`)
     //if `dataset` is not empty as specified in doc, method `Doubles.toArray()` return a non empty `dataset` as well
     public double compute(Collection<? extends Number> dataset) {
       return computeInPlace(Doubles.toArray(dataset));
@@ -285,12 +285,6 @@ public final class Quantiles {
      *     be arbitrarily reordered by this method call
      * @return the quantile value
      */
-    @SuppressWarnings({"lowerbound:assignment.type.incompatible",// (0): Since index and (dataset.length - 1) are non-negative ints, numerator is non negative.
-            "upperbound:argument.type.incompatible", "upperbound:array.access.unsafe.high",/* (1): second argument in selectInPlace() is `dataset`,
-            therefore `quotient + 1` should be < dataset.length. If remainder is not zero,
-            quotient max value is `dataset.length - 2`*/
-            "upperbound:assignment.type.incompatible"/*(3) Since `numerator = index * (dataset.length - 1)`,
-            dividing it to scale will return a value less than dataset.length. */})
     public double computeInPlace(double @MinLen(1)... dataset) {
       checkArgument(dataset.length > 0, "Cannot calculate quantiles of an empty dataset");
       if (containsNaN(dataset)) {
@@ -352,7 +346,7 @@ public final class Quantiles {
      *     indexes} method.
      */
 
-    @SuppressWarnings("value:argument.type.incompatible")// `dataset` is of mutable length data structures type( `Collection`)
+    @SuppressWarnings("value:argument") // `dataset` is of mutable length data structures type( `Collection`)
     //if `dataset` is not empty as specified in doc, method `Doubles.toArray()` return a non empty `dataset` as well
     public Map<Integer, Double> compute(Collection<? extends Number> dataset) {
       return computeInPlace(Doubles.toArray(dataset));
@@ -411,19 +405,6 @@ public final class Quantiles {
      *     map are ordered by quantile index in the same order that the indexes were passed to the
      *     {@code indexes} method.
      */
-    @SuppressWarnings({"upperbound:compound.assignment.type.incompatible",/* (1): Since `requiredSelections.length = indexes.length * 2`, and the for loop
-            iterate from 0 to indexes.length, increment on requiredSelectionsCount is safe thoughout the loop.
-            */
-            "lowerbound:argument.type.incompatible", "upperbound:argument.type.incompatible",/* (2): Since `indexes` is annotated to have at least length of 1,
-            `requiredSelections.length` will be at least 2, therefore larger than constant 0. */
-            "lowerbound:assignment.type.incompatible",/*(3): numerator is = (long) indexes[i] * (dataset.length - 1). Since indexes[i] are non negative
-            dataset has min length of 1, numerator is non negative */
-            "upperbound:assignment.type.incompatible",/* (3): Since scale is a positive int, index is in [0, scale],
-            and (dataset.length - 1) is non-negative int, we can do long-arithmetic on index * (dataset.length - 1) / scale to get a rounded ratio and a remainder
-             which can be expressed as ints, without risk of overflow */
-        "upperbound:array.access.unsafe.high", // (4) if `remainder` is not 0, highest possible value for quotient is `dataset.length - 2`
-        "unary.increment.type.incompatible"
-    })
     public Map<Integer, Double> computeInPlace(double @MinLen(1)... dataset) {
       checkArgument(dataset.length > 0, "Cannot calculate quantiles of an empty dataset");
       if (containsNaN(dataset)) {
@@ -557,9 +538,6 @@ public final class Quantiles {
    * ({@code required}, {@code to}] are greater than or equal to that value. Therefore, the value at
    * {@code required} is the value which would appear at that index in the sorted dataset.
    */
-  @SuppressWarnings(value = {"lowerbound:assignment.type.incompatible",/*(1): When entering the loop,
-          required > from and from >= 0, therefore required >= 1.
-          At the assignment, partitionPoint >= required, therefore partitionPoint - 1 >= 0. */})
   private static void selectInPlace(@IndexFor("#2") int required, double[] array, @IndexFor("#2") int from, @IndexFor("#2") int to) {
     // If we are looking for the least element in the range, we can just do a linear search for it.
     // (We will hit this whenever we are doing quantile interpolation: our first selection finds
@@ -599,9 +577,6 @@ public final class Quantiles {
    * equal to the value at {@code ret} and the values with indexes in ({@code ret}, {@code to}] are
    * greater than or equal to that.
    */
-  @SuppressWarnings("lowerbound:unary.decrement.type.incompatible")/*(1): Both partitionPoint and i are initialized to the same value `to`.
-  partitionPoint is decremented at most one more time than i is decremented, therefore partitionPoint >= i-1.
-  i > from, therefore partitionPoint >= from. Since from is non-negative, therefore partitionPoint is non-negative. */
   private static @IndexFor("#1") int partition(double[] array, @IndexFor("#1") int from, @IndexFor("#1") int to) {
     // Select a pivot, and move it to the start of the slice i.e. to index from.
     movePivotToStartOfSlice(array, from, to);
@@ -654,14 +629,6 @@ public final class Quantiles {
    * allRequired[i]} for {@code i} in the range [{@code requiredFrom}, {@code requiredTo}]. These
    * indexes must be sorted in the array and must all be in the range [{@code from}, {@code to}].
    */
-  @SuppressWarnings({"lowerbound:argument.type.incompatible",/*(1): Since allRequired is sorted, and requiredBelow < requiredChosen,
-  allRequired[requiredBelow] <= allRequired[requiredChosen], therefore allRequired[requiredBelow] is always <= required. Based on the condition
-  of if and while, allRequired[requiredBelow] != required. Because allRequired[requiredBelow] <= required, we know that allRequired[requiredBelow] < required,
-  since allRequired[requiredBelow] >= 0, then required > 0. */
-          "upperbound:argument.type.incompatible"/*(2): Since allRequired is sorted, and requiredAbove > requiredChosen,
-  allRequired[requiredAbove] >= allRequired[requiredChosen], therefore allRequired[requiredAbove] is always >= required. Based on the condition
-  of if and while, allRequired[requiredAbove] != required. Because allRequired[requiredAbove] >= required, we know that allRequired[requiredAbove] > required,
-  since array.length > allRequired[requiredAbove] > required, required + 1 < array.length. */})
   private static void selectAllInPlace(
       @IndexFor("#4") int[] allRequired, @IndexFor("#1") int requiredFrom, @IndexFor("#1") int requiredTo, double[] array, @IndexFor("#4") int from, @IndexFor("#4") int to) {
     // Choose the first selection to do...
@@ -700,7 +667,7 @@ public final class Quantiles {
    * minimizes the size of the subranges from which the remaining selections must be done.
    */
   private static @IndexFor("#1") int chooseNextSelection(
-      int[] allRequired, @IndexFor("#1") int requiredFrom, @IndexFor("#1") int requiredTo, int from, int to) {
+      int[] allRequired, @IndexFor("#1") int requiredFrom, @IndexFor("#1") int requiredTo, @NonNegative int from, @NonNegative int to) {
     if (requiredFrom == requiredTo) {
       return requiredFrom; // only one thing to choose, so choose it
     }

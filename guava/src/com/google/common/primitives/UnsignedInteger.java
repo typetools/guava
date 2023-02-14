@@ -180,14 +180,16 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * will be equal to {@code this - 2^32}.
    */
   @Override
+  @SuppressWarnings("cast.unsafe")
   public @PolyValue int intValue(@PolyValue UnsignedInteger this) {
-    return value;
+    return (@PolyValue int) value;
   }
 
   /** Returns the value of this {@code UnsignedInteger} as a {@code long}. */
   @Override
+  @SuppressWarnings("cast.unsafe")
   public @NonNegative @PolyValue long longValue(@PolyValue UnsignedInteger this) {
-    return toLong(value);
+    return (@PolyValue long) toLong(value);
   }
 
   /**
@@ -195,6 +197,7 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * primitive conversion from {@code int} to {@code float}, and correctly rounded.
    */
   @Override
+  @SuppressWarnings("cast.unsafe")
   public @PolyValue float floatValue(@PolyValue UnsignedInteger this) {
     return longValue();
   }

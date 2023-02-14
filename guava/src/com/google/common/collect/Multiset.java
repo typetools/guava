@@ -31,6 +31,7 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.ObjIntConsumer;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -111,7 +112,7 @@ public interface Multiset<E> extends Collection<E> {
    * @return the number of occurrences of the element in this multiset; possibly zero but never
    *     negative
    */
-  int count(@Nullable @CompatibleWith("E") Object element);
+  int count(@CompatibleWith("E") @Nullable Object element);
 
   // Bulk Operations
 
@@ -172,7 +173,7 @@ public interface Multiset<E> extends Collection<E> {
    * @throws IllegalArgumentException if {@code occurrences} is negative
    */
   @CanIgnoreReturnValue
-  int remove(@Nullable @CompatibleWith("E") Object element, int occurrences);
+  int remove(@CompatibleWith("E") @Nullable Object element, int occurrences);
 
   /**
    * Removes a <i>single</i> occurrence of the specified element from this multiset, if present.
@@ -188,7 +189,7 @@ public interface Multiset<E> extends Collection<E> {
    */
   @CanIgnoreReturnValue
   @Override
-  boolean remove(@Nullable Object element);
+  boolean remove(@Nullable @UnknownSignedness Object element);
 
   /**
    * Adds or removes the necessary occurrences of an element such that the element attains the
@@ -356,7 +357,7 @@ public interface Multiset<E> extends Collection<E> {
   @Pure
   @Override
   // TODO(kevinb): caveats about equivalence-relation?
-  boolean equals(@Nullable Object object);
+  boolean equals(@Nullable @UnknownSignedness Object object);
 
   /**
    * Returns the hash code for this multiset. This is defined as the sum of
@@ -405,7 +406,7 @@ public interface Multiset<E> extends Collection<E> {
    */
   @Pure
   @Override
-  boolean contains(@Nullable Object element);
+  boolean contains(@Nullable @UnknownSignedness Object element);
 
   /**
    * Returns {@code true} if this multiset contains at least one occurrence of each element in the

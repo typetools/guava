@@ -67,29 +67,29 @@ public interface Table<R, C, V> {
    * @param columnKey key of column to search for
    */
   boolean contains(
-      @Nullable @CompatibleWith("R") Object rowKey,
-      @Nullable @CompatibleWith("C") Object columnKey);
+      @CompatibleWith("R") @Nullable Object rowKey,
+      @CompatibleWith("C") @Nullable Object columnKey);
 
   /**
    * Returns {@code true} if the table contains a mapping with the specified row key.
    *
    * @param rowKey key of row to search for
    */
-  boolean containsRow(@Nullable @CompatibleWith("R") Object rowKey);
+  boolean containsRow(@CompatibleWith("R") @Nullable Object rowKey);
 
   /**
    * Returns {@code true} if the table contains a mapping with the specified column.
    *
    * @param columnKey key of column to search for
    */
-  boolean containsColumn(@Nullable @CompatibleWith("C") Object columnKey);
+  boolean containsColumn(@CompatibleWith("C") @Nullable Object columnKey);
 
   /**
    * Returns {@code true} if the table contains a mapping with the specified value.
    *
    * @param value value to search for
    */
-  boolean containsValue(@Nullable @CompatibleWith("V") Object value);
+  boolean containsValue(@CompatibleWith("V") @Nullable Object value);
 
   /**
    * Returns the value corresponding to the given row and column keys, or {@code null} if no such
@@ -100,8 +100,8 @@ public interface Table<R, C, V> {
    */
   @Nullable
   V get(
-      @Nullable @CompatibleWith("R") Object rowKey,
-      @Nullable @CompatibleWith("C") Object columnKey);
+      @CompatibleWith("R") @Nullable Object rowKey,
+      @CompatibleWith("C") @Nullable Object columnKey);
 
   /** Returns {@code true} if the table contains no mappings. */
   boolean isEmpty();
@@ -160,8 +160,8 @@ public interface Table<R, C, V> {
   @CanIgnoreReturnValue
   @Nullable
   V remove(
-      @Nullable @CompatibleWith("R") Object rowKey,
-      @Nullable @CompatibleWith("C") Object columnKey);
+      @CompatibleWith("R") @Nullable Object rowKey,
+      @CompatibleWith("C") @Nullable Object columnKey);
 
   // Views
 

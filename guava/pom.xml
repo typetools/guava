@@ -19,18 +19,33 @@
     <!-- Use -Dcheckerframework.checkers=checker to switch which checkers are run. -->
     <!-- Running the Index Checker takes very long but is needed to put implicit annotations in class files. -->
     <checkerframework.checkers>org.checkerframework.checker.index.IndexChecker,org.checkerframework.checker.nullness.NullnessChecker,org.checkerframework.checker.signedness.SignednessChecker</checkerframework.checkers>
+
     <!-- Index checker warnings are disabled by default, because not all code is annotated by index checker annotations. -->
     <checkerframework.suppress>index</checkerframework.suppress>
+
     <!-- Packages under com.google.common, that will be additionally checked by the Index Checker -->
     <checkerframework.index.packages>base|primitives|escape|math|io|hash</checkerframework.index.packages>
-    <!-- Additional argument passed to the java compiler. Use to pass additional arguments to the checker framework. Example: -Ashowchecks -->
+
+    <!-- Additional argument passed to the java compiler. Use to pass additional arguments
+         to the checker framework. Example: -Ashowchecks -->
     <checkerframework.extraargs></checkerframework.extraargs>
-    <!-- Additional argument passed to the java compiler. Use to pass additional arguments to the checker framework. Example: -Aannotations -->
+
+    <!-- Additional argument passed to the java compiler. Use to pass additional arguments
+         to the checker framework. Example: -Aannotations -->
     <checkerframework.extraargs2></checkerframework.extraargs2>
+
     <!-- The phase when the Index Checker is run. -->
     <check.index.phase>process-sources</check.index.phase>
+
     <!-- Additional argument passed to the Index Checker. Example: -Ashowchecks -->
     <index.only.arg></index.only.arg>
+
+    <!-- Use -Dmain-compile.skip=true to only run the check-index execution -->
+    <main-compile.skip>false</main-compile.skip>
+
+    <!-- Use -Djavac.verbose=true to compile with the verbose option.
+         This is used when you want to see stub parser warnings. -->
+    <javac.verbose>false</javac.verbose>
   </properties>
   <dependencies>
     <dependency>
@@ -74,7 +89,7 @@
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker</artifactId>
-      <version>3.19.0</version>
+      <version>3.30.0</version>
     </dependency>
   </dependencies>
   <build>
@@ -131,7 +146,8 @@
               <Xmaxwarns>10000</Xmaxwarns>
             </compilerArguments>
             <showWarnings>true</showWarnings>
-	    <verbose>true</verbose>d
+            <!-- Default is verbose off, so you won't see stub parser warnings. -->
+            <verbose>${javac.verbose}</verbose>
             <annotationProcessors>
               <annotationProcessor>${checkerframework.checkers}</annotationProcessor>
             </annotationProcessors>
@@ -139,9 +155,12 @@
               <arg>${additionalargs}</arg>
               <arg>${checkerframework.extraargs}</arg>
               <arg>${checkerframework.extraargs2}</arg>
+              <!-- Default is supress all index checker warnings! -->
               <arg>-AsuppressWarnings=${checkerframework.suppress}</arg>
               <arg>-AuseDefaultsForUncheckedCode=source,bytecode</arg>
               <arg>-Awarns</arg>
+              <arg>-AshowSuppressWarningsStrings</arg>
+              <arg>-AwarnUnneededSuppressions</arg>
             </compilerArgs>
         </configuration>
         <executions>
@@ -194,6 +213,7 @@
               <goal>compile</goal>
             </goals>
             <configuration>
+              <skipMain>${main-compile.skip}</skipMain>
               <excludes>
                 <exclude>**/Java8Usage.java</exclude>
               </excludes>

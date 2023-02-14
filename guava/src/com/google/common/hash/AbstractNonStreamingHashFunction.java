@@ -46,7 +46,7 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
     return new BufferingHasher(expectedInputSize);
   }
 
-  @SuppressWarnings("value:argument.type.incompatible")/* Since ByteBuffer is a mutable length data structure, `ByteBuffer.allocate(4)`
+  @SuppressWarnings("value:argument") /* Since ByteBuffer is a mutable length data structure, `ByteBuffer.allocate(4)`
   returns the new byte buffer with 4 as capacity, therefore `ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(input).array()`
   returns an array of length 4 */
   @Override
@@ -54,7 +54,7 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
     return hashBytes(ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(input).array());
   }
 
-  @SuppressWarnings("value:argument.type.incompatible")/* Since ByteBuffer is a mutable length data structure, `ByteBuffer.allocate(8)`
+  @SuppressWarnings("value:argument") /* Since ByteBuffer is a mutable length data structure, `ByteBuffer.allocate(8)`
   returns the new byte buffer with 8 as capacity, therefore `ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(input).array()`
   returns an array of length 8 */
   @Override
@@ -62,7 +62,7 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
     return hashBytes(ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(input).array());
   }
 
-  @SuppressWarnings("value:argument.type.incompatible") /* Since ByteBuffer is a mutable length data structure and input
+  @SuppressWarnings("value:argument") /* Since ByteBuffer is a mutable length data structure and input
   has min length of 1,`ByteBuffer.allocate(len * 2)` returns the new byte buffer with min length of 2 as capacity,
   therefore ByteBuffer.allocate(len * 2).order(ByteOrder.LITTLE_ENDIAN) returns an array of non negative length */
   @Override
@@ -75,7 +75,7 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
     return hashBytes(buffer.array());
   }
 
-  @SuppressWarnings("value:argument.type.incompatible")//If `input` has min of 1, since `getBytes(charset)`
+  @SuppressWarnings("value:argument") //If `input` has min of 1, since `getBytes(charset)`
   // the resultant byte array, the array returned also has min length of 1
   @Override
   public HashCode hashString(@MinLen(1) CharSequence input, Charset charset) {
@@ -146,7 +146,7 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
       count += remaining;
     }
 
-    @SuppressWarnings("value:return.type.incompatible")//`buf` array in the pre-compiled class `ByteArrayOutputStream`
+    @SuppressWarnings("value:return") //`buf` array in the pre-compiled class `ByteArrayOutputStream`
       // should be annotated as @MinLen(1)
     byte @MinLen(1)[] byteArray() {
       return buf;

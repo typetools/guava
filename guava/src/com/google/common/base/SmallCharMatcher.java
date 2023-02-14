@@ -90,7 +90,7 @@ final class SmallCharMatcher extends NamedFastMatcher {
   /*
    * chars should be at most 65536 bits and not all zeroes
    */
-  @SuppressWarnings("value:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/197
+  @SuppressWarnings("value:argument") // size is in range as arg to chooseTableSize
   static CharMatcher from(BitSet chars, String description) {
     // Compute the filter.
     long filter = 0;

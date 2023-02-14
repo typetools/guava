@@ -302,7 +302,7 @@ final class CollectSpliterators {
           long estSplitSize);
     }
 
-    @Nullable @Weak OutSpliteratorT prefix;
+    @Weak @Nullable OutSpliteratorT prefix;
     final Spliterator<InElementT> from;
     final Function<? super InElementT, OutSpliteratorT> function;
     final Factory<InElementT, OutSpliteratorT> factory;

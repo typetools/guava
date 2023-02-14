@@ -22,6 +22,8 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.j2objc.annotations.ReflectionSupport;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 
+import org.checkerframework.common.value.qual.PolyValue;
+
 /**
  * A {@code double} value that may be updated atomically. See the {@link
  * java.util.concurrent.atomic} package specification for description of the properties of atomic
@@ -199,8 +201,9 @@ public class AtomicDouble extends Number implements java.io.Serializable {
    * conversion.
    */
   @Override
-  public int intValue() {
-    return (int) get();
+  @SuppressWarnings("cast.unsafe")
+  public @PolyValue int intValue(@PolyValue AtomicDouble this) {
+    return (@PolyValue int) get();
   }
 
   /**
@@ -208,8 +211,9 @@ public class AtomicDouble extends Number implements java.io.Serializable {
    * conversion.
    */
   @Override
-  public long longValue() {
-    return (long) get();
+  @SuppressWarnings("cast.unsafe")
+  public @PolyValue long longValue(@PolyValue AtomicDouble this) {
+    return (@PolyValue long) get();
   }
 
   /**
@@ -217,14 +221,16 @@ public class AtomicDouble extends Number implements java.io.Serializable {
    * conversion.
    */
   @Override
-  public float floatValue() {
-    return (float) get();
+  @SuppressWarnings("cast.unsafe")
+  public @PolyValue float floatValue(@PolyValue AtomicDouble this) {
+    return (@PolyValue float) get();
   }
 
   /** Returns the value of this {@code AtomicDouble} as a {@code double}. */
   @Override
-  public double doubleValue() {
-    return get();
+  @SuppressWarnings("cast.unsafe")
+  public @PolyValue double doubleValue(@PolyValue AtomicDouble this) {
+    return (@PolyValue double) get();
   }
 
   /**
