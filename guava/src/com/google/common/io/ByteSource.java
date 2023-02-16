@@ -544,7 +544,7 @@ public abstract class ByteSource {
     }
 
     @Override
-    @SuppressWarnings("return.type.incompatible") // off is at most equal to unslicedSize and length is non-negative
+    @SuppressWarnings("value:return") // off is at most equal to unslicedSize and length is non-negative
     public Optional<@NonNegative Long> sizeIfKnown() {
       Optional<@NonNegative Long> optionalUnslicedSize = ByteSource.this.sizeIfKnown();
       if (optionalUnslicedSize.isPresent()) {
@@ -571,8 +571,6 @@ public abstract class ByteSource {
       this(bytes, 0, bytes.length);
     }
 
-    // NOTE: Preconditions are enforced by slice, the only non-trivial caller.
-    @SuppressWarnings("assignment.type.incompatible") /* bytes is the same as this.bytes, and offset is the same as this.offset */
     ByteArrayByteSource(byte[] bytes, @IndexOrHigh("#1") int offset, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int length) {
       this.bytes = bytes;
       this.offset = offset;
@@ -628,8 +626,6 @@ public abstract class ByteSource {
     }
 
     @Override
-    @SuppressWarnings({"assignment.type.incompatible", "argument.type.incompatible"}) /* length is valid because offset
-     is smaller than the this.length */
     public ByteSource slice(@NonNegative long offset, @NonNegative long length) {
       checkArgument(offset >= 0, "offset (%s) may not be negative", offset);
       checkArgument(length >= 0, "length (%s) may not be negative", length);
@@ -697,7 +693,7 @@ public abstract class ByteSource {
     }
 
     @Override
-    @SuppressWarnings("return.type.incompatible") // Long.MAX_VALUE is non-negative
+    @SuppressWarnings("value:return") // Long.MAX_VALUE is non-negative
     public Optional<@NonNegative Long> sizeIfKnown() {
       if (!(sources instanceof Collection)) {
         // Infinite Iterables can cause problems here. Of course, it's true that most of the other

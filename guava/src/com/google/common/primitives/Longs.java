@@ -42,6 +42,7 @@ import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
 import org.checkerframework.checker.index.qual.HasSubsequence;
 import org.checkerframework.checker.index.qual.LessThan;
+import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
@@ -87,6 +88,7 @@ public final class Longs {
    * @param value a primitive {@code long} value
    * @return a hash code for the value
    */
+  @SuppressWarnings("signedness:shift.unsigned")  // value must be positive?
   public static int hashCode(long value) {
     return (int) (value ^ (value >>> 32));
   }
@@ -155,7 +157,6 @@ public final class Longs {
    * @param array the array to search for the sequence {@code target}
    * @param target the array to search for as a sub-sequence of {@code array}
    */
-  @SuppressWarnings("substringindex:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/206 https://github.com/kelloggm/checker-framework/issues/207 https://github.com/kelloggm/checker-framework/issues/208
   public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset="#2.length - 1") int indexOf(long[] array, long[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
@@ -267,7 +268,6 @@ public final class Longs {
    * pos is increased the same way as length, so pos points to a valid
    * range of length array.length in result.
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // sum of lengths
   public static long[] concat(long[]... arrays) {
     int length = 0;
     for (long[] array : arrays) {
@@ -351,30 +351,17 @@ public final class Longs {
       @IntRange(from = -1, to = 36) byte [] result = new byte[128];
       Arrays.fill(result, (byte) -1);
       for (int i = 0; i < 10; i++) {
-        @SuppressWarnings({
-          "unused",
-          "lessthan:cast.unsafe", // https://github.com/kelloggm/checker-framework/issues/222
-        })
         byte _unused3 = result['0' + i] = (byte) i;
       }
       for (int i = 0; i < 26; i++) {
-        @SuppressWarnings({
-          "unused",
-          "upperbound:array.access.unsafe.high.range", // https://github.com/typetools/checker-framework/issues/1669
-          "assignment.type.incompatible" // https://github.com/typetools/checker-framework/issues/1669
-        })
+        @SuppressWarnings("value:assignment") // 10 + i will be <= 36
         byte _unused1 = result['A' + i] = (byte) (10 + i);
-        @SuppressWarnings({
-          "unused",
-          "upperbound:array.access.unsafe.high", // https://github.com/typetools/checker-framework/issues/1669
-          "assignment.type.incompatible" // https://github.com/typetools/checker-framework/issues/1669
-        })
+        @SuppressWarnings("value:assignment") // 10 + i will be <= 36
         byte _unused2 = result['a' + i] = (byte) (10 + i);
       }
       asciiDigits = result;
     }
 
-    @SuppressWarnings("lowerbound:array.access.unsafe.low") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
     static @IntRange(from = -1, to = 36) int digit(char c) {
       return (c < 128) ? asciiDigits[c] : -1;
     }
@@ -423,7 +410,6 @@ public final class Longs {
    * @since 19.0
    */
   @Beta
-  @SuppressWarnings("upperbound") // annotation inferred by contract doesn't propagate through checkNotNull
   public static @Nullable Long tryParse(String string, @IntRange(from=2, to=36) int radix) {
     if (checkNotNull(string).isEmpty()) {
       return null;
@@ -733,14 +719,14 @@ public final class Longs {
     }
 
     @Override
+    @SuppressWarnings("signedness:argument") // target is signed Long
     public boolean contains(Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Long) && Longs.indexOf(array, (Long) target, start, end) != -1;
     }
 
     @Override
-    @SuppressWarnings(
-            "lowerbound:return.type.incompatible") // needs https://github.com/kelloggm/checker-framework/issues/227 on static indexOf method
+    @SuppressWarnings("signedness:argument") // target is signed Long
     public @IndexOrLow("this") int indexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Long) {
@@ -753,8 +739,7 @@ public final class Longs {
     }
 
     @Override
-    @SuppressWarnings(
-            "lowerbound:return.type.incompatible") // needs https://github.com/kelloggm/checker-framework/issues/227 on static indexOf method
+    @SuppressWarnings("signedness:argument") // target is signed Long
     public @IndexOrLow("this") int lastIndexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Long) {

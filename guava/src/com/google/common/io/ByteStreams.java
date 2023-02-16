@@ -47,6 +47,7 @@ import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signedness.qual.PolySigned;
 import java.util.Deque;
 import java.util.Queue;
 
@@ -204,8 +205,6 @@ public final class ByteStreams {
     }
   }
 
-  @SuppressWarnings("argument.type.incompatible") /* resultOffset is greater than 0 because remaining gets closer to 0
-  totalLen stays the same. bytesToCopy is valid because it can't exceed the length of buf */
   private static byte[] combineBuffers(Queue<byte[]> bufs, @NonNegative int totalLen) {
     byte[] result = new byte[totalLen];
     int remaining = totalLen;
@@ -246,10 +245,7 @@ public final class ByteStreams {
     @LessThan("expectedSize + 1") int remaining = (int) expectedSize;
 
     while (remaining > 0) {
-      @SuppressWarnings("assignment.type.incompatible") /* off can't go below 0 because remaining doesn't get bigger,
-      only smaller. It can't go beyond an index for bytes because the loop stops when remaining is negative */
       @IndexOrHigh("bytes") int off = (int) expectedSize - remaining;
-      @SuppressWarnings("argument.type.incompatible") /* off + remaining is at most expectedSize, which is the size of bytes. */
       int read = in.read(bytes, off, remaining);
       if (read == -1) {
         // end of stream before reading expectedSize bytes
@@ -307,8 +303,6 @@ public final class ByteStreams {
    *     the array
    */
   @Beta
-  @SuppressWarnings("argument.type.incompatible") /* bytes.length - start is a correct length for the array because start
-  is smaller than bytes.length and it doesn't exceed bytes.length when start is added as offset.*/
   public static ByteArrayDataInput newDataInput(byte[] bytes, @IndexOrHigh("#1") int start) {
     checkPositionIndex(start, bytes.length);
     return newDataInput(new ByteArrayInputStream(bytes, start, bytes.length - start));
@@ -656,17 +650,17 @@ public final class ByteStreams {
       new OutputStream() {
         /** Discards the specified byte. */
         @Override
-        public void write(int b) {}
+        public void write(@PolySigned int b) {}
 
         /** Discards the specified byte array. */
         @Override
-        public void write(byte[] b) {
+        public void write(@PolySigned byte[] b) {
           checkNotNull(b);
         }
 
         /** Discards the specified byte array. */
         @Override
-        public void write(byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
+        public void write(@PolySigned byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
           checkNotNull(b);
         }
 
@@ -724,7 +718,6 @@ public final class ByteStreams {
     }
 
     @Override
-    @SuppressWarnings("compound.assignment.type.incompatible") /* left can't go below 0 because it was previously checked*/
     public @GTENegativeOne int read() throws IOException {
       if (left == 0) {
         return -1;
@@ -752,7 +745,6 @@ public final class ByteStreams {
     }
 
     @Override
-    @SuppressWarnings("assignment.type.incompatible") /* mark is surely non-negative because of the check before*/
     public synchronized void reset() throws IOException {
       if (!in.markSupported()) {
         throw new IOException("Mark not supported");
@@ -935,8 +927,6 @@ public final class ByteStreams {
     checkPositionIndexes(off, off + len, b.length);
     int total = 0;
     while (total < len) {
-      @SuppressWarnings("argument.type.incompatible") /* if the offset and length passed to this method are invalid,
-      an exception would be thrown anyways, so there is no need to check them before */
       int result = in.read(b, off + total, len - total);
       if (result == -1) {
         break;

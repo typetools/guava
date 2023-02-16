@@ -145,16 +145,6 @@ public final class Strings {
    *     {@code count} is zero)
    * @throws IllegalArgumentException if {@code count} is negative
    */
-  @SuppressWarnings({
-    "upperbound:argument.type.incompatible", "upperbound:assignment.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-    /*
-     * After checking that n < size - n, we know that 2*n < size,
-     * therefore n << 1 < size,
-     * therefore n <<= 1 does not break IndexOrHigh("array").
-     */
-    "upperbound:compound.assignment.type.incompatible", // multiply index by 2 using bit shift
-    "lowerbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/193
-  })
   public static String repeat(String string, @NonNegative int count) {
     checkNotNull(string); // eager for GWT.
 
@@ -188,7 +178,6 @@ public final class Strings {
    *
    * @since 11.0
    */
-  @SuppressWarnings("index:unary.decrement.type.incompatible") // i-1 is @NonNegative means i-- is @NonNegative
   public static String commonPrefix(CharSequence a, CharSequence b) {
     checkNotNull(a);
     checkNotNull(b);
@@ -212,10 +201,6 @@ public final class Strings {
    *
    * @since 11.0
    */
-  @SuppressWarnings({
-    "lowerbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/193
-    "lowerbound:unary.decrement.type.incompatible" // i-1 is @NonNegative means i-- is @NonNegative
-  })
   public static String commonSuffix(CharSequence a, CharSequence b) {
     checkNotNull(a);
     checkNotNull(b);

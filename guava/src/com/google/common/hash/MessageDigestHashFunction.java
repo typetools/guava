@@ -158,7 +158,7 @@ final class MessageDigestHashFunction extends AbstractHashFunction implements Se
       checkState(!done, "Cannot re-use a Hasher after calling hash() on it");
     }
 
-    @SuppressWarnings("value:argument.type.incompatible")/* `bytes` is positive, if `digest.getDigestLength()` returns
+    @SuppressWarnings("value:argument") /* `bytes` is positive, if `digest.getDigestLength()` returns
     a positive and equals to `bytes`, `digest.digest()` returns array with min length of 1.
     */
     @Override

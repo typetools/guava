@@ -256,6 +256,7 @@ public abstract class HashCode {
    * must be handed-off so as to preserve the immutability contract of {@code HashCode}.
    */
   static HashCode fromBytesNoCopy(byte @MinLen(1)[] bytes) {
+    checkArgument(bytes.length >= 1, "A HashCode must contain at least 1 byte.");
     return new BytesHashCode(bytes);
   }
 
@@ -347,12 +348,7 @@ public abstract class HashCode {
    *
    * @since 15.0
    */
-  @SuppressWarnings({"upperbound:argument.type.incompatible",/* (1): `string` min length is 2 and `string.length` must be a even number.
-  Since for loop increment by two each iteration, `i` is always < `string.length - 2` */
-          "upperbound:array.access.unsafe.high",/* Since `bytes.length = string.length / 2` and `i` is incremented by 2, range 0 - string.length()
-          `i / 2` is safe as indexes. */
-          "argument.type.incompatible"//(2) Since `string.length >= 2` and `bytes.length` init is `string.length / 2`, bytes has min length of 1.
-          })
+  @SuppressWarnings("value:argument") // fromBytesNoCopy verfies bytes contains at least 1 byte
   public static HashCode fromString(String string) {
     checkArgument(
         string.length() >= 2, "input string (%s) must have at least 2 characters", string);

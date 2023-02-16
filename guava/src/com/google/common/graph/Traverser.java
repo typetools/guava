@@ -478,8 +478,7 @@ public abstract class Traverser<N> {
      * into {@code horizon} between calls to {@code visitNext()}. This causes them to receive
      * additional values interleaved with those shown above.)
      */
-    @Nullable
-    abstract N visitNext(Deque<Iterator<? extends N>> horizon);
+    abstract @Nullable N visitNext(Deque<Iterator<? extends N>> horizon);
   }
 
   /** Poor man's method reference for {@code Deque::addFirst} and {@code Deque::addLast}. */

@@ -133,9 +133,6 @@ public abstract class UnicodeEscaper extends Escaper {
    * @throws IllegalArgumentException if the scanned sub-sequence of {@code csq} contains invalid
    *     surrogate pairs
    */
-  @SuppressWarnings("upperbound:compound.assignment.type.incompatible")/* (1) In char arrays and CharSequence and its subclasses, two chars are used to represent
-          unicode characters that are outside the range of a 16-bit char character. If cp is in the larger range then there is guaranteed to be another
-          character following the one located at index, which is the rest of the unicode character. */
   protected @IndexOrHigh("#1") int nextEscapeIndex(CharSequence csq, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     @IndexOrHigh("#1") int index = start;
     while (index < end) {
@@ -163,18 +160,6 @@ public abstract class UnicodeEscaper extends Escaper {
    * @throws NullPointerException if {@code string} is null
    * @throws IllegalArgumentException if invalid surrogate characters are encountered
    */
-  @SuppressWarnings(value = {"upperbound:compound.assignment.type.incompatible",/*
-          (1): `destIndex` is always @LTEqLengthOf("dest") @LessThan("destSize + 1") because `dest` array
-          will always be regrow when `destSize` is less than `sizeNeeded` */
-          "upperbound:argument.type.incompatible",/*
-          (2): Because of System.arraycopy() method, `escaped.length` is required to be
-          @LTLengthOf(value={"escaped", "dest"}, offset={"-1", "destIndex - 1"}).
-          `escaped.length + destIndex - 1 < dest.length` is true because when `dest.length < sizeNeeded`,
-          `dest.length` regrow to new `destLength = destIndex + charsSkipped + escaped.length + (end - index) + DEST_PAD`
-          Since escaped.length is length of `escaped`, it should already be inferred to have length of @LTLengthOf(value="escaped", offset="-1") */
-          "upperbound:assignment.type.incompatible"/* (3): In char arrays and CharSequence and its subclasses, two chars are used to represent
-          unicode characters that are outside the range of a 16-bit char character. If cp is in the larger range then there is guaranteed to be another
-          character following the one located at index, which is the rest of the unicode character. */})
   protected final String escapeSlow(String s, @IndexOrHigh("#1") int index) {
     int end = s.length();
 
@@ -263,8 +248,6 @@ public abstract class UnicodeEscaper extends Escaper {
    * @return the Unicode code point for the given index or the negated value of the trailing high
    *     surrogate character at the end of the sequence
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible")/* highest possible `end` value is `seq.length`,
-  `indexInternal` can't be >= seq.length in while loop.*/
   protected static int codePointAt(CharSequence seq, @IndexFor("#1") int index, @IndexOrHigh("#1") int end) {
     checkNotNull(seq);
     @IndexOrHigh("seq") int indexInternal = index;
@@ -313,8 +296,6 @@ public abstract class UnicodeEscaper extends Escaper {
    * Helper method to grow the character buffer as needed, this only happens once in a while so it's
    * ok if it's in a method call. If the index passed in is 0 then no copying will be done.
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible")//upper bound checker does not infer size
-  //as size of the array. Issue: https://github.com/typetools/checker-framework/issues/2029
   private static char[] growBuffer(char[] dest,  @LTEqLengthOf("#1") @LessThan("#3 + 1") int index, int size) {
     if (size < 0) { // overflow - should be OutOfMemoryError but GWT/j2cl don't support it
       throw new AssertionError("Cannot increase internal buffer any further");

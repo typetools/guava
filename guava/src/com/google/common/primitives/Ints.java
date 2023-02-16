@@ -111,7 +111,6 @@ public final class Ints extends IntsMethodsForWeb {
    *     {@link Integer#MAX_VALUE} if it is too large, or {@link Integer#MIN_VALUE} if it is too
    *     small
    */
-  @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/190
   public static @PolyLowerBound int saturatedCast(@PolyLowerBound long value) {
     if (value > Integer.MAX_VALUE) {
       return Integer.MAX_VALUE;
@@ -186,7 +185,6 @@ public final class Ints extends IntsMethodsForWeb {
    * @param array the array to search for the sequence {@code target}
    * @param target the array to search for as a sub-sequence of {@code array}
    */
-  @SuppressWarnings("substringindex:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/206 https://github.com/kelloggm/checker-framework/issues/207 https://github.com/kelloggm/checker-framework/issues/208
   public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset="#2.length - 1") int indexOf(int[] array, int[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
@@ -302,7 +300,6 @@ public final class Ints extends IntsMethodsForWeb {
    * pos is increased the same way as length, so pos points to a valid
    * range of length array.length in result.
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // sum of lengths
   public static int[] concat(int[]... arrays) {
     int length = 0;
     for (int[] array : arrays) {
@@ -595,8 +592,6 @@ public final class Ints extends IntsMethodsForWeb {
       this(array, 0, array.length);
     }
 
-    @SuppressWarnings(
-            "index") // these three fields need to be initialized in some order, and any ordering leads to the first two issuing errors - since each field is dependent on at least one of the others
     IntArrayAsList(int @MinLen(1)[] array, @IndexFor("#1") @LessThan("#3") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
@@ -625,14 +620,14 @@ public final class Ints extends IntsMethodsForWeb {
     }
 
     @Override
+    @SuppressWarnings("signedness:argument") // passing @UnknownSignedness Integer to @Signed int
     public boolean contains(Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Integer) && Ints.indexOf(array, (Integer) target, start, end) != -1;
     }
 
     @Override
-    @SuppressWarnings(
-            "lowerbound:return.type.incompatible") // needs https://github.com/kelloggm/checker-framework/issues/227 on static indexOf method
+    @SuppressWarnings("signedness:argument") // passing @UnknownSignedness Integer to @Signed int
     public @IndexOrLow("this") int indexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Integer) {
@@ -645,8 +640,7 @@ public final class Ints extends IntsMethodsForWeb {
     }
 
     @Override
-    @SuppressWarnings(
-            "lowerbound:return.type.incompatible") // needs https://github.com/kelloggm/checker-framework/issues/227 on static indexOf method
+    @SuppressWarnings("signedness:argument") // passing @UnknownSignedness Integer to @Signed int
     public @IndexOrLow("this")int lastIndexOf(Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Integer) {
@@ -668,7 +662,6 @@ public final class Ints extends IntsMethodsForWeb {
     }
 
     @Override
-    @SuppressWarnings("index") // needs https://github.com/kelloggm/checker-framework/issues/229
     public List<Integer> subList(@IndexOrHigh("this") int fromIndex, @IndexOrHigh("this") int toIndex) {
       int size = size();
       checkPositionIndexes(fromIndex, toIndex, size);

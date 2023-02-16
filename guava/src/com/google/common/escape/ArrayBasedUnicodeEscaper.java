@@ -96,7 +96,6 @@ public abstract class ArrayBasedUnicodeEscaper extends UnicodeEscaper {
    * @param unsafeReplacement the default replacement for unsafe characters or null if no default
    *     replacement is required
    */
-  @SuppressWarnings("index:assignment.type.incompatible") // implementation sets formal parameter
   protected ArrayBasedUnicodeEscaper(
       ArrayBasedEscaperMap escaperMap,
       @NonNegative int safeMin,
@@ -144,7 +143,6 @@ public abstract class ArrayBasedUnicodeEscaper extends UnicodeEscaper {
    * This is overridden to improve performance. Rough benchmarking shows that this almost doubles
    * the speed when processing strings that do not require any escaping.
    */
-  @SuppressWarnings("lowerbound:array.access.unsafe.low")//char types are non negative: https://github.com/kelloggm/checker-framework/issues/192
   @Override
   public final String escape(String s) {
     checkNotNull(s); // GWT specific check (do not optimize)
@@ -179,7 +177,6 @@ public abstract class ArrayBasedUnicodeEscaper extends UnicodeEscaper {
   }
 
   /* Overridden for performance. */
-  @SuppressWarnings("lowerbound:array.access.unsafe.low")//char types are non negative: https://github.com/kelloggm/checker-framework/issues/192
   @Override
   protected final @IndexOrHigh("#1") int nextEscapeIndex(CharSequence csq, @IndexOrHigh("#1") int index, @IndexOrHigh("#1") int end) {
     while (index < end) {

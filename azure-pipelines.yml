@@ -30,6 +30,8 @@ jobs:
         typechecker: regex
       signatureJob:
         typechecker: signature
+      signednessJob:
+        typechecker: signedness
     maxParallel: 10
   steps:
   - checkout: self

@@ -38,6 +38,7 @@ import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 
@@ -110,9 +111,7 @@ public final class LongMath {
    * signed long. The implementation is branch-free, and benchmarks suggest it is measurably faster
    * than the straightforward ternary expression.
    */
-  @SuppressWarnings("value:return.type.incompatible")/* An int has 64 bits, the lestmost bit is 0 for positive values, and is 1 for negative values.
-  For shift right zero fill operator( >>> ), the left operands value is moved right by the number of bits specified by the right operand
-  and shifted values are filled up with zeros. Therefore if x > y, (x - y) return a positive value, when being shifted 63 bits, it returns 0, otherwise return 1. */
+  @SuppressWarnings("signedness:shift.unsigned")
   @VisibleForTesting
   static @IntRange(from = 0, to = 1) int lessThanBranchFree(long x, long y) {
     // Returns the sign bit of x - y.
@@ -147,6 +146,7 @@ public final class LongMath {
       case HALF_EVEN:
         // Since sqrt(2) is irrational, log2(x) - logFloor cannot be exactly 0.5
         int leadingZeros = Long.numberOfLeadingZeros(x);
+        @SuppressWarnings("signedness:shift.unsigned")
         long cmp = MAX_POWER_OF_SQRT2_UNSIGNED >>> leadingZeros;
         // floor(2^(logFloor + 0.5))
         int logFloor = (Long.SIZE - 1) - leadingZeros;
@@ -195,20 +195,6 @@ public final class LongMath {
   }
 
   @GwtIncompatible // TODO
-  @SuppressWarnings(value = {"lowerbound:return.type.incompatible",/* (2): `log10Floor()` returns a negative value if y is 0 and
-  `lessThanBranchFree(x, powersOf10[y])` returns 1( when x < powersOf10[y]). Since x is positive, y is 0 when 0 < x < 8( the array `maxLog10ForLeadingZeros` has 0 values at indexes: 61, 62, 63).
-  Since when 0 < x < 8, y is 0 and powersOf10[0] is 1, x can't be < `powersOf10[y]`, therefore `log10Floor()` won't return
-  a negative value. */
-          "upperbound:return.type.incompatible",/*(2) powersOf10.length is 19 and largest element in `maxLog10ForLeadingZeros` is 19 at index 0.
-          Since `log10Floor()` is a static method and only called by methods that take in positive `x` values, `Long.numberOfLeadingZeros(x)`
-          won't return 0 and cause an error */
-          "upperbound:assignment.type.incompatible",/*(2): except for element at index 0 in `maxLog10ForLeadingZeros`, the rest
-          can be indexed for `powersOf10` */
-          "upperbound:array.access.unsafe.high.range"/*(1): `Long.numberOfLeadingZeros(x)` can return an int range from 0 to 64,
-          therfore the array `maxLog10ForLeadingZeros` should have min length of 65. However, since param `x` is required to
-          be positive, the highest int from `Long.numberOfLeadingZeros(x)` is 63.
-          */
-          })
   static @IndexFor(value = {"powersOf10", "halfPowersOf10"}) int log10Floor(@Positive long x) {
     /*
      * Based on Hacker's Delight Fig. 11-5, the two-table-lookup, branch-free implementation.
@@ -289,7 +275,6 @@ public final class LongMath {
    *
    * @throws IllegalArgumentException if {@code k < 0}
    */
-  @SuppressWarnings("index") // https://github.com/typetools/checker-framework/issues/2541
   @GwtIncompatible // TODO
   public static long pow(long b, int k) {
     checkNonNegative("exponent", k);
@@ -624,7 +609,6 @@ public final class LongMath {
    * @throws ArithmeticException if {@code b} to the {@code k}th power overflows in signed {@code
    *     long} arithmetic
    */
-  @SuppressWarnings("index") // https://github.com/typetools/checker-framework/issues/2541
   @GwtIncompatible // TODO
   public static long checkedPow(long b, int k) {
     checkNonNegative("exponent", k);
@@ -674,6 +658,7 @@ public final class LongMath {
    * @since 20.0
    */
   @Beta
+  @SuppressWarnings("signedness:shift.unsigned")
   public static long saturatedAdd(long a, long b) {
     long naiveSum = a + b;
     if ((a ^ b) < 0 | (a ^ naiveSum) >= 0) {
@@ -692,6 +677,7 @@ public final class LongMath {
    * @since 20.0
    */
   @Beta
+  @SuppressWarnings("signedness:shift.unsigned")
   public static long saturatedSubtract(long a, long b) {
     long naiveDifference = a - b;
     if ((a ^ b) >= 0 | (a ^ naiveDifference) >= 0) {
@@ -721,6 +707,7 @@ public final class LongMath {
       return a * b;
     }
     // the return value if we will overflow (which we calculate by overflowing a long :) )
+    @SuppressWarnings("signedness:shift.unsigned")
     long limit = Long.MAX_VALUE + ((a ^ b) >>> (Long.SIZE - 1));
     if (leadingZeros < Long.SIZE | (a < 0 & b == Long.MIN_VALUE)) {
       // overflow
@@ -739,7 +726,6 @@ public final class LongMath {
    *
    * @since 20.0
    */
-  @SuppressWarnings("index") // https://github.com/typetools/checker-framework/issues/2541
   @Beta
   public static long saturatedPow(long b, int k) {
     checkNonNegative("exponent", k);
@@ -767,6 +753,7 @@ public final class LongMath {
     }
     long accum = 1;
     // if b is negative and k is odd then the limit is MIN otherwise the limit is MAX
+    @SuppressWarnings("signedness:shift.unsigned")
     long limit = Long.MAX_VALUE + ((b >>> Long.SIZE - 1) & (k & 1));
     while (true) {
       switch (k) {
@@ -833,9 +820,6 @@ public final class LongMath {
    *
    * @throws IllegalArgumentException if {@code n < 0}, {@code k < 0}, or {@code k > n}
    */
-  @SuppressWarnings({"lowerbound:unary.decrement.type.incompatible", // k = n - k is non-negative
-                    "array.access.unsafe.low" // looks like a bug, possibly related to the above
-                    })
   public static long binomial(@NonNegative @LTLengthOf("this.factorials") int n, @NonNegative @LessThan("#1 + 1") int k) {
     checkNonNegative("n", n);
     checkNonNegative("k", k);
@@ -1070,7 +1054,8 @@ public final class LongMath {
       return true;
     }
 
-    for (long[] baseSet : millerRabinBaseSets) {
+    //@SuppressWarnings("signedness:comparison") // n is guaranteed to be positive
+    for (@Unsigned long[] baseSet : millerRabinBaseSets) {
       if (n <= baseSet[0]) {
         for (int i = 1; i < baseSet.length; i++) {
           if (!MillerRabinTester.test(baseSet[i], n)) {
@@ -1090,7 +1075,7 @@ public final class LongMath {
    * NOTE: We could get slightly better bases that would be treated as unsigned, but benchmarks
    * showed negligible performance improvements.
    */
-  private static final long[] @MinLen(1)[] millerRabinBaseSets = {
+  private static final @Unsigned long[] @MinLen(1)[] millerRabinBaseSets = {
     {291830, 126401071349994536L},
     {885594168, 725270293939359937L, 3569819667048198375L},
     {273919523040L, 15, 7363882082L, 992620450144556L},
@@ -1119,7 +1104,8 @@ public final class LongMath {
     /** Works for inputs ≤ FLOOR_SQRT_MAX_LONG. */
     SMALL {
       @Override
-      long mulMod(long a, long b, long m) {
+      @SuppressWarnings("signedness:operation")
+      @Unsigned long mulMod(@Unsigned long a, @Unsigned long b, @Unsigned long m) {
         /*
          * lowasser, 2015-Feb-12: Benchmarks suggest that changing this to UnsignedLongs.remainder
          * and increasing the threshold to 2^32 doesn't pay for itself, and adding another enum
@@ -1130,19 +1116,21 @@ public final class LongMath {
       }
 
       @Override
-      long squareMod(long a, long m) {
+      @SuppressWarnings("signedness:operation")
+      @Unsigned long squareMod(@Unsigned long a, @Unsigned long m) {
         return (a * a) % m;
       }
     },
     /** Works for all nonnegative signed longs. */
     LARGE {
       /** Returns (a + b) mod m. Precondition: {@code 0 <= a}, {@code b < m < 2^63}. */
-      private long plusMod(long a, long b, long m) {
+      @SuppressWarnings("signedness:comparison")
+      private @Unsigned long plusMod(@Unsigned long a, @Unsigned long b, @Unsigned long m) {
         return (a >= m - b) ? (a + b - m) : (a + b);
       }
 
       /** Returns (a * 2^32) mod m. a may be any unsigned long. */
-      private long times2ToThe32Mod(long a, long m) {
+      private @Unsigned long times2ToThe32Mod(@Unsigned long a, @Unsigned long m) {
         int remainingPowersOf2 = 32;
         do {
           int shift = Math.min(remainingPowersOf2, Long.numberOfLeadingZeros(a));
@@ -1155,7 +1143,8 @@ public final class LongMath {
       }
 
       @Override
-      long mulMod(long a, long b, long m) {
+      @SuppressWarnings("signedness:comparison")
+      @Unsigned long mulMod(@Unsigned long a, @Unsigned long b, @Unsigned long m) {
         long aHi = a >>> 32; // < 2^31
         long bHi = b >>> 32; // < 2^31
         long aLo = a & 0xFFFFFFFFL; // < 2^32
@@ -1169,7 +1158,7 @@ public final class LongMath {
          * unsigned long, we don't have to do a mod on every operation, only when intermediate
          * results can exceed 2^63.
          */
-        long result = times2ToThe32Mod(aHi * bHi /* < 2^62 */, m); // < m < 2^63
+        @Unsigned long result = times2ToThe32Mod(aHi * bHi /* < 2^62 */, m); // < m < 2^63
         result += aHi * bLo; // aHi * bLo < 2^63, result < 2^64
         if (result < 0) {
           result = UnsignedLongs.remainder(result, m);
@@ -1181,7 +1170,8 @@ public final class LongMath {
       }
 
       @Override
-      long squareMod(long a, long m) {
+      @SuppressWarnings("signedness:comparison")
+      @Unsigned long squareMod(@Unsigned long a, @Unsigned long m) {
         long aHi = a >>> 32; // < 2^31
         long aLo = a & 0xFFFFFFFFL; // < 2^32
 
@@ -1204,21 +1194,22 @@ public final class LongMath {
       }
     };
 
-    static boolean test(long base, long n) {
+    @SuppressWarnings("signedness:comparison")
+    static boolean test(@Unsigned long base, @Unsigned long n) {
       // Since base will be considered % n, it's okay if base > FLOOR_SQRT_MAX_LONG,
       // so long as n <= FLOOR_SQRT_MAX_LONG.
       return ((n <= FLOOR_SQRT_MAX_LONG) ? SMALL : LARGE).testWitness(base, n);
     }
 
     /** Returns a * b mod m. */
-    abstract long mulMod(long a, long b, long m);
+    abstract @Unsigned long mulMod(@Unsigned long a, @Unsigned long b, @Unsigned long m);
 
     /** Returns a^2 mod m. */
-    abstract long squareMod(long a, long m);
+    abstract @Unsigned long squareMod(@Unsigned long a, @Unsigned long m);
 
     /** Returns a^p mod m. */
-    private long powMod(long a, long p, long m) {
-      long res = 1;
+    private @Unsigned long powMod(@Unsigned long a, @Unsigned long p, @Unsigned long m) {
+      @Unsigned long res = 1;
       for (; p != 0; p >>= 1) {
         if ((p & 1) != 0) {
           res = mulMod(res, a, m);
@@ -1229,7 +1220,7 @@ public final class LongMath {
     }
 
     /** Returns true if n is a strong probable prime relative to the specified base. */
-    private boolean testWitness(long base, long n) {
+    private boolean testWitness(@Unsigned long base, @Unsigned long n) {
       int r = Long.numberOfTrailingZeros(n - 1);
       long d = (n - 1) >> r;
       base %= n;
@@ -1237,7 +1228,7 @@ public final class LongMath {
         return true;
       }
       // Calculate a := base^d mod n.
-      long a = powMod(base, d, n);
+      @Unsigned long a = powMod(base, d, n);
       // n passes this test if
       //    base^d = 1 (mod n)
       // or base^(2^j * d) = -1 (mod n) for some 0 <= j < r.

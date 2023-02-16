@@ -133,7 +133,7 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
    * LinkedHashMap combines two such edges into a single node-value pair, even though the edges may
    * not have been inserted consecutively.
    */
-  @Nullable private final List<NodeConnection<N>> orderedNodeConnections;
+  private final @Nullable List<NodeConnection<N>> orderedNodeConnections;
 
   private int predecessorCount;
   private int successorCount;

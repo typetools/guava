@@ -40,6 +40,8 @@ elif [[ "$1" == "regex" ]]; then
   (cd guava && mvn -B compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.regex.RegexChecker)
 elif [[ "$1" == "signature" ]]; then
   (cd guava && mvn -B compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.signature.SignatureChecker)
+elif [[ "$1" == "signedness" ]]; then
+  (cd guava && mvn -B compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.signedness.SignednessChecker)
 elif [[ "$1" == "nothing" ]]; then
   true
 else

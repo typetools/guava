@@ -58,7 +58,7 @@ public final class FileBackedOutputStream extends OutputStream {
   private final int fileThreshold;
   private final boolean resetOnFinalize;
   private final ByteSource source;
-  @Nullable private final File parentDirectory;
+  private final @Nullable File parentDirectory;
 
   @GuardedBy("this")
   private OutputStream out;
@@ -75,7 +75,6 @@ public final class FileBackedOutputStream extends OutputStream {
       return buf;
     }
 
-    @SuppressWarnings("return.type.incompatible") // this.getBuffer() is the same as this.buf
     @IndexOrHigh("this.getBuffer()") int getCount() {
       return count;
     }

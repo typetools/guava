@@ -639,6 +639,7 @@ public abstract class ImmutableSet<E extends @NonNull Object> extends ImmutableC
   private static final double DESIRED_LOAD_FACTOR = 0.7;
 
   // If the set has this many elements, it will "max out" the table size
+  @SuppressWarnings("cast.unsafe") // cast float to int
   private static final int CUTOFF = (int) (MAX_TABLE_SIZE * DESIRED_LOAD_FACTOR);
 
   /**

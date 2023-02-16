@@ -53,15 +53,12 @@ abstract class AbstractHasher implements Hasher {
     return this;
   }
 
-  @SuppressWarnings("argument.type.incompatible")//Strings#getBytes() should be annotated as @PolyValue
   @Override
+  @SuppressWarnings("value:argument") // Strings#getBytes() should be annotated as @PolyValue
   public Hasher putString(@MinLen(1) CharSequence charSequence, Charset charset) {
     return putBytes(charSequence.toString().getBytes(charset));
   }
 
-  @SuppressWarnings("upperbound:argument.type.incompatible")/* `off` is required to be @LTLengthOf(value = "#1", offset = "len - 1"). Since `bytes.length` min value is 1,
-  `off = 0` + `bytes.length = 1" - 1 is still less than `bytes.length`
-  */
   @Override
   public Hasher putBytes(byte @MinLen(1)[] bytes) {
     return putBytes(bytes, 0, bytes.length);
@@ -77,8 +74,6 @@ abstract class AbstractHasher implements Hasher {
   }
 
   @Override
-  @SuppressWarnings({"lowerbound:argument.type.incompatible" //  b.arrayOffset(), b.position() and b.remaining() all return non negative values.
-  })
   public Hasher putBytes(ByteBuffer b) {
     if (b.hasArray()) {
       putBytes(b.array(), b.arrayOffset() + b.position(), b.remaining());
@@ -108,6 +103,7 @@ abstract class AbstractHasher implements Hasher {
   }
 
   @Override
+  @SuppressWarnings("signedness:shift.unsigned")
   public Hasher putLong(long l) {
     for (int i = 0; i < 64; i += 8) {
       putByte((byte) (l >>> i));
@@ -116,6 +112,7 @@ abstract class AbstractHasher implements Hasher {
   }
 
   @Override
+  @SuppressWarnings("signedness:argument")
   public Hasher putChar(char c) {
     putByte((byte) c);
     putByte((byte) (c >>> 8));

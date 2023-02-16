@@ -45,6 +45,8 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * CompactHashSet is an implementation of a Set. All optional operations (adding and removing) are
@@ -155,7 +157,7 @@ class CompactHashSet<E> extends AbstractSet<E> implements Serializable {
    *   <li>null, if no entries have yet been added to the map
    * </ul>
    */
-  @Nullable private transient Object table;
+  private transient @Nullable Object table;
 
   /**
    * Contains the logical entries, in the range of [0, size()). The high bits of each int are the
@@ -300,6 +302,7 @@ class CompactHashSet<E> extends AbstractSet<E> implements Serializable {
 
     int newEntryIndex = this.size; // current size, and pointer to the entry to be appended
     int newSize = newEntryIndex + 1;
+    @SuppressWarnings("signedness:argument")
     int hash = smearedHash(object);
     int mask = hashTableMask();
     int tableIndex = hash & mask;
@@ -348,6 +351,7 @@ class CompactHashSet<E> extends AbstractSet<E> implements Serializable {
   /**
    * Creates a fresh entry with the specified object at the specified position in the entry arrays.
    */
+  @SuppressWarnings("signedness:assignment")
   void insertEntry(int entryIndex, @Nullable E object, int hash, int mask) {
     this.entries[entryIndex] = CompactHashing.maskCombine(hash, UNSET, mask);
     this.elements[entryIndex] = object;
@@ -413,7 +417,7 @@ class CompactHashSet<E> extends AbstractSet<E> implements Serializable {
   }
 
   @Override
-  public boolean contains(@Nullable Object object) {
+  public boolean contains(@Nullable @UnknownSignedness Object object) {
     if (needsAllocArrays()) {
       return false;
     }
@@ -442,7 +446,7 @@ class CompactHashSet<E> extends AbstractSet<E> implements Serializable {
 
   @CanIgnoreReturnValue
   @Override
-  public boolean remove(@Nullable Object object) {
+  public boolean remove(@Nullable @UnknownSignedness Object object) {
     if (needsAllocArrays()) {
       return false;
     }
@@ -610,7 +614,7 @@ class CompactHashSet<E> extends AbstractSet<E> implements Serializable {
   }
 
   @Override
-  public Object[] toArray() {
+  public @PolySigned Object[] toArray(CompactHashSet<@PolySigned E> this) {
     if (needsAllocArrays()) {
       return new Object[0];
     }
@@ -660,6 +664,7 @@ class CompactHashSet<E> extends AbstractSet<E> implements Serializable {
   }
 
   @Override
+  @SuppressWarnings("signedness:argument")
   public void clear() {
     if (needsAllocArrays()) {
       return;
@@ -680,6 +685,7 @@ class CompactHashSet<E> extends AbstractSet<E> implements Serializable {
     }
   }
 
+  @SuppressWarnings("signedness:argument")
   private void writeObject(ObjectOutputStream stream) throws IOException {
     stream.defaultWriteObject();
     stream.writeInt(size());

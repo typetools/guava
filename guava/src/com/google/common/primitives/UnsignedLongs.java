@@ -27,8 +27,10 @@ import java.util.Comparator;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
-import org.checkerframework.checker.signedness.qual.Unsigned;
+import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.Unsigned;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code long} primitives that interpret values as
@@ -53,6 +55,7 @@ import org.checkerframework.checker.signedness.qual.PolySigned;
  * @author Colin Evans
  * @since 10.0
  */
+@AnnotatedFor({"signedness"})
 @Beta
 @GwtCompatible
 public final class UnsignedLongs {
@@ -65,6 +68,7 @@ public final class UnsignedLongs {
    * longs, that is, {@code a <= b} as unsigned longs if and only if {@code flip(a) <= flip(b)} as
    * signed longs.
    */
+  @SuppressWarnings("signedness:return")
   private static @PolySigned long flip(@PolySigned long a) {
     return a ^ Long.MIN_VALUE;
   }
@@ -80,6 +84,7 @@ public final class UnsignedLongs {
    * @return a negative value if {@code a} is less than {@code b}; a positive value if {@code a} is
    *     greater than {@code b}; or zero if they are equal
    */
+  @SuppressWarnings("signedness:argument")
   public static int compare(@Unsigned long a, @Unsigned long b) {
     return Longs.compare(flip(a), flip(b));
   }
@@ -92,6 +97,7 @@ public final class UnsignedLongs {
    *     the array according to {@link #compare}
    * @throws IllegalArgumentException if {@code array} is empty
    */
+  @SuppressWarnings("signedness:comparison")
   public static @Unsigned long min(@Unsigned long @MinLen(1)... array) {
     checkArgument(array.length > 0);
     long min = flip(array[0]);
@@ -112,6 +118,7 @@ public final class UnsignedLongs {
    *     in the array according to {@link #compare}
    * @throws IllegalArgumentException if {@code array} is empty
    */
+  @SuppressWarnings("signedness:comparison")
   public static @Unsigned long max(@Unsigned long @MinLen(1)... array) {
     checkArgument(array.length > 0);
     long max = flip(array[0]);
@@ -198,6 +205,7 @@ public final class UnsignedLongs {
    *
    * @since 23.1
    */
+  @SuppressWarnings("signedness:argument")
   public static void sort(@Unsigned long[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
@@ -227,6 +235,7 @@ public final class UnsignedLongs {
    *
    * @since 23.1
    */
+  @SuppressWarnings("signedness:argument")
   public static void sortDescending(@Unsigned long[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
@@ -249,6 +258,7 @@ public final class UnsignedLongs {
    * @param divisor the divisor (denominator)
    * @throws ArithmeticException if divisor is 0
    */
+  @SuppressWarnings("signedness:comparison")
   public static @Unsigned long divide(@Unsigned long dividend, @Unsigned long divisor) {
     if (divisor < 0) { // i.e., divisor >= 2^63:
       if (compare(dividend, divisor) < 0) {
@@ -269,6 +279,7 @@ public final class UnsignedLongs {
      * floor(floor(x)/i) == floor(x/i) for any real x and integer i != 0. The proof is not quite
      * trivial.
      */
+    @SuppressWarnings("signedness:operation")
     long quotient = ((dividend >>> 1) / divisor) << 1;
     long rem = dividend - quotient * divisor;
     return quotient + (compare(rem, divisor) >= 0 ? 1 : 0);
@@ -285,6 +296,7 @@ public final class UnsignedLongs {
    * @throws ArithmeticException if divisor is 0
    * @since 11.0
    */
+  @SuppressWarnings("signedness:comparison")
   public static @Unsigned long remainder(@Unsigned long dividend, @Unsigned long divisor) {
     if (divisor < 0) { // i.e., divisor >= 2^63:
       if (compare(dividend, divisor) < 0) {
@@ -305,6 +317,7 @@ public final class UnsignedLongs {
      * that floor(floor(x)/i) == floor(x/i) for any real x and integer i != 0. The proof is not
      * quite trivial.
      */
+    @SuppressWarnings("signedness:operation")
     long quotient = ((dividend >>> 1) / divisor) << 1;
     long rem = dividend - quotient * divisor;
     return rem - (compare(rem, divisor) >= 0 ? divisor : 0);
@@ -464,9 +477,9 @@ public final class UnsignedLongs {
    * Assuming that Character.MIN_RADIX == 2
    */
   @SuppressWarnings({
-    "lowerbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/193
-    "lowerbound:unary.decrement.type.incompatible",
-    "lowerbound:array.access.unsafe.low", "lowerbound:compound.assignment.type.incompatible" // ulong converted to string is at most 64 chars
+    "signedness:comparison", // unsigned compare
+    "signedness:operation", // unsigned divide
+    "signedness:argument" // forDigit
   })
   public static String toString(@Unsigned long x, @IntRange(from = Character.MIN_RADIX,to = Character.MAX_RADIX) int radix) {
     checkArgument(

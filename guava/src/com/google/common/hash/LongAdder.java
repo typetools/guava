@@ -17,6 +17,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicLong;
 import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.common.value.qual.PolyValue;
 
 /**
  * One or more variables that together maintain an initially zero {@code long} sum. When updates
@@ -56,7 +57,7 @@ final class LongAdder extends Striped64 implements Serializable, LongAddable {
    *
    * @param x the value to add
    */
-  @SuppressWarnings("value:assignment.type.incompatible")// if `threadHashCode.get()` return an array of min length < 1,
+  @SuppressWarnings("value:assignment") // if `threadHashCode.get()` return an array of min length < 1,
   // other conditions will be computed.
   @Override
   public void add(long x) {
@@ -158,26 +159,30 @@ final class LongAdder extends Striped64 implements Serializable, LongAddable {
    * @return the sum
    */
   @Override
-  public long longValue() {
-    return sum();
+  @SuppressWarnings("cast.unsafe")
+  public @PolyValue long longValue(@PolyValue LongAdder this) {
+    return (@PolyValue long)sum();
   }
 
   /** Returns the {@link #sum} as an {@code int} after a narrowing primitive conversion. */
   @Override
-  public int intValue() {
-    return (int) sum();
+  @SuppressWarnings("cast.unsafe")
+  public @PolyValue int intValue(@PolyValue LongAdder this) {
+    return (@PolyValue int) sum();
   }
 
   /** Returns the {@link #sum} as a {@code float} after a widening primitive conversion. */
   @Override
-  public float floatValue() {
-    return (float) sum();
+  @SuppressWarnings("cast.unsafe")
+  public @PolyValue float floatValue(@PolyValue LongAdder this) {
+    return (@PolyValue float) sum();
   }
 
   /** Returns the {@link #sum} as a {@code double} after a widening primitive conversion. */
   @Override
-  public double doubleValue() {
-    return (double) sum();
+  @SuppressWarnings("cast.unsafe")
+  public @PolyValue double doubleValue(@PolyValue LongAdder this) {
+    return (@PolyValue double) sum();
   }
 
   private void writeObject(ObjectOutputStream s) throws IOException {

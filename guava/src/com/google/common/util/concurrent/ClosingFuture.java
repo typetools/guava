@@ -341,8 +341,7 @@ public final class ClosingFuture<V> {
      * @throws CancellationException if the computation was cancelled
      * @throws ExecutionException if the computation threw an exception
      */
-    @Nullable
-    public V get() throws ExecutionException {
+    public @Nullable V get() throws ExecutionException {
       return getDone(closingFuture.future);
     }
 
