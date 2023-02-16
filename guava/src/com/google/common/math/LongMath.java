@@ -1054,6 +1054,7 @@ public final class LongMath {
       return true;
     }
 
+    //@SuppressWarnings("signedness:comparison") // n is guaranteed to be positive
     for (@Unsigned long[] baseSet : millerRabinBaseSets) {
       if (n <= baseSet[0]) {
         for (int i = 1; i < baseSet.length; i++) {
@@ -1103,6 +1104,7 @@ public final class LongMath {
     /** Works for inputs ≤ FLOOR_SQRT_MAX_LONG. */
     SMALL {
       @Override
+      @SuppressWarnings("signedness:operation")
       @Unsigned long mulMod(@Unsigned long a, @Unsigned long b, @Unsigned long m) {
         /*
          * lowasser, 2015-Feb-12: Benchmarks suggest that changing this to UnsignedLongs.remainder
@@ -1114,6 +1116,7 @@ public final class LongMath {
       }
 
       @Override
+      @SuppressWarnings("signedness:operation")
       @Unsigned long squareMod(@Unsigned long a, @Unsigned long m) {
         return (a * a) % m;
       }
@@ -1121,6 +1124,7 @@ public final class LongMath {
     /** Works for all nonnegative signed longs. */
     LARGE {
       /** Returns (a + b) mod m. Precondition: {@code 0 <= a}, {@code b < m < 2^63}. */
+      @SuppressWarnings("signedness:comparison")
       private @Unsigned long plusMod(@Unsigned long a, @Unsigned long b, @Unsigned long m) {
         return (a >= m - b) ? (a + b - m) : (a + b);
       }
@@ -1139,6 +1143,7 @@ public final class LongMath {
       }
 
       @Override
+      @SuppressWarnings("signedness:comparison")
       @Unsigned long mulMod(@Unsigned long a, @Unsigned long b, @Unsigned long m) {
         long aHi = a >>> 32; // < 2^31
         long bHi = b >>> 32; // < 2^31
@@ -1165,6 +1170,7 @@ public final class LongMath {
       }
 
       @Override
+      @SuppressWarnings("signedness:comparison")
       @Unsigned long squareMod(@Unsigned long a, @Unsigned long m) {
         long aHi = a >>> 32; // < 2^31
         long aLo = a & 0xFFFFFFFFL; // < 2^32
@@ -1188,6 +1194,7 @@ public final class LongMath {
       }
     };
 
+    @SuppressWarnings("signedness:comparison")
     static boolean test(@Unsigned long base, @Unsigned long n) {
       // Since base will be considered % n, it's okay if base > FLOOR_SQRT_MAX_LONG,
       // so long as n <= FLOOR_SQRT_MAX_LONG.

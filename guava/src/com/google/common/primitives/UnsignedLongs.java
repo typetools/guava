@@ -27,8 +27,10 @@ import java.util.Comparator;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
-import org.checkerframework.checker.signedness.qual.Unsigned;
+import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.Unsigned;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code long} primitives that interpret values as
@@ -53,6 +55,7 @@ import org.checkerframework.checker.signedness.qual.PolySigned;
  * @author Colin Evans
  * @since 10.0
  */
+@AnnotatedFor({"signedness"})
 @Beta
 @GwtCompatible
 public final class UnsignedLongs {
