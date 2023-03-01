@@ -29,6 +29,7 @@ import org.checkerframework.common.value.qual.MinLen;
  * @author Christopher Swenson
  */
 @GwtIncompatible // no precomputation is done in GWT
+@ElementTypesAreNonnullByDefault
 final class SmallCharMatcher extends NamedFastMatcher {
   static final int MAX_SIZE = 1023;
   private final char @MinLen(1)[] table;
@@ -73,7 +74,6 @@ final class SmallCharMatcher extends NamedFastMatcher {
    * can hold setSize elements with the desired load factor.
    */
   @VisibleForTesting
-  @SuppressWarnings("lowerbound:assignment.type.incompatible") // bit operations
   static @Positive int chooseTableSize(@IntRange(from = 0, to = Character.MAX_VALUE) int setSize) {
     if (setSize == 1) {
       return 2;
@@ -141,7 +141,6 @@ final class SmallCharMatcher extends NamedFastMatcher {
   }
 
   @Override
-  @SuppressWarnings("lowerbound:argument.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/192 char should be @NonNegative
   void setBits(BitSet table) {
     if (containsZero) {
       table.set(0);

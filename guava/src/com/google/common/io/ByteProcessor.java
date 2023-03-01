@@ -22,6 +22,7 @@ import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import java.io.IOException;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * A callback interface to process bytes from a stream.
@@ -35,7 +36,8 @@ import java.io.IOException;
 @Beta
 @DoNotMock("Implement it normally")
 @GwtIncompatible
-public interface ByteProcessor<T> {
+@ElementTypesAreNonnullByDefault
+public interface ByteProcessor<T extends @Nullable Object> {
   /**
    * This method will be called for each chunk of bytes in an input stream. The implementation
    * should process the bytes from {@code buf[off]} through {@code buf[off + len - 1]} (inclusive).
@@ -49,5 +51,6 @@ public interface ByteProcessor<T> {
   boolean processBytes(byte[] buf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException;
 
   /** Return the result of processing all the bytes. */
+  @ParametricNullness
   T getResult();
 }

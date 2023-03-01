@@ -16,8 +16,8 @@ package com.google.common.escape;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
@@ -43,8 +43,8 @@ import org.checkerframework.checker.index.qual.LessThan;
  * @author Sven Mawson
  * @since 15.0
  */
-@Beta
 @GwtCompatible
+@ElementTypesAreNonnullByDefault
 public abstract class CharEscaper extends Escaper {
   /** Constructor for use by subclasses. */
   protected CharEscaper() {}
@@ -84,6 +84,7 @@ public abstract class CharEscaper extends Escaper {
    * @param c the character to escape if necessary
    * @return the replacement characters, or {@code null} if no escaping was needed
    */
+  @CheckForNull
   protected abstract char[] escape(char c);
 
   /**
@@ -97,11 +98,12 @@ public abstract class CharEscaper extends Escaper {
    * @return the escaped form of {@code string}
    * @throws NullPointerException if {@code string} is null
    */
-  @SuppressWarnings(value = {"upperbound:assignment.type.incompatible",/*
-   (1) Because of System.arraycopy() method, `rlen` is required to be @LTLengthOf(value={"r", "dest"}, offset={"-1", "destIndex - 1"}).
-   Since r = escape(), can't annotate `escape()` return type as @LTLengthOf(value={"r", "dest"}, offset={"-1", "destIndex - 1"}).*/
-          "upperbound:compound.assignment.type.incompatible"/*(2): `destIndex` is always @LTEqLengthOf("dest") because `dest` array
-          will always be regrow when `destSize` is less than `sizeNeeded`*/})
+  @SuppressWarnings({
+    "upperbound:assignment", /* (1) Because of System.arraycopy() method, `rlen` is required to be @LTLengthOf(value={"r", "dest"}, offset={"-1", "destIndex - 1"}).
+      Since r = escape(), can't annotate `escape()` return type as @LTLengthOf(value={"r", "dest"}, offset={"-1", "destIndex - 1"}).*/
+    "upperbound:compound.assignment"/*(2): `destIndex` is always @LTEqLengthOf("dest") because `dest` array
+       will always be regrow when `destSize` is less than `sizeNeeded`*/
+  })
   protected final String escapeSlow(String s, @IndexOrHigh("#1") int index) {
     int slen = s.length();
 
@@ -168,8 +170,6 @@ public abstract class CharEscaper extends Escaper {
    * Helper method to grow the character buffer as needed, this only happens once in a while so it's
    * ok if it's in a method call. If the index passed in is 0 then no copying will be done.
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible")//index should infer @LessThan("#3 + 1") as same as @LTEqLengthOf("copy")
-  //this is a similar improvement to this issue: https://github.com/typetools/checker-framework/issues/2029
   private static char[] growBuffer(char[] dest, @LTEqLengthOf("#1") @LessThan("#3 + 1")  int index, int size) {
     if (size < 0) { // overflow - should be OutOfMemoryError but GWT/j2cl don't support it
       throw new AssertionError("Cannot increase internal buffer any further");

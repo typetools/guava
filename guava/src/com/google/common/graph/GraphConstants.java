@@ -16,7 +16,11 @@
 
 package com.google.common.graph;
 
+import org.checkerframework.checker.formatter.qual.ConversionCategory;
+import org.checkerframework.checker.formatter.qual.Format;
+
 /** A utility class to hold various constants used by the Guava Graph library. */
+@ElementTypesAreNonnullByDefault
 final class GraphConstants {
 
   private GraphConstants() {}
@@ -31,12 +35,12 @@ final class GraphConstants {
   static final int INNER_CAPACITY = 2; // ceiling(EXPECTED_DEGREE / INNER_LOAD_FACTOR)
 
   // Error messages
-  static final String NODE_NOT_IN_GRAPH = "Node %s is not an element of this graph.";
-  static final String EDGE_NOT_IN_GRAPH = "Edge %s is not an element of this graph.";
+  static final @Format({ConversionCategory.GENERAL}) String NODE_NOT_IN_GRAPH = "Node %s is not an element of this graph.";
+  static final @Format({ConversionCategory.GENERAL}) String EDGE_NOT_IN_GRAPH = "Edge %s is not an element of this graph.";
   static final String REUSING_EDGE =
       "Edge %s already exists between the following nodes: %s, "
           + "so it cannot be reused to connect the following nodes: %s.";
-  static final String MULTIPLE_EDGES_CONNECTING =
+  static final @Format({ConversionCategory.GENERAL, ConversionCategory.GENERAL}) String MULTIPLE_EDGES_CONNECTING =
       "Cannot call edgeConnecting() when parallel edges exist between %s and %s. Consider calling "
           + "edgesConnecting() instead.";
   static final String PARALLEL_EDGES_NOT_ALLOWED =

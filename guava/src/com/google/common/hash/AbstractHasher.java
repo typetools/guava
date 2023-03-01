@@ -20,6 +20,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.common.value.qual.MinLen;
 
 /**
@@ -29,6 +30,7 @@ import org.checkerframework.common.value.qual.MinLen;
  * @author Dimitris Andreou
  */
 @CanIgnoreReturnValue
+@ElementTypesAreNonnullByDefault
 abstract class AbstractHasher implements Hasher {
   @Override
   public final Hasher putBoolean(boolean b) {
@@ -120,7 +122,8 @@ abstract class AbstractHasher implements Hasher {
   }
 
   @Override
-  public <T> Hasher putObject(T instance, Funnel<? super T> funnel) {
+  public <T extends @Nullable Object> Hasher putObject(
+      @ParametricNullness T instance, Funnel<? super T> funnel) {
     funnel.funnel(instance, this);
     return this;
   }

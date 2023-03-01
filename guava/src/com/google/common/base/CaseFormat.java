@@ -15,9 +15,11 @@
 package com.google.common.base;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
@@ -32,6 +34,7 @@ import org.checkerframework.common.value.qual.ArrayLen;
  * @since 1.0
  */
 @GwtCompatible
+@ElementTypesAreNonnullByDefault
 public enum CaseFormat {
   /** Hyphenated variable naming convention, e.g., "lower-hyphen". */
   LOWER_HYPHEN(CharMatcher.is('-'), "-") {
@@ -135,11 +138,7 @@ public enum CaseFormat {
    * j = wordBoundary.indexIn ensures that j is -1 or
    * j >= 0 && j < s.length()
    */
-  @SuppressWarnings({
-    "upperbound:assignment.type.incompatible", "upperbound:compound.assignment.type.incompatible", // refinement on multiple assignments in expression
-    "upperbound:argument.type.incompatible", // length of sequence with ArrayLenRange in offset
-    "upperbound:unary.increment.type.incompatible",
-  })
+  @SuppressWarnings("nullness:argument") // out is initialized when i == 0
   String convert(CaseFormat format, String s) {
     // deal with camel conversion
     StringBuilder out = null;
@@ -151,14 +150,14 @@ public enum CaseFormat {
         out = new StringBuilder(s.length() + 4 * format.wordSeparator.length());
         out.append(format.normalizeFirstWord(s.substring(i, j)));
       } else {
-        out.append(format.normalizeWord(s.substring(i, j)));
+        requireNonNull(out).append(format.normalizeWord(s.substring(i, j)));
       }
       out.append(format.wordSeparator);
       i = j + wordSeparator.length();
     }
     return (i == 0)
         ? format.normalizeFirstWord(s)
-        : out.append(format.normalizeWord(s.substring(i))).toString();
+        : requireNonNull(out).append(format.normalizeWord(s.substring(i))).toString();
   }
 
   /**
@@ -192,7 +191,7 @@ public enum CaseFormat {
     }
 
     @Override
-    public boolean equals(@Nullable Object object) {
+    public boolean equals(@CheckForNull Object object) {
       if (object instanceof StringConverter) {
         StringConverter that = (StringConverter) object;
         return sourceFormat.equals(that.sourceFormat) && targetFormat.equals(that.targetFormat);

@@ -42,6 +42,7 @@ import org.checkerframework.common.value.qual.PolyValue;
  * @author Doug Lea
  */
 @GwtCompatible(emulated = true)
+@ElementTypesAreNonnullByDefault
 final class LongAdder extends Striped64 implements Serializable, LongAddable {
   private static final long serialVersionUID = 7249069246863182397L;
 

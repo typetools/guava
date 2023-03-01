@@ -23,6 +23,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
  * javadoc for details.
  */
 @GwtCompatible
+@ElementTypesAreNonnullByDefault
 abstract class CommonMatcher {
   public abstract boolean matches();
 

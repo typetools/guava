@@ -5,11 +5,12 @@
   <parent>
     <groupId>com.google.guava</groupId>
     <artifactId>guava-parent</artifactId>
-    <version>HEAD-android-SNAPSHOT</version>
+    <version>31.1-android</version>
   </parent>
   <artifactId>guava</artifactId>
   <packaging>bundle</packaging>
   <name>Guava: Google Core Libraries for Java</name>
+  <url>https://github.com/google/guava</url>
   <description>
     Guava is a suite of core and expanded libraries that include
     utility classes, Google's collections, I/O classes, and
@@ -32,7 +33,7 @@
     </dependency>
     <dependency>
       <groupId>org.checkerframework</groupId>
-      <artifactId>checker-compat-qual</artifactId>
+      <artifactId>checker-qual</artifactId>
     </dependency>
     <dependency>
       <groupId>com.google.errorprone</groupId>
@@ -90,42 +91,6 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <executions>
-          <execution>
-            <!--
-                 The execution named default-compile happens first, regardless
-                 of the order of the executions in the source file. So, because
-                 Java8Usage is a dependency of the main sources, we need to call
-                 its compilation "default-compile," even though it's the special
-                 case.
-            -->
-            <id>default-compile</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-            <configuration>
-              <includes>
-                <include>**/Java8Usage.java</include>
-              </includes>
-              <!-- -source 8 -target 8 is a no-op in the mainline but matters in the backport. -->
-              <source>8</source>
-              <target>8</target>
-            </configuration>
-          </execution>
-          <execution>
-            <id>main-compile</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-            <configuration>
-              <excludes>
-                <exclude>**/Java8Usage.java</exclude>
-              </excludes>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
@@ -164,7 +129,7 @@
           <!-- excludePackageNames requires specification of packages separately from "all subpackages".
                https://issues.apache.org/jira/browse/MJAVADOC-584 -->
           <excludePackageNames>
-            com.google.common.base.internal,com.google.common.base.internal.*,com.google.thirdparty.publicsuffix,com.google.thirdparty.publicsuffix.*,com.oracle.*,com.sun.*,java.*,javax.*,jdk,jdk.*,org.*,sun.*
+            com.azul.tooling.in,com.google.common.base.internal,com.google.common.base.internal.*,com.google.thirdparty.publicsuffix,com.google.thirdparty.publicsuffix.*,com.oracle.*,com.sun.*,java.*,javax.*,jdk,jdk.*,org.*,sun.*
           </excludePackageNames>
           <!-- Ignore some tags that are found in Java 11 sources but not recognized... under -source 8, I think it was? I can no longer reproduce the failure. -->
           <tags>

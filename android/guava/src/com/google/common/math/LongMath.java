@@ -49,6 +49,7 @@ import java.math.RoundingMode;
  * @since 11.0
  */
 @GwtCompatible(emulated = true)
+@ElementTypesAreNonnullByDefault
 public final class LongMath {
   // NOTE: Whenever both tests are cheap and functional, it's faster to use &, | instead of &&, ||
 
@@ -424,7 +425,7 @@ public final class LongMath {
         // subtracting two nonnegative longs can't overflow
         // cmpRemToHalfDivisor has the same sign as compare(abs(rem), abs(q) / 2).
         if (cmpRemToHalfDivisor == 0) { // exactly on the half mark
-          increment = (mode == HALF_UP | (mode == HALF_EVEN & (div & 1) != 0));
+          increment = (mode == HALF_UP || (mode == HALF_EVEN && (div & 1) != 0));
         } else {
           increment = cmpRemToHalfDivisor > 0; // closer to the UP value
         }

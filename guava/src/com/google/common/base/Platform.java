@@ -21,6 +21,7 @@ import java.util.ServiceConfigurationError;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -32,6 +33,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtCompatible(emulated = true)
+@ElementTypesAreNonnullByDefault
 final class Platform {
   private static final Logger logger = Logger.getLogger(Platform.class.getName());
   private static final PatternCompiler patternCompiler = loadPatternCompiler();
@@ -48,7 +50,7 @@ final class Platform {
     return matcher.precomputedInternal();
   }
 
-  @SuppressWarnings("nullness:argument.type.incompatible") // ref.get returns null in case the object
+  @SuppressWarnings("nullness:argument") // ref.get returns null in case the object
   // that it refers to is cleared or garbage collected which is unlikely during normal program
   // execution. Optional.of always return a non-null value for non-null argument.
   static <T extends Enum<T>> Optional<T> getEnumIfPresent(Class<T> enumClass, String value) {
@@ -60,8 +62,7 @@ final class Platform {
     return String.format(Locale.ROOT, "%.4g", value);
   }
 
-  @EnsuresNonNullIf(expression = "#1", result = false)
-  static boolean stringIsNullOrEmpty(@Nullable String string) {
+  static boolean stringIsNullOrEmpty(@CheckForNull String string) {
     return string == null || string.isEmpty();
   }
 
@@ -71,7 +72,7 @@ final class Platform {
    * @param string the string to test and possibly return
    * @return {@code string} if it is not null; {@code ""} otherwise
    */
-  static String nullToEmpty(@Nullable String string) {
+  static String nullToEmpty(@CheckForNull String string) {
     return (string == null) ? "" : string;
   }
 
@@ -81,7 +82,8 @@ final class Platform {
    * @param string the string to test and possibly return
    * @return {@code string} if it is not empty; {@code null} otherwise
    */
-  static @Nullable String emptyToNull(@Nullable String string) {
+  @CheckForNull
+  static String emptyToNull(@CheckForNull String string) {
     return stringIsNullOrEmpty(string) ? null : string;
   }
 

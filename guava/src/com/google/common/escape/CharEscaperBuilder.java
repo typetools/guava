@@ -16,15 +16,16 @@ package com.google.common.escape;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Simple helper class to build a "sparse" array of objects based on the indexes that were added to
@@ -35,18 +36,18 @@ import org.checkerframework.checker.index.qual.LTLengthOf;
  * @author Sven Mawson
  * @since 15.0
  */
-@Beta
 @GwtCompatible
+@ElementTypesAreNonnullByDefault
 public final class CharEscaperBuilder {
   /**
    * Simple decorator that turns an array of replacement char[]s into a CharEscaper, this results in
    * a very fast escape method.
    */
   private static class CharArrayDecorator extends CharEscaper {
-    private final char[][] replacements;
+    private final char[] @Nullable [] replacements;
     private final @LTEqLengthOf("replacements") int replaceLength;
 
-    CharArrayDecorator(char[][] replacements) {
+    CharArrayDecorator(char[] @Nullable [] replacements) {
       this.replacements = replacements;
       this.replaceLength = replacements.length;
     }
@@ -68,8 +69,8 @@ public final class CharEscaperBuilder {
       return s;
     }
 
-    @SuppressWarnings("lowerbound:array.access.unsafe.low")//char types are non negative: https://github.com/kelloggm/checker-framework/issues/192
     @Override
+    @CheckForNull
     protected char[] escape(char c) {
       return c < replaceLength ? replacements[c] : null;
     }
@@ -113,11 +114,7 @@ public final class CharEscaperBuilder {
    *
    * @return a "sparse" array that holds the replacement mappings.
    */
-  @SuppressWarnings(value = {"lowerbound:array.access.unsafe.low",//Character types are non negative: https://github.com/kelloggm/checker-framework/issues/192
-          "upperbound:enhancedfor.type.incompatible"/*(2):
-          Since `max` is maximum index is the value of the highest character that has been seen, `max + 1` is larger than any of the key values in map.
-          Therefore, key values in map can be indexed by the `result` array.*/})
-  public char[][] toArray() {
+  public char[] @Nullable [] toArray() {
     char[][] result = new char[max + 1][];
     for (Entry<@LTLengthOf("result") Character, String> entry : map.entrySet()) { //(2)
       result[entry.getKey()] = entry.getValue().toCharArray();

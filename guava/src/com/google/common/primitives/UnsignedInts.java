@@ -56,6 +56,7 @@ import org.checkerframework.checker.signedness.qual.SignedPositive;
  */
 @Beta
 @GwtCompatible
+@ElementTypesAreNonnullByDefault
 public final class UnsignedInts {
   static final long INT_MASK = 0xffffffffL;
 

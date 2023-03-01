@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Spliterator;
 import java.util.function.Consumer;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -35,6 +36,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
 @SuppressWarnings("serial") // we're overriding default serialization
+@ElementTypesAreNonnullByDefault
 final class ImmutableEnumSet<E extends Enum<E>> extends ImmutableSet<E> {
   @SuppressWarnings("rawtypes") // necessary to compile against Java 8
   static ImmutableSet asImmutable(EnumSet set) {
@@ -90,7 +92,7 @@ final class ImmutableEnumSet<E extends Enum<E>> extends ImmutableSet<E> {
 
   @Pure
   @Override
-  public boolean contains(@Nullable Object object) {
+  public boolean contains(@CheckForNull Object object) {
     return delegate.contains(object);
   }
 
@@ -111,7 +113,7 @@ final class ImmutableEnumSet<E extends Enum<E>> extends ImmutableSet<E> {
 
   @Pure
   @Override
-  public boolean equals(@Nullable Object object) {
+  public boolean equals(@CheckForNull Object object) {
     if (object == this) {
       return true;
     }

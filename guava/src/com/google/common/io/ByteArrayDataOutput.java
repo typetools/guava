@@ -29,6 +29,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
  * @since 1.0
  */
 @GwtIncompatible
+@ElementTypesAreNonnullByDefault
 public interface ByteArrayDataOutput extends DataOutput {
   @Override
   void write(int b);

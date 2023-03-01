@@ -21,6 +21,7 @@ import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
 import java.io.Writer;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
@@ -35,6 +36,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @since 1.0
  */
 @GwtIncompatible
+@ElementTypesAreNonnullByDefault
 class AppendableWriter extends Writer {
   private final Appendable target;
   private boolean closed;
@@ -71,13 +73,15 @@ class AppendableWriter extends Writer {
   }
 
   @Override
-  public void write(@Nullable String str) throws IOException {
+  public void write(String str) throws IOException {
+    checkNotNull(str);
     checkNotClosed();
     target.append(str);
   }
 
   @Override
-  public void write(@Nullable String str, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
+  public void write(String str, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
+    checkNotNull(str);
     checkNotClosed();
     // tricky: append takes start, end pair...
     target.append(str, off, off + len);
@@ -107,14 +111,14 @@ class AppendableWriter extends Writer {
   }
 
   @Override
-  public Writer append(@Nullable CharSequence charSeq) throws IOException {
+  public Writer append(@CheckForNull CharSequence charSeq) throws IOException {
     checkNotClosed();
     target.append(charSeq);
     return this;
   }
 
   @Override
-  public Writer append(@Nullable CharSequence charSeq, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) throws IOException {
+  public Writer append(@CheckForNull CharSequence charSeq, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) throws IOException {
     checkNotClosed();
     target.append(charSeq, start, end);
     return this;

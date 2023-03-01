@@ -58,6 +58,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"signedness"})
 @Beta
 @GwtCompatible
+@ElementTypesAreNonnullByDefault
 public final class UnsignedLongs {
   private UnsignedLongs() {}
 

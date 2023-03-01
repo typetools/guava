@@ -19,6 +19,7 @@ package com.google.common.collect;
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.DoNotCall;
 import java.util.Iterator;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -33,7 +34,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtCompatible
-public abstract class UnmodifiableIterator<E> implements Iterator<E> {
+@ElementTypesAreNonnullByDefault
+public abstract class UnmodifiableIterator<E extends @Nullable Object> implements Iterator<E> {
   /** Constructor for use by subclasses. */
   protected UnmodifiableIterator() {}
 

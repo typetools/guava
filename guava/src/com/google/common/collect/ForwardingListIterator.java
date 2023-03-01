@@ -19,6 +19,7 @@ package com.google.common.collect;
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ListIterator;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -38,9 +39,9 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtCompatible
-@SuppressWarnings("nullness:generic.argument")
-public abstract class ForwardingListIterator<E> extends ForwardingIterator<E>
-    implements ListIterator<E> {
+@ElementTypesAreNonnullByDefault
+public abstract class ForwardingListIterator<E extends @Nullable Object>
+    extends ForwardingIterator<E> implements ListIterator<E> {
 
   /** Constructor for use by subclasses. */
   protected ForwardingListIterator() {}
@@ -49,7 +50,7 @@ public abstract class ForwardingListIterator<E> extends ForwardingIterator<E>
   protected abstract ListIterator<E> delegate();
 
   @Override
-  public void add(E element) {
+  public void add(@ParametricNullness E element) {
     delegate().add(element);
   }
 
@@ -59,23 +60,26 @@ public abstract class ForwardingListIterator<E> extends ForwardingIterator<E>
   }
 
   @Override
+  @SuppressWarnings("index:override.return")
   public int nextIndex() {
     return delegate().nextIndex();
   }
 
   @CanIgnoreReturnValue
   @Override
+  @ParametricNullness
   public E previous() {
     return delegate().previous();
   }
 
   @Override
+  @SuppressWarnings("index:override.return")
   public int previousIndex() {
     return delegate().previousIndex();
   }
 
   @Override
-  public void set(E element) {
+  public void set(@ParametricNullness E element) {
     delegate().set(element);
   }
 }

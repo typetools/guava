@@ -32,6 +32,7 @@ import java.util.Arrays;
  * @author Dimitris Andreou
  */
 @Immutable
+@ElementTypesAreNonnullByDefault
 final class MessageDigestHashFunction extends AbstractHashFunction implements Serializable {
 
   @SuppressWarnings("Immutable") // cloned before each use
@@ -60,7 +61,7 @@ final class MessageDigestHashFunction extends AbstractHashFunction implements Se
 
   private static boolean supportsClone(MessageDigest digest) {
     try {
-      digest.clone();
+      Object unused = digest.clone();
       return true;
     } catch (CloneNotSupportedException e) {
       return false;

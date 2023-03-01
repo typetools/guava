@@ -17,7 +17,6 @@ package com.google.common.util.concurrent;
 import static com.google.common.base.Verify.verify;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
-import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Preconditions;
@@ -33,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Utilities for treating interruptible operations as uninterruptible. In all cases, if a thread is
@@ -43,6 +43,7 @@ import java.util.concurrent.locks.Lock;
  * @since 10.0
  */
 @GwtCompatible(emulated = true)
+@ElementTypesAreNonnullByDefault
 public final class Uninterruptibles {
 
   // Implementation Note: As of 3-7-11, the logic for each blocking/timeout
@@ -193,7 +194,9 @@ public final class Uninterruptibles {
    * @throws CancellationException if the computation was cancelled
    */
   @CanIgnoreReturnValue
-  public static <V> V getUninterruptibly(Future<V> future) throws ExecutionException {
+  @ParametricNullness
+  public static <V extends @Nullable Object> V getUninterruptibly(Future<V> future)
+      throws ExecutionException {
     boolean interrupted = false;
     try {
       while (true) {
@@ -231,8 +234,9 @@ public final class Uninterruptibles {
   @CanIgnoreReturnValue
   @GwtIncompatible // TODO
   @SuppressWarnings("GoodTime") // should accept a java.time.Duration
-  public static <V> V getUninterruptibly(Future<V> future, long timeout, TimeUnit unit)
-      throws ExecutionException, TimeoutException {
+  @ParametricNullness
+  public static <V extends @Nullable Object> V getUninterruptibly(
+      Future<V> future, long timeout, TimeUnit unit) throws ExecutionException, TimeoutException {
     boolean interrupted = false;
     try {
       long remainingNanos = unit.toNanos(timeout);
@@ -405,7 +409,6 @@ public final class Uninterruptibles {
    *
    * @since 30.0
    */
-  @Beta
   @GwtIncompatible // concurrency
   public static void awaitTerminationUninterruptibly(ExecutorService executor) {
     // TODO(cpovirk): We could optimize this to avoid calling nanoTime() at all.
@@ -418,7 +421,6 @@ public final class Uninterruptibles {
    *
    * @since 30.0
    */
-  @Beta
   @GwtIncompatible // concurrency
   @SuppressWarnings("GoodTime")
   public static boolean awaitTerminationUninterruptibly(

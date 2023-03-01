@@ -23,6 +23,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.common.value.qual.MinLen;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * An abstract composition of multiple hash functions. {@linkplain #newHasher()} delegates to the
@@ -32,6 +33,7 @@ import java.nio.charset.Charset;
  * @author Dimitris Andreou
  */
 @Immutable
+@ElementTypesAreNonnullByDefault
 abstract class AbstractCompositeHashFunction extends AbstractHashFunction {
 
   @SuppressWarnings("Immutable") // array not modified after creation
@@ -71,7 +73,7 @@ abstract class AbstractCompositeHashFunction extends AbstractHashFunction {
     return fromHashers(hashers);
   }
 
-  private Hasher fromHashers(final Hasher[] hashers) {
+  private Hasher fromHashers(Hasher[] hashers) {
     return new Hasher() {
       @Override
       public Hasher putByte(byte b) {
@@ -180,7 +182,8 @@ abstract class AbstractCompositeHashFunction extends AbstractHashFunction {
       }
 
       @Override
-      public <T> Hasher putObject(T instance, Funnel<? super T> funnel) {
+      public <T extends @Nullable Object> Hasher putObject(
+          @ParametricNullness T instance, Funnel<? super T> funnel) {
         for (Hasher hasher : hashers) {
           hasher.putObject(instance, funnel);
         }

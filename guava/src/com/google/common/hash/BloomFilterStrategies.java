@@ -22,6 +22,7 @@ import com.google.common.primitives.Longs;
 import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicLongArray;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
@@ -38,6 +39,7 @@ import org.checkerframework.common.value.qual.MinLen;
  * @author Dimitris Andreou
  * @author Kurt Alfred Kluever
  */
+@ElementTypesAreNonnullByDefault
 enum BloomFilterStrategies implements BloomFilter.Strategy {
   /**
    * See "Less Hashing, Same Performance: Building a Better Bloom Filter" by Adam Kirsch and Michael
@@ -46,8 +48,11 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
    */
   MURMUR128_MITZ_32() {
     @Override
-    public <T> boolean put(
-        T object, Funnel<? super T> funnel, int numHashFunctions, LockFreeBitArray bits) {
+    public <T extends @Nullable Object> boolean put(
+        @ParametricNullness T object,
+        Funnel<? super T> funnel,
+        int numHashFunctions,
+        LockFreeBitArray bits) {
       long bitSize = bits.bitSize();
       long hash64 = Hashing.murmur3_128().hashObject(object, funnel).asLong();
       int hash1 = (int) hash64;
@@ -66,8 +71,11 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
     }
 
     @Override
-    public <T> boolean mightContain(
-        T object, Funnel<? super T> funnel, int numHashFunctions, LockFreeBitArray bits) {
+    public <T extends @Nullable Object> boolean mightContain(
+        @ParametricNullness T object,
+        Funnel<? super T> funnel,
+        int numHashFunctions,
+        LockFreeBitArray bits) {
       long bitSize = bits.bitSize();
       long hash64 = Hashing.murmur3_128().hashObject(object, funnel).asLong();
       int hash1 = (int) hash64;
@@ -94,9 +102,13 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
    */
   MURMUR128_MITZ_64() {
     @Override
-    public <T> boolean put(
-        T object, Funnel<? super T> funnel, int numHashFunctions, LockFreeBitArray bits) {
+    public <T extends @Nullable Object> boolean put(
+        @ParametricNullness T object,
+        Funnel<? super T> funnel,
+        int numHashFunctions,
+        LockFreeBitArray bits) {
       long bitSize = bits.bitSize();
+      @SuppressWarnings("value:assignment")
       byte @MinLen(16)[] bytes = Hashing.murmur3_128().hashObject(object, funnel).getBytesInternal();
       long hash1 = lowerEight(bytes);
       long hash2 = upperEight(bytes);
@@ -112,9 +124,13 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
     }
 
     @Override
-    public <T> boolean mightContain(
-        T object, Funnel<? super T> funnel, int numHashFunctions, LockFreeBitArray bits) {
+    public <T extends @Nullable Object> boolean mightContain(
+        @ParametricNullness T object,
+        Funnel<? super T> funnel,
+        int numHashFunctions,
+        LockFreeBitArray bits) {
       long bitSize = bits.bitSize();
+      @SuppressWarnings("value:assignment")
       byte @MinLen(16)[] bytes = Hashing.murmur3_128().hashObject(object, funnel).getBytesInternal();
       long hash1 = lowerEight(bytes);
       long hash2 = upperEight(bytes);
@@ -147,12 +163,8 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
    * <p>We use this instead of java.util.BitSet because we need access to the array of longs and we
    * need compare-and-swap.
    */
-  @SuppressWarnings({"lowerbound:array.length.negative",// Since `Ints.checkedCast` return the int value that is equal to non negative`long bits`,
+  @SuppressWarnings("value:argument") // Since `Ints.checkedCast` returns the int value that is equal to non negative`long bits`,
   // Ints.checkedCast() can't return negative value
-          "value:argument.type.incompatible"// If long bits is in range from 0 to Integer.MAX_VALUE, LongMath.divide() return
-          //long value in range 0 to (Integer.MAX_VALUE / 64)
-          })
-
   static final class LockFreeBitArray {
     private static final int LONG_ADDRESSABLE_BITS = 6;
     final AtomicLongArray data;
@@ -259,29 +271,40 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
           data.length(),
           other.data.length());
       for (int i = 0; i < data.length(); i++) {
-        long otherLong = other.data.get(i);
-
-        long ourLongOld;
-        long ourLongNew;
-        boolean changedAnyBits = true;
-        do {
-          ourLongOld = data.get(i);
-          ourLongNew = ourLongOld | otherLong;
-          if (ourLongOld == ourLongNew) {
-            changedAnyBits = false;
-            break;
-          }
-        } while (!data.compareAndSet(i, ourLongOld, ourLongNew));
-
-        if (changedAnyBits) {
-          int bitsAdded = Long.bitCount(ourLongNew) - Long.bitCount(ourLongOld);
-          bitCount.add(bitsAdded);
-        }
+        putData(i, other.data.get(i));
       }
     }
 
+    /**
+     * ORs the bits encoded in the {@code i}th {@code long} in the underlying {@link
+     * AtomicLongArray} with the given value.
+     */
+    void putData(int i, long longValue) {
+      long ourLongOld;
+      long ourLongNew;
+      boolean changedAnyBits = true;
+      do {
+        ourLongOld = data.get(i);
+        ourLongNew = ourLongOld | longValue;
+        if (ourLongOld == ourLongNew) {
+          changedAnyBits = false;
+          break;
+        }
+      } while (!data.compareAndSet(i, ourLongOld, ourLongNew));
+
+      if (changedAnyBits) {
+        int bitsAdded = Long.bitCount(ourLongNew) - Long.bitCount(ourLongOld);
+        bitCount.add(bitsAdded);
+      }
+    }
+
+    /** Returns the number of {@code long}s in the underlying {@link AtomicLongArray}. */
+    int dataLength() {
+      return data.length();
+    }
+
     @Override
-    public boolean equals(@Nullable Object o) {
+    public boolean equals(@CheckForNull Object o) {
       if (o instanceof LockFreeBitArray) {
         LockFreeBitArray lockFreeBitArray = (LockFreeBitArray) o;
         // TODO(lowasser): avoid allocation here

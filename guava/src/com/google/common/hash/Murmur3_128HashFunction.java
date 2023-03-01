@@ -31,6 +31,7 @@ import com.google.errorprone.annotations.Immutable;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -42,6 +43,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Dimitris Andreou
  */
 @Immutable
+@ElementTypesAreNonnullByDefault
 final class Murmur3_128HashFunction extends AbstractHashFunction implements Serializable {
   static final HashFunction MURMUR3_128 = new Murmur3_128HashFunction(0);
 
@@ -71,7 +73,7 @@ final class Murmur3_128HashFunction extends AbstractHashFunction implements Seri
   }
 
   @Override
-  public boolean equals(@Nullable Object object) {
+  public boolean equals(@CheckForNull Object object) {
     if (object instanceof Murmur3_128HashFunction) {
       Murmur3_128HashFunction other = (Murmur3_128HashFunction) object;
       return seed == other.seed;
@@ -166,8 +168,8 @@ final class Murmur3_128HashFunction extends AbstractHashFunction implements Seri
       h2 ^= mixK2(k2);
     }
 
-    @SuppressWarnings("value:argument.type.incompatible")//ByteBuffer#array() should be annotated as  byte @MinLen(1)[] array().
     @Override
+    @SuppressWarnings("value:argument") // ByteBuffer#array() should be annotated as  byte @MinLen(1)[] array().
     protected HashCode makeHash() {
       h1 ^= length;
       h2 ^= length;

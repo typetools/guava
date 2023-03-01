@@ -44,6 +44,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
  */
 @Beta
 @GwtIncompatible
+@ElementTypesAreNonnullByDefault
 public final class LittleEndianDataInputStream extends FilterInputStream implements DataInput {
 
   /**
@@ -99,7 +100,7 @@ public final class LittleEndianDataInputStream extends FilterInputStream impleme
    */
   @CanIgnoreReturnValue // to skip some bytes
   @Override
-  @SuppressWarnings("return.type.incompatible") // The integer returned has its first bit equal to 0.
+  @SuppressWarnings("index:return") // The integer returned has its first bit equal to 0.
   public @NonNegative int readUnsignedShort() throws IOException {
     byte b1 = readAndCheckByte();
     byte b2 = readAndCheckByte();

@@ -19,6 +19,7 @@ import org.checkerframework.common.value.qual.IntRange;
 
 /** A string to be parsed as a number and the radix to interpret it in. */
 @GwtCompatible
+@ElementTypesAreNonnullByDefault
 final class ParseRequest {
   final String rawValue;
   final @IntRange(from = Character.MIN_RADIX, to = Character.MAX_RADIX) int radix;

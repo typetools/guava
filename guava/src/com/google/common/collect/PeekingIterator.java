@@ -21,13 +21,14 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.DoNotMock;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * An iterator that supports a one-element lookahead while iterating.
  *
  * <p>See the Guava User Guide article on <a href=
- * "https://github.com/google/guava/wiki/CollectionHelpersExplained#peekingiterator"> {@code
+ * "https://github.com/google/guava/wiki/CollectionHelpersExplained#peekingiterator">{@code
  * PeekingIterator}</a>.
  *
  * @author Mick Killianey
@@ -36,7 +37,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @DoNotMock("Use Iterators.peekingIterator")
 @GwtCompatible
 @AnnotatedFor({"nullness"})
-public interface PeekingIterator<E> extends Iterator<E> {
+@ElementTypesAreNonnullByDefault
+public interface PeekingIterator<E extends @Nullable Object> extends Iterator<E> {
   /**
    * Returns the next element in the iteration, without advancing the iteration.
    *
@@ -46,6 +48,7 @@ public interface PeekingIterator<E> extends Iterator<E> {
    * @throws NoSuchElementException if the iteration has no more elements according to {@link
    *     #hasNext()}
    */
+  @ParametricNullness
   E peek();
 
   /**
@@ -56,6 +59,7 @@ public interface PeekingIterator<E> extends Iterator<E> {
    */
   @CanIgnoreReturnValue
   @Override
+  @ParametricNullness
   E next();
 
   /**

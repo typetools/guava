@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.RandomAccess;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
@@ -58,6 +59,7 @@ import org.checkerframework.common.value.qual.MinLen;
  * @since 1.0
  */
 @GwtCompatible(emulated = true)
+@ElementTypesAreNonnullByDefault
 public final class Chars {
   private Chars() {}
 
@@ -177,7 +179,7 @@ public final class Chars {
    * @param array the array to search for the sequence {@code target}
    * @param target the array to search for as a sub-sequence of {@code array}
    */
-  @SuppressWarnings("substringindex:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/206 https://github.com/kelloggm/checker-framework/issues/207 https://github.com/kelloggm/checker-framework/issues/208
+  @SuppressWarnings("substringindex:return") // https://github.com/kelloggm/checker-framework/issues/206, 207 and 208
   public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset="#2.length - 1") int indexOf(char[] array, char[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
@@ -289,7 +291,7 @@ public final class Chars {
    * pos is increased the same way as length, so pos points to a valid
    * range of length array.length in result.
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible") // sum of lengths
+  @SuppressWarnings("upperbound:argument") // sum of lengths
   public static char[] concat(char[]... arrays) {
     int length = 0;
     for (char[] array : arrays) {
@@ -565,16 +567,15 @@ public final class Chars {
     }
 
     @Override
-    public boolean contains(Object target) {
+    public boolean contains(@CheckForNull Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Character)
           && Chars.indexOf(array, (Character) target, start, end) != -1;
     }
 
     @Override
-    @SuppressWarnings(
-            "lowerbound:return.type.incompatible") // needs https://github.com/kelloggm/checker-framework/issues/227 on static indexOf method
-    public @IndexOrLow("this") int indexOf(Object target) {
+    @SuppressWarnings("lowerbound:return")
+    public @IndexOrLow("this") int indexOf(@CheckForNull Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Character) {
         int i = Chars.indexOf(array, (Character) target, start, end);
@@ -586,9 +587,8 @@ public final class Chars {
     }
 
     @Override
-    @SuppressWarnings(
-            "lowerbound:return.type.incompatible") // needs https://github.com/kelloggm/checker-framework/issues/227 on static indexOf method
-    public @IndexOrLow("this") int lastIndexOf(Object target) {
+    @SuppressWarnings("lowerbound:return")
+    public @IndexOrLow("this") int lastIndexOf(@CheckForNull Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Character) {
         int i = Chars.lastIndexOf(array, (Character) target, start, end);
@@ -620,7 +620,7 @@ public final class Chars {
     }
 
     @Override
-    public boolean equals(@Nullable Object object) {
+    public boolean equals(@CheckForNull Object object) {
       if (object == this) {
         return true;
       }

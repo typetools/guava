@@ -31,6 +31,7 @@ import javax.crypto.Mac;
  * @author Kurt Alfred Kluever
  */
 @Immutable
+@ElementTypesAreNonnullByDefault
 final class MacHashFunction extends AbstractHashFunction {
 
   @SuppressWarnings("Immutable") // cloned before each use
@@ -43,7 +44,7 @@ final class MacHashFunction extends AbstractHashFunction {
   private final @NonNegative int bits;
   private final boolean supportsClone;
 
-  @SuppressWarnings("lowerbound:assignment.type.incompatible")/*(1): method `engineGetMacLength()` in the pre-compiled class `MacSpi`
+  @SuppressWarnings("lowerbound:assignment") /* (1): method `engineGetMacLength()` in the pre-compiled class `MacSpi`
   should be annotated to return @NonNegative value */
   MacHashFunction(String algorithmName, Key key, String toString) {
     this.prototype = getMac(algorithmName, key);
@@ -60,7 +61,7 @@ final class MacHashFunction extends AbstractHashFunction {
 
   private static boolean supportsClone(Mac mac) {
     try {
-      mac.clone();
+      Object unused = mac.clone();
       return true;
     } catch (CloneNotSupportedException e) {
       return false;
@@ -134,8 +135,8 @@ final class MacHashFunction extends AbstractHashFunction {
       checkState(!done, "Cannot re-use a Hasher after calling hash() on it");
     }
 
-    @SuppressWarnings("value:argument.type.incompatible")// Max#doFinal() should be annotated as @MinLen(1) doFinal()
     @Override
+    @SuppressWarnings("value:argument") // Max#doFinal() should be annotated as @MinLen(1) doFinal()
     public HashCode hash() {
       checkNotDone();
       done = true;

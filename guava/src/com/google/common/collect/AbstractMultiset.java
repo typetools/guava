@@ -26,6 +26,7 @@ import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -46,7 +47,9 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtCompatible
-abstract class AbstractMultiset<E> extends AbstractCollection<E> implements Multiset<E> {
+@ElementTypesAreNonnullByDefault
+abstract class AbstractMultiset<E extends @Nullable Object> extends AbstractCollection<E>
+    implements Multiset<E> {
   // Query Operations
 
   @Pure
@@ -57,45 +60,45 @@ abstract class AbstractMultiset<E> extends AbstractCollection<E> implements Mult
 
   @Pure
   @Override
-  public boolean contains(@Nullable Object element) {
+  public boolean contains(@CheckForNull Object element) {
     return count(element) > 0;
   }
 
   // Modification Operations
   @CanIgnoreReturnValue
   @Override
-  public final boolean add(@Nullable E element) {
+  public final boolean add(@ParametricNullness E element) {
     add(element, 1);
     return true;
   }
 
   @CanIgnoreReturnValue
   @Override
-  public int add(@Nullable E element, int occurrences) {
+  public int add(@ParametricNullness E element, int occurrences) {
     throw new UnsupportedOperationException();
   }
 
   @CanIgnoreReturnValue
   @Override
-  public final boolean remove(@Nullable Object element) {
+  public final boolean remove(@CheckForNull Object element) {
     return remove(element, 1) > 0;
   }
 
   @CanIgnoreReturnValue
   @Override
-  public int remove(@Nullable Object element, int occurrences) {
+  public int remove(@CheckForNull Object element, int occurrences) {
     throw new UnsupportedOperationException();
   }
 
   @CanIgnoreReturnValue
   @Override
-  public int setCount(@Nullable E element, int count) {
+  public int setCount(@ParametricNullness E element, int count) {
     return setCountImpl(this, element, count);
   }
 
   @CanIgnoreReturnValue
   @Override
-  public boolean setCount(@Nullable E element, int oldCount, int newCount) {
+  public boolean setCount(@ParametricNullness E element, int oldCount, int newCount) {
     return setCountImpl(this, element, oldCount, newCount);
   }
 
@@ -130,7 +133,7 @@ abstract class AbstractMultiset<E> extends AbstractCollection<E> implements Mult
 
   // Views
 
-  @LazyInit private transient @Nullable Set<E> elementSet;
+  @LazyInit @CheckForNull private transient Set<E> elementSet;
 
   @SideEffectFree
   @Override
@@ -165,7 +168,7 @@ abstract class AbstractMultiset<E> extends AbstractCollection<E> implements Mult
 
   abstract Iterator<E> elementIterator();
 
-  @LazyInit private transient @Nullable Set<Entry<E>> entrySet;
+  @LazyInit @CheckForNull private transient Set<Entry<E>> entrySet;
 
   @SideEffectFree
   @Override
@@ -213,7 +216,7 @@ abstract class AbstractMultiset<E> extends AbstractCollection<E> implements Mult
    */
   @Pure
   @Override
-  public final boolean equals(@Nullable Object object) {
+  public final boolean equals(@CheckForNull Object object) {
     return Multisets.equalsImpl(this, object);
   }
 

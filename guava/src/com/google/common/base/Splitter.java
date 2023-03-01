@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import javax.annotation.CheckForNull;
 
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
@@ -106,6 +107,7 @@ import org.checkerframework.common.value.qual.MinLen;
  * @since 1.0
  */
 @GwtCompatible(emulated = true)
+@ElementTypesAreNonnullByDefault
 public final class Splitter {
   private final CharMatcher trimmer;
   private final boolean omitEmptyStrings;
@@ -572,25 +574,21 @@ public final class Splitter {
       this.toSplit = toSplit;
     }
 
+    @CheckForNull
     @Override
     @SuppressWarnings({
-      /*
-       * limit is always positive.
-       * When limit is not 1, then it can be safely decremented.
-       */
-      "lowerbound:unary.decrement.type.incompatible", // decrement Positive which != 1
       /*
        * At the start of the loop, whenever offset!=-1 also nextStart=-1
        * One of the following holds:
        * - offset == nextStart
        * - nextStart was not changed since the last iteration
        */
-      "lowerbound:assignment.type.incompatible", // variable!=-1 implies another variable !=-1
+      "lowerbound:assignment", // variable!=-1 implies another variable !=-1
       /*
        * offset is usually @LTEqLengthOf("toSplit")
        * offset > toSplit.length() can happen, but is immediately corrected to -1
        */
-      "upperbound:assignment.type.incompatible" // variable temporarily exceeds upper bound
+      "upperbound:assignment" // variable temporarily exceeds upper bound
     })
     protected String computeNext() {
       /*

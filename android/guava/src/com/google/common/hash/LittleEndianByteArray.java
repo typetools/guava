@@ -24,6 +24,7 @@ import sun.misc.Unsafe;
  * @author Kevin Damm
  * @author Kyle Maddison
  */
+@ElementTypesAreNonnullByDefault
 final class LittleEndianByteArray {
 
   /** The instance that actually does the work; delegates to Unsafe or a pure-Java fallback. */
@@ -242,7 +243,7 @@ final class LittleEndianByteArray {
        * which will have an efficient native implementation in JDK 9.
        *
        */
-      final String arch = System.getProperty("os.arch");
+      String arch = System.getProperty("os.arch");
       if ("amd64".equals(arch)) {
         theGetter =
             ByteOrder.nativeOrder().equals(ByteOrder.LITTLE_ENDIAN)

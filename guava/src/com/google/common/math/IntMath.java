@@ -54,6 +54,7 @@ import org.checkerframework.common.value.qual.MinLen;
  * @since 11.0
  */
 @GwtCompatible(emulated = true)
+@ElementTypesAreNonnullByDefault
 public final class IntMath {
   // NOTE: Whenever both tests are cheap and functional, it's faster to use &, | instead of &&, ||
 
@@ -105,7 +106,7 @@ public final class IntMath {
    * a signed int. The implementation is branch-free, and benchmarks suggest it is measurably (if
    * narrowly) faster than the straightforward ternary expression.
    */
-  @SuppressWarnings("value:return.type.incompatible")/* An int has 32 bits, the lestmost bit is 0 for positive values, and is 1 for negative values.
+  @SuppressWarnings("value:return") /* An int has 32 bits, the leftmost bit is 0 for positive values, and is 1 for negative values.
   For shift right zero fill operator( >>> ), the left operands value is moved right by the number of bits specified by the right operand
   and shifted values are filled up with zeros. Therefore if x > y, (x - y) return a positive value, when being shifted 31 bits, it returns 0, otherwise return 1.
   */
@@ -190,7 +191,7 @@ public final class IntMath {
     }
   }
 
-  @SuppressWarnings("lowerbound:return.type.incompatible")/*(1): `log10Floor()` returns a negative value if y is 0 and
+  @SuppressWarnings("lowerbound:return")/*(1): `log10Floor()` returns a negative value if y is 0 and
   `lessThanBranchFree(x, powersOf10[y])` returns 1( when x < powersOf10[y]). Since y = maxLog10ForLeadingZeros[Integer.numberOfLeadingZeros(x)],
   y is 0 when 0 < x < 8( the array `maxLog10ForLeadingZeros` has 0 values at indexes: 29, 30, 31, 32).
   Since when 0 < x < 8, y is 0 and powersOf10[0] is 1, x can't be < `powersOf10[y]`, therefore `log10Floor()` won't return

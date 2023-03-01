@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.RandomAccess;
 import java.util.Spliterator;
 import java.util.Spliterators;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
@@ -58,6 +59,7 @@ import org.checkerframework.common.value.qual.MinLen;
  * @since 1.0
  */
 @GwtCompatible
+@ElementTypesAreNonnullByDefault
 public final class Longs {
   private Longs() {}
 
@@ -157,6 +159,7 @@ public final class Longs {
    * @param array the array to search for the sequence {@code target}
    * @param target the array to search for as a sub-sequence of {@code array}
    */
+  @SuppressWarnings("substringindex:return")
   public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset="#2.length - 1") int indexOf(long[] array, long[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
@@ -268,6 +271,7 @@ public final class Longs {
    * pos is increased the same way as length, so pos points to a valid
    * range of length array.length in result.
    */
+  @SuppressWarnings("upperbound:argument") // sum of lengths
   public static long[] concat(long[]... arrays) {
     int length = 0;
     for (long[] array : arrays) {
@@ -385,7 +389,8 @@ public final class Longs {
    * @since 14.0
    */
   @Beta
-  public static @Nullable Long tryParse(String string) {
+  @CheckForNull
+  public static Long tryParse(String string) {
     return tryParse(string, 10);
   }
 
@@ -410,7 +415,8 @@ public final class Longs {
    * @since 19.0
    */
   @Beta
-  public static @Nullable Long tryParse(String string, @IntRange(from=2, to=36) int radix) {
+  @CheckForNull
+  public static Long tryParse(String string, @IntRange(from=2, to=36) int radix) {
     if (checkNotNull(string).isEmpty()) {
       return null;
     }
@@ -719,15 +725,13 @@ public final class Longs {
     }
 
     @Override
-    @SuppressWarnings("signedness:argument") // target is signed Long
-    public boolean contains(Object target) {
+    public boolean contains(@CheckForNull Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Long) && Longs.indexOf(array, (Long) target, start, end) != -1;
     }
 
     @Override
-    @SuppressWarnings("signedness:argument") // target is signed Long
-    public @IndexOrLow("this") int indexOf(Object target) {
+    public @IndexOrLow("this") int indexOf(@CheckForNull Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Long) {
         int i = Longs.indexOf(array, (Long) target, start, end);
@@ -739,8 +743,7 @@ public final class Longs {
     }
 
     @Override
-    @SuppressWarnings("signedness:argument") // target is signed Long
-    public @IndexOrLow("this") int lastIndexOf(Object target) {
+    public @IndexOrLow("this") int lastIndexOf(@CheckForNull Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Long) {
         int i = Longs.lastIndexOf(array, (Long) target, start, end);
@@ -772,7 +775,7 @@ public final class Longs {
     }
 
     @Override
-    public boolean equals(@Nullable Object object) {
+    public boolean equals(@CheckForNull Object object) {
       if (object == this) {
         return true;
       }

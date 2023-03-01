@@ -21,6 +21,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -35,15 +36,16 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * {@link #asMap} has {@code List} values.
  *
  * <p>See the Guava User Guide article on <a href=
- * "https://github.com/google/guava/wiki/NewCollectionTypesExplained#multimap"> {@code
- * Multimap}</a>.
+ * "https://github.com/google/guava/wiki/NewCollectionTypesExplained#multimap">{@code Multimap}</a>.
  *
  * @author Jared Levy
  * @since 2.0
  */
 @GwtCompatible
 @AnnotatedFor({"nullness"})
-public interface ListMultimap<K, V> extends Multimap<K, V> {
+@ElementTypesAreNonnullByDefault
+public interface ListMultimap<K extends @Nullable Object, V extends @Nullable Object>
+    extends Multimap<K, V> {
   /**
    * {@inheritDoc}
    *
@@ -52,7 +54,7 @@ public interface ListMultimap<K, V> extends Multimap<K, V> {
    * the {@link Multimap} interface.
    */
   @Override
-  List<V> get(@Nullable K key);
+  List<V> get(@ParametricNullness K key);
 
   /**
    * {@inheritDoc}
@@ -63,7 +65,7 @@ public interface ListMultimap<K, V> extends Multimap<K, V> {
    */
   @CanIgnoreReturnValue
   @Override
-  List<V> removeAll(@Nullable Object key);
+  List<V> removeAll(@CheckForNull Object key);
 
   /**
    * {@inheritDoc}
@@ -74,7 +76,7 @@ public interface ListMultimap<K, V> extends Multimap<K, V> {
    */
   @CanIgnoreReturnValue
   @Override
-  List<V> replaceValues(K key, Iterable<? extends V> values);
+  List<V> replaceValues(@ParametricNullness K key, Iterable<? extends V> values);
 
   /**
    * {@inheritDoc}
@@ -97,5 +99,5 @@ public interface ListMultimap<K, V> extends Multimap<K, V> {
    */
   @Pure
   @Override
-  boolean equals(@Nullable Object obj);
+  boolean equals(@CheckForNull Object obj);
 }

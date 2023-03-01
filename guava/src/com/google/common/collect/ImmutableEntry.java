@@ -25,29 +25,34 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 /** @see com.google.common.collect.Maps#immutableEntry(Object, Object) */
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true)
-class ImmutableEntry<K, V> extends AbstractMapEntry<K, V> implements Serializable {
-  final @Nullable K key;
-  final @Nullable V value;
+@ElementTypesAreNonnullByDefault
+class ImmutableEntry<K extends @Nullable Object, V extends @Nullable Object>
+    extends AbstractMapEntry<K, V> implements Serializable {
+  @ParametricNullness final K key;
+  @ParametricNullness final V value;
 
-  ImmutableEntry(@Nullable K key, @Nullable V value) {
+  ImmutableEntry(@ParametricNullness K key, @ParametricNullness V value) {
     this.key = key;
     this.value = value;
   }
 
   @Pure
   @Override
-  public final @Nullable K getKey() {
+  @ParametricNullness
+  public final K getKey() {
     return key;
   }
 
   @Pure
   @Override
-  public final @Nullable V getValue() {
+  @ParametricNullness
+  public final V getValue() {
     return value;
   }
 
   @Override
-  public final V setValue(V value) {
+  @ParametricNullness
+  public final V setValue(@ParametricNullness V value) {
     throw new UnsupportedOperationException();
   }
 

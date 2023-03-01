@@ -25,6 +25,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
+import javax.annotation.CheckForNull;
 
 /**
  * A descriptor for a <i>discrete</i> {@code Comparable} domain such as all {@link Integer}
@@ -36,13 +37,14 @@ import java.util.NoSuchElementException;
  * represent partial domains such as "prime integers" or "strings of length 5."
  *
  * <p>See the Guava User Guide section on <a href=
- * "https://github.com/google/guava/wiki/RangesExplained#discrete-domains"> {@code
+ * "https://github.com/google/guava/wiki/RangesExplained#discrete-domains">{@code
  * DiscreteDomain}</a>.
  *
  * @author Kevin Bourrillion
  * @since 10.0
  */
 @GwtCompatible
+@ElementTypesAreNonnullByDefault
 public abstract class DiscreteDomain<C extends Comparable> {
 
   /**
@@ -62,18 +64,21 @@ public abstract class DiscreteDomain<C extends Comparable> {
     }
 
     @Override
+    @CheckForNull
     public Integer next(Integer value) {
       int i = value;
       return (i == Integer.MAX_VALUE) ? null : i + 1;
     }
 
     @Override
+    @CheckForNull
     public Integer previous(Integer value) {
       int i = value;
       return (i == Integer.MIN_VALUE) ? null : i - 1;
     }
 
     @Override
+    @SuppressWarnings("value:argument") // origin + distance must fit in an int
     Integer offset(Integer origin, long distance) {
       checkNonnegative(distance, "distance");
       return Ints.checkedCast(origin.longValue() + distance);
@@ -123,12 +128,14 @@ public abstract class DiscreteDomain<C extends Comparable> {
     }
 
     @Override
+    @CheckForNull
     public Long next(Long value) {
       long l = value;
       return (l == Long.MAX_VALUE) ? null : l + 1;
     }
 
     @Override
+    @CheckForNull
     public Long previous(Long value) {
       long l = value;
       return (l == Long.MIN_VALUE) ? null : l - 1;
@@ -248,11 +255,16 @@ public abstract class DiscreteDomain<C extends Comparable> {
    * #next} on {@code origin} {@code distance} times.
    */
   C offset(C origin, long distance) {
+    C current = origin;
     checkNonnegative(distance, "distance");
     for (long i = 0; i < distance; i++) {
-      origin = next(origin);
+      current = next(current);
+      if (current == null) {
+        throw new IllegalArgumentException(
+            "overflowed computing offset(" + origin + ", " + distance + ")");
+      }
     }
-    return origin;
+    return current;
   }
 
   /**
@@ -263,6 +275,7 @@ public abstract class DiscreteDomain<C extends Comparable> {
    * @return the least value greater than {@code value}, or {@code null} if {@code value} is {@code
    *     maxValue()}
    */
+  @CheckForNull
   public abstract C next(C value);
 
   /**
@@ -273,6 +286,7 @@ public abstract class DiscreteDomain<C extends Comparable> {
    * @return the greatest value less than {@code value}, or {@code null} if {@code value} is {@code
    *     minValue()}
    */
+  @CheckForNull
   public abstract C previous(C value);
 
   /**
