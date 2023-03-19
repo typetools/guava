@@ -13,7 +13,7 @@ jobs:
 - job: typecheck
   pool:
     vmImage: 'ubuntu-latest'
-  container: mdernst/cf-ubuntu-jdk8:latest
+  container: mdernst/cf-ubuntu-jdk11:latest
   strategy:
     matrix:
       formatterJob:
