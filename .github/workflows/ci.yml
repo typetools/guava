@@ -40,7 +40,7 @@ jobs:
           distribution: 'zulu'
       - name: 'Install'
         shell: bash
-        run: mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn install -U -DskipTests=true -f $ROOT_POM
+        run: mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn install -U -Dmaven.test.skip -Dmaven.javadoc.skip -f $ROOT_POM
       - name: 'Test'
         shell: bash
         run: MAVEN_OPTS=-Xmx6g mvn -B -P!standard-with-extra-repos verify -U -Dmaven.javadoc.skip=true -f $ROOT_POM
