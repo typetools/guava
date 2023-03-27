@@ -15,13 +15,14 @@
     <!-- Override this with -Dtest.include="**/SomeTest.java" on the CLI -->
     <test.include>%regex[.*.class]</test.include>
     <truth.version>1.1.2</truth.version>
-    <checker-framework.version>3.12.0</checker-framework.version>
+    <checker-framework.version>3.32.0</checker-framework.version>
     <animal.sniffer.version>1.20</animal.sniffer.version>
     <maven-javadoc-plugin.version>3.1.0</maven-javadoc-plugin.version>
     <!-- Empty for all JDKs but 9-12 -->
     <maven-javadoc-plugin.additionalJOptions></maven-javadoc-plugin.additionalJOptions>
     <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <test.add.opens></test.add.opens>
   </properties>
   <issueManagement>
     <system>GitHub Issues</system>
@@ -230,7 +231,7 @@
             <runOrder>alphabetical</runOrder>
             <!-- Set max heap for tests. -->
             <!-- Catch dependencies on the default locale by setting it to hi-IN. -->
-            <argLine>-Xmx1536M -Duser.language=hi -Duser.country=IN</argLine>
+            <argLine>-Xmx1536M -Duser.language=hi -Duser.country=IN ${test.add.opens}</argLine>
           </configuration>
         </plugin>
         <plugin>
@@ -268,6 +269,11 @@
       <dependency>
         <groupId>org.checkerframework</groupId>
         <artifactId>checker-qual</artifactId>
+        <version>${checker-framework.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.checkerframework</groupId>
+        <artifactId>checker-util</artifactId>
         <version>${checker-framework.version}</version>
       </dependency>
       <dependency>
@@ -388,20 +394,42 @@
     </profile>
     <profile>
       <!--
-          Passes JDK 9-12-specific `no-module-directories` flag to Javadoc tool,
+          Passes JDK 11-12-specific `no-module-directories` flag to Javadoc tool,
           which is required to make symbol search work correctly in the generated
           pages.
 
-          This flag does not exist on 8 and 13+ (https://bugs.openjdk.java.net/browse/JDK-8215582).
+          This flag does not exist on 9-10 and 13+ (https://bugs.openjdk.java.net/browse/JDK-8215582).
 
           Consider removing it once our release and test scripts are migrated to a recent JDK (17+).
        -->
-      <id>javadocs-jdk9-12</id>
+      <id>javadocs-jdk11-12</id>
       <activation>
-        <jdk>[9,13)</jdk>
+        <jdk>[11,13)</jdk>
       </activation>
       <properties>
         <maven-javadoc-plugin.additionalJOptions>--no-module-directories</maven-javadoc-plugin.additionalJOptions>
+      </properties>
+    </profile>
+    <profile>
+      <id>open-jre-modules</id>
+      <activation>
+        <jdk>[9,]</jdk>
+      </activation>
+      <properties>
+        <!--
+            Some tests need reflective access to the internals of these packages. It is only the
+            tests themselves and not the code being tested that needs that access, though there's no
+            obvious way to ensure that.
+
+            We could consider arranging things so that only the tests we know need this would get
+            the add-opens. Right now that doesn't seem worth the effort, though.
+        -->
+        <test.add.opens>
+          --add-opens java.base/java.lang=ALL-UNNAMED
+          --add-opens java.base/java.util=ALL-UNNAMED
+          --add-opens java.base/java.util.concurrent.locks=ALL-UNNAMED
+          --add-opens java.base/sun.security.jca=ALL-UNNAMED
+        </test.add.opens>
       </properties>
     </profile>
   </profiles>
