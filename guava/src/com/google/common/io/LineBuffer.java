@@ -33,6 +33,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
  * @since 1.0
  */
 @GwtIncompatible
+@ElementTypesAreNonnullByDefault
 abstract class LineBuffer {
   /** Holds partial line contents. */
   private StringBuilder line = new StringBuilder();
@@ -49,11 +50,15 @@ abstract class LineBuffer {
    * @throws IOException if an I/O error occurs
    * @see #finish
    */
-  @SuppressWarnings({"array.access.unsafe.high", "argument.type.incompatible", "assignment.type.incompatible"}) /*
-  #1. The first if block doesn't get executed if pos = cbuf.length.
-  #2. If pos = cbuf.length, the first if block doesn't get executed.
-  #3 and #4. pos - start is within bounds because the for loop ends at off + len, which is the precondition.
-  #5. off + len - start is valid because off + len cannot exceed the limit of the buffer. */
+  @SuppressWarnings({
+      "index:argument",
+      "index:assignment",
+      "upperbound:array.access.unsafe.high",
+      })
+      // #1. The first if block doesn't get executed if pos = cbuf.length.
+      // #2. If pos = cbuf.length, the first if block doesn't get executed.
+      // #3 and #4. pos - start is within bounds because the for loop ends at off + len, which is the precondition.
+      // #5. off + len - start is valid because off + len cannot exceed the limit of the buffer.
   protected void add(char[] cbuf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     int pos = off;
     if (sawReturn && len > 0) {

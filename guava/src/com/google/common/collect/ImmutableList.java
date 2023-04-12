@@ -23,12 +23,14 @@ import static com.google.common.base.Preconditions.checkPositionIndexes;
 import static com.google.common.collect.CollectPreconditions.checkNonnegative;
 import static com.google.common.collect.ObjectArrays.checkElementsNotNull;
 import static com.google.common.collect.RegularImmutableList.EMPTY;
+import static java.util.Objects.requireNonNull;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.DoNotCall;
+import com.google.errorprone.annotations.InlineMe;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -43,6 +45,7 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collector;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
@@ -53,7 +56,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * {@link ImmutableCollection}.
  *
  * <p>See the Guava User Guide article on <a href=
- * "https://github.com/google/guava/wiki/ImmutableCollectionsExplained"> immutable collections</a>.
+ * "https://github.com/google/guava/wiki/ImmutableCollectionsExplained">immutable collections</a>.
  *
  * @see ImmutableMap
  * @see ImmutableSet
@@ -63,7 +66,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
 @SuppressWarnings("serial") // we're overriding default serialization
-public abstract class ImmutableList<E extends @NonNull Object> extends ImmutableCollection<E>
+@ElementTypesAreNonnullByDefault
+public abstract class ImmutableList<E> extends ImmutableCollection<E>
     implements List<E>, RandomAccess {
 
   /**
@@ -80,6 +84,8 @@ public abstract class ImmutableList<E extends @NonNull Object> extends Immutable
    * Returns the empty immutable list. This list behaves and performs comparably to {@link
    * Collections#emptyList}, and is preferable mainly for consistency and maintainability of your
    * code.
+   *
+   * <p><b>Performance note:</b> the instance returned is a singleton.
    */
   // Casting to any type is safe because the list will never hold any elements.
   @SuppressWarnings("unchecked")
@@ -371,17 +377,27 @@ public abstract class ImmutableList<E extends @NonNull Object> extends Immutable
    * Views the array as an immutable list. Copies if the specified range does not cover the complete
    * array. Does not check for nulls.
    */
-  static <E> ImmutableList<E> asImmutableList(Object[] elements, int length) {
+  static <E> ImmutableList<E> asImmutableList(@Nullable Object[] elements, int length) {
     switch (length) {
       case 0:
         return of();
       case 1:
-        return of((E) elements[0]);
+        /*
+         * requireNonNull is safe because the callers promise to put non-null objects in the first
+         * `length` array elements.
+         */
+        @SuppressWarnings("unchecked") // our callers put only E instances into the array
+        E onlyElement = (E) requireNonNull(elements[0]);
+        return of(onlyElement);
       default:
-        if (length < elements.length) {
-          elements = Arrays.copyOf(elements, length);
-        }
-        return new RegularImmutableList<E>(elements);
+        /*
+         * The suppression is safe because the callers promise to put non-null objects in the first
+         * `length` array elements.
+         */
+        @SuppressWarnings("nullness")
+        Object[] elementsWithoutTrailingNulls =
+            length < elements.length ? Arrays.copyOf(elements, length) : elements;
+        return new RegularImmutableList<E>(elementsWithoutTrailingNulls);
     }
   }
 
@@ -420,18 +436,18 @@ public abstract class ImmutableList<E extends @NonNull Object> extends Immutable
   }
 
   @Override
-  public int indexOf(@Nullable Object object) {
+  public int indexOf(@CheckForNull Object object) {
     return (object == null) ? -1 : Lists.indexOfImpl(this, object);
   }
 
   @Pure
   @Override
-  public int lastIndexOf(@Nullable Object object) {
+  public int lastIndexOf(@CheckForNull Object object) {
     return (object == null) ? -1 : Lists.lastIndexOfImpl(this, object);
   }
 
   @Override
-  public boolean contains(@Nullable Object object) {
+  public boolean contains(@CheckForNull Object object) {
     return indexOf(object) >= 0;
   }
 
@@ -582,19 +598,23 @@ public abstract class ImmutableList<E extends @NonNull Object> extends Immutable
    * Returns this list instance.
    *
    * @since 2.0
+   * @deprecated There is no reason to use this; it always returns {@code this}.
    */
+  @InlineMe(replacement = "this")
+  @Deprecated
   @Override
   public final ImmutableList<E> asList() {
     return this;
   }
 
   @Override
+  @SuppressWarnings("value:methodref.param")
   public Spliterator<E> spliterator() {
     return CollectSpliterators.indexed(size(), SPLITERATOR_CHARACTERISTICS, this::get);
   }
 
   @Override
-  int copyIntoArray(Object[] dst, int offset) {
+  int copyIntoArray(@Nullable Object[] dst, int offset) {
     // this loop is faster for RandomAccess instances, which ImmutableLists are
     int size = size();
     for (int i = 0; i < size; i++) {
@@ -635,18 +655,18 @@ public abstract class ImmutableList<E extends @NonNull Object> extends Immutable
     }
 
     @Override
-    public boolean contains(@Nullable Object object) {
+    public boolean contains(@CheckForNull Object object) {
       return forwardList.contains(object);
     }
 
     @Override
-    public int indexOf(@Nullable Object object) {
+    public int indexOf(@CheckForNull Object object) {
       int index = forwardList.lastIndexOf(object);
       return (index >= 0) ? reverseIndex(index) : -1;
     }
 
     @Override
-    public int lastIndexOf(@Nullable Object object) {
+    public int lastIndexOf(@CheckForNull Object object) {
       int index = forwardList.indexOf(object);
       return (index >= 0) ? reverseIndex(index) : -1;
     }
@@ -675,7 +695,7 @@ public abstract class ImmutableList<E extends @NonNull Object> extends Immutable
   }
 
   @Override
-  public boolean equals(@Nullable Object obj) {
+  public boolean equals(@CheckForNull Object obj) {
     return Lists.equalsImpl(this, obj);
   }
 
@@ -766,7 +786,8 @@ public abstract class ImmutableList<E extends @NonNull Object> extends Immutable
    * @since 2.0
    */
   public static final class Builder<E> extends ImmutableCollection.Builder<E> {
-    @VisibleForTesting Object[] contents;
+    // The first `size` elements are non-null.
+    @VisibleForTesting @Nullable Object[] contents;
     private int size;
     private boolean forceCopy;
 
@@ -779,7 +800,7 @@ public abstract class ImmutableList<E extends @NonNull Object> extends Immutable
     }
 
     Builder(int capacity) {
-      this.contents = new Object[capacity];
+      this.contents = new @Nullable Object[capacity];
       this.size = 0;
     }
 
@@ -824,8 +845,16 @@ public abstract class ImmutableList<E extends @NonNull Object> extends Immutable
       return this;
     }
 
-    private void add(Object[] elements, int n) {
+    private void add(@Nullable Object[] elements, int n) {
       getReadyToExpandTo(size + n);
+      /*
+       * The following call is not statically checked, since arraycopy accepts plain Object for its
+       * parameters. If it were statically checked, the checker would still be OK with it, since
+       * we're copying into a `contents` array whose type allows it to contain nulls. Still, it's
+       * worth noting that we promise not to put nulls into the array in the first `size` elements.
+       * We uphold that promise here because our callers promise that `elements` will not contain
+       * nulls in its first `n` elements.
+       */
       System.arraycopy(elements, 0, contents, size, n);
       size += n;
     }

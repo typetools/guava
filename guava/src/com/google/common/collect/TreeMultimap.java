@@ -67,8 +67,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * with a call to {@link Multimaps#synchronizedSortedSetMultimap}.
  *
  * <p>See the Guava User Guide article on <a href=
- * "https://github.com/google/guava/wiki/NewCollectionTypesExplained#multimap"> {@code
- * Multimap}</a>.
+ * "https://github.com/google/guava/wiki/NewCollectionTypesExplained#multimap">{@code Multimap}</a>.
  *
  * @author Jared Levy
  * @author Louis Wasserman
@@ -76,9 +75,11 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true, emulated = true)
-public class TreeMultimap<K, V> extends AbstractSortedKeySortedSetMultimap<K, V> {
-  private transient @Nullable Comparator<? super K> keyComparator;
-  private transient @Nullable Comparator<? super V> valueComparator;
+@ElementTypesAreNonnullByDefault
+public class TreeMultimap<K extends @Nullable Object, V extends @Nullable Object>
+    extends AbstractSortedKeySortedSetMultimap<K, V> {
+  private transient Comparator<? super K> keyComparator;
+  private transient Comparator<? super V> valueComparator;
 
   /**
    * Creates an empty {@code TreeMultimap} ordered by the natural ordering of its keys and values.
@@ -94,7 +95,7 @@ public class TreeMultimap<K, V> extends AbstractSortedKeySortedSetMultimap<K, V>
    * @param keyComparator the comparator that determines the key ordering
    * @param valueComparator the comparator that determines the value ordering
    */
-  public static <K, V> TreeMultimap<K, V> create(
+  public static <K extends @Nullable Object, V extends @Nullable Object> TreeMultimap<K, V> create(
       Comparator<? super K> keyComparator, Comparator<? super V> valueComparator) {
     return new TreeMultimap<>(checkNotNull(keyComparator), checkNotNull(valueComparator));
   }
@@ -138,11 +139,11 @@ public class TreeMultimap<K, V> extends AbstractSortedKeySortedSetMultimap<K, V>
    */
   @Override
   SortedSet<V> createCollection() {
-    return new TreeSet<V>(valueComparator);
+    return new TreeSet<>(valueComparator);
   }
 
   @Override
-  Collection<V> createCollection(@Nullable K key) {
+  Collection<V> createCollection(@ParametricNullness K key) {
     if (key == null) {
       keyComparator().compare(key, key);
     }
@@ -167,7 +168,7 @@ public class TreeMultimap<K, V> extends AbstractSortedKeySortedSetMultimap<K, V>
   /** @since 14.0 (present with return type {@code SortedSet} since 2.0) */
   @Override
   @GwtIncompatible // NavigableSet
-  public NavigableSet<V> get(@Nullable K key) {
+  public NavigableSet<V> get(@ParametricNullness K key) {
     return (NavigableSet<V>) super.get(key);
   }
 

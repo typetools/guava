@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.google.guava</groupId>
   <artifactId>guava-parent</artifactId>
-  <version>HEAD-android-SNAPSHOT</version>
+  <version>31.1-android</version>
   <packaging>pom</packaging>
   <name>Guava Maven Parent</name>
   <description>Parent for guava artifacts</description>
@@ -14,27 +14,15 @@
   <properties>
     <!-- Override this with -Dtest.include="**/SomeTest.java" on the CLI -->
     <test.include>%regex[.*.class]</test.include>
-    <truth.version>1.1</truth.version>
-    <!--
-      Upgrading to 1.19 breaks things: Animal Sniffer reports a problem with the
-      use of ClassValue in FuturesGetChecked, even though we've added a
-      suppression annotation.
-
-      The problem might be
-      https://github.com/mojohaus/animal-sniffer/issues/131.
-
-      We could probably work around this with a different suppression strategy,
-      perhaps (untested):
-
-      <ignores><ignore>com.google.common.util.concurrent.FuturesGetChecked$GetCheckedTypeValidatorHolder$ClassValueValidator</ignore></ignores>
-
-      But upgrading doesn't really buy us much, as far as I know. (1.19 does
-      check test code in addition to prod code, but I don't think we care.)
-    -->
-    <animal.sniffer.version>1.18</animal.sniffer.version>
+    <truth.version>1.1.2</truth.version>
+    <checker-framework.version>3.32.0</checker-framework.version>
+    <animal.sniffer.version>1.20</animal.sniffer.version>
     <maven-javadoc-plugin.version>3.1.0</maven-javadoc-plugin.version>
+    <!-- Empty for all JDKs but 9-12 -->
+    <maven-javadoc-plugin.additionalJOptions></maven-javadoc-plugin.additionalJOptions>
     <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <test.add.opens></test.add.opens>
   </properties>
   <issueManagement>
     <system>GitHub Issues</system>
@@ -68,8 +56,8 @@
     </developer>
   </developers>
   <ciManagement>
-    <system>Travis CI</system>
-    <url>https://travis-ci.org/google/guava</url>
+    <system>GitHub Actions</system>
+    <url>https://github.com/google/guava/actions</url>
   </ciManagement>
   <modules>
     <module>guava</module>
@@ -132,8 +120,8 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.1</version>
           <configuration>
-            <source>1.7</source>
-            <target>1.7</target>
+            <source>1.8</source>
+            <target>1.8</target>
             <compilerArgs>
               <!--
                    Make includes/excludes fully work:
@@ -166,13 +154,15 @@
           <artifactId>animal-sniffer-maven-plugin</artifactId>
           <version>${animal.sniffer.version}</version>
           <configuration>
-            <annotations>com.google.common.util.concurrent.IgnoreJRERequirement</annotations>
+            <checkTestClasses>true</checkTestClasses>
             <signature>
               <groupId>org.codehaus.mojo.signature</groupId>
               <artifactId>java16-sun</artifactId>
               <version>1.10</version>
             </signature>
             <ignores>
+              <!-- Allow requireNonNull: Android desugaring rewrites it (so it's safe for us to use), and it's useful for null checks. Note that this line allows *all* methods from java.util.Objects. That's the best that we can do with the configuration options that Animal Sniffer offers. -->
+              <ignore>java.util.Objects</ignore>
               <!-- Unsafe isn't part of the documented Java 6 API, but it is available.
                    And in cases where it's not, we have fallbacks. -->
               <ignore>sun.misc.Unsafe</ignore>
@@ -203,6 +193,7 @@
             </additionalOptions>
             <linksource>true</linksource>
             <source>8</source>
+            <additionalJOption>${maven-javadoc-plugin.additionalJOptions}</additionalJOption>
           </configuration>
           <executions>
             <execution>
@@ -240,7 +231,7 @@
             <runOrder>alphabetical</runOrder>
             <!-- Set max heap for tests. -->
             <!-- Catch dependencies on the default locale by setting it to hi-IN. -->
-            <argLine>-Xmx1536M -Duser.language=hi -Duser.country=IN</argLine>
+            <argLine>-Xmx1536M -Duser.language=hi -Duser.country=IN ${test.add.opens}</argLine>
           </configuration>
         </plugin>
         <plugin>
@@ -277,13 +268,24 @@
       </dependency>
       <dependency>
         <groupId>org.checkerframework</groupId>
-        <artifactId>checker-compat-qual</artifactId>
-        <version>2.5.5</version>
+        <artifactId>checker-qual</artifactId>
+        <version>${checker-framework.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.checkerframework</groupId>
+        <artifactId>checker-util</artifactId>
+        <version>${checker-framework.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.checkerframework</groupId>
+        <artifactId>checker-qual</artifactId>
+        <version>${checker-framework.version}</version>
+        <classifier>sources</classifier>
       </dependency>
       <dependency>
         <groupId>com.google.errorprone</groupId>
         <artifactId>error_prone_annotations</artifactId>
-        <version>2.5.1</version>
+        <version>2.11.0</version>
       </dependency>
       <dependency>
         <groupId>com.google.j2objc</groupId>
@@ -299,19 +301,19 @@
       <dependency>
         <groupId>org.easymock</groupId>
         <artifactId>easymock</artifactId>
-        <version>4.2</version>
+        <version>4.3</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
-        <version>3.6.28</version>
+        <version>3.9.0</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>com.google.jimfs</groupId>
         <artifactId>jimfs</artifactId>
-        <version>1.1</version>
+        <version>1.2</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -389,6 +391,46 @@
             </plugin>
           </plugins>
       </build>
+    </profile>
+    <profile>
+      <!--
+          Passes JDK 11-12-specific `no-module-directories` flag to Javadoc tool,
+          which is required to make symbol search work correctly in the generated
+          pages.
+
+          This flag does not exist on 9-10 and 13+ (https://bugs.openjdk.java.net/browse/JDK-8215582).
+
+          Consider removing it once our release and test scripts are migrated to a recent JDK (17+).
+       -->
+      <id>javadocs-jdk11-12</id>
+      <activation>
+        <jdk>[11,13)</jdk>
+      </activation>
+      <properties>
+        <maven-javadoc-plugin.additionalJOptions>--no-module-directories</maven-javadoc-plugin.additionalJOptions>
+      </properties>
+    </profile>
+    <profile>
+      <id>open-jre-modules</id>
+      <activation>
+        <jdk>[9,]</jdk>
+      </activation>
+      <properties>
+        <!--
+            Some tests need reflective access to the internals of these packages. It is only the
+            tests themselves and not the code being tested that needs that access, though there's no
+            obvious way to ensure that.
+
+            We could consider arranging things so that only the tests we know need this would get
+            the add-opens. Right now that doesn't seem worth the effort, though.
+        -->
+        <test.add.opens>
+          --add-opens java.base/java.lang=ALL-UNNAMED
+          --add-opens java.base/java.util=ALL-UNNAMED
+          --add-opens java.base/java.util.concurrent.locks=ALL-UNNAMED
+          --add-opens java.base/sun.security.jca=ALL-UNNAMED
+        </test.add.opens>
+      </properties>
     </profile>
   </profiles>
 </project>

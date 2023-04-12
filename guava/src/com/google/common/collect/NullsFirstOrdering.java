@@ -18,6 +18,7 @@ package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -25,7 +26,9 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 /** An ordering that treats {@code null} as less than all other values. */
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true)
-final class NullsFirstOrdering<T> extends Ordering<T> implements Serializable {
+@ElementTypesAreNonnullByDefault
+final class NullsFirstOrdering<T extends @Nullable Object> extends Ordering<@Nullable T>
+    implements Serializable {
   final Ordering<? super T> ordering;
 
   NullsFirstOrdering(Ordering<? super T> ordering) {
@@ -34,7 +37,7 @@ final class NullsFirstOrdering<T> extends Ordering<T> implements Serializable {
 
   @Pure
   @Override
-  public int compare(@Nullable T left, @Nullable T right) {
+  public int compare(@CheckForNull T left, @CheckForNull T right) {
     if (left == right) {
       return 0;
     }
@@ -48,25 +51,26 @@ final class NullsFirstOrdering<T> extends Ordering<T> implements Serializable {
   }
 
   @Override
-  public <S extends T> Ordering<S> reverse() {
+  @SuppressWarnings("nullness") // should be safe, but not sure if we can avoid the warning
+  public <S extends @Nullable T> Ordering<S> reverse() {
     // ordering.reverse() might be optimized, so let it do its thing
     return ordering.reverse().nullsLast();
   }
 
   @SuppressWarnings("unchecked") // still need the right way to explain this
   @Override
-  public <S extends T> Ordering<S> nullsFirst() {
-    return (Ordering<S>) this;
+  public <S extends T> Ordering<@Nullable S> nullsFirst() {
+    return (Ordering<@Nullable S>) this;
   }
 
   @Override
-  public <S extends T> Ordering<S> nullsLast() {
-    return ordering.nullsLast();
+  public <S extends T> Ordering<@Nullable S> nullsLast() {
+    return ordering.<S>nullsLast();
   }
 
   @Pure
   @Override
-  public boolean equals(@Nullable Object object) {
+  public boolean equals(@CheckForNull Object object) {
     if (object == this) {
       return true;
     }

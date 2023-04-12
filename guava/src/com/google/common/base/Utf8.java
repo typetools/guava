@@ -41,6 +41,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
  */
 @Beta
 @GwtCompatible(emulated = true)
+@ElementTypesAreNonnullByDefault
 public final class Utf8 {
   /**
    * Returns the number of bytes in the UTF-8-encoded form of {@code sequence}. For a string, this
@@ -51,7 +52,7 @@ public final class Utf8 {
    *     surrogates)
    */
   @SuppressWarnings({
-    "lowerbound:compound.assignment.type.incompatible", // unsigned right shift on int
+    "lowerbound:compound.assignment", // unsigned right shift on int
   })
   public static @NonNegative int encodedLength(CharSequence sequence) {
     // Warning to maintainers: this implementation is highly optimized.
@@ -83,7 +84,7 @@ public final class Utf8 {
     return utf8Length;
   }
   @SuppressWarnings({
-    "lowerbound:compound.assignment.type.incompatible", // unsigned right shift on int
+    "lowerbound:compound.assignment", // unsigned right shift on int
   })
   private static @NonNegative int encodedLengthGeneral(CharSequence sequence, @NonNegative/*!IndexFor("#1")*/ int start) {
     int utf16Length = sequence.length();
@@ -143,8 +144,9 @@ public final class Utf8 {
   }
 
   @SuppressWarnings({
-    "cast.unsafe", // https://github.com/kelloggm/checker-framework/issues/149
-    "upperbound:unary.increment.type.incompatible", "upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/158
+    "value:cast.unsafe", // https://github.com/kelloggm/checker-framework/issues/149
+    "upperbound:unary.increment",
+    "upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/158
   })
   private static boolean isWellFormedSlowPath(byte[] bytes, @IndexOrHigh("#1") int off, @IndexOrHigh("#1") int end) {
     @IndexOrHigh("bytes") int index = off;

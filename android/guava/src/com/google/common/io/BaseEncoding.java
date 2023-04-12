@@ -35,7 +35,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.Arrays;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import javax.annotation.CheckForNull;
 
 /**
  * A binary encoding scheme for reversibly translating between byte sequences and printable ASCII
@@ -122,6 +122,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * @since 14.0
  */
 @GwtCompatible(emulated = true)
+@ElementTypesAreNonnullByDefault
 public abstract class BaseEncoding {
   // TODO(lowasser): consider making encodeTo(Appendable, byte[], int, int) public.
 
@@ -175,7 +176,7 @@ public abstract class BaseEncoding {
    * Returns a {@code ByteSink} that writes base-encoded bytes to the specified {@code CharSink}.
    */
   @GwtIncompatible // ByteSink,CharSink
-  public final ByteSink encodingSink(final CharSink encodedSink) {
+  public final ByteSink encodingSink(CharSink encodedSink) {
     checkNotNull(encodedSink);
     return new ByteSink() {
       @Override
@@ -246,7 +247,7 @@ public abstract class BaseEncoding {
    * CharSource}.
    */
   @GwtIncompatible // ByteSource,CharSource
-  public final ByteSource decodingSource(final CharSource encodedSource) {
+  public final ByteSource decodingSource(CharSource encodedSource) {
     checkNotNull(encodedSource);
     return new ByteSource() {
       @Override
@@ -547,7 +548,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    public boolean equals(@NullableDecl Object other) {
+    public boolean equals(@CheckForNull Object other) {
       if (other instanceof Alphabet) {
         Alphabet that = (Alphabet) other;
         return Arrays.equals(this.chars, that.chars);
@@ -565,13 +566,13 @@ public abstract class BaseEncoding {
     // TODO(lowasser): provide a useful toString
     final Alphabet alphabet;
 
-    @NullableDecl final Character paddingChar;
+    @CheckForNull final Character paddingChar;
 
-    StandardBaseEncoding(String name, String alphabetChars, @NullableDecl Character paddingChar) {
+    StandardBaseEncoding(String name, String alphabetChars, @CheckForNull Character paddingChar) {
       this(new Alphabet(name, alphabetChars.toCharArray()), paddingChar);
     }
 
-    StandardBaseEncoding(Alphabet alphabet, @NullableDecl Character paddingChar) {
+    StandardBaseEncoding(Alphabet alphabet, @CheckForNull Character paddingChar) {
       this.alphabet = checkNotNull(alphabet);
       checkArgument(
           paddingChar == null || !alphabet.matches(paddingChar),
@@ -587,7 +588,7 @@ public abstract class BaseEncoding {
 
     @GwtIncompatible // Writer,OutputStream
     @Override
-    public OutputStream encodingStream(final Writer out) {
+    public OutputStream encodingStream(Writer out) {
       checkNotNull(out);
       return new OutputStream() {
         int bitBuffer = 0;
@@ -649,7 +650,7 @@ public abstract class BaseEncoding {
         bitBuffer <<= 8; // Add additional zero byte in the end.
       }
       // Position of first character is length of bitBuffer minus bitsPerChar.
-      final int bitOffset = (len + 1) * 8 - alphabet.bitsPerChar;
+      int bitOffset = (len + 1) * 8 - alphabet.bitsPerChar;
       int bitsProcessed = 0;
       while (bitsProcessed < len * 8) {
         int charIndex = (int) (bitBuffer >>> (bitOffset - bitsProcessed)) & alphabet.mask;
@@ -717,7 +718,7 @@ public abstract class BaseEncoding {
             chunk |= alphabet.decode(chars.charAt(charIdx + charsProcessed++));
           }
         }
-        final int minOffset = alphabet.bytesPerChunk * 8 - charsProcessed * alphabet.bitsPerChar;
+        int minOffset = alphabet.bytesPerChunk * 8 - charsProcessed * alphabet.bitsPerChar;
         for (int offset = (alphabet.bytesPerChunk - 1) * 8; offset >= minOffset; offset -= 8) {
           target[bytesWritten++] = (byte) ((chunk >>> offset) & 0xFF);
         }
@@ -727,7 +728,7 @@ public abstract class BaseEncoding {
 
     @Override
     @GwtIncompatible // Reader,InputStream
-    public InputStream decodingStream(final Reader reader) {
+    public InputStream decodingStream(Reader reader) {
       checkNotNull(reader);
       return new InputStream() {
         int bitBuffer = 0;
@@ -829,8 +830,8 @@ public abstract class BaseEncoding {
       return new SeparatedBaseEncoding(this, separator, afterEveryChars);
     }
 
-    @LazyInit @NullableDecl private transient BaseEncoding upperCase;
-    @LazyInit @NullableDecl private transient BaseEncoding lowerCase;
+    @LazyInit @CheckForNull private transient BaseEncoding upperCase;
+    @LazyInit @CheckForNull private transient BaseEncoding lowerCase;
 
     @Override
     public BaseEncoding upperCase() {
@@ -852,7 +853,7 @@ public abstract class BaseEncoding {
       return result;
     }
 
-    BaseEncoding newInstance(Alphabet alphabet, @NullableDecl Character paddingChar) {
+    BaseEncoding newInstance(Alphabet alphabet, @CheckForNull Character paddingChar) {
       return new StandardBaseEncoding(alphabet, paddingChar);
     }
 
@@ -871,7 +872,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    public boolean equals(@NullableDecl Object other) {
+    public boolean equals(@CheckForNull Object other) {
       if (other instanceof StandardBaseEncoding) {
         StandardBaseEncoding that = (StandardBaseEncoding) other;
         return this.alphabet.equals(that.alphabet)
@@ -928,17 +929,17 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    BaseEncoding newInstance(Alphabet alphabet, @NullableDecl Character paddingChar) {
+    BaseEncoding newInstance(Alphabet alphabet, @CheckForNull Character paddingChar) {
       return new Base16Encoding(alphabet);
     }
   }
 
   static final class Base64Encoding extends StandardBaseEncoding {
-    Base64Encoding(String name, String alphabetChars, @NullableDecl Character paddingChar) {
+    Base64Encoding(String name, String alphabetChars, @CheckForNull Character paddingChar) {
       this(new Alphabet(name, alphabetChars.toCharArray()), paddingChar);
     }
 
-    private Base64Encoding(Alphabet alphabet, @NullableDecl Character paddingChar) {
+    private Base64Encoding(Alphabet alphabet, @CheckForNull Character paddingChar) {
       super(alphabet, paddingChar);
       checkArgument(alphabet.chars.length == 64);
     }
@@ -985,13 +986,13 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    BaseEncoding newInstance(Alphabet alphabet, @NullableDecl Character paddingChar) {
+    BaseEncoding newInstance(Alphabet alphabet, @CheckForNull Character paddingChar) {
       return new Base64Encoding(alphabet, paddingChar);
     }
   }
 
   @GwtIncompatible
-  static Reader ignoringReader(final Reader delegate, final String toIgnore) {
+  static Reader ignoringReader(Reader delegate, String toIgnore) {
     checkNotNull(delegate);
     checkNotNull(toIgnore);
     return new Reader() {
@@ -1017,7 +1018,7 @@ public abstract class BaseEncoding {
   }
 
   static Appendable separatingAppendable(
-      final Appendable delegate, final String separator, final int afterEveryChars) {
+      Appendable delegate, String separator, int afterEveryChars) {
     checkNotNull(delegate);
     checkNotNull(separator);
     checkArgument(afterEveryChars > 0);
@@ -1036,23 +1037,20 @@ public abstract class BaseEncoding {
       }
 
       @Override
-      public Appendable append(@NullableDecl CharSequence chars, int off, int len)
-          throws IOException {
+      public Appendable append(@CheckForNull CharSequence chars, int off, int len) {
         throw new UnsupportedOperationException();
       }
 
       @Override
-      public Appendable append(@NullableDecl CharSequence chars) throws IOException {
+      public Appendable append(@CheckForNull CharSequence chars) {
         throw new UnsupportedOperationException();
       }
     };
   }
 
   @GwtIncompatible // Writer
-  static Writer separatingWriter(
-      final Writer delegate, final String separator, final int afterEveryChars) {
-    final Appendable separatingAppendable =
-        separatingAppendable(delegate, separator, afterEveryChars);
+  static Writer separatingWriter(Writer delegate, String separator, int afterEveryChars) {
+    Appendable separatingAppendable = separatingAppendable(delegate, separator, afterEveryChars);
     return new Writer() {
       @Override
       public void write(int c) throws IOException {
@@ -1103,7 +1101,7 @@ public abstract class BaseEncoding {
 
     @GwtIncompatible // Writer,OutputStream
     @Override
-    public OutputStream encodingStream(final Writer output) {
+    public OutputStream encodingStream(Writer output) {
       return delegate.encodingStream(separatingWriter(output, separator, afterEveryChars));
     }
 
@@ -1143,7 +1141,7 @@ public abstract class BaseEncoding {
 
     @Override
     @GwtIncompatible // Reader,InputStream
-    public InputStream decodingStream(final Reader reader) {
+    public InputStream decodingStream(Reader reader) {
       return delegate.decodingStream(ignoringReader(reader, separator));
     }
 

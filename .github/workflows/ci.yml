@@ -13,28 +13,34 @@ jobs:
     name: "${{ matrix.root-pom }} on JDK ${{ matrix.java }}"
     strategy:
       matrix:
-        java: [ 8, 11 ]
+        java: [ 11, 17 ]
         root-pom: [ 'pom.xml', 'android/pom.xml' ]
     runs-on: ubuntu-latest
     env:
       ROOT_POM: ${{ matrix.root-pom }}
     steps:
+      # Cancel any previous runs for the same branch that are still running.
+      - name: 'Cancel previous runs'
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
       - name: 'Check out repository'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.4.0
       - name: 'Cache local Maven repository'
-        uses: actions/cache@v2.1.4
+        uses: actions/cache@v2.1.7
         with:
           path: ~/.m2/repository
           key: maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             maven-
       - name: 'Set up JDK ${{ matrix.java }}'
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
           java-version: ${{ matrix.java }}
+          distribution: 'zulu'
       - name: 'Install'
         shell: bash
-        run: mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn install -U -DskipTests=true -f $ROOT_POM
+        run: mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn install -U -Dmaven.test.skip -Dmaven.javadoc.skip -f $ROOT_POM
       - name: 'Test'
         shell: bash
         run: MAVEN_OPTS=-Xmx6g mvn -B -P!standard-with-extra-repos verify -U -Dmaven.javadoc.skip=true -f $ROOT_POM
@@ -51,18 +57,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Check out repository'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.4.0
       - name: 'Cache local Maven repository'
-        uses: actions/cache@v2.1.4
+        uses: actions/cache@v2.1.7
         with:
           path: ~/.m2/repository
           key: maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             maven-
       - name: 'Set up JDK 11'
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
           java-version: 11
+          distribution: 'zulu'
           server-id: sonatype-nexus-snapshots
           server-username: CI_DEPLOY_USERNAME
           server-password: CI_DEPLOY_PASSWORD
@@ -79,18 +86,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Check out repository'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.4.0
       - name: 'Cache local Maven repository'
-        uses: actions/cache@v2.1.4
+        uses: actions/cache@v2.1.7
         with:
           path: ~/.m2/repository
           key: maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             maven-
       - name: 'Set up JDK 11'
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
           java-version: 11
+          distribution: 'zulu'
       - name: 'Generate latest docs'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

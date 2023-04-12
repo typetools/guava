@@ -26,6 +26,7 @@ import sun.misc.Unsafe;
  * @author Kevin Damm
  * @author Kyle Maddison
  */
+@ElementTypesAreNonnullByDefault
 final class LittleEndianByteArray {
 
   /** The instance that actually does the work; delegates to Unsafe or a pure-Java fallback. */
@@ -39,7 +40,7 @@ final class LittleEndianByteArray {
    * @param offset the offset into the array at which to start
    * @return a long of a concatenated 8 bytes
    */
-  @SuppressWarnings("upperbound:argument.type.incompatible")// method uses assertion
+  @SuppressWarnings("upperbound:argument") // method uses assertion
   // to ensure `offset + 8` <= input.length, same as `offset + 8 - 1 < input.length`
   static long load64(byte[] input, @NonNegative int offset) {
     // We don't want this in production code as this is the most critical part of the loop.
@@ -58,6 +59,7 @@ final class LittleEndianByteArray {
    * @param length the number of bytes from the input to read
    * @return a long of a concatenated 8 bytes
    */
+  @SuppressWarnings("upperbound:array.access.unsafe.high")
   static long load64Safely(byte[] input, @NonNegative @LTLengthOf(value = "#1",offset = "#3") int offset, @NonNegative @LTLengthOf(value = "#1",offset = "#2") int length) {
     long result = 0;
     // Due to the way we shift, we can stop iterating once we've run out of data, the rest
@@ -247,7 +249,7 @@ final class LittleEndianByteArray {
        * which will have an efficient native implementation in JDK 9.
        *
        */
-      final String arch = System.getProperty("os.arch");
+      String arch = System.getProperty("os.arch");
       if ("amd64".equals(arch)) {
         theGetter =
             ByteOrder.nativeOrder().equals(ByteOrder.LITTLE_ENDIAN)

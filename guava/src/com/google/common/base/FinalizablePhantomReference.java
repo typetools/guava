@@ -17,6 +17,7 @@ package com.google.common.base;
 import com.google.common.annotations.GwtIncompatible;
 import java.lang.ref.PhantomReference;
 import java.lang.ref.ReferenceQueue;
+import javax.annotation.CheckForNull;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -31,6 +32,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtIncompatible
+@ElementTypesAreNonnullByDefault
 public abstract class FinalizablePhantomReference<T> extends PhantomReference<T>
     implements FinalizableReference {
   /**
@@ -39,7 +41,7 @@ public abstract class FinalizablePhantomReference<T> extends PhantomReference<T>
    * @param referent to phantom reference
    * @param queue that should finalize the referent
    */
-  protected FinalizablePhantomReference(T referent, FinalizableReferenceQueue queue) {
+  protected FinalizablePhantomReference(@CheckForNull T referent, FinalizableReferenceQueue queue) {
     super(referent, queue.queue);
     queue.cleanUp();
   }

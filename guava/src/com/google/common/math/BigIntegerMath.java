@@ -52,6 +52,7 @@ import org.checkerframework.checker.index.qual.Positive;
  * @since 11.0
  */
 @GwtCompatible(emulated = true)
+@ElementTypesAreNonnullByDefault
 public final class BigIntegerMath {
   /**
    * Returns the smallest power of two greater than or equal to {@code x}. This is equivalent to
@@ -150,13 +151,13 @@ public final class BigIntegerMath {
    *     is not a power of ten
    */
   @GwtIncompatible // TODO
-  @SuppressWarnings({"fallthrough","lowerbound:argument.type.incompatible"// x fits in a long, then longValue is polymorphic over x's value
+  @SuppressWarnings({"fallthrough","lowerbound:argument"// x fits in a long, then longValue is polymorphic over x's value
           // with respect to the lowerbound type system. 
   })
-  public static int log10(@Positive BigInteger x, RoundingMode mode) {
+  public static int log10(BigInteger x, RoundingMode mode) {
     checkPositive("x", x);
     if (fitsInLong(x)) {
-      return LongMath.log10(x.longValue(), mode);//(1)
+      return LongMath.log10(x.longValue(), mode); // (1)
     }
 
     int approxLog10 = (int) (log2(x, FLOOR) * LN_2 / LN_10);
@@ -393,7 +394,7 @@ public final class BigIntegerMath {
    *
    * @throws IllegalArgumentException if {@code n < 0}
    */
-  @SuppressWarnings("lowerbound:assignment.type.incompatible")/* (1): Since `n` is required to be non negative,
+  @SuppressWarnings("lowerbound:assignment")/* (1): Since `n` is required to be non negative,
   IntMath.divide() return a non negative value */
   public static BigInteger factorial(@NonNegative int n) {
     checkNonNegative("n", n);
@@ -450,7 +451,6 @@ public final class BigIntegerMath {
     return listProduct(bignums).shiftLeft(shift);
   }
 
-  @SuppressWarnings("lowerbound:argument.type.incompatible")//List<BigInteger> is a mutable length data type.
   static BigInteger listProduct(List<BigInteger> nums) {
     return listProduct(nums, 0, nums.size());
   }
@@ -480,6 +480,7 @@ public final class BigIntegerMath {
    *
    * @throws IllegalArgumentException if {@code n < 0}, {@code k < 0}, or {@code k > n}
    */
+  @SuppressWarnings("upperbound:argument")
   public static BigInteger binomial(@NonNegative @LTLengthOf("LongMath.factorials") int n, @NonNegative @LessThan("#1 + 1") int k) {
     checkNonNegative("n", n);
     checkNonNegative("k", k);

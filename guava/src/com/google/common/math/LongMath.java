@@ -57,6 +57,7 @@ import org.checkerframework.common.value.qual.MinLen;
  * @since 11.0
  */
 @GwtCompatible(emulated = true)
+@ElementTypesAreNonnullByDefault
 public final class LongMath {
   // NOTE: Whenever both tests are cheap and functional, it's faster to use &, | instead of &&, ||
 
@@ -111,7 +112,7 @@ public final class LongMath {
    * signed long. The implementation is branch-free, and benchmarks suggest it is measurably faster
    * than the straightforward ternary expression.
    */
-  @SuppressWarnings("signedness:shift.unsigned")
+  @SuppressWarnings({"signedness:shift.unsigned", "value:return"})
   @VisibleForTesting
   static @IntRange(from = 0, to = 1) int lessThanBranchFree(long x, long y) {
     // Returns the sign bit of x - y.
@@ -434,7 +435,7 @@ public final class LongMath {
         // subtracting two nonnegative longs can't overflow
         // cmpRemToHalfDivisor has the same sign as compare(abs(rem), abs(q) / 2).
         if (cmpRemToHalfDivisor == 0) { // exactly on the half mark
-          increment = (mode == HALF_UP | (mode == HALF_EVEN & (div & 1) != 0));
+          increment = (mode == HALF_UP || (mode == HALF_EVEN && (div & 1) != 0));
         } else {
           increment = cmpRemToHalfDivisor > 0; // closer to the UP value
         }
@@ -1014,6 +1015,7 @@ public final class LongMath {
    */
   @GwtIncompatible // TODO
   @Beta
+  @SuppressWarnings("signedness:comparison") // n is guaranteed to be positive
   public static boolean isPrime(long n) {
     if (n < 2) {
       checkNonNegative("n", n);
@@ -1054,7 +1056,6 @@ public final class LongMath {
       return true;
     }
 
-    //@SuppressWarnings("signedness:comparison") // n is guaranteed to be positive
     for (@Unsigned long[] baseSet : millerRabinBaseSets) {
       if (n <= baseSet[0]) {
         for (int i = 1; i < baseSet.length; i++) {
@@ -1075,6 +1076,7 @@ public final class LongMath {
    * NOTE: We could get slightly better bases that would be treated as unsigned, but benchmarks
    * showed negligible performance improvements.
    */
+  @SuppressWarnings("signedness:assignment") // all of the constants are positive
   private static final @Unsigned long[] @MinLen(1)[] millerRabinBaseSets = {
     {291830, 126401071349994536L},
     {885594168, 725270293939359937L, 3569819667048198375L},
@@ -1208,6 +1210,7 @@ public final class LongMath {
     abstract @Unsigned long squareMod(@Unsigned long a, @Unsigned long m);
 
     /** Returns a^p mod m. */
+    @SuppressWarnings("signedness:compound.assignment.shift.signed")
     private @Unsigned long powMod(@Unsigned long a, @Unsigned long p, @Unsigned long m) {
       @Unsigned long res = 1;
       for (; p != 0; p >>= 1) {
@@ -1220,8 +1223,10 @@ public final class LongMath {
     }
 
     /** Returns true if n is a strong probable prime relative to the specified base. */
+    @SuppressWarnings("signedness:compound.assignment.unsigned.variable")
     private boolean testWitness(@Unsigned long base, @Unsigned long n) {
       int r = Long.numberOfTrailingZeros(n - 1);
+      @SuppressWarnings("signedness:shift.signed")
       long d = (n - 1) >> r;
       base %= n;
       if (base == 0) {

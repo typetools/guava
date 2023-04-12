@@ -17,6 +17,7 @@
 package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -36,9 +37,10 @@ import org.checkerframework.framework.qual.AnnotatedFor;
 @AnnotatedFor({"nullness"})
 @Deprecated
 @GwtCompatible
+@ElementTypesAreNonnullByDefault
 public class ComputationException extends RuntimeException {
   /** Creates a new instance with the given cause. */
-  public ComputationException(@Nullable Throwable cause) {
+  public ComputationException(@CheckForNull Throwable cause) {
     super(cause);
   }
 

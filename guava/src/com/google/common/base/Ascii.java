@@ -38,6 +38,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
  * @since 7.0
  */
 @GwtCompatible
+@ElementTypesAreNonnullByDefault
 public final class Ascii {
 
   private Ascii() {}
@@ -442,7 +443,7 @@ public final class Ascii {
   }
 
   /**
-   * If the argument is an {@linkplain #isUpperCase(char) uppercase ASCII character} returns the
+   * If the argument is an {@linkplain #isUpperCase(char) uppercase ASCII character}, returns the
    * lowercase equivalent. Otherwise returns the argument.
    */
   @SuppressWarnings("index") // https://github.com/typetools/checker-framework/issues/2540
@@ -493,7 +494,7 @@ public final class Ascii {
   }
 
   /**
-   * If the argument is a {@linkplain #isLowerCase(char) lowercase ASCII character} returns the
+   * If the argument is a {@linkplain #isLowerCase(char) lowercase ASCII character}, returns the
    * uppercase equivalent. Otherwise returns the argument.
    */
   @SuppressWarnings("index") // https://github.com/typetools/checker-framework/issues/2540
@@ -553,20 +554,6 @@ public final class Ascii {
    *     truncationIndicator}
    * @since 16.0
    */
-  @SuppressWarnings({
-    /*
-     * The parameter maxLength should be annotated something like @GTEqLengthOf("#3").
-     * However, such annotation does not exist, so this property is not expressed.
-     * Lower bound validity:
-     *   truncationIndicator.length <= maxLength,
-     *   therefore truncationLength >= 0
-     * Upper bound validity:
-     *   truncationLength <= maxLength,
-     *   seq.length > maxLength,
-     *   therefore truncationLength <= seq.length
-     */
-    "lowerbound:assignment.type.incompatible", "upperbound:argument.type.incompatible" // https://github.com/kelloggm/checker-framework/issues/220
-  })
   public static String truncate(CharSequence seq, @NonNegative int maxLength, String truncationIndicator) {
     checkNotNull(seq);
 

@@ -17,11 +17,13 @@ package com.google.common.io;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkPositionIndexes;
+import static java.util.Objects.requireNonNull;
 
 import com.google.common.annotations.GwtIncompatible;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.CharBuffer;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
@@ -36,9 +38,10 @@ import org.checkerframework.checker.index.qual.NonNegative;
  */
 // TODO(cgdecker): make this public? as a type, or a method in CharStreams?
 @GwtIncompatible
+@ElementTypesAreNonnullByDefault
 final class CharSequenceReader extends Reader {
 
-  private CharSequence seq;
+  @CheckForNull private CharSequence seq;
   private int pos;
   private int mark;
 
@@ -57,16 +60,30 @@ final class CharSequenceReader extends Reader {
     return remaining() > 0;
   }
 
-  @SuppressWarnings("return.type.incompatible") // The method is private and every place it is used returns a non-negative value.
+  @SuppressWarnings("index:return") // The method is private and every place it is used returns a non-negative value.
   private @NonNegative int remaining() {
+    requireNonNull(seq); // safe as long as we call this only after checkOpen
     return seq.length() - pos;
   }
 
+  /*
+   * To avoid the need to call requireNonNull so much, we could consider more clever approaches,
+   * such as:
+   *
+   * - Make checkOpen return the non-null `seq`. Then callers can assign that to a local variable or
+   *   even back to `this.seq`. However, that may suggest that we're defending against concurrent
+   *   mutation, which is not an actual risk because we use `synchronized`.
+   * - Make `remaining` require a non-null `seq` argument. But this is a bit weird because the
+   *   method, while it would avoid the instance field `seq` would still access the instance field
+   *   `pos`.
+   */
+
   @Override
-  @SuppressWarnings("argument.type.incompatible") // pos is a valid index for seq because the loop stops at charsToRead steps, which cannot exceed the limit of target or seq.
+  @SuppressWarnings("index:argument") // pos is a valid index for seq because the loop stops at charsToRead steps, which cannot exceed the limit of target or seq.
   public synchronized @GTENegativeOne int read(CharBuffer target) throws IOException {
     checkNotNull(target);
     checkOpen();
+    requireNonNull(seq); // safe because of checkOpen
     if (!hasRemaining()) {
       return -1;
     }
@@ -78,20 +95,22 @@ final class CharSequenceReader extends Reader {
   }
 
   @Override
-  @SuppressWarnings({"return.type.incompatible", "argument.type.incompatible"}) /* charAt returns a char, which is known to be non-negative Ascii.
+  @SuppressWarnings({"index:return", "index:argument"}) /* charAt returns a char, which is known to be non-negative Ascii.
   pos is a valid index for seq because hasRemaining() would otherwise return false */
   public synchronized @GTENegativeOne int read() throws IOException {
     checkOpen();
+    requireNonNull(seq); // safe because of checkOpen
     return hasRemaining() ? seq.charAt(pos++) : -1;
   }
 
   @Override
-  @SuppressWarnings({"argument.type.incompatible", "return.type.incompatible"}) /*
+  @SuppressWarnings({"index:argument", "index:return"}) /*
   #1. pos is a valid index for seq because the loop stops at charsToRead steps, which cannot exceed the limit of seq.
   #2. charsToRead is at most equal to len, which is known to be below the length of cbuf */
   public synchronized @GTENegativeOne @LTEqLengthOf("#1") int read(char[] cbuf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     checkPositionIndexes(off, off + len, cbuf.length);
     checkOpen();
+    requireNonNull(seq); // safe because of checkOpen
     if (!hasRemaining()) {
       return -1;
     }

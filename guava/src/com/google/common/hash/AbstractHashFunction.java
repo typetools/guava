@@ -24,6 +24,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.common.value.qual.MinLen;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Skeleton implementation of {@link HashFunction} in terms of {@link #newHasher()}.
@@ -31,15 +32,14 @@ import java.nio.charset.Charset;
  * <p>TODO(lowasser): make public
  */
 @Immutable
+@ElementTypesAreNonnullByDefault
 abstract class AbstractHashFunction implements HashFunction {
   @Override
-  public <T> HashCode hashObject(T instance, Funnel<? super T> funnel) {
+  public <T extends @Nullable Object> HashCode hashObject(
+      @ParametricNullness T instance, Funnel<? super T> funnel) {
     return newHasher().putObject(instance, funnel).hash();
   }
 
-  @SuppressWarnings({"lowerbound:argument.type.incompatible",// Since len is length of `input` with min length of 1,
-          // len * 2 can't be negative
-  })
   @Override
   public HashCode hashUnencodedChars(@MinLen(1) CharSequence input) {
     int len = input.length();
@@ -61,7 +61,7 @@ abstract class AbstractHashFunction implements HashFunction {
     return newHasher(8).putLong(input).hash();
   }
 
-  @SuppressWarnings("upperbound:argument.type.incompatible")// If input has min length of 1, since off is 0, off + input.length - 1 is always < input.length.
+  @SuppressWarnings("upperbound:argument") // If input has min length of 1, since off is 0, off + input.length - 1 is always < input.length.
   @Override
   public HashCode hashBytes(byte @MinLen(1)[] input) {
     return hashBytes(input, 0, input.length);

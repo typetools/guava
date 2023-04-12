@@ -31,6 +31,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
  * @since 1.0
  */
 @GwtIncompatible
+@ElementTypesAreNonnullByDefault
 public final class CountingOutputStream extends FilterOutputStream {
 
   private long count;

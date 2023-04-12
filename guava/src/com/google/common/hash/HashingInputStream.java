@@ -31,6 +31,7 @@ import java.io.InputStream;
  * @since 16.0
  */
 @Beta
+@ElementTypesAreNonnullByDefault
 public final class HashingInputStream extends FilterInputStream {
   private final Hasher hasher;
 
@@ -51,6 +52,7 @@ public final class HashingInputStream extends FilterInputStream {
    */
   @Override
   @CanIgnoreReturnValue
+  @SuppressWarnings("index:override.return")
   public int read() throws IOException {
     int b = in.read();
     if (b != -1) {
@@ -65,11 +67,11 @@ public final class HashingInputStream extends FilterInputStream {
    */
   @Override
   @CanIgnoreReturnValue
-  @SuppressWarnings({"override.param.invalid",//FilterInputStream#read should be annotated as
-          // @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int read()
-          "upperbound:argument.type.incompatible",//(1): param `off` should be annotated as @LTLengthOf(value = "#1",offset = "numOfBytesRead - 1")
-          //However, numOfBytesRead is declared inside method body.
-          "lowerbound:assignment.type.incompatible"//(2): Input#stream() should be annotated as `@NonNegative int read()`
+  @SuppressWarnings({"index:override.return", // FilterInputStream#read should be annotated as
+      // @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int read()
+      "upperbound:argument", // (1): param `off` should be annotated as @LTLengthOf(value = "#1",offset = "numOfBytesRead - 1")
+      // However, numOfBytesRead is declared inside method body.
+      "lowerbound:assignment" // (2): Input#stream() should be annotated as `@NonNegative int read()`
   })
   public int read(byte[] bytes, @NonNegative int off, @NonNegative int len) throws IOException {
     @NonNegative int numOfBytesRead = in.read(bytes, off, len);//(2)

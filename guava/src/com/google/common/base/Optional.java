@@ -15,13 +15,14 @@
 package com.google.common.base;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import com.google.errorprone.annotations.DoNotMock;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
+import com.google.errorprone.annotations.DoNotMock;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Set;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
@@ -88,7 +89,8 @@ import org.checkerframework.framework.qual.Covariant;
 @Covariant(0)
 @DoNotMock("Use Optional.of(value) or Optional.absent()")
 @GwtCompatible(serializable = true)
-public abstract @NonNull class Optional<T> implements Serializable {
+@ElementTypesAreNonnullByDefault
+public abstract class Optional<T> implements Serializable {
   /**
    * Returns an {@code Optional} instance with no contained reference.
    *
@@ -118,7 +120,7 @@ public abstract @NonNull class Optional<T> implements Serializable {
    * <p><b>Comparison to {@code java.util.Optional}:</b> this method is equivalent to Java 8's
    * {@code Optional.ofNullable}.
    */
-  public static <T> Optional<T> fromNullable(@Nullable T nullableReference) {
+  public static <T> Optional<T> fromNullable(@CheckForNull T nullableReference) {
     return (nullableReference == null) ? Optional.<T>absent() : new Present<T>(nullableReference);
   }
 
@@ -128,10 +130,8 @@ public abstract @NonNull class Optional<T> implements Serializable {
    *
    * @since 21.0
    */
-  @SuppressWarnings("nullness:return.type.incompatible") // Known issue with behaviour of @PolyNull
-  // with ternary operator, see: https://github.com/typetools/checker-framework/issues/1170
-  public static <T> @PolyNull Optional<T> fromJavaUtil(
-      java.util.@PolyNull Optional<T> javaUtilOptional) {
+  @CheckForNull
+  public static <T> Optional<T> fromJavaUtil(@CheckForNull java.util.Optional<T> javaUtilOptional) {
     return (javaUtilOptional == null) ? null : fromNullable(javaUtilOptional.orElse(null));
   }
 
@@ -148,10 +148,8 @@ public abstract @NonNull class Optional<T> implements Serializable {
    *
    * @since 21.0
    */
-  @SuppressWarnings("nullness:return.type.incompatible") // Known issue with behaviour of @PolyNull
-  // with ternary operator, see: https://github.com/typetools/checker-framework/issues/1170
-  public static <T> java.util.@PolyNull Optional<T> toJavaUtil(
-      @PolyNull Optional<T> googleOptional) {
+  @CheckForNull
+  public static <T> java.util.Optional<T> toJavaUtil(@CheckForNull Optional<T> googleOptional) {
     return googleOptional == null ? null : googleOptional.toJavaUtil();
   }
 
@@ -258,7 +256,8 @@ public abstract @NonNull class Optional<T> implements Serializable {
    * <p><b>Comparison to {@code java.util.Optional}:</b> this method is equivalent to Java 8's
    * {@code Optional.orElse(null)}.
    */
-  public abstract @Nullable T orNull();
+  @CheckForNull
+  public abstract T orNull();
 
   /**
    * Returns an immutable singleton {@link Set} whose only element is the contained instance if it
@@ -306,7 +305,7 @@ public abstract @NonNull class Optional<T> implements Serializable {
    * <p><b>Comparison to {@code java.util.Optional}:</b> no differences.
    */
   @Override
-  public abstract boolean equals(@Nullable Object object);
+  public abstract boolean equals(@CheckForNull Object object);
 
   /**
    * Returns a hash code for this instance.
@@ -351,8 +350,7 @@ public abstract @NonNull class Optional<T> implements Serializable {
               checkNotNull(optionals.iterator());
 
           @Override
-          @SuppressWarnings("nullness:return.type.incompatible") // If endOfData is invoked during
-          // execution the returned value is ignored
+          @CheckForNull
           protected T computeNext() {
             while (iterator.hasNext()) {
               Optional<? extends T> optional = iterator.next();

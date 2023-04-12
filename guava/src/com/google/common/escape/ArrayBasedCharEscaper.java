@@ -16,9 +16,9 @@ package com.google.common.escape;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import java.util.Map;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.LengthOf;
 
 /**
@@ -41,8 +41,8 @@ import org.checkerframework.checker.index.qual.LengthOf;
  * @author David Beaumont
  * @since 15.0
  */
-@Beta
 @GwtCompatible
+@ElementTypesAreNonnullByDefault
 public abstract class ArrayBasedCharEscaper extends CharEscaper {
   // The replacement array (see ArrayBasedEscaperMap).
   private final char[][] replacements;
@@ -119,9 +119,11 @@ public abstract class ArrayBasedCharEscaper extends CharEscaper {
    * Escapes a single character using the replacement array and safe range values. If the given
    * character does not have an explicit replacement and lies outside the safe range then {@link
    * #escapeUnsafe} is called.
+   *
+   * @return the replacement characters, or {@code null} if no escaping was required
    */
-  @SuppressWarnings("lowerbound:array.access.unsafe.low")//char types are non negative: https://github.com/kelloggm/checker-framework/issues/192
   @Override
+  @CheckForNull
   protected final char[] escape(char c) {
     if (c < replacementsLength) {
       char[] chars = replacements[c];
@@ -148,5 +150,6 @@ public abstract class ArrayBasedCharEscaper extends CharEscaper {
    * @return the replacement characters, or {@code null} if no escaping was required
    */
   // TODO(dbeaumont,cpovirk): Rename this something better once refactoring done
+  @CheckForNull
   protected abstract char[] escapeUnsafe(char c);
 }

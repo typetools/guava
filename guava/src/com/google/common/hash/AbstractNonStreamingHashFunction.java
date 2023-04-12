@@ -34,6 +34,7 @@ import org.checkerframework.common.value.qual.MinLen;
  * @author Dimitris Andreou
  */
 @Immutable
+@ElementTypesAreNonnullByDefault
 abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
   @Override
   public Hasher newHasher() {
@@ -85,9 +86,6 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
   @Override
   public abstract HashCode hashBytes(byte[] input, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @LTLengthOf(value = "#1", offset = "#2 - 1") int len);
 
-  @SuppressWarnings("lowerbound:argument.type.incompatible")/* Since invariants: mark <= position <= limit <= capacity,
-  and position is initialized as 0, `input.remaining()` return `limit - position` with lowest possible value as 0.
-  */
   @Override
   public HashCode hashBytes(ByteBuffer input) {
     return newHasher(input.remaining()).putBytes(input).hash();
@@ -108,6 +106,7 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
     }
 
     @Override
+    @SuppressWarnings("index:argument")
     public Hasher putBytes(byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
       stream.write(bytes, off, len);
       return this;
@@ -119,10 +118,10 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
       return this;
     }
 
-    @SuppressWarnings(value = {"upperbound:argument.type.incompatible",// `stream.byteArray()` return an array of length 32
+    @SuppressWarnings({
+        "upperbound:argument", // `stream.byteArray()` return an array of length 32
             // Since `stream.length()` return the length of return byte array, 0 + stream.length - 1 is always < stream.length.
-            "lowerbound:argument.type.incompatible"/*`stream.length` returns `count` of the pre-compiled class `ByteArrayOutputStream`.
-            therefore, `count` should be annotated as @NonNegative in `ByteArrayOutputStream` */})
+    })
     @Override
     public HashCode hash() {
       return hashBytes(stream.byteArray(), 0, stream.length());
@@ -135,8 +134,7 @@ abstract class AbstractNonStreamingHashFunction extends AbstractHashFunction {
       super(expectedInputSize);
     }
 
-    @SuppressWarnings({"lowerbound:argument.type.incompatible", "lowerbound:assignment.type.incompatible"})/* Since invariants: position <= limit <= capacity,
-    and position is initialized as 0, `input.remaining()` return `limit - position` with lowest possible value as 0. */
+    @SuppressWarnings({"index:compound.assignment"})
     void write(ByteBuffer input) {
       @NonNegative int remaining = input.remaining();
       if (count + remaining > buf.length) {

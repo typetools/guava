@@ -36,13 +36,14 @@ import org.checkerframework.common.value.qual.IntRange;
  * @author Colin Decker
  */
 @CanIgnoreReturnValue
+@ElementTypesAreNonnullByDefault
 abstract class AbstractByteHasher extends AbstractHasher {
   private final ByteBuffer scratch = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN);
 
   /** Updates this hasher with the given byte. */
   protected abstract void update(byte b);
 
-  @SuppressWarnings("upperbound:argument.type.incompatible")// `0 + b.length - 1` is < b.length.
+  @SuppressWarnings("upperbound:argument")// `0 + b.length - 1` is < b.length.
   /** Updates this hasher with the given bytes. */
   protected void update(byte[] b) {
     update(b, 0, b.length);
@@ -56,7 +57,7 @@ abstract class AbstractByteHasher extends AbstractHasher {
   }
 
   /** Updates this hasher with bytes from the given buffer. */
-  @SuppressWarnings({"lowerbound:argument.type.incompatible","upperbound:argument.type.incompatible"})/*
+  @SuppressWarnings({"lowerbound:argument","upperbound:argument"}) /*
   Invariants: position <= limit <= capacity( is length of buffer).
   Since `b.remaining()` return limit - position, and `b.arrayOffset() + b.position()`
   return offset("buffer's backing array of the first element of the buffer")  + position,
@@ -73,7 +74,7 @@ abstract class AbstractByteHasher extends AbstractHasher {
   }
 
   /** Updates the sink with the given number of bytes from the buffer. */
-  @SuppressWarnings({"upperbound:argument.type.incompatible","lowerbound:argument.type.incompatible"})/*
+  @SuppressWarnings({"upperbound:argument"}) /*
   Since `ByteBuffer scratch = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN);`, scratch.array() will
   return an array with length of 8.
   */

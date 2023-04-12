@@ -20,6 +20,7 @@ import com.google.common.annotations.GwtIncompatible;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
@@ -35,10 +36,11 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @since 1.0
  */
 @GwtIncompatible
+@ElementTypesAreNonnullByDefault
 final class MultiInputStream extends InputStream {
 
   private Iterator<? extends ByteSource> it;
-  private @Nullable InputStream in;
+  @CheckForNull private InputStream in;
 
   /**
    * Creates a new instance.
@@ -95,7 +97,8 @@ final class MultiInputStream extends InputStream {
   }
 
   @Override
-  public @GTENegativeOne @LTEqLengthOf("#1") int read(byte @Nullable [] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
+  public @GTENegativeOne @LTEqLengthOf("#1") int read(byte [] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
+    checkNotNull(b);
     while (in != null) {
       int result = in.read(b, off, len);
       if (result != -1) {

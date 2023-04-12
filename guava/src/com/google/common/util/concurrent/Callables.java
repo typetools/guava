@@ -30,17 +30,13 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @since 1.0
  */
 @GwtCompatible(emulated = true)
+@ElementTypesAreNonnullByDefault
 public final class Callables {
   private Callables() {}
 
   /** Creates a {@code Callable} which immediately returns a preset value each time it is called. */
-  public static <T> Callable<T> returning(final @Nullable T value) {
-    return new Callable<T>() {
-      @Override
-      public T call() {
-        return value;
-      }
-    };
+  public static <T extends @Nullable Object> Callable<T> returning(@ParametricNullness T value) {
+    return () -> value;
   }
 
   /**
@@ -53,16 +49,11 @@ public final class Callables {
    */
   @Beta
   @GwtIncompatible
-  public static <T> AsyncCallable<T> asAsyncCallable(
-      final Callable<T> callable, final ListeningExecutorService listeningExecutorService) {
+  public static <T extends @Nullable Object> AsyncCallable<T> asAsyncCallable(
+      Callable<T> callable, ListeningExecutorService listeningExecutorService) {
     checkNotNull(callable);
     checkNotNull(listeningExecutorService);
-    return new AsyncCallable<T>() {
-      @Override
-      public ListenableFuture<T> call() throws Exception {
-        return listeningExecutorService.submit(callable);
-      }
-    };
+    return () -> listeningExecutorService.submit(callable);
   }
 
   /**
@@ -74,22 +65,19 @@ public final class Callables {
    *     for each invocation of the wrapped callable.
    */
   @GwtIncompatible // threads
-  static <T> Callable<T> threadRenaming(
-      final Callable<T> callable, final Supplier<String> nameSupplier) {
+  static <T extends @Nullable Object> Callable<T> threadRenaming(
+      Callable<T> callable, Supplier<String> nameSupplier) {
     checkNotNull(nameSupplier);
     checkNotNull(callable);
-    return new Callable<T>() {
-      @Override
-      public T call() throws Exception {
-        Thread currentThread = Thread.currentThread();
-        String oldName = currentThread.getName();
-        boolean restoreName = trySetName(nameSupplier.get(), currentThread);
-        try {
-          return callable.call();
-        } finally {
-          if (restoreName) {
-            boolean unused = trySetName(oldName, currentThread);
-          }
+    return () -> {
+      Thread currentThread = Thread.currentThread();
+      String oldName = currentThread.getName();
+      boolean restoreName = trySetName(nameSupplier.get(), currentThread);
+      try {
+        return callable.call();
+      } finally {
+        if (restoreName) {
+          boolean unused = trySetName(oldName, currentThread);
         }
       }
     };
@@ -104,21 +92,18 @@ public final class Callables {
    *     for each invocation of the wrapped callable.
    */
   @GwtIncompatible // threads
-  static Runnable threadRenaming(final Runnable task, final Supplier<String> nameSupplier) {
+  static Runnable threadRenaming(Runnable task, Supplier<String> nameSupplier) {
     checkNotNull(nameSupplier);
     checkNotNull(task);
-    return new Runnable() {
-      @Override
-      public void run() {
-        Thread currentThread = Thread.currentThread();
-        String oldName = currentThread.getName();
-        boolean restoreName = trySetName(nameSupplier.get(), currentThread);
-        try {
-          task.run();
-        } finally {
-          if (restoreName) {
-            boolean unused = trySetName(oldName, currentThread);
-          }
+    return () -> {
+      Thread currentThread = Thread.currentThread();
+      String oldName = currentThread.getName();
+      boolean restoreName = trySetName(nameSupplier.get(), currentThread);
+      try {
+        task.run();
+      } finally {
+        if (restoreName) {
+          boolean unused = trySetName(oldName, currentThread);
         }
       }
     };
@@ -126,7 +111,7 @@ public final class Callables {
 
   /** Tries to set name of the given {@link Thread}, returns true if successful. */
   @GwtIncompatible // threads
-  private static boolean trySetName(final String threadName, Thread currentThread) {
+  private static boolean trySetName(String threadName, Thread currentThread) {
     /*
      * setName should usually succeed, but the security manager can prohibit it. Is there a way to
      * see if we have the modifyThread permission without catching an exception?

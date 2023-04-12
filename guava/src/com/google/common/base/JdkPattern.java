@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 import org.checkerframework.checker.index.qual.NonNegative;
 
 /** A regex pattern implementation which is backed by the {@link Pattern}. */
+@ElementTypesAreNonnullByDefault
 @GwtIncompatible
 final class JdkPattern extends CommonPattern implements Serializable {
   private final Pattern pattern;

@@ -33,6 +33,7 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.DoubleConsumer;
 import java.util.stream.DoubleStream;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.EnsuresLTLengthOf;
 import org.checkerframework.checker.index.qual.EnsuresLTLengthOfIf;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
@@ -100,6 +101,7 @@ import org.checkerframework.dataflow.qual.Pure;
 @Beta
 @GwtCompatible
 @Immutable
+@ElementTypesAreNonnullByDefault
 public final class ImmutableDoubleArray implements Serializable {
   private static final ImmutableDoubleArray EMPTY = new ImmutableDoubleArray(new double[0]);
 
@@ -313,7 +315,7 @@ public final class ImmutableDoubleArray implements Serializable {
        * count is @LTLengthOf(value="array",offset="values.length()-1"), which implies
        * values.length() is @LTLengthOf(value="array",offset="count-1")
        */
-      "upperbound:argument.type.incompatible" // LTLengthOf inversion
+      "upperbound:argument" // LTLengthOf inversion
     )
     public Builder addAll(ImmutableDoubleArray values) {
       ensureRoomFor(values.length());
@@ -331,8 +333,7 @@ public final class ImmutableDoubleArray implements Serializable {
      *   https://github.com/kelloggm/checker-framework/issues/158
      */
     @SuppressWarnings({
-      "upperbound:argument.type.incompatible", // https://github.com/kelloggm/checker-framework/issues/158
-      "contracts.postcondition.not.satisfied", // postcondition
+      "index:contracts.postcondition", // postcondition
     })
     @EnsuresLTLengthOf(value = {"count", "#1"}, targetValue = {"array", "array"}, offset = {"#1 - 1","count - 1"})
     private void ensureRoomFor(@NonNegative int numberToAdd) {
@@ -408,7 +409,7 @@ public final class ImmutableDoubleArray implements Serializable {
   }
 
   /** Returns {@code true} if there are no values in this array ({@link #length} is zero). */
-  @SuppressWarnings("contracts.conditional.postcondition.not.satisfied") // postcondition
+  @SuppressWarnings("index:contracts.conditional.postcondition") // postcondition
   @EnsuresLTLengthOfIf(result = false, expression = "start", targetValue = "array")
   public boolean isEmpty() {
     return end == start;
@@ -436,7 +437,7 @@ public final class ImmutableDoubleArray implements Serializable {
    * such index exists. Values are compared as if by {@link Double#equals}. Equivalent to {@code
    * asList().indexOf(target)}.
    */
-  @SuppressWarnings("lowerbound:return.type.incompatible") // https://github.com/kelloggm/checker-framework/issues/232
+  @SuppressWarnings("lowerbound:return") // https://github.com/kelloggm/checker-framework/issues/232
   public @IndexOrLow("this") int indexOf(double target) {
     for (int i = start; i < end; i++) {
       if (areEqual(array[i], target)) {
@@ -524,7 +525,7 @@ public final class ImmutableDoubleArray implements Serializable {
   static class AsList extends AbstractList<Double> implements RandomAccess, Serializable {
     private final @SameLen("this") ImmutableDoubleArray parent;
 
-    @SuppressWarnings("samelen:assignment.type.incompatible") // SameLen("this") field
+    @SuppressWarnings("samelen:assignment") // SameLen("this") field
     private AsList(ImmutableDoubleArray parent) {
       this.parent = parent;
     }
@@ -542,17 +543,17 @@ public final class ImmutableDoubleArray implements Serializable {
     }
 
     @Override
-    public boolean contains(Object target) {
+    public boolean contains(@CheckForNull Object target) {
       return indexOf(target) >= 0;
     }
 
     @Override
-    public @GTENegativeOne int indexOf(Object target) {
+    public @GTENegativeOne int indexOf(@CheckForNull Object target) {
       return target instanceof Double ? parent.indexOf((Double) target) : -1;
     }
 
     @Override
-    public @GTENegativeOne int lastIndexOf(Object target) {
+    public @GTENegativeOne int lastIndexOf(@CheckForNull Object target) {
       return target instanceof Double ? parent.lastIndexOf((Double) target) : -1;
     }
 
@@ -574,7 +575,7 @@ public final class ImmutableDoubleArray implements Serializable {
      * therefore i is an index for parent.array
      */
     @SuppressWarnings("upperbound:array.access.unsafe.high") // index incremented in for-each over list of same length
-    public boolean equals(@Nullable Object object) {
+    public boolean equals(@CheckForNull Object object) {
       if (object instanceof AsList) {
         AsList that = (AsList) object;
         return this.parent.equals(that.parent);
@@ -614,7 +615,7 @@ public final class ImmutableDoubleArray implements Serializable {
    * values as this one, in the same order. Values are compared as if by {@link Double#equals}.
    */
   @Override
-  public boolean equals(@Nullable Object object) {
+  public boolean equals(@CheckForNull Object object) {
     if (object == this) {
       return true;
     }

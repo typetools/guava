@@ -14,11 +14,14 @@
 
 package com.google.common.io;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
@@ -33,9 +36,10 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @since 1.0
  */
 @GwtIncompatible
+@ElementTypesAreNonnullByDefault
 class MultiReader extends Reader {
   private final Iterator<? extends CharSource> it;
-  private @Nullable Reader current;
+  @CheckForNull private Reader current;
 
   MultiReader(Iterator<? extends CharSource> readers) throws IOException {
     this.it = readers;
@@ -51,7 +55,8 @@ class MultiReader extends Reader {
   }
 
   @Override
-  public @GTENegativeOne @LTEqLengthOf("#1") int read(char @Nullable [] cbuf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
+  public @GTENegativeOne @LTEqLengthOf("#1") int read(char [] cbuf, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
+    checkNotNull(cbuf);
     if (current == null) {
       return -1;
     }

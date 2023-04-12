@@ -16,6 +16,7 @@
 
 package com.google.common.collect;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.GwtCompatible;
@@ -27,7 +28,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.SortedSet;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import javax.annotation.CheckForNull;
 
 /**
  * A range (or "interval") defines the <i>boundaries</i> around a contiguous span of values of some
@@ -117,6 +118,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  */
 @GwtCompatible
 @SuppressWarnings("rawtypes")
+@ElementTypesAreNonnullByDefault
 public final class Range<C extends Comparable> extends RangeGwtSerializationDependencies
     implements Predicate<C>, Serializable {
 
@@ -153,7 +155,7 @@ public final class Range<C extends Comparable> extends RangeGwtSerializationDepe
   }
 
   static <C extends Comparable<?>> Range<C> create(Cut<C> lowerBound, Cut<C> upperBound) {
-    return new Range<C>(lowerBound, upperBound);
+    return new Range<>(lowerBound, upperBound);
   }
 
   /**
@@ -329,7 +331,7 @@ public final class Range<C extends Comparable> extends RangeGwtSerializationDepe
   public static <C extends Comparable<?>> Range<C> encloseAll(Iterable<C> values) {
     checkNotNull(values);
     if (values instanceof SortedSet) {
-      SortedSet<? extends C> set = cast(values);
+      SortedSet<C> set = (SortedSet<C>) values;
       Comparator<?> comparator = set.comparator();
       if (Ordering.natural().equals(comparator) || comparator == null) {
         return closed(set.first(), set.last());
@@ -456,7 +458,7 @@ public final class Range<C extends Comparable> extends RangeGwtSerializationDepe
 
     // this optimizes testing equality of two range-backed sets
     if (values instanceof SortedSet) {
-      SortedSet<? extends C> set = cast(values);
+      SortedSet<? extends C> set = (SortedSet<? extends C>) values;
       Comparator<?> comparator = set.comparator();
       if (Ordering.natural().equals(comparator) || comparator == null) {
         return contains(set.first()) && contains(set.last());
@@ -555,6 +557,15 @@ public final class Range<C extends Comparable> extends RangeGwtSerializationDepe
     } else {
       Cut<C> newLower = (lowerCmp >= 0) ? lowerBound : connectedRange.lowerBound;
       Cut<C> newUpper = (upperCmp <= 0) ? upperBound : connectedRange.upperBound;
+
+      // create() would catch this, but give a confusing error message
+      checkArgument(
+          newLower.compareTo(newUpper) <= 0,
+          "intersection is undefined for disconnected ranges %s and %s",
+          this,
+          connectedRange);
+
+      // TODO(kevinb): all the precondition checks in the constructor are redundant...
       return create(newLower, newUpper);
     }
   }
@@ -663,7 +674,7 @@ public final class Range<C extends Comparable> extends RangeGwtSerializationDepe
    * {@code [3..3)}, {@code (3..3]}, {@code (4..4]} are all unequal.
    */
   @Override
-  public boolean equals(@Nullable Object object) {
+  public boolean equals(@CheckForNull Object object) {
     if (object instanceof Range) {
       Range<?> other = (Range<?>) object;
       return lowerBound.equals(other.lowerBound) && upperBound.equals(other.upperBound);
@@ -692,11 +703,6 @@ public final class Range<C extends Comparable> extends RangeGwtSerializationDepe
     sb.append("..");
     upperBound.describeAsUpperBound(sb);
     return sb.toString();
-  }
-
-  /** Used to avoid http://bugs.sun.com/view_bug.do?bug_id=6558557 */
-  private static <T> SortedSet<T> cast(Iterable<T> iterable) {
-    return (SortedSet<T>) iterable;
   }
 
   Object readResolve() {

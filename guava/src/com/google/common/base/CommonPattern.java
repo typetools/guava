@@ -25,6 +25,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  */
 @AnnotatedFor({"nullness"})
 @GwtCompatible
+@ElementTypesAreNonnullByDefault
 abstract class CommonPattern {
   public abstract CommonMatcher matcher(CharSequence t);
 
