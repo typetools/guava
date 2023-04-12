@@ -43,8 +43,11 @@ import org.checkerframework.checker.index.qual.SubstringIndexFor;
 import org.checkerframework.checker.index.qual.HasSubsequence;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.Signed;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code short} primitives, that are not already found in
@@ -56,6 +59,7 @@ import org.checkerframework.common.value.qual.MinLen;
  * @author Kevin Bourrillion
  * @since 1.0
  */
+@AnnotatedFor({"signedness"})
 @GwtCompatible(emulated = true)
 @ElementTypesAreNonnullByDefault
 public final class Shorts extends ShortsMethodsForWeb {
@@ -617,18 +621,19 @@ public final class Shorts extends ShortsMethodsForWeb {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object target) {
+    @SuppressWarnings("signedness:cast.unsafe")
+    public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
-      return (target instanceof Short) && Shorts.indexOf(array, (Short) target, start, end) != -1;
+      return (target instanceof Short) && Shorts.indexOf(array, (@Signed Short) target, start, end) != -1;
     }
 
 
     @Override
-    @SuppressWarnings("lowerbound:return")
-    public @IndexOrLow("this") int indexOf(@CheckForNull Object target) {
+    @SuppressWarnings("signedness:cast.unsafe")
+    public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Short) {
-        int i = Shorts.indexOf(array, (Short) target, start, end);
+        int i = Shorts.indexOf(array, (@Signed Short) target, start, end);
         if (i >= 0) {
           return i - start;
         }
@@ -637,11 +642,11 @@ public final class Shorts extends ShortsMethodsForWeb {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:return")
-    public @IndexOrLow("this") int lastIndexOf(@CheckForNull Object target) {
+    @SuppressWarnings("signedness:cast.unsafe")
+    public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Short) {
-        int i = Shorts.lastIndexOf(array, (Short) target, start, end);
+        int i = Shorts.lastIndexOf(array, (@Signed Short) target, start, end);
         if (i >= 0) {
           return i - start;
         }
@@ -670,7 +675,7 @@ public final class Shorts extends ShortsMethodsForWeb {
     }
 
     @Override
-    public boolean equals(@CheckForNull Object object) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object object) {
       if (object == this) {
         return true;
       }

@@ -420,11 +420,13 @@ public final class UnsignedLongs {
     static final int @MinLen(Character.MAX_RADIX + 1)[] maxValueMods = new int[Character.MAX_RADIX + 1];
     static final int @MinLen(Character.MAX_RADIX + 1)[] maxSafeDigits = new int[Character.MAX_RADIX + 1];
 
-    static {
+     // Unfortunately, cannot suppress a static initializer.
+     // @SuppressWarnings("signedness:cast.unsafe")
+     static {
       BigInteger overflow = new BigInteger("10000000000000000", 16);
       for (@IntRange(from=2, to=36) int i = Character.MIN_RADIX; i <= Character.MAX_RADIX; i++) {
-        maxValueDivs[i] = divide(MAX_VALUE, i);
-        maxValueMods[i] = (int) remainder(MAX_VALUE, i);
+        maxValueDivs[i] = (@Signed long) divide(MAX_VALUE, i);
+        maxValueMods[i] = (@Signed int) remainder(MAX_VALUE, i);
         maxSafeDigits[i] = overflow.toString(i).length() - 1;
       }
     }

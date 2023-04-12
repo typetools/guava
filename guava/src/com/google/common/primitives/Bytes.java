@@ -39,7 +39,10 @@ import org.checkerframework.checker.index.qual.SubstringIndexFor;
 import org.checkerframework.checker.index.qual.HasSubsequence;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.Signed;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code byte} primitives, that are not already found in
@@ -55,6 +58,7 @@ import org.checkerframework.common.value.qual.MinLen;
  */
 // TODO(kevinb): how to prevent warning on UnsignedBytes when building GWT
 // javadoc?
+@AnnotatedFor({"signedness"})
 @GwtCompatible
 @ElementTypesAreNonnullByDefault
 public final class Bytes {
@@ -294,17 +298,18 @@ public final class Bytes {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object target) {
+    @SuppressWarnings("signedness:cast.unsafe")
+    public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
-      return (target instanceof Byte) && Bytes.indexOf(array, (Byte) target, start, end) != -1;
+      return (target instanceof Byte) && Bytes.indexOf(array, (@Signed Byte) target, start, end) != -1;
     }
 
     @Override
-    @SuppressWarnings("index:return")
-    public @IndexOrLow("this") int indexOf(@CheckForNull Object target) {
+    @SuppressWarnings("signedness:cast.unsafe")
+    public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Byte) {
-        int i = Bytes.indexOf(array, (Byte) target, start, end);
+        int i = Bytes.indexOf(array, (@Signed Byte) target, start, end);
         if (i >= 0) {
           return i - start;
         }
@@ -313,11 +318,11 @@ public final class Bytes {
     }
 
     @Override
-    @SuppressWarnings("index:return")
-    public @IndexOrLow("this") int lastIndexOf(@CheckForNull Object target) {
+    @SuppressWarnings("signedness:cast.unsafe")
+    public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Byte) {
-        int i = Bytes.lastIndexOf(array, (Byte) target, start, end);
+        int i = Bytes.lastIndexOf(array, (@Signed Byte) target, start, end);
         if (i >= 0) {
           return i - start;
         }
@@ -346,7 +351,7 @@ public final class Bytes {
     }
 
     @Override
-    public boolean equals(@CheckForNull Object object) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object object) {
       if (object == this) {
         return true;
       }

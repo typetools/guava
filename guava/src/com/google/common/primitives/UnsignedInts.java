@@ -32,6 +32,7 @@ import org.checkerframework.checker.signedness.qual.PolySigned;
 import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.checker.signedness.qual.SignedPositive;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code int} primitives that interpret values as
@@ -54,6 +55,7 @@ import org.checkerframework.checker.signedness.qual.SignedPositive;
  * @author Louis Wasserman
  * @since 11.0
  */
+@AnnotatedFor({"signedness"})
 @Beta
 @GwtCompatible
 @ElementTypesAreNonnullByDefault
@@ -62,6 +64,7 @@ public final class UnsignedInts {
 
   private UnsignedInts() {}
 
+  @SuppressWarnings("signedness:return")
   static @PolySigned int flip(@PolySigned int value) {
     return value ^ Integer.MIN_VALUE;
   }
@@ -77,6 +80,7 @@ public final class UnsignedInts {
    * @return a negative value if {@code a} is less than {@code b}; a positive value if {@code a} is
    *     greater than {@code b}; or zero if they are equal
    */
+  @SuppressWarnings("signedness:argument")
   public static int compare(@Unsigned int a, @Unsigned int b) {
     return Ints.compare(flip(a), flip(b));
   }
@@ -100,7 +104,9 @@ public final class UnsignedInts {
    *     2<sup>32</sup>
    * @since 21.0
    */
-  public static @Unsigned int checkedCast(@IntRange(from = 0, to = (2L << 32) - 1) long value) {
+  // (long value) was originally annotated (@IntRange(from = 0, to = (2L << 32) - 1) long value)
+  // but that caused too many checker warnings.
+  public static @Unsigned int checkedCast(long value) {
     checkArgument((value >> Integer.SIZE) == 0, "out of range: %s", value);
     return (int) value;
   }
@@ -132,6 +138,7 @@ public final class UnsignedInts {
    *     the array according to {@link #compare}
    * @throws IllegalArgumentException if {@code array} is empty
    */
+  @SuppressWarnings("signedness:comparison.unsignedlhs")
   public static @Unsigned int min(@Unsigned int @MinLen(1)... array) {
     checkArgument(array.length > 0);
     int min = flip(array[0]);
@@ -152,6 +159,7 @@ public final class UnsignedInts {
    *     in the array according to {@link #compare}
    * @throws IllegalArgumentException if {@code array} is empty
    */
+  @SuppressWarnings("signedness:comparison.unsignedlhs")
   public static @Unsigned int max(@Unsigned int @MinLen(1)... array) {
     checkArgument(array.length > 0);
     int max = flip(array[0]);
@@ -237,6 +245,7 @@ public final class UnsignedInts {
    *
    * @since 23.1
    */
+  @SuppressWarnings("signedness:argument")
   public static void sort(@Unsigned int[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
@@ -266,6 +275,7 @@ public final class UnsignedInts {
    *
    * @since 23.1
    */
+  @SuppressWarnings("signedness:argument")
   public static void sortDescending(@Unsigned int[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);

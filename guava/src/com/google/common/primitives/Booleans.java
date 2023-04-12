@@ -41,8 +41,10 @@ import org.checkerframework.checker.index.qual.SubstringIndexFor;
 import org.checkerframework.checker.index.qual.HasSubsequence;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code boolean} primitives, that are not already found in
@@ -54,6 +56,7 @@ import org.checkerframework.common.value.qual.MinLen;
  * @author Kevin Bourrillion
  * @since 1.0
  */
+@AnnotatedFor({"signedness"})
 @GwtCompatible
 @ElementTypesAreNonnullByDefault
 public final class Booleans {
@@ -433,18 +436,19 @@ public final class Booleans {
     }
 
     @Override
+    @SuppressWarnings("signedness:cast.unsafe")
     public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Boolean)
-          && Booleans.indexOf(array, (Boolean) target, start, end) != -1;
+          && Booleans.indexOf(array, (@Signed Boolean) target, start, end) != -1;
     }
 
     @Override
-    @SuppressWarnings("lowerbound:return")
+    @SuppressWarnings("signedness:cast.unsafe")
     public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Boolean) {
-        int i = Booleans.indexOf(array, (Boolean) target, start, end);
+        int i = Booleans.indexOf(array, (@Signed Boolean) target, start, end);
         if (i >= 0) {
           return i - start;
         }
@@ -453,11 +457,11 @@ public final class Booleans {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:return")
+    @SuppressWarnings("signedness:cast.unsafe")
     public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Boolean) {
-        int i = Booleans.lastIndexOf(array, (Boolean) target, start, end);
+        int i = Booleans.lastIndexOf(array, (@Signed Boolean) target, start, end);
         if (i >= 0) {
           return i - start;
         }

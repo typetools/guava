@@ -28,6 +28,7 @@ import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.PolyValue;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * A wrapper class for unsigned {@code long} values, supporting arithmetic operations.
@@ -43,6 +44,7 @@ import org.checkerframework.common.value.qual.PolyValue;
  * @author Colin Evans
  * @since 11.0
  */
+@AnnotatedFor({"signedness"})
 @GwtCompatible(serializable = true)
 @ElementTypesAreNonnullByDefault
 public final class UnsignedLong extends Number implements Comparable<UnsignedLong>, Serializable {
