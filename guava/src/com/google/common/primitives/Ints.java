@@ -46,8 +46,11 @@ import org.checkerframework.checker.index.qual.SubstringIndexFor;
 import org.checkerframework.checker.index.qual.HasSubsequence;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.Signed;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code int} primitives, that are not already found in either
@@ -59,6 +62,7 @@ import org.checkerframework.common.value.qual.MinLen;
  * @author Kevin Bourrillion
  * @since 1.0
  */
+@AnnotatedFor({"signedness"})
 @GwtCompatible(emulated = true)
 @ElementTypesAreNonnullByDefault
 public final class Ints extends IntsMethodsForWeb {
@@ -625,16 +629,18 @@ public final class Ints extends IntsMethodsForWeb {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object target) {
+    @SuppressWarnings("signedness:cast.unsafe")
+    public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
-      return (target instanceof Integer) && Ints.indexOf(array, (Integer) target, start, end) != -1;
+      return (target instanceof Integer) && Ints.indexOf(array, (@Signed Integer) target, start, end) != -1;
     }
 
     @Override
-    public @IndexOrLow("this") int indexOf(@CheckForNull Object target) {
+    @SuppressWarnings("signedness:cast.unsafe")
+    public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Integer) {
-        int i = Ints.indexOf(array, (Integer) target, start, end);
+        int i = Ints.indexOf(array, (@Signed Integer) target, start, end);
         if (i >= 0) {
           return i - start;
         }
@@ -643,10 +649,11 @@ public final class Ints extends IntsMethodsForWeb {
     }
 
     @Override
-    public @IndexOrLow("this")int lastIndexOf(@CheckForNull Object target) {
+    @SuppressWarnings("signedness:cast.unsafe")
+    public @IndexOrLow("this")int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Integer) {
-        int i = Ints.lastIndexOf(array, (Integer) target, start, end);
+        int i = Ints.lastIndexOf(array, (@Signed Integer) target, start, end);
         if (i >= 0) {
           return i - start;
         }
@@ -675,7 +682,7 @@ public final class Ints extends IntsMethodsForWeb {
     }
 
     @Override
-    public boolean equals(@CheckForNull Object object) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object object) {
       if (object == this) {
         return true;
       }

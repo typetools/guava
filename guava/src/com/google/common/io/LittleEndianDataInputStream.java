@@ -30,6 +30,7 @@ import java.io.InputStream;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * An implementation of {@link DataInput} that uses little-endian byte ordering for reading {@code
@@ -42,6 +43,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
  * @author Keith Bottner
  * @since 8.0
  */
+@AnnotatedFor({"signedness"})
 @Beta
 @GwtIncompatible
 @ElementTypesAreNonnullByDefault

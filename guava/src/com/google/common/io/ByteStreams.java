@@ -43,17 +43,17 @@ import java.nio.channels.WritableByteChannel;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.Queue;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.signedness.qual.PolySigned;
-import java.util.Deque;
-import java.util.Queue;
-import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Provides utility methods for working with byte arrays and I/O streams.
@@ -62,6 +62,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Colin Decker
  * @since 1.0
  */
+@AnnotatedFor({"signedness"})
 @GwtIncompatible
 @ElementTypesAreNonnullByDefault
 public final class ByteStreams {

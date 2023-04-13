@@ -35,6 +35,7 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.framework.qual.AnnotatedFor;
 import sun.misc.Unsafe;
 
 /**
@@ -52,6 +53,7 @@ import sun.misc.Unsafe;
  * @author Louis Wasserman
  * @since 1.0
  */
+@AnnotatedFor({"signedness"})
 @GwtIncompatible
 @ElementTypesAreNonnullByDefault
 public final class UnsignedBytes {
@@ -230,6 +232,7 @@ public final class UnsignedBytes {
    *     Byte#parseByte(String)})
    * @since 13.0
    */
+  @SuppressWarnings("signedness:return")
   @Beta
   @CanIgnoreReturnValue
   public static @Unsigned byte parseUnsignedByte(String string, @IntRange(from=2, to=36) int radix) {
@@ -375,6 +378,11 @@ public final class UnsignedBytes {
       }
 
       @Override
+      @SuppressWarnings({
+        "signedness:argument",
+        "signedness:return",
+        "signedness:shift.unsigned"
+      })
       public int compare(@Unsigned byte[] left, @Unsigned byte[] right) {
         int stride = 8;
         int minLength = Math.min(left.length, right.length);
@@ -468,6 +476,7 @@ public final class UnsignedBytes {
     }
   }
 
+  @SuppressWarnings("signedness:return")
   private static @PolySigned byte flip(@PolySigned byte b) {
     return (byte) (b ^ 0x80);
   }
@@ -488,6 +497,7 @@ public final class UnsignedBytes {
    *
    * @since 23.1
    */
+  @SuppressWarnings("signedness:argument")
   public static void sort(@Unsigned byte[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
@@ -517,6 +527,7 @@ public final class UnsignedBytes {
    *
    * @since 23.1
    */
+  @SuppressWarnings("signedness:argument")
   public static void sortDescending(@Unsigned byte[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);

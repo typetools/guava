@@ -46,7 +46,10 @@ import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.checker.index.qual.HasSubsequence;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.Signed;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * An immutable array of {@code double} values, with an API resembling {@link List}.
@@ -98,6 +101,7 @@ import org.checkerframework.dataflow.qual.Pure;
  *
  * @since 22.0
  */
+@AnnotatedFor({"signedness"})
 @Beta
 @GwtCompatible
 @Immutable
@@ -543,17 +547,17 @@ public final class ImmutableDoubleArray implements Serializable {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object target) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       return indexOf(target) >= 0;
     }
 
     @Override
-    public @GTENegativeOne int indexOf(@CheckForNull Object target) {
+    public @GTENegativeOne int indexOf(@CheckForNull @UnknownSignedness Object target) {
       return target instanceof Double ? parent.indexOf((Double) target) : -1;
     }
 
     @Override
-    public @GTENegativeOne int lastIndexOf(@CheckForNull Object target) {
+    public @GTENegativeOne int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       return target instanceof Double ? parent.lastIndexOf((Double) target) : -1;
     }
 
@@ -575,7 +579,7 @@ public final class ImmutableDoubleArray implements Serializable {
      * therefore i is an index for parent.array
      */
     @SuppressWarnings("upperbound:array.access.unsafe.high") // index incremented in for-each over list of same length
-    public boolean equals(@CheckForNull Object object) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object object) {
       if (object instanceof AsList) {
         AsList that = (AsList) object;
         return this.parent.equals(that.parent);

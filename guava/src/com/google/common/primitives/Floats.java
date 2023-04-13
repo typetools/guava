@@ -46,7 +46,10 @@ import org.checkerframework.checker.index.qual.SubstringIndexFor;
 import org.checkerframework.checker.index.qual.HasSubsequence;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.Signed;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code float} primitives, that are not already found in
@@ -58,6 +61,7 @@ import org.checkerframework.common.value.qual.MinLen;
  * @author Kevin Bourrillion
  * @since 1.0
  */
+@AnnotatedFor({"signedness"})
 @GwtCompatible(emulated = true)
 @ElementTypesAreNonnullByDefault
 public final class Floats extends FloatsMethodsForWeb {
@@ -571,14 +575,13 @@ public final class Floats extends FloatsMethodsForWeb {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object target) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Float) && Floats.indexOf(array, (Float) target, start, end) != -1;
     }
 
     @Override
-    @SuppressWarnings("lowerbound:return")
-    public @IndexOrLow("this") int indexOf(@CheckForNull Object target) {
+    public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Float) {
         int i = Floats.indexOf(array, (Float) target, start, end);
@@ -590,8 +593,7 @@ public final class Floats extends FloatsMethodsForWeb {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:return")
-    public @IndexOrLow("this") int lastIndexOf(@CheckForNull Object target) {
+    public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Float) {
         int i = Floats.lastIndexOf(array, (Float) target, start, end);
@@ -623,7 +625,7 @@ public final class Floats extends FloatsMethodsForWeb {
     }
 
     @Override
-    public boolean equals(@CheckForNull Object object) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object object) {
       if (object == this) {
         return true;
       }

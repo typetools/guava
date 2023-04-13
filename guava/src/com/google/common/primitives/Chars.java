@@ -42,8 +42,11 @@ import org.checkerframework.checker.index.qual.SubstringIndexFor;
 import org.checkerframework.checker.index.qual.HasSubsequence;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.Signed;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
+import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * Static utility methods pertaining to {@code char} primitives, that are not already found in
@@ -58,6 +61,7 @@ import org.checkerframework.common.value.qual.MinLen;
  * @author Kevin Bourrillion
  * @since 1.0
  */
+@AnnotatedFor({"signedness"})
 @GwtCompatible(emulated = true)
 @ElementTypesAreNonnullByDefault
 public final class Chars {
@@ -315,6 +319,7 @@ public final class Chars {
    * use a shared {@link java.nio.ByteBuffer} instance, or use {@link
    * com.google.common.io.ByteStreams#newDataOutput()} to get a growable buffer.
    */
+  @SuppressWarnings("signedness:return")
   @GwtIncompatible // doesn't work
   public static byte[] toByteArray(char value) {
     return new byte[] {(byte) (value >> 8), (byte) value};
@@ -342,7 +347,7 @@ public final class Chars {
    *
    * @since 7.0
    */
-  @SuppressWarnings("index") // https://github.com/typetools/checker-framework/issues/2540
+  @SuppressWarnings("signedness:cast.unsafe")
   @GwtIncompatible // doesn't work
   public static char fromBytes(byte b1, byte b2) {
     return (char) ((b1 << 8) | (b2 & 0xFF));
@@ -447,6 +452,7 @@ public final class Chars {
       return ((CharArrayAsList) collection).toCharArray();
     }
 
+    @SuppressWarnings("signedness:assignment")
     Object[] boxedArray = collection.toArray();
     int len = boxedArray.length;
     char[] array = new char[len];
@@ -567,7 +573,7 @@ public final class Chars {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object target) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Character)
           && Chars.indexOf(array, (Character) target, start, end) != -1;
@@ -575,7 +581,7 @@ public final class Chars {
 
     @Override
     @SuppressWarnings("lowerbound:return")
-    public @IndexOrLow("this") int indexOf(@CheckForNull Object target) {
+    public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Character) {
         int i = Chars.indexOf(array, (Character) target, start, end);
@@ -588,7 +594,7 @@ public final class Chars {
 
     @Override
     @SuppressWarnings("lowerbound:return")
-    public @IndexOrLow("this") int lastIndexOf(@CheckForNull Object target) {
+    public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Character) {
         int i = Chars.lastIndexOf(array, (Character) target, start, end);
@@ -620,7 +626,7 @@ public final class Chars {
     }
 
     @Override
-    public boolean equals(@CheckForNull Object object) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object object) {
       if (object == this) {
         return true;
       }
