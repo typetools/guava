@@ -25,11 +25,11 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Comparator;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.Signed;
+import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
-import org.checkerframework.checker.signedness.qual.Signed;
-import org.checkerframework.checker.signedness.qual.PolySigned;
-import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -420,9 +420,9 @@ public final class UnsignedLongs {
     static final int @MinLen(Character.MAX_RADIX + 1)[] maxValueMods = new int[Character.MAX_RADIX + 1];
     static final int @MinLen(Character.MAX_RADIX + 1)[] maxSafeDigits = new int[Character.MAX_RADIX + 1];
 
-     // Unfortunately, cannot suppress a static initializer.
-     // @SuppressWarnings("signedness:cast.unsafe")
-     static {
+    // Unfortunately, cannot suppress a static initializer.
+    // @SuppressWarnings("signedness:cast.unsafe")
+    static {
       BigInteger overflow = new BigInteger("10000000000000000", 16);
       for (@IntRange(from=2, to=36) int i = Character.MIN_RADIX; i <= Character.MAX_RADIX; i++) {
         maxValueDivs[i] = (@Signed long) divide(MAX_VALUE, i);

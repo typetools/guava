@@ -322,11 +322,11 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   @GwtIncompatible // Not needed in emulated source
   private static final long serialVersionUID = 0;
 
-@Pure
-@Override
-public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
+  @Pure
+  @Override
+  public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
 
-@Pure
-@Override
-public boolean containsAll(Collection<?> arg0) { return super.containsAll(arg0); }
+  @Pure
+  @Override
+  public boolean containsAll(Collection<?> arg0) { return super.containsAll(arg0); }
 }

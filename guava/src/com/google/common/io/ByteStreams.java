@@ -42,7 +42,6 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Deque;
 import java.util.Queue;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
