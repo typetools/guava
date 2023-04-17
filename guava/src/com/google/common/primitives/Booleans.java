@@ -436,7 +436,7 @@ public final class Booleans {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // protected by instanceof
     public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Boolean)
@@ -444,7 +444,7 @@ public final class Booleans {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // protected by instanceof
     public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Boolean) {
@@ -457,7 +457,7 @@ public final class Booleans {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // protected by instanceof
     public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Boolean) {

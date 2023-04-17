@@ -232,7 +232,7 @@ public final class UnsignedBytes {
    *     Byte#parseByte(String)})
    * @since 13.0
    */
-  @SuppressWarnings("signedness:return")
+  @SuppressWarnings("signedness:return") // if statement guarantees all is ok
   @Beta
   @CanIgnoreReturnValue
   public static @Unsigned byte parseUnsignedByte(String string, @IntRange(from=2, to=36) int radix) {
@@ -379,9 +379,8 @@ public final class UnsignedBytes {
 
       @Override
       @SuppressWarnings({
-        "signedness:argument",
-        "signedness:return",
-        "signedness:shift.unsigned"
+        "signedness:argument",       // getLong guarantees lw and rw are ok
+        "signedness:shift.unsigned"  // doing tricky math with shifts
       })
       public int compare(@Unsigned byte[] left, @Unsigned byte[] right) {
         int stride = 8;
@@ -476,9 +475,9 @@ public final class UnsignedBytes {
     }
   }
 
-  @SuppressWarnings("signedness:return")
+  //@SuppressWarnings("signedness:return") // https://github.com/typetools/checker-framework/issues/5773
   private static @PolySigned byte flip(@PolySigned byte b) {
-    return (byte) (b ^ 0x80);
+    return (@PolySigned byte) (b ^ 0x80);
   }
 
   /**
@@ -497,7 +496,7 @@ public final class UnsignedBytes {
    *
    * @since 23.1
    */
-  @SuppressWarnings("signedness:argument")
+  @SuppressWarnings("signedness:argument") // sort of Unsigned array
   public static void sort(@Unsigned byte[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
@@ -527,7 +526,7 @@ public final class UnsignedBytes {
    *
    * @since 23.1
    */
-  @SuppressWarnings("signedness:argument")
+  @SuppressWarnings("signedness:argument") // sort of Unsigned array
   public static void sortDescending(@Unsigned byte[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);

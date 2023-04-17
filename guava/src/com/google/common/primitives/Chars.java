@@ -319,7 +319,7 @@ public final class Chars {
    * use a shared {@link java.nio.ByteBuffer} instance, or use {@link
    * com.google.common.io.ByteStreams#newDataOutput()} to get a growable buffer.
    */
-  @SuppressWarnings("signedness:return")
+  @SuppressWarnings("signedness:return") // splitting char into two bytes
   @GwtIncompatible // doesn't work
   public static byte[] toByteArray(char value) {
     return new byte[] {(byte) (value >> 8), (byte) value};
@@ -347,7 +347,7 @@ public final class Chars {
    *
    * @since 7.0
    */
-  @SuppressWarnings("signedness:cast.unsafe")
+  @SuppressWarnings("signedness:cast.unsafe") // the byte expression is guaranteed to fit in char
   @GwtIncompatible // doesn't work
   public static char fromBytes(byte b1, byte b2) {
     return (char) ((b1 << 8) | (b2 & 0xFF));
@@ -452,7 +452,7 @@ public final class Chars {
       return ((CharArrayAsList) collection).toCharArray();
     }
 
-    @SuppressWarnings("signedness:assignment")
+    @SuppressWarnings("signedness:assignment") // signedness doesn't matter when copy chars
     Object[] boxedArray = collection.toArray();
     int len = boxedArray.length;
     char[] array = new char[len];
@@ -580,7 +580,6 @@ public final class Chars {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:return")
     public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Character) {
@@ -593,7 +592,6 @@ public final class Chars {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:return")
     public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Character) {

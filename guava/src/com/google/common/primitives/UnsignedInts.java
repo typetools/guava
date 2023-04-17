@@ -106,9 +106,10 @@ public final class UnsignedInts {
    */
   // "(long value)" was originally "(@IntRange(from = 0, to = (2L << 32) - 1) long value)"
   // but that caused too many checker warnings.
+  @SuppressWarnings("signedness:cast.unsafe") // checkArgument guarantees value fits in Unsigned int
   public static @Unsigned int checkedCast(long value) {
     checkArgument((value >> Integer.SIZE) == 0, "out of range: %s", value);
-    return (int) value;
+    return (@Unsigned int) value;
   }
 
   /**
@@ -275,7 +276,7 @@ public final class UnsignedInts {
    *
    * @since 23.1
    */
-  @SuppressWarnings("signedness:argument")
+  @SuppressWarnings("signedness:argument") // sort of Unsigned array
   public static void sortDescending(@Unsigned int[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);

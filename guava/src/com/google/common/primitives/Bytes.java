@@ -298,14 +298,14 @@ public final class Bytes {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // protected by instanceof
     public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Byte) && Bytes.indexOf(array, (@Signed Byte) target, start, end) != -1;
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // protected by instanceof
     public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Byte) {
@@ -318,7 +318,7 @@ public final class Bytes {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // protected by instanceof
     public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Byte) {

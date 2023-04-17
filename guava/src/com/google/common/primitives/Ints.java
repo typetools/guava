@@ -191,7 +191,6 @@ public final class Ints extends IntsMethodsForWeb {
    * @param array the array to search for the sequence {@code target}
    * @param target the array to search for as a sub-sequence of {@code array}
    */
-  @SuppressWarnings("substringindex:return")
   public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset="#2.length - 1") int indexOf(int[] array, int[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
@@ -636,7 +635,7 @@ public final class Ints extends IntsMethodsForWeb {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // instanceof guarantees cast is ok
     public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Integer) {
@@ -649,7 +648,7 @@ public final class Ints extends IntsMethodsForWeb {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // instanceof guarantees cast is ok
     public @IndexOrLow("this")int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Integer) {

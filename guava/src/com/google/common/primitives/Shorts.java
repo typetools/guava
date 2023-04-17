@@ -621,7 +621,7 @@ public final class Shorts extends ShortsMethodsForWeb {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // instanceof guarantees cast is ok
     public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Short) && Shorts.indexOf(array, (@Signed Short) target, start, end) != -1;
@@ -629,7 +629,7 @@ public final class Shorts extends ShortsMethodsForWeb {
 
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // instanceof guarantees cast is ok
     public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Short) {
@@ -642,7 +642,7 @@ public final class Shorts extends ShortsMethodsForWeb {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // instanceof guarantees cast is ok
     public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Short) {
