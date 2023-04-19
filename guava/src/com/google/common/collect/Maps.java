@@ -72,6 +72,9 @@ import java.util.function.Consumer;
 import java.util.stream.Collector;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -939,19 +942,19 @@ public final class Maps {
     }
 
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       return backingSet().contains(key);
     }
 
     @Override
     @CheckForNull
-    public V get(@CheckForNull Object key) {
+    public V get(@CheckForNull @UnknownSignedness Object key) {
       return getOrDefault(key, null);
     }
 
     @Override
     @CheckForNull
-    public V getOrDefault(@CheckForNull Object key, @CheckForNull V defaultValue) {
+    public V getOrDefault(@CheckForNull @UnknownSignedness Object key, @CheckForNull V defaultValue) {
       if (Collections2.safeContains(backingSet(), key)) {
         @SuppressWarnings("unchecked") // unsafe, but Javadoc warns about it
         K k = (K) key;
@@ -963,7 +966,7 @@ public final class Maps {
 
     @Override
     @CheckForNull
-    public V remove(@CheckForNull Object key) {
+    public V remove(@CheckForNull @UnknownSignedness Object key) {
       if (backingSet().remove(key)) {
         @SuppressWarnings("unchecked") // unsafe, but Javadoc warns about it
         K k = (K) key;
@@ -1108,13 +1111,13 @@ public final class Maps {
 
     @Override
     @CheckForNull
-    public V get(@CheckForNull Object key) {
+    public V get(@CheckForNull @UnknownSignedness Object key) {
       return getOrDefault(key, null);
     }
 
     @Override
     @CheckForNull
-    public V getOrDefault(@CheckForNull Object key, @CheckForNull V defaultValue) {
+    public V getOrDefault(@CheckForNull @UnknownSignedness Object key, @CheckForNull V defaultValue) {
       if (Collections2.safeContains(set, key)) {
         @SuppressWarnings("unchecked") // unsafe, but Javadoc warns about it
         K k = (K) key;
@@ -1554,7 +1557,7 @@ public final class Maps {
     // See java.util.Collections.UnmodifiableEntrySet for details on attacks.
 
     @Override
-    public Object[] toArray() {
+    public @PolySigned Object[] toArray() {
       /*
        * standardToArray returns `@Nullable Object[]` rather than `Object[]` but only because it can
        * be used with collections that may contain null. This collection never contains nulls, so we
@@ -1567,13 +1570,13 @@ public final class Maps {
 
     @Override
     @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-    public <T extends @Nullable Object> T[] toArray(T[] array) {
+    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] array) {
       return standardToArray(array);
     }
 
   @Pure
   @Override
-  public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
+  public boolean contains(@Nullable @UnknownSignedness Object arg0) { return super.contains(arg0); }
 
   @Pure
   @Override
@@ -1591,7 +1594,7 @@ public final class Maps {
 
     @Pure
     @Override
-    public boolean equals(@CheckForNull Object object) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object object) {
       return Sets.equalsImpl(this, object);
     }
 
@@ -1749,7 +1752,7 @@ public final class Maps {
     }
 
     @Override
-    public boolean remove(@Nullable Object key, @Nullable Object value) {
+    public boolean remove(@Nullable @UnknownSignedness Object key, @Nullable @UnknownSignedness Object value) {
       throw new UnsupportedOperationException();
     }
 
@@ -2219,13 +2222,13 @@ public final class Maps {
     }
 
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       return fromMap.containsKey(key);
     }
 
     @Override
     @CheckForNull
-    public V2 get(@CheckForNull Object key) {
+    public V2 get(@CheckForNull @UnknownSignedness Object key) {
       return getOrDefault(key, null);
     }
 
@@ -2233,7 +2236,7 @@ public final class Maps {
     @SuppressWarnings("unchecked")
     @Override
     @CheckForNull
-    public V2 getOrDefault(@CheckForNull Object key, @CheckForNull V2 defaultValue) {
+    public V2 getOrDefault(@CheckForNull @UnknownSignedness Object key, @CheckForNull V2 defaultValue) {
       V1 value = fromMap.get(key);
       if (value != null || fromMap.containsKey(key)) {
         // The cast is safe because of the containsKey check.
@@ -2246,7 +2249,7 @@ public final class Maps {
     @SuppressWarnings("unchecked")
     @Override
     @CheckForNull
-    public V2 remove(@CheckForNull Object key) {
+    public V2 remove(@CheckForNull @UnknownSignedness Object key) {
       return fromMap.containsKey(key)
           // The cast is safe because of the containsKey check.
           ? transformer.transformEntry((K) key, uncheckedCastNullableTToT(fromMap.remove(key)))
@@ -2963,13 +2966,13 @@ public final class Maps {
 
     @Pure
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       return unfiltered.containsKey(key) && apply(key, unfiltered.get(key));
     }
 
     @Override
     @CheckForNull
-    public V get(@CheckForNull Object key) {
+    public V get(@CheckForNull @UnknownSignedness Object key) {
       V value = unfiltered.get(key);
       return ((value != null) && apply(key, value)) ? value : null;
     }
@@ -2982,7 +2985,7 @@ public final class Maps {
 
     @Override
     @CheckForNull
-    public V remove(@CheckForNull Object key) {
+    public V remove(@CheckForNull @UnknownSignedness Object key) {
       return containsKey(key) ? unfiltered.remove(key) : null;
     }
 
@@ -3006,7 +3009,7 @@ public final class Maps {
     }
 
     @Override
-    public boolean remove(@CheckForNull Object o) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object o) {
       Iterator<Entry<K, V>> entryItr = unfiltered.entrySet().iterator();
       while (entryItr.hasNext()) {
         Entry<K, V> entry = entryItr.next();
@@ -3047,14 +3050,14 @@ public final class Maps {
     }
 
     @Override
-    public @Nullable Object[] toArray() {
+    public @Nullable @PolySigned Object[] toArray() {
       // creating an ArrayList so filtering happens once
       return Lists.newArrayList(iterator()).toArray();
     }
 
     @Override
     @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-    public <T extends @Nullable Object> T[] toArray(T[] array) {
+    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] array) {
       return Lists.newArrayList(iterator()).toArray(array);
     }
   }
@@ -3086,7 +3089,7 @@ public final class Maps {
     @Pure
     @Override
     @SuppressWarnings("unchecked")
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       return unfiltered.containsKey(key) && keyPredicate.apply((K) key);
     }
   }
@@ -3179,7 +3182,7 @@ public final class Maps {
       }
 
       @Override
-      public boolean remove(@CheckForNull Object o) {
+      public boolean remove(@CheckForNull @UnknownSignedness Object o) {
         if (containsKey(o)) {
           unfiltered.remove(o);
           return true;
@@ -3198,20 +3201,20 @@ public final class Maps {
       }
 
       @Override
-      public @Nullable Object[] toArray() {
+      public @PolyNull @PolySigned Object[] toArray() {
         // creating an ArrayList so filtering happens once
         return Lists.newArrayList(iterator()).toArray();
       }
 
       @Override
       @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-      public <T extends @Nullable Object> T[] toArray(T[] array) {
+      public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] array) {
         return Lists.newArrayList(iterator()).toArray(array);
       }
 
     @Pure
     @Override
-    public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
+    public boolean contains(@Nullable @UnknownSignedness Object arg0) { return super.contains(arg0); }
     }
   }
 
@@ -3388,12 +3391,12 @@ public final class Maps {
 
     @Override
     @CheckForNull
-    public V get(@CheckForNull Object key) {
+    public V get(@CheckForNull @UnknownSignedness Object key) {
       return filteredDelegate.get(key);
     }
 
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       return filteredDelegate.containsKey(key);
     }
 
@@ -3405,7 +3408,7 @@ public final class Maps {
 
     @Override
     @CheckForNull
-    public V remove(@CheckForNull Object key) {
+    public V remove(@CheckForNull @UnknownSignedness Object key) {
       return filteredDelegate.remove(key);
     }
 
@@ -3662,7 +3665,7 @@ public final class Maps {
     }
 
     @Override
-    public boolean remove(@Nullable Object key, @Nullable Object value) {
+    public boolean remove(@Nullable @UnknownSignedness Object key, @Nullable @UnknownSignedness Object value) {
       throw new UnsupportedOperationException();
     }
 
@@ -4071,12 +4074,12 @@ public final class Maps {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       return map().containsKey(o);
     }
 
     @Override
-    public boolean remove(@CheckForNull Object o) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object o) {
       if (contains(o)) {
         map().remove(o);
         return true;
@@ -4263,7 +4266,7 @@ public final class Maps {
     }
 
     @Override
-    public boolean remove(@CheckForNull Object o) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object o) {
       try {
         return super.remove(o);
       } catch (UnsupportedOperationException e) {
@@ -4318,7 +4321,7 @@ public final class Maps {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       return map().containsValue(o);
     }
 
@@ -4343,7 +4346,7 @@ public final class Maps {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       if (o instanceof Entry) {
         Entry<?, ?> entry = (Entry<?, ?>) o;
         Object key = entry.getKey();
@@ -4359,7 +4362,7 @@ public final class Maps {
     }
 
     @Override
-    public boolean remove(@CheckForNull Object o) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object o) {
       /*
        * `o instanceof Entry` is guaranteed by `contains`, but we check it here to satisfy our
        * nullness checker.

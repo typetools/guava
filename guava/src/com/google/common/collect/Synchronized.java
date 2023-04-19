@@ -48,7 +48,11 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -160,7 +164,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       synchronized (mutex) {
         return delegate().contains(o);
       }
@@ -216,7 +220,7 @@ final class Synchronized {
     }
 
     @Override
-    public boolean remove(@CheckForNull Object o) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object o) {
       synchronized (mutex) {
         return delegate().remove(o);
       }
@@ -252,15 +256,16 @@ final class Synchronized {
     }
 
     @Override
-    public @Nullable Object[] toArray() {
+    @SuppressWarnings("nullness:return")
+    public @PolyNull @PolySigned Object[] toArray() {
       synchronized (mutex) {
         return delegate().toArray();
       }
     }
 
     @Override
-    @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-    public <T extends @Nullable Object> T[] toArray(T[] a) {
+    @SuppressWarnings("nullness:return")
+    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(@PolyNull T[] a) {
       synchronized (mutex) {
         return delegate().toArray(a);
       }
@@ -288,7 +293,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean equals(@CheckForNull Object o) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object o) {
       if (o == this) {
         return true;
       }
@@ -417,7 +422,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public int indexOf(@CheckForNull Object o) {
+    public int indexOf(@CheckForNull @UnknownSignedness Object o) {
       synchronized (mutex) {
         return delegate().indexOf(o);
       }
@@ -425,7 +430,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public int lastIndexOf(@CheckForNull Object o) {
+    public int lastIndexOf(@CheckForNull @UnknownSignedness Object o) {
       synchronized (mutex) {
         return delegate().lastIndexOf(o);
       }
@@ -479,7 +484,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean equals(@CheckForNull Object o) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object o) {
       if (o == this) {
         return true;
       }
@@ -589,7 +594,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean equals(@CheckForNull Object o) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object o) {
       if (o == this) {
         return true;
       }
@@ -1023,7 +1028,7 @@ final class Synchronized {
     // See Collections.CheckedMap.CheckedEntrySet for details on attacks.
 
     @Override
-    public @Nullable Object[] toArray() {
+    public @PolyNull @PolySigned Object[] toArray() {
       synchronized (mutex) {
         /*
          * toArrayImpl returns `@Nullable Object[]` rather than `Object[]` but only because it can
@@ -1037,8 +1042,8 @@ final class Synchronized {
     }
 
     @Override
-    @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-    public <T extends @Nullable Object> T[] toArray(T[] array) {
+    //@SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
+    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(@PolyNull T[] array) {
       synchronized (mutex) {
         return ObjectArrays.toArrayImpl(delegate(), array);
       }
@@ -1046,7 +1051,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       synchronized (mutex) {
         return Maps.containsEntryImpl(delegate(), o);
       }
@@ -1062,7 +1067,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean equals(@CheckForNull Object o) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object o) {
       if (o == this) {
         return true;
       }
@@ -1072,7 +1077,7 @@ final class Synchronized {
     }
 
     @Override
-    public boolean remove(@CheckForNull Object o) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object o) {
       synchronized (mutex) {
         return Maps.removeEntryImpl(delegate(), o);
       }
@@ -1126,7 +1131,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       synchronized (mutex) {
         return delegate().containsKey(key);
       }
@@ -1134,7 +1139,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean containsValue(@CheckForNull Object value) {
+    public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
       synchronized (mutex) {
         return delegate().containsValue(value);
       }
@@ -1142,7 +1147,7 @@ final class Synchronized {
 
     @SideEffectFree
     @Override
-    public Set<Map.Entry<K, V>> entrySet() {
+    public Set<Map.Entry<@KeyFor({"this"}) K, V>> entrySet() {
       synchronized (mutex) {
         if (entrySet == null) {
           entrySet = set(delegate().entrySet(), mutex);
@@ -1160,7 +1165,7 @@ final class Synchronized {
 
     @Override
     @CheckForNull
-    public V get(@CheckForNull Object key) {
+    public V get(@CheckForNull @UnknownSignedness Object key) {
       synchronized (mutex) {
         return delegate().get(key);
       }
@@ -1169,7 +1174,7 @@ final class Synchronized {
     @Pure
     @Override
     @CheckForNull
-    public V getOrDefault(@CheckForNull Object key, @CheckForNull V defaultValue) {
+    public V getOrDefault(@CheckForNull @UnknownSignedness Object key, @CheckForNull V defaultValue) {
       synchronized (mutex) {
         return delegate().getOrDefault(key, defaultValue);
       }
@@ -1271,7 +1276,7 @@ final class Synchronized {
 
     @Override
     @CheckForNull
-    public V remove(@CheckForNull Object key) {
+    public V remove(@CheckForNull @UnknownSignedness Object key) {
       synchronized (mutex) {
         return delegate().remove(key);
       }
@@ -1279,7 +1284,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean remove(@CheckForNull Object key, @CheckForNull Object value) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object key, @CheckForNull @UnknownSignedness Object value) {
       synchronized (mutex) {
         return delegate().remove(key, value);
       }
@@ -1456,7 +1461,7 @@ final class Synchronized {
 
     @Override
     @CheckForNull
-    public Collection<V> get(@CheckForNull Object key) {
+    public Collection<V> get(@CheckForNull @UnknownSignedness Object key) {
       synchronized (mutex) {
         Collection<V> collection = super.get(key);
         return (collection == null) ? null : typePreservingCollection(collection, mutex);
@@ -1487,7 +1492,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean containsValue(@CheckForNull Object o) {
+    public boolean containsValue(@CheckForNull @UnknownSignedness Object o) {
       // values() and its contains() method are both synchronized.
       return values().contains(o);
     }
@@ -1518,14 +1523,14 @@ final class Synchronized {
   //Suppressed due to annotations on toArray
   @SuppressWarnings("nullness")
   @Override
-  public @Nullable Object[] toArray() { return super.toArray(); }
+  public @Nullable @PolySigned Object[] toArray() { return super.toArray(); }
 
   @SuppressWarnings("nullness")
   @Override public <T> T[] toArray(T[] arg0) { return super.toArray(arg0); }
 
   @Pure
   @Override
-  public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
+  public boolean contains(@Nullable @UnknownSignedness Object arg0) { return super.contains(arg0); }
 
   @SuppressWarnings("nullness")
   @Pure
@@ -1533,7 +1538,7 @@ final class Synchronized {
   public boolean containsAll(Collection<?> arg0) { return super.containsAll(arg0); }
 
   @Override
-  public boolean remove(@Nullable Object arg0) { return super.remove(arg0); }
+  public boolean remove(@Nullable @UnknownSignedness Object arg0) { return super.remove(arg0); }
 
   @SuppressWarnings("nullness")
   @Override

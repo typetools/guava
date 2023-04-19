@@ -23,6 +23,8 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import javax.annotation.CheckForNull;
 
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
+
 /**
  * List returned by {@link ImmutableCollection#asList} that delegates {@code contains} checks to the
  * backing collection.
@@ -37,7 +39,7 @@ abstract class ImmutableAsList<E> extends ImmutableList<E> {
   abstract ImmutableCollection<E> delegateCollection();
 
   @Override
-  public boolean contains(@CheckForNull Object target) {
+  public boolean contains(@CheckForNull @UnknownSignedness Object target) {
     // The collection's contains() is at least as fast as ImmutableList's
     // and is often faster.
     return delegateCollection().contains(target);

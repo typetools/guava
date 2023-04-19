@@ -32,6 +32,7 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -157,7 +158,7 @@ abstract class AbstractMultimap<K extends @Nullable Object, V extends @Nullable 
 
     @Pure
     @Override
-    public boolean equals(@CheckForNull Object obj) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object obj) {
       return Sets.equalsImpl(this, obj);
     }
   }
@@ -222,7 +223,7 @@ abstract class AbstractMultimap<K extends @Nullable Object, V extends @Nullable 
 
     @Pure
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       return AbstractMultimap.this.containsValue(o);
     }
 

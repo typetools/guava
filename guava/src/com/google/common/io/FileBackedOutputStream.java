@@ -33,6 +33,7 @@ import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.PolySigned;
 
 /**
  * An {@link OutputStream} that starts buffering to a byte array, but switches to file buffering
@@ -196,18 +197,18 @@ public final class FileBackedOutputStream extends OutputStream {
   }
 
   @Override
-  public synchronized void write(int b) throws IOException {
+  public synchronized void write(@PolySigned int b) throws IOException {
     update(1);
     out.write(b);
   }
 
   @Override
-  public synchronized void write(byte[] b) throws IOException {
+  public synchronized void write(@PolySigned byte[] b) throws IOException {
     write(b, 0, b.length);
   }
 
   @Override
-  public synchronized void write(byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
+  public synchronized void write(@PolySigned byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     update(len);
     out.write(b, off, len);
   }

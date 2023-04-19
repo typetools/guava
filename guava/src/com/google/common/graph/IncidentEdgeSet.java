@@ -20,6 +20,8 @@ import java.util.AbstractSet;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
+
 /**
  * Abstract base class for an incident edges set that allows different implementations of {@link
  * AbstractSet#iterator()}.
@@ -35,7 +37,7 @@ abstract class IncidentEdgeSet<N> extends AbstractSet<EndpointPair<N>> {
   }
 
   @Override
-  public boolean remove(@CheckForNull Object o) {
+  public boolean remove(@CheckForNull @UnknownSignedness Object o) {
     throw new UnsupportedOperationException();
   }
 
@@ -51,7 +53,7 @@ abstract class IncidentEdgeSet<N> extends AbstractSet<EndpointPair<N>> {
   }
 
   @Override
-  public boolean contains(@CheckForNull Object obj) {
+  public boolean contains(@CheckForNull @UnknownSignedness Object obj) {
     if (!(obj instanceof EndpointPair)) {
       return false;
     }

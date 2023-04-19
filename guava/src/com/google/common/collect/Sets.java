@@ -54,6 +54,9 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -613,7 +616,7 @@ public final class Sets {
     @Deprecated
     @Override
     @DoNotCall("Always throws UnsupportedOperationException")
-    public final boolean remove(@CheckForNull Object object) {
+    public final boolean remove(@CheckForNull @UnknownSignedness Object object) {
       throw new UnsupportedOperationException();
     }
 
@@ -763,7 +766,7 @@ public final class Sets {
       }
 
       @Override
-      public boolean contains(@CheckForNull Object object) {
+      public boolean contains(@CheckForNull @UnknownSignedness Object object) {
         return set1.contains(object) || set2.contains(object);
       }
 
@@ -861,7 +864,7 @@ public final class Sets {
       }
 
       @Override
-      public boolean contains(@CheckForNull Object object) {
+      public boolean contains(@CheckForNull @UnknownSignedness Object object) {
         return set1.contains(object) && set2.contains(object);
       }
 
@@ -934,7 +937,7 @@ public final class Sets {
       }
 
       @Override
-      public boolean contains(@CheckForNull Object element) {
+      public boolean contains(@CheckForNull @UnknownSignedness Object element) {
         return set1.contains(element) && !set2.contains(element);
       }
     };
@@ -1004,7 +1007,7 @@ public final class Sets {
       }
 
       @Override
-      public boolean contains(@CheckForNull Object element) {
+      public boolean contains(@CheckForNull @UnknownSignedness Object element) {
         return set1.contains(element) ^ set2.contains(element);
       }
     };
@@ -1136,7 +1139,7 @@ public final class Sets {
     }
 
     @Override
-    public boolean equals(@CheckForNull Object object) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object object) {
       return equalsImpl(this, object);
     }
 
@@ -1440,7 +1443,7 @@ public final class Sets {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object object) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object object) {
       if (!(object instanceof List)) {
         return false;
       }
@@ -1459,7 +1462,7 @@ public final class Sets {
     }
 
     @Override
-    public boolean equals(@CheckForNull Object object) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object object) {
       // Warning: this is broken if size() == 0, so it is critical that we
       // substitute an empty ImmutableSet to the user in place of this
       if (object instanceof CartesianSet) {
@@ -1559,7 +1562,7 @@ public final class Sets {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       Integer index = inputSet.get(o);
       return index != null && (mask & (1 << index)) != 0;
     }
@@ -1595,7 +1598,7 @@ public final class Sets {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object obj) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object obj) {
       if (obj instanceof Set) {
         Set<?> set = (Set<?>) obj;
         return inputSet.keySet().containsAll(set);
@@ -1604,7 +1607,7 @@ public final class Sets {
     }
 
     @Override
-    public boolean equals(@CheckForNull Object obj) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object obj) {
       if (obj instanceof PowerSet) {
         PowerSet<?> that = (PowerSet<?>) obj;
         return inputSet.keySet().equals(that.inputSet.keySet());
@@ -1664,7 +1667,7 @@ public final class Sets {
     }
     return new AbstractSet<Set<E>>() {
       @Override
-      public boolean contains(@CheckForNull Object o) {
+      public boolean contains(@CheckForNull @UnknownSignedness Object o) {
         if (o instanceof Set) {
           Set<?> s = (Set<?>) o;
           return s.size() == size && index.keySet().containsAll(s);
@@ -1710,7 +1713,7 @@ public final class Sets {
             final BitSet copy = (BitSet) bits.clone();
             return new AbstractSet<E>() {
               @Override
-              public boolean contains(@CheckForNull Object o) {
+              public boolean contains(@CheckForNull @UnknownSignedness Object o) {
                 Integer i = index.get(o);
                 return i != null && copy.get(i);
               }
@@ -2123,13 +2126,14 @@ public final class Sets {
     }
 
     @Override
-    public @Nullable Object[] toArray() {
+    @SuppressWarnings("nullness:return")
+    public @PolyNull @PolySigned Object[] toArray(Sets.DescendingSet<@PolyNull @PolySigned E> this) {
       return standardToArray();
     }
 
     @Override
-    @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-    public <T extends @Nullable Object> T[] toArray(T[] array) {
+    @SuppressWarnings("nullness:return")
+    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(@PolyNull T[] array) {
       return standardToArray(array);
     }
 

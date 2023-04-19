@@ -37,6 +37,7 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -304,7 +305,7 @@ abstract class AbstractBiMap<K extends @Nullable Object, V extends @Nullable Obj
     }
 
     @Override
-    public @Nullable Object[] toArray() {
+    public @PolyNull Object[] toArray() {
       return standardToArray();
     }
 
