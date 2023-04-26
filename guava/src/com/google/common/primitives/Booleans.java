@@ -30,16 +30,16 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.RandomAccess;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.HasSubsequence;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
-import org.checkerframework.checker.index.qual.HasSubsequence;
-import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
@@ -436,7 +436,7 @@ public final class Booleans {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe") // protected by instanceof
+    @SuppressWarnings("signedness:cast.unsafe") // CF bug? Boolean should always be @Signed
     public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Boolean)
@@ -444,7 +444,7 @@ public final class Booleans {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe") // protected by instanceof
+    @SuppressWarnings("signedness:cast.unsafe") // CF bug? Boolean should always be @Signed
     public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Boolean) {
@@ -457,7 +457,7 @@ public final class Booleans {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe") // protected by instanceof
+    @SuppressWarnings("signedness:cast.unsafe") // CF bug? Boolean should always be @Signed
     public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Boolean) {

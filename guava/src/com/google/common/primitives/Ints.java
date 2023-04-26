@@ -14,6 +14,7 @@
 
 package com.google.common.primitives;
 
+import org.checkerframework.framework.qual.CFComment;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkElementIndex;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -34,17 +35,17 @@ import java.util.RandomAccess;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.HasSubsequence;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.PolyLowerBound;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
-import org.checkerframework.checker.index.qual.HasSubsequence;
-import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
@@ -587,6 +588,8 @@ public final class Ints extends IntsMethodsForWeb {
     return new IntArrayAsList(backingArray);
   }
 
+  @CFComment({"signedness: A non-generic container class permits only signed values.",
+              "Clients must suppress warnings when storing unsigned values."})
   @GwtCompatible
   private static class IntArrayAsList extends AbstractList<Integer>
       implements RandomAccess, Serializable {
@@ -635,7 +638,7 @@ public final class Ints extends IntsMethodsForWeb {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe") // instanceof guarantees cast is ok
+    @SuppressWarnings("signedness:cast.unsafe") // non-generic container class
     public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Integer) {
@@ -648,7 +651,7 @@ public final class Ints extends IntsMethodsForWeb {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe") // instanceof guarantees cast is ok
+    @SuppressWarnings("signedness:cast.unsafe") // non-generic container class
     public @IndexOrLow("this")int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Integer) {

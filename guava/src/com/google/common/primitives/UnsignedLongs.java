@@ -206,7 +206,7 @@ public final class UnsignedLongs {
    *
    * @since 23.1
    */
-  @SuppressWarnings("signedness:argument") // sort of Unsigned array
+  @SuppressWarnings("signedness:argument") // sorting bit-flipped values
   public static void sort(@Unsigned long[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
@@ -236,7 +236,7 @@ public final class UnsignedLongs {
    *
    * @since 23.1
    */
-  @SuppressWarnings("signedness:argument") // sort of Unsigned array
+  @SuppressWarnings("signedness:argument") // sorting bit-flipped values
   public static void sortDescending(@Unsigned long[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);

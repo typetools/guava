@@ -14,6 +14,7 @@
 
 package com.google.common.primitives;
 
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.primitives.UnsignedInts.INT_MASK;
@@ -71,7 +72,7 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    *
    * @since 14.0
    */
-  public static UnsignedInteger fromIntBits(int bits) {
+  public static UnsignedInteger fromIntBits(@UnknownSignedness int bits) {
     return new UnsignedInteger(bits);
   }
 

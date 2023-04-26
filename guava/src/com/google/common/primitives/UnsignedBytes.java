@@ -232,14 +232,14 @@ public final class UnsignedBytes {
    *     Byte#parseByte(String)})
    * @since 13.0
    */
-  @SuppressWarnings("signedness:return") // if statement guarantees all is ok
+  @SuppressWarnings("signedness:cast") // if statement guarantees all is ok
   @Beta
   @CanIgnoreReturnValue
   public static @Unsigned byte parseUnsignedByte(String string, @IntRange(from=2, to=36) int radix) {
     int parse = Integer.parseInt(checkNotNull(string), radix);
     // We need to throw a NumberFormatException, so we have to duplicate checkedCast. =(
     if (parse >> Byte.SIZE == 0) {
-      return (byte) parse;
+      return (@Unsigned byte) parse;
     } else {
       throw new NumberFormatException("out of range: " + parse);
     }
@@ -496,7 +496,7 @@ public final class UnsignedBytes {
    *
    * @since 23.1
    */
-  @SuppressWarnings("signedness:argument") // sort of Unsigned array
+  @SuppressWarnings("signedness:argument") // sorting byte-flipped values
   public static void sort(@Unsigned byte[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
@@ -526,7 +526,7 @@ public final class UnsignedBytes {
    *
    * @since 23.1
    */
-  @SuppressWarnings("signedness:argument") // sort of Unsigned array
+  @SuppressWarnings("signedness:argument") // sorting byte-flipped values
   public static void sortDescending(@Unsigned byte[] array, @IndexOrHigh("#1") int fromIndex, @IndexOrHigh("#1") int toIndex) {
     checkNotNull(array);
     checkPositionIndexes(fromIndex, toIndex, array.length);
