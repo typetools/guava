@@ -247,7 +247,7 @@ public final class Collections2 {
 
     @Override
     @SuppressWarnings("nullness:return")
-    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(@PolyNull T[] array) {
+    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] array) {
       return Lists.newArrayList(iterator()).toArray(array);
     }
 

@@ -641,7 +641,7 @@ class CompactHashSet<E extends @Nullable Object> extends AbstractSet<E> implemen
   @CanIgnoreReturnValue
   @Override
   @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-  public <T extends @Nullable @UnknownSignedness Object> T[] toArray(@PolyNull T[] a) {
+  public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] a) {
     if (needsAllocArrays()) {
       if (a.length > 0) {
         a[0] = null;

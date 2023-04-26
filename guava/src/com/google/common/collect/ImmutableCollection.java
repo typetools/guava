@@ -215,7 +215,7 @@ public abstract class ImmutableCollection<E extends @NonNull Object> extends Abs
    * nullness perspective. The signature below at least has the virtue of being relatively simple.
    */
   @SuppressWarnings({"nullness:return", "nullness:assignment"})
-  public final <T extends @Nullable @UnknownSignedness Object> T[] toArray(@PolyNull T[] other) {
+  public final <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] other) {
     checkNotNull(other);
     int size = size();
 

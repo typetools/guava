@@ -107,17 +107,17 @@ public final class LinkedHashMultiset<E extends @Nullable Object>
   @GwtIncompatible // not needed in emulated source
   private static final long serialVersionUID = 0;
 
-@Pure
-@Override
-public boolean contains(@Nullable @UnknownSignedness Object arg0) { return super.contains(arg0); }
+  @Pure
+  @Override
+  public boolean contains(@Nullable @UnknownSignedness Object arg0) { return super.contains(arg0); }
 
-@Override
-public int count(@Nullable Object arg0) { return super.count(arg0); }
+  @Override
+  public int count(@Nullable Object arg0) { return super.count(arg0); }
 
-@Override
-public int remove(@Nullable Object arg0, int arg1) { return super.remove(arg0, arg1); }
+  @Override
+  public int remove(@Nullable Object arg0, int arg1) { return super.remove(arg0, arg1); }
 
-@Pure
-@Override
-public boolean containsAll(Collection<?> arg0) { return super.containsAll(arg0); }
+  @Pure
+  @Override
+  public boolean containsAll(Collection<?> arg0) { return super.containsAll(arg0); }
 }
