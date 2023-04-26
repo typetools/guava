@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signedness.qual.PolySigned;
 
 /**
  * An {@link OutputStream} that maintains a hash of the data written to it.
@@ -50,15 +51,15 @@ public final class HashingOutputStream extends FilterOutputStream {
   }
 
   @Override
-  public void write(int b) throws IOException {
+  public void write(@PolySigned int b) throws IOException {
     hasher.putByte((byte) b);
     out.write(b);
   }
 
-  @SuppressWarnings("override.param.invalid")//FilterOutputStream#write() should be annotated as
+  //@SuppressWarnings("override.param.invalid")//FilterOutputStream#write() should be annotated as
   // void write(byte b[], @NonNegative @LTLengthOf(value = "#1",offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int len)
   @Override
-  public void write(byte[] bytes, @NonNegative @LTLengthOf(value = "#1",offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int len) throws IOException {
+  public void write(@PolySigned byte[] bytes, @NonNegative @LTLengthOf(value = "#1",offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int len) throws IOException {
     hasher.putBytes(bytes, off, len);
     out.write(bytes, off, len);
   }

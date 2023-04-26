@@ -33,6 +33,7 @@ import java.util.IdentityHashMap;
 import java.util.function.BiConsumer;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -259,7 +260,7 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
 
   @Override
   @CheckForNull
-  public V get(@CheckForNull Object key) {
+  public V get(@CheckForNull @UnknownSignedness Object key) {
     return get(key, table, mask);
   }
 
@@ -333,7 +334,7 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object object) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object object) {
       return map.containsKey(object);
     }
 
@@ -417,7 +418,7 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
 
   @Pure
   @Override
-  public boolean containsValue(@Nullable Object arg0) {
+  public boolean containsValue(@Nullable @UnknownSignedness Object arg0) {
     return super.containsValue(arg0);
   }
 

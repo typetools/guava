@@ -18,14 +18,15 @@ import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Preconditions;
 import com.google.common.primitives.Longs;
-import org.checkerframework.checker.index.qual.IndexOrHigh;
-import org.checkerframework.checker.index.qual.LTLengthOf;
-import org.checkerframework.checker.index.qual.NonNegative;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signedness.qual.PolySigned;
 
 /**
  * An implementation of {@link DataOutput} that uses little-endian byte ordering for writing {@code
@@ -53,7 +54,7 @@ public final class LittleEndianDataOutputStream extends FilterOutputStream imple
   }
 
   @Override
-  public void write(byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
+  public void write(@PolySigned byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) throws IOException {
     // Override slow FilterOutputStream impl
     out.write(b, off, len);
   }

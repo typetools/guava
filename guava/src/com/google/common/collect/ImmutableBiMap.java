@@ -33,6 +33,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -643,10 +644,10 @@ public abstract class ImmutableBiMap<K, V> extends ImmutableBiMapFauxverideShim<
   }
 
 @Override
-public boolean containsKey(@Nullable Object arg0) { return super.containsKey(arg0); }
+public boolean containsKey(@Nullable @UnknownSignedness Object arg0) { return super.containsKey(arg0); }
 
 @Override
-public boolean containsValue(@Nullable Object arg0) { return super.containsValue(arg0); }
+public boolean containsValue(@Nullable @UnknownSignedness Object arg0) { return super.containsValue(arg0); }
 
 @Override
 public boolean equals(@Nullable Object arg0) { return super.equals(arg0); }

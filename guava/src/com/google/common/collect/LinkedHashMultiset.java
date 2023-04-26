@@ -24,6 +24,7 @@ import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -108,7 +109,7 @@ public final class LinkedHashMultiset<E extends @Nullable Object>
 
   @Pure
   @Override
-  public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
+  public boolean contains(@Nullable @UnknownSignedness Object arg0) { return super.contains(arg0); }
 
   @Override
   public int count(@Nullable Object arg0) { return super.count(arg0); }

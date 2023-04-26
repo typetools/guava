@@ -22,6 +22,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A {@link ScheduledExecutorService} that returns {@link ListenableFuture} instances from its
@@ -52,7 +53,7 @@ public interface ListeningScheduledExecutorService
 
   /** @since 15.0 (previously returned ScheduledFuture) */
   @Override
-  <V extends @Nullable Object> ListenableScheduledFuture<V> schedule(
+  <V extends @Nullable @UnknownSignedness Object> ListenableScheduledFuture<V> schedule(
       Callable<V> callable, long delay, TimeUnit unit);
 
   /**

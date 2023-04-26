@@ -41,6 +41,7 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -536,7 +537,7 @@ public class ImmutableSetMultimap<K, V> extends ImmutableMultimap<K, V>
     }
 
     @Override
-    public boolean contains(@CheckForNull Object object) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object object) {
       if (object instanceof Entry) {
         Entry<?, ?> entry = (Entry<?, ?>) object;
         return multimap.containsEntry(entry.getKey(), entry.getValue());

@@ -58,6 +58,7 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -1788,7 +1789,7 @@ public final class Multimaps {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object element) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object element) {
       return multimap.containsKey(element);
     }
 
@@ -1856,7 +1857,7 @@ public final class Multimaps {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       if (o instanceof Map.Entry) {
         Map.Entry<?, ?> entry = (Map.Entry<?, ?>) o;
         return multimap().containsEntry(entry.getKey(), entry.getValue());
@@ -1865,7 +1866,7 @@ public final class Multimaps {
     }
 
     @Override
-    public boolean remove(@CheckForNull Object o) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object o) {
       if (o instanceof Map.Entry) {
         Map.Entry<?, ?> entry = (Map.Entry<?, ?>) o;
         return multimap().remove(entry.getKey(), entry.getValue());
@@ -1922,7 +1923,7 @@ public final class Multimaps {
       }
 
       @Override
-      public boolean remove(@CheckForNull Object o) {
+      public boolean remove(@CheckForNull @UnknownSignedness Object o) {
         if (!contains(o)) {
           return false;
         }
@@ -1936,13 +1937,13 @@ public final class Multimaps {
     @SuppressWarnings("unchecked")
     @Override
     @CheckForNull
-    public Collection<V> get(@CheckForNull Object key) {
+    public Collection<V> get(@CheckForNull @UnknownSignedness Object key) {
       return containsKey(key) ? multimap.get((K) key) : null;
     }
 
     @Override
     @CheckForNull
-    public Collection<V> remove(@CheckForNull Object key) {
+    public Collection<V> remove(@CheckForNull @UnknownSignedness Object key) {
       return containsKey(key) ? multimap.removeAll(key) : null;
     }
 
@@ -1957,7 +1958,7 @@ public final class Multimaps {
     }
 
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       return multimap.containsKey(key);
     }
 
