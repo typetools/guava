@@ -28,6 +28,7 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 
 /**
  * CompactLinkedHashSet is an implementation of a Set, which a predictable iteration order that
@@ -233,7 +234,7 @@ class CompactLinkedHashSet<E extends @Nullable Object> extends CompactHashSet<E>
   }
 
   @Override
-  public @Nullable Object[] toArray() {
+  public @PolyNull Object[] toArray() {
     return ObjectArrays.toArrayImpl(this);
   }
 

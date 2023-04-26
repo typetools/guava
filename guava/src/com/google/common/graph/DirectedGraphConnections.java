@@ -42,6 +42,8 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.CheckForNull;
 
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
+
 /**
  * An implementation of {@link GraphConnections} for directed graphs.
  *
@@ -263,7 +265,7 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
         }
 
         @Override
-        public boolean contains(@CheckForNull Object obj) {
+        public boolean contains(@CheckForNull @UnknownSignedness Object obj) {
           return adjacentNodeValues.containsKey(obj);
         }
       };
@@ -314,7 +316,7 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
       }
 
       @Override
-      public boolean contains(@CheckForNull Object obj) {
+      public boolean contains(@CheckForNull @UnknownSignedness Object obj) {
         return isPredecessor(adjacentNodeValues.get(obj));
       }
     };
@@ -364,7 +366,7 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
       }
 
       @Override
-      public boolean contains(@CheckForNull Object obj) {
+      public boolean contains(@CheckForNull @UnknownSignedness Object obj) {
         return isSuccessor(adjacentNodeValues.get(obj));
       }
     };

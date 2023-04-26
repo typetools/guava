@@ -24,6 +24,7 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * {@code entrySet()} implementation for {@link ImmutableMap}.
@@ -89,7 +90,7 @@ abstract class ImmutableMapEntrySet<K, V> extends ImmutableSet.CachingAsList<Ent
   }
 
   @Override
-  public boolean contains(@CheckForNull Object object) {
+  public boolean contains(@CheckForNull @UnknownSignedness Object object) {
     if (object instanceof Entry) {
       Entry<?, ?> entry = (Entry<?, ?>) object;
       V value = map().get(entry.getKey());

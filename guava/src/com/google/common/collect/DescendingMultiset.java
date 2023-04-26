@@ -24,6 +24,7 @@ import java.util.NavigableSet;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 
 /**
  * A skeleton implementation of a descending multiset. Only needs {@code forwardMultiset()} and
@@ -151,7 +152,7 @@ abstract class DescendingMultiset<E extends @Nullable Object> extends Forwarding
   }
 
   @Override
-  public @Nullable Object[] toArray() {
+  public @PolyNull Object[] toArray() {
     return standardToArray();
   }
 

@@ -87,9 +87,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.PolySigned;
-import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
-import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
  * The concurrent hash map implementation built by {@link CacheBuilder}.
@@ -101,7 +99,6 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @author Bob Lee ({@code com.google.common.collect.MapMaker})
  * @author Doug Lea ({@code ConcurrentHashMap})
  */
-@AnnotatedFor({"signedness"})
 @SuppressWarnings({
   "GoodTime", // lots of violations (nanosecond math)
   "nullness", // too much trouble for the payoff
@@ -4533,8 +4530,8 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
     // https://code.google.com/p/android/issues/detail?id=36519 / http://r.android.com/47508
 
     @Override
-    public @PolySigned Object[] toArray(LocalCache<K,V>.AbstractCacheSet<T> this) {
-      return (@PolySigned Object[]) toArrayList(this).toArray();
+    public @PolySigned Object[] toArray() {
+      return toArrayList(this).toArray();
     }
 
     @Override
@@ -4621,8 +4618,8 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
     // https://code.google.com/p/android/issues/detail?id=36519 / http://r.android.com/47508
 
     @Override
-    public @PolySigned Object[] toArray(LocalCache<K,V>.Values this) {
-      return (@PolySigned Object[]) toArrayList(this).toArray();
+    public @PolySigned Object[] toArray() {
+      return toArrayList(this).toArray();
     }
 
     @Override

@@ -31,6 +31,7 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 
 /**
  * CompactLinkedHashMap is an implementation of a Map with insertion or LRU iteration order,
@@ -244,7 +245,7 @@ class CompactLinkedHashMap<K extends @Nullable Object, V extends @Nullable Objec
     @WeakOuter
     class KeySetImpl extends KeySetView {
       @Override
-      public @Nullable Object[] toArray() {
+      public @PolyNull Object[] toArray() {
         return ObjectArrays.toArrayImpl(this);
       }
 
@@ -267,7 +268,7 @@ class CompactLinkedHashMap<K extends @Nullable Object, V extends @Nullable Objec
     @WeakOuter
     class ValuesImpl extends ValuesView {
       @Override
-      public @Nullable Object[] toArray() {
+      public @PolyNull Object[] toArray() {
         return ObjectArrays.toArrayImpl(this);
       }
 

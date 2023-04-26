@@ -44,6 +44,7 @@ import java.util.stream.Collector;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -318,7 +319,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
 
   @Pure
   @Override
-  public boolean equals(@CheckForNull Object object) {
+  public boolean equals(@CheckForNull @UnknownSignedness Object object) {
     if (object == this) {
       return true;
     }

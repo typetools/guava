@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -63,7 +64,7 @@ public abstract class ForwardingSet<E extends @Nullable Object> extends Forwardi
 
   @Pure
   @Override
-  public boolean equals(@CheckForNull Object object) {
+  public boolean equals(@CheckForNull @UnknownSignedness Object object) {
     return object == this || delegate().equals(object);
   }
 

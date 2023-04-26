@@ -51,6 +51,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Predicate;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -753,12 +754,12 @@ public final class Lists {
     }
 
     @Override
-    public int indexOf(@CheckForNull Object object) {
+    public int indexOf(@CheckForNull @UnknownSignedness Object object) {
       return (object instanceof Character) ? string.indexOf((Character) object) : -1;
     }
 
     @Override
-    public int lastIndexOf(@CheckForNull Object object) {
+    public int lastIndexOf(@CheckForNull @UnknownSignedness Object object) {
       return (object instanceof Character) ? string.lastIndexOf((Character) object) : -1;
     }
 
@@ -1166,7 +1167,7 @@ public final class Lists {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       return backingList.contains(o);
     }
 
