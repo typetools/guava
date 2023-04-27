@@ -24,6 +24,7 @@ import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -60,7 +61,7 @@ public final class CountingOutputStream extends FilterOutputStream {
   }
 
   @Override
-  public void write(@PolySigned int b) throws IOException {
+  public void write(@UnknownSignedness int b) throws IOException {
     out.write(b);
     count++;
   }

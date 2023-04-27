@@ -37,19 +37,20 @@ import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.EnsuresLTLengthOf;
 import org.checkerframework.checker.index.qual.EnsuresLTLengthOfIf;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.HasSubsequence;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
-import org.checkerframework.checker.index.qual.HasSubsequence;
-import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.framework.qual.CFComment;
 
 /**
  * An immutable array of {@code int} values, with an API resembling {@link List}.
@@ -521,6 +522,8 @@ public final class ImmutableIntArray implements Serializable {
     return new AsList(this);
   }
 
+  @CFComment({"signedness: A non-generic container class permits only signed values.",
+              "Clients must suppress warnings when storing unsigned values."})
   static class AsList extends AbstractList<Integer> implements RandomAccess, Serializable {
     private final @SameLen("this") ImmutableIntArray parent;
 

@@ -31,22 +31,25 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.RandomAccess;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.HasSubsequence;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
-import org.checkerframework.checker.index.qual.HasSubsequence;
-import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.Signed;
+import org.checkerframework.checker.signedness.qual.SignednessGlb;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
+import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.framework.qual.CFComment;
 
 /**
  * Static utility methods pertaining to {@code char} primitives, that are not already found in
@@ -319,9 +322,9 @@ public final class Chars {
    * use a shared {@link java.nio.ByteBuffer} instance, or use {@link
    * com.google.common.io.ByteStreams#newDataOutput()} to get a growable buffer.
    */
-  @SuppressWarnings("signedness:return")
+  @SuppressWarnings("signedness:return") // the bytes are bit patterns
   @GwtIncompatible // doesn't work
-  public static byte[] toByteArray(char value) {
+  public static @SignednessGlb byte[] toByteArray(char value) {
     return new byte[] {(byte) (value >> 8), (byte) value};
   }
 
@@ -347,9 +350,9 @@ public final class Chars {
    *
    * @since 7.0
    */
-  @SuppressWarnings("signedness:cast.unsafe")
+  @SuppressWarnings("signedness:cast.unsafe") // the bytes are bit patterns
   @GwtIncompatible // doesn't work
-  public static char fromBytes(byte b1, byte b2) {
+  public static char fromBytes(@SignednessGlb byte b1, @SignednessGlb byte b2) {
     return (char) ((b1 << 8) | (b2 & 0xFF));
   }
 
@@ -452,8 +455,8 @@ public final class Chars {
       return ((CharArrayAsList) collection).toCharArray();
     }
 
-    @SuppressWarnings("signedness:assignment")
-    Object[] boxedArray = collection.toArray();
+    @SuppressWarnings("signedness:assignment") // chars are always unsigned
+    @Unsigned Object[] boxedArray = collection.toArray();
     int len = boxedArray.length;
     char[] array = new char[len];
     for (int i = 0; i < len; i++) {
@@ -580,7 +583,6 @@ public final class Chars {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:return")
     public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Character) {
@@ -593,7 +595,6 @@ public final class Chars {
     }
 
     @Override
-    @SuppressWarnings("lowerbound:return")
     public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Character) {

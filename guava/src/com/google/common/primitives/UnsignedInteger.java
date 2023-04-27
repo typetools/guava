@@ -27,6 +27,7 @@ import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.PolyValue;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -71,7 +72,7 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    *
    * @since 14.0
    */
-  public static UnsignedInteger fromIntBits(int bits) {
+  public static UnsignedInteger fromIntBits(@UnknownSignedness int bits) {
     return new UnsignedInteger(bits);
   }
 
@@ -120,7 +121,7 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * @throws NumberFormatException if the string does not contain a parsable unsigned {@code int}
    *     value
    */
-  @SuppressWarnings("signedness:argument")
+  @SuppressWarnings("signedness:argument") // parseUnsignedInt guarantees value fits in int
   public static UnsignedInteger valueOf(String string, @IntRange(from=2, to=36) int radix) {
     return fromIntBits(UnsignedInts.parseUnsignedInt(string, radix));
   }
@@ -163,7 +164,7 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * @throws ArithmeticException if {@code val} is zero
    * @since 14.0
    */
-  @SuppressWarnings("signedness:argument")
+  @SuppressWarnings("signedness:argument") // 'divide' guarantees result fits in int
   public UnsignedInteger dividedBy(UnsignedInteger val) {
     return fromIntBits(UnsignedInts.divide(value, checkNotNull(val).value));
   }
@@ -174,7 +175,7 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * @throws ArithmeticException if {@code val} is zero
    * @since 14.0
    */
-  @SuppressWarnings("signedness:argument")
+  @SuppressWarnings("signedness:argument") // 'remainder' guarantees result fits in int
   public UnsignedInteger mod(UnsignedInteger val) {
     return fromIntBits(UnsignedInts.remainder(value, checkNotNull(val).value));
   }
@@ -187,14 +188,14 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * will be equal to {@code this - 2^32}.
    */
   @Override
-  @SuppressWarnings("cast.unsafe")
+  @SuppressWarnings("value:cast.unsafe") // Unknown int to PolyValue int is ok
   public @PolyValue int intValue(@PolyValue UnsignedInteger this) {
     return (@PolyValue int) value;
   }
 
   /** Returns the value of this {@code UnsignedInteger} as a {@code long}. */
   @Override
-  @SuppressWarnings("cast.unsafe")
+  @SuppressWarnings("value:cast.unsafe") // Unknown long to PolyValue long is ok
   public @PolyValue long longValue(@PolyValue UnsignedInteger this) {
     return (@PolyValue long) toLong(value);
   }
@@ -204,7 +205,6 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * primitive conversion from {@code int} to {@code float}, and correctly rounded.
    */
   @Override
-  @SuppressWarnings("cast.unsafe")
   public @PolyValue float floatValue(@PolyValue UnsignedInteger this) {
     return longValue();
   }
@@ -229,7 +229,7 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * other}.
    */
   @Override
-  @SuppressWarnings("signedness:argument")
+  @SuppressWarnings("signedness:argument") // value(s) are actually unsigned
   public int compareTo(UnsignedInteger other) {
     checkNotNull(other);
     return compare(value, other.value);
@@ -260,7 +260,7 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * {@code radix < Character.MIN_RADIX} or {@code radix > Character.MAX_RADIX}, the radix {@code
    * 10} is used.
    */
-  @SuppressWarnings("signedness:argument")
+  @SuppressWarnings("signedness:argument") // value is actually unsigned
   public String toString(@IntRange(from=2, to=36) int radix) {
     return UnsignedInts.toString(value, radix);
   }
