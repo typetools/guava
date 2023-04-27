@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Skeletal implementation of {@link NavigableMap}.
@@ -39,7 +40,7 @@ abstract class AbstractNavigableMap<K extends @Nullable Object, V extends @Nulla
 
   @Override
   @CheckForNull
-  public abstract V get(@CheckForNull Object key);
+  public abstract V get(@CheckForNull @UnknownSignedness Object key);
 
   @Override
   @CheckForNull

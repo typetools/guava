@@ -21,6 +21,7 @@ import java.util.concurrent.AbstractExecutorService;
 import java.util.concurrent.Callable;
 import java.util.concurrent.RunnableFuture;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Abstract {@link ListeningExecutorService} implementation that creates {@link ListenableFuture}
@@ -42,14 +43,14 @@ public abstract class AbstractListeningExecutorService extends AbstractExecutorS
 
   /** @since 19.0 (present with return type {@code ListenableFutureTask} since 14.0) */
   @Override
-  protected final <T extends @Nullable Object> RunnableFuture<T> newTaskFor(
+  protected final <T extends @Nullable @UnknownSignedness Object> RunnableFuture<T> newTaskFor(
       Runnable runnable, @ParametricNullness T value) {
     return TrustedListenableFutureTask.create(runnable, value);
   }
 
   /** @since 19.0 (present with return type {@code ListenableFutureTask} since 14.0) */
   @Override
-  protected final <T extends @Nullable Object> RunnableFuture<T> newTaskFor(Callable<T> callable) {
+  protected final <T extends @Nullable @UnknownSignedness Object> RunnableFuture<T> newTaskFor(Callable<T> callable) {
     return TrustedListenableFutureTask.create(callable);
   }
 
@@ -59,13 +60,13 @@ public abstract class AbstractListeningExecutorService extends AbstractExecutorS
   }
 
   @Override
-  public <T extends @Nullable Object> ListenableFuture<T> submit(
+  public <T extends @Nullable @UnknownSignedness Object> ListenableFuture<T> submit(
       Runnable task, @ParametricNullness T result) {
     return (ListenableFuture<T>) super.submit(task, result);
   }
 
   @Override
-  public <T extends @Nullable Object> ListenableFuture<T> submit(Callable<T> task) {
+  public <T extends @Nullable @UnknownSignedness Object> ListenableFuture<T> submit(Callable<T> task) {
     return (ListenableFuture<T>) super.submit(task);
   }
 }

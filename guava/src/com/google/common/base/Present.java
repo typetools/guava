@@ -21,6 +21,8 @@ import java.util.Collections;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 /** Implementation of an {@link Optional} containing a reference. */
 @GwtCompatible
 @ElementTypesAreNonnullByDefault
@@ -70,7 +72,7 @@ final class Present<T> extends Optional<T> {
   }
 
   @Override
-  public <V> Optional<V> transform(Function<? super T, V> function) {
+  public <V extends @NonNull Object> Optional<V> transform(Function<? super T, V> function) {
     return new Present<>(
         checkNotNull(
             function.apply(reference),

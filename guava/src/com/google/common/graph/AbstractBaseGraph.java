@@ -31,6 +31,8 @@ import java.util.AbstractSet;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
+
 /**
  * This class provides a skeletal implementation of {@link BaseGraph}.
  *
@@ -76,7 +78,7 @@ abstract class AbstractBaseGraph<N> implements BaseGraph<N> {
       }
 
       @Override
-      public boolean remove(@CheckForNull Object o) {
+      public boolean remove(@CheckForNull @UnknownSignedness Object o) {
         throw new UnsupportedOperationException();
       }
 
@@ -85,7 +87,7 @@ abstract class AbstractBaseGraph<N> implements BaseGraph<N> {
       // Graph<LinkedList>.
       @SuppressWarnings("unchecked")
       @Override
-      public boolean contains(@CheckForNull Object obj) {
+      public boolean contains(@CheckForNull @UnknownSignedness Object obj) {
         if (!(obj instanceof EndpointPair)) {
           return false;
         }

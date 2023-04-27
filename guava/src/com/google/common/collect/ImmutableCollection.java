@@ -35,6 +35,9 @@ import java.util.function.Predicate;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -193,7 +196,7 @@ public abstract class ImmutableCollection<E extends @NonNull Object> extends Abs
   private static final Object[] EMPTY_ARRAY = {};
 
   @Override
-  public final @Nullable Object[] toArray() {
+  public final @PolyNull @PolySigned Object[] toArray() {
     return toArray(EMPTY_ARRAY);
   }
 
@@ -211,8 +214,8 @@ public abstract class ImmutableCollection<E extends @NonNull Object> extends Abs
    * require its own suppression, since it is also unsound. toArray(T[]) is just a mess from a
    * nullness perspective. The signature below at least has the virtue of being relatively simple.
    */
-  @SuppressWarnings("nullness")
-  public final <T extends @Nullable Object> T[] toArray(T[] other) {
+  @SuppressWarnings({"nullness:return", "nullness:assignment"})
+  public final <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] other) {
     checkNotNull(other);
     int size = size();
 
@@ -253,7 +256,7 @@ public abstract class ImmutableCollection<E extends @NonNull Object> extends Abs
 
   @Pure
   @Override
-  public abstract boolean contains(@CheckForNull Object object);
+  public abstract boolean contains(@CheckForNull @UnknownSignedness Object object);
 
   /**
    * Guaranteed to throw an exception and leave the collection unmodified.
@@ -279,7 +282,7 @@ public abstract class ImmutableCollection<E extends @NonNull Object> extends Abs
   @Deprecated
   @Override
   @DoNotCall("Always throws UnsupportedOperationException")
-  public final boolean remove(@CheckForNull Object object) {
+  public final boolean remove(@CheckForNull @UnknownSignedness Object object) {
     throw new UnsupportedOperationException();
   }
 

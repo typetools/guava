@@ -54,6 +54,7 @@ import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -919,7 +920,7 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
   @Override
   @DoNotCall("Always throws UnsupportedOperationException")
   @CheckForNull
-  public final V remove(@CheckForNull Object o) {
+  public final V remove(@CheckForNull @UnknownSignedness Object o) {
     throw new UnsupportedOperationException();
   }
 
@@ -932,7 +933,7 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
   @Deprecated
   @Override
   @DoNotCall("Always throws UnsupportedOperationException")
-  public final boolean remove(@CheckForNull Object key, @CheckForNull Object value) {
+  public final boolean remove(@CheckForNull @UnknownSignedness Object key, @CheckForNull @UnknownSignedness Object value) {
     throw new UnsupportedOperationException();
   }
 
@@ -957,20 +958,20 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
 
   @Pure
   @Override
-  public boolean containsKey(@CheckForNull Object key) {
+  public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
     return get(key) != null;
   }
 
   @Pure
   @Override
-  public boolean containsValue(@CheckForNull Object value) {
+  public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
     return values().contains(value);
   }
 
   // Overriding to mark it Nullable
   @Override
   @CheckForNull
-  public abstract V get(@CheckForNull Object key);
+  public abstract V get(@CheckForNull @UnknownSignedness Object key);
 
   /**
    * @since 21.0 (but only since 23.5 in the Android <a
@@ -979,7 +980,7 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
    */
   @Override
   @CheckForNull
-  public final V getOrDefault(@CheckForNull Object key, @CheckForNull V defaultValue) {
+  public final V getOrDefault(@CheckForNull @UnknownSignedness Object key, @CheckForNull V defaultValue) {
     /*
      * Even though it's weird to pass a defaultValue that is null, some callers do so. Those who
      * pass a literal "null" should probably just use `get`, but I would expect other callers to
@@ -1122,13 +1123,13 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
     }
 
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       return ImmutableMap.this.containsKey(key);
     }
 
     @Override
     @CheckForNull
-    public ImmutableSet<V> get(@CheckForNull Object key) {
+    public ImmutableSet<V> get(@CheckForNull @UnknownSignedness Object key) {
       V outerValue = ImmutableMap.this.get(key);
       return (outerValue == null) ? null : ImmutableSet.of(outerValue);
     }
