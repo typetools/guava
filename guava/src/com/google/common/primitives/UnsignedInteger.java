@@ -14,7 +14,6 @@
 
 package com.google.common.primitives;
 
-import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.primitives.UnsignedInts.INT_MASK;
@@ -28,6 +27,7 @@ import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.PolyValue;
 import org.checkerframework.framework.qual.AnnotatedFor;

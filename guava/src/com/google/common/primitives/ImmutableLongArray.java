@@ -14,7 +14,6 @@
 
 package com.google.common.primitives;
 
-import org.checkerframework.framework.qual.CFComment;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -51,6 +50,7 @@ import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.framework.qual.CFComment;
 
 /**
  * An immutable array of {@code long} values, with an API resembling {@link List}.
