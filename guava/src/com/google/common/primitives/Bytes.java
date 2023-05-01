@@ -37,7 +37,6 @@ import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
-import org.checkerframework.checker.index.qual.SubstringIndexFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.PolySigned;
 import org.checkerframework.checker.signedness.qual.Signed;
@@ -75,6 +74,7 @@ public final class Bytes {
    * @param value a primitive {@code byte} value
    * @return a hash code for the value
    */
+  @SuppressWarnings("signedness:return") // needs @Signed int cast, but then cast.unsafe warning
   public static int hashCode(@UnknownSignedness byte value) {
     return value;
   }
@@ -127,8 +127,7 @@ public final class Bytes {
    * @param array the array to search for the sequence {@code target}
    * @param target the array to search for as a sub-sequence of {@code array}
    */
-  @SuppressWarnings("substringindex:return") // https://github.com/kelloggm/checker-framework/issues/206, 207 and 208
-  public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset = "#2.length - 1") int indexOf(@PolySigned byte[] array, @PolySigned byte[] target) {
+  public static @LTEqLengthOf("#1") int indexOf(@PolySigned byte[] array, @PolySigned byte[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
     if (target.length == 0) {
@@ -182,13 +181,13 @@ public final class Bytes {
    * pos is increased the same way as length, so pos points to a valid
    * range of length array.length in result.
    */
-  @SuppressWarnings("upperbound:argument") // sum of lengths
+  @SuppressWarnings("signedness:enhancedfor")
   public static @PolySigned byte[] concat(@PolySigned byte[]... arrays) {
     int length = 0;
     for (byte[] array : arrays) {
       length += array.length;
     }
-    byte[] result = new byte[length];
+    @PolySigned byte[] result = new byte[length];
     int pos = 0;
     for (byte[] array : arrays) {
       System.arraycopy(array, 0, result, pos, array.length);
@@ -229,11 +228,13 @@ public final class Bytes {
    * @throws NullPointerException if {@code collection} or any of its elements is null
    * @since 1.0 (parameter was {@code Collection<Byte>} before 12.0)
    */
+  @SuppressWarnings("signedness:return") // needs PolySigned cast, but then cast.unsafe warning
   public static <T extends Number> @PolySigned byte[] toArray(Collection<@PolySigned T> collection) {
     if (collection instanceof ByteArrayAsList) {
       return ((ByteArrayAsList) collection).toByteArray();
     }
 
+    @SuppressWarnings("signedness:assignment") // signedness is ok
     Object[] boxedArray = collection.toArray();
     int len = boxedArray.length;
     byte[] array = new byte[len];
@@ -256,6 +257,8 @@ public final class Bytes {
    * @param backingArray the array to back the list
    * @return a list view of the array
    */
+  @SuppressWarnings({"signedness:argument", // needs PolySigned cast, but then cast.unsafe warning
+                     "signedness:return"})  // ByteArrayAsList is AbstractList>Byte>
   public static List<@PolySigned Byte> asList(@PolySigned byte... backingArray) {
     if (backingArray.length == 0) {
       return Collections.emptyList();
@@ -277,8 +280,8 @@ public final class Bytes {
       this(array, 0, array.length);
     }
 
-    @SuppressWarnings(
-            "index") // these three fields need to be initialized in some order, and any ordering leads to the first two issuing errors - since each field is dependent on at least one of the others
+    @SuppressWarnings("index") // these three fields need to be initialized in some order,
+    // and any ordering leads to the first two issuing errors - since each field is dependent on at least one of the others
     ByteArrayAsList(byte @MinLen(1)[] array, @IndexFor("#1") @LessThan("#3") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
@@ -302,14 +305,12 @@ public final class Bytes {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe") // non-generic container class
     public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Byte) && Bytes.indexOf(array, (Byte) target, start, end) != -1;
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe") // non-generic container class
     public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Byte) {
@@ -322,7 +323,6 @@ public final class Bytes {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe") // non-generic container class
     public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Byte) {

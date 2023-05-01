@@ -72,6 +72,7 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    *
    * @since 14.0
    */
+  @SuppressWarnings("signedness:argument") // @UnknownSignedness doesn't matter
   public static UnsignedInteger fromIntBits(@UnknownSignedness int bits) {
     return new UnsignedInteger(bits);
   }
@@ -121,7 +122,6 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * @throws NumberFormatException if the string does not contain a parsable unsigned {@code int}
    *     value
    */
-  @SuppressWarnings("signedness:argument") // parseUnsignedInt guarantees value fits in int
   public static UnsignedInteger valueOf(String string, @IntRange(from=2, to=36) int radix) {
     return fromIntBits(UnsignedInts.parseUnsignedInt(string, radix));
   }
@@ -188,16 +188,16 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * will be equal to {@code this - 2^32}.
    */
   @Override
-  @SuppressWarnings("value:cast.unsafe") // Unknown int to PolyValue int is ok
+  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
   public @PolyValue int intValue(@PolyValue UnsignedInteger this) {
-    return (@PolyValue int) value;
+    return value;
   }
 
   /** Returns the value of this {@code UnsignedInteger} as a {@code long}. */
   @Override
-  @SuppressWarnings("value:cast.unsafe") // Unknown long to PolyValue long is ok
+  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
   public @PolyValue long longValue(@PolyValue UnsignedInteger this) {
-    return (@PolyValue long) toLong(value);
+    return toLong(value);
   }
 
   /**

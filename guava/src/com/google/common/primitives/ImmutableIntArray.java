@@ -545,9 +545,8 @@ public final class ImmutableIntArray implements Serializable {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
     public boolean contains(@CheckForNull @UnknownSignedness Object target) {
-      return indexOf((@Signed Integer) target) >= 0;
+      return indexOf(target) >= 0;
     }
 
     @Override
@@ -620,7 +619,7 @@ public final class ImmutableIntArray implements Serializable {
    * values as this one, in the same order.
    */
   @Override
-  public boolean equals(@CheckForNull @UnknownSignedness Object object) {
+  public boolean equals(@CheckForNull Object object) {
     if (object == this) {
       return true;
     }

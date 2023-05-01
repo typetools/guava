@@ -106,10 +106,10 @@ public final class UnsignedInts {
    */
   // "(long value)" was originally "(@IntRange(from = 0, to = (2L << 32) - 1) long value)"
   // but that caused too many checker warnings.
-  @SuppressWarnings("signedness:cast.unsafe") // checkArgument guarantees value fits in Unsigned int
+  @SuppressWarnings("signedness:return") // needs Unsigned cast, but then cast.unsafe warning
   public static @Unsigned int checkedCast(long value) {
     checkArgument((value >> Integer.SIZE) == 0, "out of range: %s", value);
-    return (@Unsigned int) value;
+    return (int) value;
   }
 
   /**

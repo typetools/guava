@@ -22,6 +22,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Collection;
 import java.util.Iterator;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.PolySigned;
@@ -71,7 +72,7 @@ public abstract class ForwardingCollection<E extends @Nullable Object> extends F
 
   @Pure
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return delegate().size();
   }
 

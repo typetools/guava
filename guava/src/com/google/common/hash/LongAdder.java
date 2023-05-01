@@ -160,30 +160,30 @@ final class LongAdder extends Striped64 implements Serializable, LongAddable {
    * @return the sum
    */
   @Override
-  @SuppressWarnings("cast.unsafe")
+  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
   public @PolyValue long longValue(@PolyValue LongAdder this) {
-    return (@PolyValue long)sum();
+    return sum();
   }
 
   /** Returns the {@link #sum} as an {@code int} after a narrowing primitive conversion. */
   @Override
-  @SuppressWarnings("cast.unsafe")
+  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
   public @PolyValue int intValue(@PolyValue LongAdder this) {
-    return (@PolyValue int) sum();
+    return (int) sum();
   }
 
   /** Returns the {@link #sum} as a {@code float} after a widening primitive conversion. */
   @Override
-  @SuppressWarnings("cast.unsafe")
+  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
   public @PolyValue float floatValue(@PolyValue LongAdder this) {
-    return (@PolyValue float) sum();
+    return (float) sum();
   }
 
   /** Returns the {@link #sum} as a {@code double} after a widening primitive conversion. */
   @Override
-  @SuppressWarnings("cast.unsafe")
+  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
   public @PolyValue double doubleValue(@PolyValue LongAdder this) {
-    return (@PolyValue double) sum();
+    return (double) sum();
   }
 
   private void writeObject(ObjectOutputStream s) throws IOException {

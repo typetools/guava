@@ -40,7 +40,6 @@ import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
-import org.checkerframework.checker.index.qual.SubstringIndexFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.checker.signedness.qual.SignednessGlb;
@@ -49,7 +48,6 @@ import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 import org.checkerframework.framework.qual.AnnotatedFor;
-import org.checkerframework.framework.qual.CFComment;
 
 /**
  * Static utility methods pertaining to {@code char} primitives, that are not already found in
@@ -186,8 +184,7 @@ public final class Chars {
    * @param array the array to search for the sequence {@code target}
    * @param target the array to search for as a sub-sequence of {@code array}
    */
-  @SuppressWarnings("substringindex:return") // https://github.com/kelloggm/checker-framework/issues/206, 207 and 208
-  public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset="#2.length - 1") int indexOf(char[] array, char[] target) {
+  public static @LTEqLengthOf("#1") int indexOf(char[] array, char[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
     if (target.length == 0) {
@@ -338,6 +335,7 @@ public final class Chars {
    *
    * @throws IllegalArgumentException if {@code bytes} has fewer than 2 elements
    */
+  @SuppressWarnings("argument") // fromBytes wants @NonNegative args
   @GwtIncompatible // doesn't work
   public static char fromByteArray(byte @MinLen(Chars.BYTES)[] bytes) {
     checkArgument(bytes.length >= BYTES, "array too small: %s < %s", bytes.length, BYTES);
@@ -350,7 +348,6 @@ public final class Chars {
    *
    * @since 7.0
    */
-  @SuppressWarnings("signedness:cast.unsafe") // the bytes are bit patterns
   @GwtIncompatible // doesn't work
   public static char fromBytes(@SignednessGlb byte b1, @SignednessGlb byte b2) {
     return (char) ((b1 << 8) | (b2 & 0xFF));
@@ -455,7 +452,6 @@ public final class Chars {
       return ((CharArrayAsList) collection).toCharArray();
     }
 
-    @SuppressWarnings("signedness:assignment") // chars are always unsigned
     @Unsigned Object[] boxedArray = collection.toArray();
     int len = boxedArray.length;
     char[] array = new char[len];

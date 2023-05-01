@@ -98,7 +98,7 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
    * @throws IllegalArgumentException if {@code value} is negative or {@code value >= 2^64}
    */
   @CanIgnoreReturnValue
-  @SuppressWarnings("signedness:cast.unsafe")
+  @SuppressWarnings("signedness:cast.unsafe") // checkArgument guarantees value fits in Unsigned long
   public static UnsignedLong valueOf(BigInteger value) {
     checkNotNull(value);
     checkArgument(
@@ -183,7 +183,7 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
 
   /** Returns the value of this {@code UnsignedLong} as an {@code int}. */
   @Override
-  @SuppressWarnings("return")
+  @SuppressWarnings({"signedness:return", "value:return"}) // needs PolyValue Signed cast, but then cast.unsafe warning
   public @PolyValue int intValue(@PolyValue UnsignedLong this) {
     return (int) value;
   }
@@ -196,7 +196,7 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
    * will be equal to {@code this - 2^64}.
    */
   @Override
-  @SuppressWarnings("return")
+  @SuppressWarnings({"signedness:return", "value:return"}) // needs PolyValue Signed cast, but then cast.unsafe warning
   public @PolyValue long longValue(@PolyValue UnsignedLong this) {
     return value;
   }
@@ -205,9 +205,10 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
    * Returns the value of this {@code UnsignedLong} as a {@code float}, analogous to a widening
    * primitive conversion from {@code long} to {@code float}, and correctly rounded.
    */
+  @Override
   @SuppressWarnings({
     "signedness:comparison", // unsigned compare
-    "value:return" // forDigit
+    "value:return" // needs PolyValue cast, but then cast.unsafe warning
   })
   public @PolyValue float floatValue(@PolyValue UnsignedLong this) {
     if (value >= 0) {
@@ -225,7 +226,7 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
   @Override
   @SuppressWarnings({
     "signedness:comparison", // unsigned compare
-    "value:return" // forDigit
+    "value:return" // needs PolyValue cast, but then cast.unsafe warning
   })
   public @PolyValue double doubleValue(@PolyValue UnsignedLong this) {
     if (value >= 0) {

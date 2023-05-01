@@ -259,9 +259,9 @@ public class AtomicDouble extends Number implements java.io.Serializable {
    * conversion.
    */
   @Override
-  @SuppressWarnings("cast.unsafe")
+  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
   public @PolyValue int intValue(@PolyValue AtomicDouble this) {
-    return (@PolyValue int) get();
+    return (int) get();
   }
 
   /**
@@ -269,9 +269,9 @@ public class AtomicDouble extends Number implements java.io.Serializable {
    * conversion.
    */
   @Override
-  @SuppressWarnings("cast.unsafe")
+  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
   public @PolyValue long longValue(@PolyValue AtomicDouble this) {
-    return (@PolyValue long) get();
+    return (long) get();
   }
 
   /**
@@ -279,16 +279,16 @@ public class AtomicDouble extends Number implements java.io.Serializable {
    * conversion.
    */
   @Override
-  @SuppressWarnings("cast.unsafe")
+  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
   public @PolyValue float floatValue(@PolyValue AtomicDouble this) {
-    return (@PolyValue float) get();
+    return (float) get();
   }
 
   /** Returns the value of this {@code AtomicDouble} as a {@code double}. */
   @Override
-  @SuppressWarnings("cast.unsafe")
+  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
   public @PolyValue double doubleValue(@PolyValue AtomicDouble this) {
-    return (@PolyValue double) get();
+    return get();
   }
 
   /**
