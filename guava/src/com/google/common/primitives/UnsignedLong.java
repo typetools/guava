@@ -208,7 +208,7 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
   @Override
   @SuppressWarnings({
     "signedness:comparison", // unsigned compare
-    "value:return" // needs PolyValue cast, but then cast.unsafe warning
+    "value:return" // bit manipulation preserves value from integral to float
   })
   public @PolyValue float floatValue(@PolyValue UnsignedLong this) {
     if (value >= 0) {
@@ -226,7 +226,7 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
   @Override
   @SuppressWarnings({
     "signedness:comparison", // unsigned compare
-    "value:return" // needs PolyValue cast, but then cast.unsafe warning
+    "value:return" // bit manipulation preserves value from integral to double
   })
   public @PolyValue double doubleValue(@PolyValue UnsignedLong this) {
     if (value >= 0) {

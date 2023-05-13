@@ -158,30 +158,30 @@ final class LongAdder extends Striped64 implements Serializable, LongAddable {
    *
    * @return the sum
    */
+  @SuppressWarnings("override.return")  // superclass Number requires @PolyValue, but that is unverifiable and unlikely to be useful to clients
   @Override
-  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
-  public @PolyValue long longValue(@PolyValue LongAdder this) {
+  public long longValue() {
     return sum();
   }
 
   /** Returns the {@link #sum} as an {@code int} after a narrowing primitive conversion. */
+  @SuppressWarnings("override.return")  // superclass Number requires @PolyValue, but that is unverifiable and unlikely to be useful to clients
   @Override
-  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
-  public @PolyValue int intValue(@PolyValue LongAdder this) {
+  public int intValue() {
     return (int) sum();
   }
 
   /** Returns the {@link #sum} as a {@code float} after a widening primitive conversion. */
+  @SuppressWarnings("override.return")  // superclass Number requires @PolyValue, but that is unverifiable and unlikely to be useful to clients
   @Override
-  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
-  public @PolyValue float floatValue(@PolyValue LongAdder this) {
+  public float floatValue() {
     return (float) sum();
   }
 
   /** Returns the {@link #sum} as a {@code double} after a widening primitive conversion. */
+  @SuppressWarnings("override.return")  // superclass Number requires @PolyValue, but that is unverifiable and unlikely to be useful to clients
   @Override
-  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
-  public @PolyValue double doubleValue(@PolyValue LongAdder this) {
+  public double doubleValue() {
     return (double) sum();
   }
 

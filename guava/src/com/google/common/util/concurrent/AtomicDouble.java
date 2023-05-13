@@ -62,6 +62,7 @@ import org.checkerframework.common.value.qual.PolyValue;
 public class AtomicDouble extends Number implements java.io.Serializable {
   private static final long serialVersionUID = 0L;
 
+  // This is not a long integral value, but the bit pattern for a double value.
   private transient volatile long value;
 
   private static final AtomicLongFieldUpdater<AtomicDouble> updater =
@@ -86,7 +87,8 @@ public class AtomicDouble extends Number implements java.io.Serializable {
    *
    * @return the current value
    */
-  public final double get() {
+  @SuppressWarnings("value:return") // bit manipulation of double representation
+  public final @PolyValue double get(@PolyValue AtomicDouble this) {
     return longBitsToDouble(value);
   }
 
@@ -259,9 +261,9 @@ public class AtomicDouble extends Number implements java.io.Serializable {
    * conversion.
    */
   @Override
-  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
+  @SuppressWarnings("cast.unsafe")
   public @PolyValue int intValue(@PolyValue AtomicDouble this) {
-    return (int) get();
+    return (@PolyValue int) get();
   }
 
   /**
@@ -269,9 +271,9 @@ public class AtomicDouble extends Number implements java.io.Serializable {
    * conversion.
    */
   @Override
-  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
+  @SuppressWarnings("cast.unsafe")
   public @PolyValue long longValue(@PolyValue AtomicDouble this) {
-    return (long) get();
+    return (@PolyValue long) get();
   }
 
   /**
@@ -279,16 +281,16 @@ public class AtomicDouble extends Number implements java.io.Serializable {
    * conversion.
    */
   @Override
-  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
+  @SuppressWarnings("cast.unsafe")
   public @PolyValue float floatValue(@PolyValue AtomicDouble this) {
-    return (float) get();
+    return (@PolyValue float) get();
   }
 
   /** Returns the value of this {@code AtomicDouble} as a {@code double}. */
   @Override
-  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
+  @SuppressWarnings("cast.unsafe")
   public @PolyValue double doubleValue(@PolyValue AtomicDouble this) {
-    return get();
+    return (@PolyValue double) get();
   }
 
   /**

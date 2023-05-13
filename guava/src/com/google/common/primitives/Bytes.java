@@ -189,7 +189,7 @@ public final class Bytes {
     }
     @PolySigned byte[] result = new byte[length];
     int pos = 0;
-    for (byte[] array : arrays) {
+    for (@PolySigned byte[] array : arrays) {
       System.arraycopy(array, 0, result, pos, array.length);
       pos += array.length;
     }
@@ -235,7 +235,7 @@ public final class Bytes {
     }
 
     @SuppressWarnings("signedness:assignment") // signedness is ok
-    Object[] boxedArray = collection.toArray();
+    @PolySigned Object[] boxedArray = collection.toArray();
     int len = boxedArray.length;
     byte[] array = new byte[len];
     for (int i = 0; i < len; i++) {
@@ -257,8 +257,7 @@ public final class Bytes {
    * @param backingArray the array to back the list
    * @return a list view of the array
    */
-  @SuppressWarnings({"signedness:argument", // needs PolySigned cast, but then cast.unsafe warning
-                     "signedness:return"})  // ByteArrayAsList is AbstractList>Byte>
+  @SuppressWarnings({"signedness:argument", "signedness:return"}) // non-generic container class
   public static List<@PolySigned Byte> asList(@PolySigned byte... backingArray) {
     if (backingArray.length == 0) {
       return Collections.emptyList();
@@ -280,8 +279,8 @@ public final class Bytes {
       this(array, 0, array.length);
     }
 
-    @SuppressWarnings("index") // these three fields need to be initialized in some order,
-    // and any ordering leads to the first two issuing errors - since each field is dependent on at least one of the others
+    @SuppressWarnings("index") // these three fields need to be initialized in some order, and
+    // any ordering leads to the first two issuing errors - since each field is dependent on at least one of the others
     ByteArrayAsList(byte @MinLen(1)[] array, @IndexFor("#1") @LessThan("#3") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;

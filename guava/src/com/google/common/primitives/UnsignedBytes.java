@@ -232,14 +232,14 @@ public final class UnsignedBytes {
    *     Byte#parseByte(String)})
    * @since 13.0
    */
-  @SuppressWarnings("signedness:return") // if statement guarantees all is ok
+  @SuppressWarnings("signedness:cast") // if statement guarantees all is ok
   @Beta
   @CanIgnoreReturnValue
   public static @Unsigned byte parseUnsignedByte(String string, @IntRange(from=2, to=36) int radix) {
     int parse = Integer.parseInt(checkNotNull(string), radix);
     // We need to throw a NumberFormatException, so we have to duplicate checkedCast. =(
     if (parse >> Byte.SIZE == 0) {
-      return (byte) parse;
+      return (@Unsigned byte) parse;
     } else {
       throw new NumberFormatException("out of range: " + parse);
     }
@@ -475,9 +475,9 @@ public final class UnsignedBytes {
     }
   }
 
-  @SuppressWarnings("signedness:return") // https://github.com/typetools/checker-framework/issues/5773
+  //@SuppressWarnings("signedness:return") // https://github.com/typetools/checker-framework/issues/5773
   private static @PolySigned byte flip(@PolySigned byte b) {
-    return (byte) (b ^ 0x80);
+    return (@PolySigned byte) (b ^ 0x80);
   }
 
   /**
