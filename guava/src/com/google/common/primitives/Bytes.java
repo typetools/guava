@@ -75,8 +75,9 @@ public final class Bytes {
    * @param value a primitive {@code byte} value
    * @return a hash code for the value
    */
+  @SuppressWarnings("signedness:cast.unsafe") // UnknownSignedness byte to Signed int is ok for hashing
   public static int hashCode(@UnknownSignedness byte value) {
-    return value;
+    return (@Signed int) value;
   }
 
   /**
@@ -182,15 +183,15 @@ public final class Bytes {
    * pos is increased the same way as length, so pos points to a valid
    * range of length array.length in result.
    */
-  @SuppressWarnings("upperbound:argument") // sum of lengths
+  @SuppressWarnings("signedness:enhancedfor")
   public static @PolySigned byte[] concat(@PolySigned byte[]... arrays) {
     int length = 0;
     for (byte[] array : arrays) {
       length += array.length;
     }
-    byte[] result = new byte[length];
+    @PolySigned byte[] result = new byte[length];
     int pos = 0;
-    for (byte[] array : arrays) {
+    for (@PolySigned byte[] array : arrays) {
       System.arraycopy(array, 0, result, pos, array.length);
       pos += array.length;
     }
@@ -229,14 +230,15 @@ public final class Bytes {
    * @throws NullPointerException if {@code collection} or any of its elements is null
    * @since 1.0 (parameter was {@code Collection<Byte>} before 12.0)
    */
+  @SuppressWarnings("signedness:return") // Signed byte to PolySigned byte is ok
   public static <T extends Number> @PolySigned byte[] toArray(Collection<@PolySigned T> collection) {
     if (collection instanceof ByteArrayAsList) {
       return ((ByteArrayAsList) collection).toByteArray();
     }
 
-    Object[] boxedArray = collection.toArray();
+    @PolySigned Object[] boxedArray = collection.toArray();
     int len = boxedArray.length;
-    byte[] array = new byte[len];
+    @PolySigned byte[] array = new byte[len];
     for (int i = 0; i < len; i++) {
       // checkNotNull for GWT (do not optimize)
       array[i] = ((Number) checkNotNull(boxedArray[i])).byteValue();
@@ -256,6 +258,7 @@ public final class Bytes {
    * @param backingArray the array to back the list
    * @return a list view of the array
    */
+  @SuppressWarnings({"signedness:argument", "signedness:return"}) // non-generic container class
   public static List<@PolySigned Byte> asList(@PolySigned byte... backingArray) {
     if (backingArray.length == 0) {
       return Collections.emptyList();
@@ -305,14 +308,12 @@ public final class Bytes {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe") // non-generic container class
     public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Byte) && Bytes.indexOf(array, (Byte) target, start, end) != -1;
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe") // non-generic container class
     public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Byte) {
@@ -325,7 +326,6 @@ public final class Bytes {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe") // non-generic container class
     public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Byte) {

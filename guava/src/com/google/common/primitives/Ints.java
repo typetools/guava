@@ -607,7 +607,6 @@ public final class Ints extends IntsMethodsForWeb {
     // leads to the first two issuing errors - since each field is dependent on
     // at least one of the others
     )
-    @SuppressWarnings("index:assignment") // these three fields need to be initialized in some order, and any ordering leads to the first two issuing errors - since each field is dependent on at least one of the others
     IntArrayAsList(int @MinLen(1)[] array, @IndexFor("#1") @LessThan("#3") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
@@ -636,7 +635,7 @@ public final class Ints extends IntsMethodsForWeb {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // non-generic container class
     public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Integer) && Ints.indexOf(array, (@Signed Integer) target, start, end) != -1;
@@ -657,7 +656,7 @@ public final class Ints extends IntsMethodsForWeb {
 
     @Override
     @SuppressWarnings("signedness:cast.unsafe") // non-generic container class
-    public @IndexOrLow("this")int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
+    public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Integer) {
         int i = Ints.lastIndexOf(array, (@Signed Integer) target, start, end);

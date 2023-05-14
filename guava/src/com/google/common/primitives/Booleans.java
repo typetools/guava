@@ -447,10 +447,10 @@ public final class Booleans {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe") // CF bug? Boolean should always be @Signed
     public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Boolean) {
+        @SuppressWarnings("signedness:cast.unsafe") // https://github.com/typetools/checker-framework/pull/5862
         int i = Booleans.indexOf(array, (@Signed Boolean) target, start, end);
         if (i >= 0) {
           return i - start;
@@ -460,10 +460,10 @@ public final class Booleans {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe") // CF bug? Boolean should always be @Signed
     public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Boolean) {
+        @SuppressWarnings("signedness:cast.unsafe") // https://github.com/typetools/checker-framework/pull/5862
         int i = Booleans.lastIndexOf(array, (@Signed Boolean) target, start, end);
         if (i >= 0) {
           return i - start;

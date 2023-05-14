@@ -72,6 +72,7 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    *
    * @since 14.0
    */
+  @SuppressWarnings("signedness:argument") // @UnknownSignedness doesn't matter
   public static UnsignedInteger fromIntBits(@UnknownSignedness int bits) {
     return new UnsignedInteger(bits);
   }
@@ -121,7 +122,6 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * @throws NumberFormatException if the string does not contain a parsable unsigned {@code int}
    *     value
    */
-  @SuppressWarnings("signedness:argument") // parseUnsignedInt guarantees value fits in int
   public static UnsignedInteger valueOf(String string, @IntRange(from=2, to=36) int radix) {
     return fromIntBits(UnsignedInts.parseUnsignedInt(string, radix));
   }

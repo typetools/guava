@@ -350,7 +350,6 @@ public final class Chars {
    *
    * @since 7.0
    */
-  @SuppressWarnings("signedness:cast.unsafe") // the bytes are bit patterns
   @GwtIncompatible // doesn't work
   public static char fromBytes(@SignednessGlb byte b1, @SignednessGlb byte b2) {
     return (char) ((b1 << 8) | (b2 & 0xFF));
@@ -455,7 +454,6 @@ public final class Chars {
       return ((CharArrayAsList) collection).toCharArray();
     }
 
-    @SuppressWarnings("signedness:assignment") // chars are always unsigned
     @Unsigned Object[] boxedArray = collection.toArray();
     int len = boxedArray.length;
     char[] array = new char[len];

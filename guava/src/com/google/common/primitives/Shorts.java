@@ -633,7 +633,6 @@ public final class Shorts extends ShortsMethodsForWeb {
       return (target instanceof Short) && Shorts.indexOf(array, (@Signed Short) target, start, end) != -1;
     }
 
-
     @Override
     @SuppressWarnings("signedness:cast.unsafe") // non-generic container class
     public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
