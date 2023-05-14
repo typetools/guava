@@ -397,7 +397,10 @@ public final class ImmutableIntArray implements Serializable {
   }
 
   @SuppressWarnings(
-          "index") // these three fields need to be initialized in some order, and any ordering leads to the first two issuing errors - since each field is dependent on at least one of the others
+      "index" // these three fields need to be initialized in some order, and any ordering
+  // leads to the first two issuing errors - since each field is dependent on
+  // at least one of the others
+  )
   private ImmutableIntArray(int[] array, @IndexOrHigh("#1") @LessThan("#3 + 1") int start, @IndexOrHigh("#1") int end) {
     this.array = array;
     this.start = start;
