@@ -236,7 +236,7 @@ public final class Bytes {
 
     @PolySigned Object[] boxedArray = collection.toArray();
     int len = boxedArray.length;
-    byte[] array = new byte[len];
+    @PolySigned byte[] array = new byte[len];
     for (int i = 0; i < len; i++) {
       // checkNotNull for GWT (do not optimize)
       array[i] = ((Number) checkNotNull(boxedArray[i])).byteValue();
