@@ -475,7 +475,7 @@ public final class UnsignedBytes {
     }
   }
 
-  //@SuppressWarnings("signedness:return") // https://github.com/typetools/checker-framework/issues/5773
+  @SuppressWarnings("signedness:cast.unsafe") // https://github.com/typetools/checker-framework/issues/5773
   private static @PolySigned byte flip(@PolySigned byte b) {
     return (@PolySigned byte) (b ^ 0x80);
   }

@@ -188,16 +188,16 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
    * will be equal to {@code this - 2^32}.
    */
   @Override
-  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
+  @SuppressWarnings("value:cast.unsafe") // Unknown int to PolyValue int is ok
   public @PolyValue int intValue(@PolyValue UnsignedInteger this) {
-    return value;
+    return (@PolyValue int) value;
   }
 
   /** Returns the value of this {@code UnsignedInteger} as a {@code long}. */
   @Override
-  @SuppressWarnings("value:return") // needs PolyValue cast, but then cast.unsafe warning
+  @SuppressWarnings("value:cast.unsafe") // Unknown long to PolyValue long is ok
   public @PolyValue long longValue(@PolyValue UnsignedInteger this) {
-    return toLong(value);
+    return (@PolyValue long) toLong(value);
   }
 
   /**

@@ -183,9 +183,9 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
 
   /** Returns the value of this {@code UnsignedLong} as an {@code int}. */
   @Override
-  @SuppressWarnings({"signedness:return", "value:return"}) // needs PolyValue Signed cast, but then cast.unsafe warning
+  @SuppressWarnings("cast.unsafe") // Unsigned long to Signed int is function intention
   public @PolyValue int intValue(@PolyValue UnsignedLong this) {
-    return (int) value;
+    return (@PolyValue @Signed int) value;
   }
 
   /**
@@ -196,9 +196,9 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
    * will be equal to {@code this - 2^64}.
    */
   @Override
-  @SuppressWarnings({"signedness:return", "value:return"}) // needs PolyValue Signed cast, but then cast.unsafe warning
+  @SuppressWarnings("cast.unsafe") // Unsigned long to Signed long is function intention
   public @PolyValue long longValue(@PolyValue UnsignedLong this) {
-    return value;
+    return (@PolyValue @Signed long) value;
   }
 
   /**

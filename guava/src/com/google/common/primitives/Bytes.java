@@ -74,9 +74,9 @@ public final class Bytes {
    * @param value a primitive {@code byte} value
    * @return a hash code for the value
    */
-  @SuppressWarnings("signedness:return") // needs @Signed int cast, but then cast.unsafe warning
+  @SuppressWarnings("signedness:cast.unsafe") // UnknownSignedness byte to Signed int is ok for hashing
   public static int hashCode(@UnknownSignedness byte value) {
-    return value;
+    return (@Signed int) value;
   }
 
   /**
@@ -228,13 +228,12 @@ public final class Bytes {
    * @throws NullPointerException if {@code collection} or any of its elements is null
    * @since 1.0 (parameter was {@code Collection<Byte>} before 12.0)
    */
-  @SuppressWarnings("signedness:return") // needs PolySigned cast, but then cast.unsafe warning
+  @SuppressWarnings("signedness:return") // Signed byte to PolySigned byte is ok
   public static <T extends Number> @PolySigned byte[] toArray(Collection<@PolySigned T> collection) {
     if (collection instanceof ByteArrayAsList) {
       return ((ByteArrayAsList) collection).toByteArray();
     }
 
-    @SuppressWarnings("signedness:assignment") // signedness is ok
     @PolySigned Object[] boxedArray = collection.toArray();
     int len = boxedArray.length;
     byte[] array = new byte[len];
