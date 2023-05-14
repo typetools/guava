@@ -559,10 +559,10 @@ public final class Doubles extends DoublesMethodsForWeb {
     }
 
     @SuppressWarnings(
-            "index" // these three fields need to be initialized in some order,
-            // and any ordering leads to the first two issuing errors - since
-            // each field is dependent on at least one of the others
-                      )
+        "index" // these three fields need to be initialized in some order, and any ordering
+    // leads to the first two issuing errors - since each field is dependent on
+    // at least one of the others
+    )
     DoubleArrayAsList(double @MinLen(1)[] array, @IndexFor("#1") @LessThan("#3") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
