@@ -43,6 +43,9 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -169,13 +172,13 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    */
 
   @Override
-  public Object[] toArray() {
+  public @PolyNull @PolySigned Object[] toArray() {
     return snapshot().toArray();
   }
 
   @Override
   @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-  public <T extends @Nullable Object> T[] toArray(T[] array) {
+  public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] array) {
     return snapshot().toArray(array);
   }
 
@@ -577,13 +580,13 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
      */
 
     @Override
-    public Object[] toArray() {
+    public @PolyNull @PolySigned Object[] toArray() {
       return snapshot().toArray();
     }
 
     @Override
     @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-    public <T extends @Nullable Object> T[] toArray(T[] array) {
+    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] array) {
       return snapshot().toArray(array);
     }
 

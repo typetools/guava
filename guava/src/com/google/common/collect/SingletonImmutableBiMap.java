@@ -24,6 +24,7 @@ import com.google.errorprone.annotations.concurrent.LazyInit;
 import com.google.j2objc.annotations.RetainedWith;
 import java.util.function.BiConsumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Implementation of {@link ImmutableMap} with exactly one entry.
@@ -54,7 +55,7 @@ final class SingletonImmutableBiMap<K, V> extends ImmutableBiMap<K, V> {
 
   @Override
   @CheckForNull
-  public V get(@CheckForNull Object key) {
+  public V get(@CheckForNull @UnknownSignedness Object key) {
     return singleKey.equals(key) ? singleValue : null;
   }
 
@@ -69,12 +70,12 @@ final class SingletonImmutableBiMap<K, V> extends ImmutableBiMap<K, V> {
   }
 
   @Override
-  public boolean containsKey(@CheckForNull Object key) {
+  public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
     return singleKey.equals(key);
   }
 
   @Override
-  public boolean containsValue(@CheckForNull Object value) {
+  public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
     return singleValue.equals(value);
   }
 

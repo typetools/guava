@@ -61,7 +61,7 @@ abstract class AbstractTable<
   }
 
   @Override
-  public boolean containsValue(@CheckForNull Object value) {
+  public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
     for (Map<C, V> row : rowMap().values()) {
       if (row.containsValue(value)) {
         return true;

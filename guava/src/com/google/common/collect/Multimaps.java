@@ -57,6 +57,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
@@ -1146,7 +1147,7 @@ public final class Multimaps {
 
     @Pure
     @Override
-    public boolean containsValue(@CheckForNull Object value) {
+    public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
       return map.containsValue(value);
     }
 
@@ -1948,7 +1949,7 @@ public final class Multimaps {
     }
 
     @Override
-    public Set<K> keySet() {
+    public Set<@KeyFor({"this"}) K> keySet() {
       return multimap.keySet();
     }
 

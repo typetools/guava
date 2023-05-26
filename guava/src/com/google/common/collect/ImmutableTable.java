@@ -34,6 +34,7 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A {@link Table} whose contents will never change, with many other important properties detailed
@@ -381,7 +382,7 @@ public abstract class ImmutableTable<R, C, V> extends AbstractTable<R, C, V>
   }
 
   @Override
-  public boolean containsValue(@CheckForNull Object value) {
+  public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
     return values().contains(value);
   }
 

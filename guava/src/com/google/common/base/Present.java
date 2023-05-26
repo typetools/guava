@@ -39,12 +39,12 @@ final class Present<T> extends Optional<T> {
   }
 
   @Override
-  public T get() {
+  public @NonNull T get() {
     return reference;
   }
 
   @Override
-  public T or(T defaultValue) {
+  public @NonNull T or(T defaultValue) {
     checkNotNull(defaultValue, "use Optional.orNull() instead of Optional.or(null)");
     return reference;
   }
@@ -56,7 +56,7 @@ final class Present<T> extends Optional<T> {
   }
 
   @Override
-  public T or(Supplier<? extends T> supplier) {
+  public @NonNull T or(Supplier<? extends T> supplier) {
     checkNotNull(supplier);
     return reference;
   }
@@ -67,7 +67,7 @@ final class Present<T> extends Optional<T> {
   }
 
   @Override
-  public Set<T> asSet() {
+  public Set<@NonNull T> asSet() {
     return Collections.singleton(reference);
   }
 

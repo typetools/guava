@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.PolySigned;
@@ -102,7 +103,7 @@ public final class MutableTypeToInstanceMap<B> extends ForwardingMap<TypeToken<?
   }
 
   @Override
-  public Set<Entry<TypeToken<? extends B>, B>> entrySet() {
+  public Set<Entry<@KeyFor({"this"}) TypeToken<? extends B>, B>> entrySet() {
     return UnmodifiableEntry.transformEntries(super.entrySet());
   }
 

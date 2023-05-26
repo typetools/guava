@@ -27,6 +27,7 @@ import java.util.NoSuchElementException;
 import java.util.SortedMap;
 import java.util.function.BiFunction;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -353,7 +354,7 @@ public abstract class ForwardingNavigableMap<K extends @Nullable Object, V exten
   }
 
   @Override
-  public NavigableSet<K> navigableKeySet() {
+  public NavigableSet<@KeyFor({"this"}) K> navigableKeySet() {
     return delegate().navigableKeySet();
   }
 
@@ -374,7 +375,7 @@ public abstract class ForwardingNavigableMap<K extends @Nullable Object, V exten
   }
 
   @Override
-  public NavigableSet<K> descendingKeySet() {
+  public NavigableSet<@KeyFor({"this"}) K> descendingKeySet() {
     return delegate().descendingKeySet();
   }
 

@@ -32,6 +32,8 @@ import java.util.Spliterators;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * CompactLinkedHashMap is an implementation of a Map with insertion or LRU iteration order,
@@ -245,13 +247,13 @@ class CompactLinkedHashMap<K extends @Nullable Object, V extends @Nullable Objec
     @WeakOuter
     class KeySetImpl extends KeySetView {
       @Override
-      public @PolyNull Object[] toArray() {
+      public @PolyNull @PolySigned Object[] toArray() {
         return ObjectArrays.toArrayImpl(this);
       }
 
       @Override
       @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-      public <T extends @Nullable Object> T[] toArray(T[] a) {
+      public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] a) {
         return ObjectArrays.toArrayImpl(this, a);
       }
 
@@ -268,13 +270,13 @@ class CompactLinkedHashMap<K extends @Nullable Object, V extends @Nullable Objec
     @WeakOuter
     class ValuesImpl extends ValuesView {
       @Override
-      public @PolyNull Object[] toArray() {
+      public @PolyNull @PolySigned Object[] toArray() {
         return ObjectArrays.toArrayImpl(this);
       }
 
       @Override
       @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-      public <T extends @Nullable Object> T[] toArray(T[] a) {
+      public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] a) {
         return ObjectArrays.toArrayImpl(this, a);
       }
 

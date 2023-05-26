@@ -51,9 +51,11 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -838,7 +840,7 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
   @Deprecated
   @Override
   @DoNotCall("Always throws UnsupportedOperationException")
-  public final V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
+  public final @PolyNull V computeIfAbsent(K key, Function<? super K, ? extends @PolyNull V> mappingFunction) {
     throw new UnsupportedOperationException();
   }
 
@@ -851,8 +853,8 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
   @Deprecated
   @Override
   @DoNotCall("Always throws UnsupportedOperationException")
-  public final V computeIfPresent(
-      K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+  public final @PolyNull V computeIfPresent(
+      K key, BiFunction<? super K, ? super V, ? extends @PolyNull V> remappingFunction) {
     throw new UnsupportedOperationException();
   }
 
@@ -865,8 +867,8 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
   @Deprecated
   @Override
   @DoNotCall("Always throws UnsupportedOperationException")
-  public final V compute(
-      K key, BiFunction<? super K, ? super @Nullable V, ? extends V> remappingFunction) {
+  public final @PolyNull V compute(
+      K key, BiFunction<? super K, ? super @Nullable V, ? extends @PolyNull V> remappingFunction) {
     throw new UnsupportedOperationException();
   }
 
@@ -879,8 +881,8 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
   @Deprecated
   @Override
   @DoNotCall("Always throws UnsupportedOperationException")
-  public final V merge(
-      K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
+  public final @PolyNull V merge(
+      K key, V value, BiFunction<? super V, ? super V, ? extends @PolyNull V> remappingFunction) {
     throw new UnsupportedOperationException();
   }
 
@@ -1023,7 +1025,7 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
    */
   @SideEffectFree
   @Override
-  public ImmutableSet<Entry<K, V>> entrySet() {
+  public ImmutableSet<Entry<@KeyFor({"this"}) K, V>> entrySet() {
     ImmutableSet<Entry<K, V>> result = entrySet;
     return (result == null) ? entrySet = createEntrySet() : result;
   }
@@ -1038,7 +1040,7 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
    */
   @SideEffectFree
   @Override
-  public ImmutableSet<K> keySet() {
+  public ImmutableSet<@KeyFor({"this"}) K> keySet() {
     ImmutableSet<K> result = keySet;
     return (result == null) ? keySet = createKeySet() : result;
   }

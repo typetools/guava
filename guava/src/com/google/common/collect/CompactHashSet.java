@@ -681,7 +681,6 @@ class CompactHashSet<E extends @Nullable Object> extends AbstractSet<E> implemen
   }
 
   @Override
-  @SuppressWarnings("signedness:argument")
   public void clear() {
     if (needsAllocArrays()) {
       return;

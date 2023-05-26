@@ -464,7 +464,7 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
   @SuppressWarnings("unchecked")
   @Override
   @CheckForNull
-  public V removeSuccessor(Object node) {
+  public V removeSuccessor(N node) {
     checkNotNull(node);
     Object previousValue = adjacentNodeValues.get(node);
     Object removedValue;

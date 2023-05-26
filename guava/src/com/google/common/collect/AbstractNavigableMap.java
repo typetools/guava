@@ -25,6 +25,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedMap;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
@@ -68,7 +69,7 @@ abstract class AbstractNavigableMap<K extends @Nullable Object, V extends @Nulla
 
   @Override
   @ParametricNullness
-  public K firstKey() {
+  public @KeyFor("this") K firstKey() {
     Entry<K, V> entry = firstEntry();
     if (entry == null) {
       throw new NoSuchElementException();
@@ -79,7 +80,7 @@ abstract class AbstractNavigableMap<K extends @Nullable Object, V extends @Nulla
 
   @Override
   @ParametricNullness
-  public K lastKey() {
+  public @KeyFor("this") K lastKey() {
     Entry<K, V> entry = lastEntry();
     if (entry == null) {
       throw new NoSuchElementException();
@@ -154,17 +155,17 @@ abstract class AbstractNavigableMap<K extends @Nullable Object, V extends @Nulla
   }
 
   @Override
-  public NavigableSet<K> navigableKeySet() {
+  public NavigableSet<@KeyFor({"this"}) K> navigableKeySet() {
     return new Maps.NavigableKeySet<>(this);
   }
 
   @Override
-  public Set<K> keySet() {
+  public Set<@KeyFor({"this"}) K> keySet() {
     return navigableKeySet();
   }
 
   @Override
-  public NavigableSet<K> descendingKeySet() {
+  public NavigableSet<@KeyFor({"this"}) K> descendingKeySet() {
     return descendingMap().navigableKeySet();
   }
 

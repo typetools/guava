@@ -24,6 +24,7 @@ import java.util.Comparator;
 import java.util.NoSuchElementException;
 import java.util.SortedMap;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -75,7 +76,7 @@ public abstract class ForwardingSortedMap<K extends @Nullable Object, V extends 
 
   @Override
   @ParametricNullness
-  public K firstKey() {
+  public @KeyFor("this") K firstKey() {
     return delegate().firstKey();
   }
 
@@ -86,7 +87,7 @@ public abstract class ForwardingSortedMap<K extends @Nullable Object, V extends 
 
   @Override
   @ParametricNullness
-  public K lastKey() {
+  public @KeyFor("this") K lastKey() {
     return delegate().lastKey();
   }
 

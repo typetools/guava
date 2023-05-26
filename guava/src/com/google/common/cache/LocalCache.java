@@ -85,7 +85,9 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.PolySigned;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
@@ -4215,14 +4217,14 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
   }
 
   @Override
-  public V computeIfAbsent(K key, Function<? super K, ? extends V> function) {
+  public @PolyNull V computeIfAbsent(K key, Function<? super K, ? extends V> function) {
     checkNotNull(key);
     checkNotNull(function);
     return compute(key, (k, oldValue) -> (oldValue == null) ? function.apply(key) : oldValue);
   }
 
   @Override
-  public V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> function) {
+  public @PolyNull V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> function) {
     checkNotNull(key);
     checkNotNull(function);
     return compute(key, (k, oldValue) -> (oldValue == null) ? null : function.apply(k, oldValue));
@@ -4298,7 +4300,7 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
   @RetainedWith @Nullable Set<K> keySet;
 
   @Override
-  public Set<K> keySet() {
+  public Set<@KeyFor({"this"}) K> keySet() {
     // does not impact recency ordering
     Set<K> ks = keySet;
     return (ks != null) ? ks : (keySet = new KeySet());
@@ -4317,7 +4319,7 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
 
   @Override
   @GwtIncompatible // Not supported.
-  public Set<Entry<K, V>> entrySet() {
+  public Set<Entry<@KeyFor({"this"}) K, V>> entrySet() {
     // does not impact recency ordering
     Set<Entry<K, V>> es = entrySet;
     return (es != null) ? es : (entrySet = new EntrySet());
