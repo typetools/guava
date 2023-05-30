@@ -22,7 +22,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -100,7 +102,7 @@ public final class HashMultiset<E extends @Nullable Object> extends AbstractMapB
 public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
 
 @Override
-public int count(@Nullable Object arg0) { return super.count(arg0); }
+public @NonNegative int count(@Nullable @UnknownSignedness Object arg0) { return super.count(arg0); }
 
 @Override
 public int remove(@Nullable Object arg0, int arg1) { return super.remove(arg0, arg1); }

@@ -236,7 +236,7 @@ class CompactLinkedHashSet<E extends @Nullable Object> extends CompactHashSet<E>
   }
 
   @Override
-  public @PolyNull @PolySigned Object[] toArray() {
+  public @PolyNull @PolySigned Object[] toArray(CompactLinkedHashSet<@PolyNull @PolySigned E> this) {
     return ObjectArrays.toArrayImpl(this);
   }
 

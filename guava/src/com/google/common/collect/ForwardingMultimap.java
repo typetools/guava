@@ -71,7 +71,7 @@ public abstract class ForwardingMultimap<K extends @Nullable Object, V extends @
 
   @Pure
   @Override
-  public boolean containsKey(@CheckForNull Object key) {
+  public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
     return delegate().containsKey(key);
   }
 

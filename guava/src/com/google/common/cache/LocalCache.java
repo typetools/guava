@@ -4217,14 +4217,14 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
   }
 
   @Override
-  public @PolyNull V computeIfAbsent(K key, Function<? super K, ? extends V> function) {
+  public @PolyNull V computeIfAbsent(K key, Function<? super K, ? extends @PolyNull V> function) {
     checkNotNull(key);
     checkNotNull(function);
     return compute(key, (k, oldValue) -> (oldValue == null) ? function.apply(key) : oldValue);
   }
 
   @Override
-  public @PolyNull V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> function) {
+  public @PolyNull V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends @PolyNull V> function) {
     checkNotNull(key);
     checkNotNull(function);
     return compute(key, (k, oldValue) -> (oldValue == null) ? null : function.apply(k, oldValue));

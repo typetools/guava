@@ -44,6 +44,7 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.framework.qual.CFComment;
 
 /**
  * A general-purpose bimap implementation using any two backing {@code Map} instances.
@@ -307,6 +308,7 @@ abstract class AbstractBiMap<K extends @Nullable Object, V extends @Nullable Obj
       return Maps.valueIterator(entrySet().iterator());
     }
 
+    @CFComment("signedness: is same as signedness of V, which this method doesn't know")
     @Override
     public @PolyNull @PolySigned Object[] toArray(ValueSet this) {
       return standardToArray();
@@ -434,6 +436,7 @@ abstract class AbstractBiMap<K extends @Nullable Object, V extends @Nullable Obj
 
     // See java.util.Collections.CheckedEntrySet for details on attacks.
 
+    @CFComment("signedeness: is same as V, which this method does not know")
     @Override
     public @PolyNull @PolySigned Object[] toArray() {
       /*

@@ -129,7 +129,7 @@ public final class EvictingQueue<E> extends ForwardingQueue<E> implements Serial
   }
 
   @Override
-  public @PolyNull @PolySigned Object[] toArray() {
+  public @PolyNull @PolySigned Object[] toArray(EvictingQueue<@PolyNull @PolySigned E> this) {
     /*
      * If we could, we'd declare the no-arg `Collection.toArray()` to return "Object[] but elements
      * have the same nullness as E." Since we can't, we declare it to return nullable elements, and

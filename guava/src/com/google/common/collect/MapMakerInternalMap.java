@@ -52,6 +52,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.PolySigned;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
+import org.checkerframework.framework.qual.CFComment;
 
 /**
  * The concurrent hash map implementation built by {@link MapMaker}.
@@ -1434,7 +1435,7 @@ class MapMakerInternalMap<
       }
     }
 
-    boolean containsKey(Object key, int hash) {
+    boolean containsKey(@UnknownSignedness Object key, int hash) {
       try {
         if (count != 0) { // read-volatile
           E e = getLiveEntry(key, hash);
@@ -1452,7 +1453,7 @@ class MapMakerInternalMap<
      * MapMakerInternalMap#containsValue} directly.
      */
     @VisibleForTesting
-    boolean containsValue(Object value) {
+    boolean containsValue(@UnknownSignedness Object value) {
       try {
         if (count != 0) { // read-volatile
           AtomicReferenceArray<E> table = this.table;
@@ -2748,6 +2749,7 @@ class MapMakerInternalMap<
     // super.toArray() may misbehave if size() is inaccurate, at least on old versions of Android.
     // https://code.google.com/p/android/issues/detail?id=36519 / http://r.android.com/47508
 
+    @CFComment("qualifers depend on V, which this method doesn't know")
     @Override
     public @PolyNull @PolySigned Object[] toArray() {
       return toArrayList(this).toArray();
@@ -2813,12 +2815,12 @@ class MapMakerInternalMap<
     // https://code.google.com/p/android/issues/detail?id=36519 / http://r.android.com/47508
 
     @Override
-    public @PolyNull @PolySigned Object[] toArray() {
+    public @PolyNull @PolySigned Object[] toArray(SafeToArraySet<@PolyNull @PolySigned E> this) {
       return toArrayList(this).toArray();
     }
 
     @Override
-    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] a) {
+    public <T> T[] toArray(T[] a) {
       return toArrayList(this).toArray(a);
     }
   }

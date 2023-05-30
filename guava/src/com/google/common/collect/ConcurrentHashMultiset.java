@@ -42,6 +42,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.PolySigned;
@@ -49,6 +50,7 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.framework.qual.CFComment;
 
 /**
  * A multiset that supports concurrent modifications and that provides atomic versions of most
@@ -145,7 +147,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    * @return the nonnegative number of occurrences of the element
    */
   @Override
-  public int count(@CheckForNull Object element) {
+  public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
     AtomicInteger existingCounter = Maps.safeGet(countMap, element);
     return (existingCounter == null) ? 0 : existingCounter.get();
   }
@@ -172,7 +174,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    */
 
   @Override
-  public @PolyNull @PolySigned Object[] toArray() {
+  public @PolyNull @PolySigned Object[] toArray(ConcurrentHashMultiset<@PolyNull @PolySigned E> this) {
     return snapshot().toArray();
   }
 
@@ -474,7 +476,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
       }
 
       @Override
-      public boolean remove(@CheckForNull Object object) {
+      public boolean remove(@CheckForNull @UnknownSignedness Object object) {
         return object != null && Collections2.safeRemove(delegate, object);
       }
 
@@ -579,6 +581,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
      * answer, which ours does not.
      */
 
+    @CFComment("signedness: is same as E, which this method doesn't know")
     @Override
     public @PolyNull @PolySigned Object[] toArray() {
       return snapshot().toArray();
@@ -611,7 +614,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
 
   @Pure
   @Override
-  public boolean remove(@Nullable Object arg0) { return super.remove(arg0); }
+  public boolean remove(@Nullable @UnknownSignedness Object arg0) { return super.remove(arg0); }
   }
 
   /** @serialData the ConcurrentMap of elements and their counts. */

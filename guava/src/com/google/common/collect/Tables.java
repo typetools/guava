@@ -752,7 +752,7 @@ public final class Tables {
     return Synchronized.table(table, null);
   }
 
-  static boolean equalsImpl(Table<?, ?, ?> table, @CheckForNull Object obj) {
+  static boolean equalsImpl(Table<?, ?, ?> table, @CheckForNull @UnknownSignedness Object obj) {
     if (obj == table) {
       return true;
     } else if (obj instanceof Table) {

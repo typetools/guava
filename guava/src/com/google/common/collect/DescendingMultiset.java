@@ -153,7 +153,7 @@ abstract class DescendingMultiset<E extends @Nullable Object> extends Forwarding
   }
 
   @Override
-  public @PolyNull @PolySigned Object[] toArray() {
+  public @PolyNull @PolySigned Object[] toArray(DescendingMultiset<@PolyNull @PolySigned E> this) {
     return standardToArray();
   }
 

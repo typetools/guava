@@ -913,7 +913,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
   }
 
   @Override
-  public @PolyNull @PolySigned Object[] toArray() {
+  public @PolyNull @PolySigned Object[] toArray(MinMaxPriorityQueue<@PolyNull @PolySigned E> this) {
     Object[] copyTo = new Object[size];
     System.arraycopy(queue, 0, copyTo, 0, size);
     return copyTo;

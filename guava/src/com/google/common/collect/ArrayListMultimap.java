@@ -181,7 +181,7 @@ public final class ArrayListMultimap<K extends @Nullable Object, V extends @Null
 public boolean containsEntry(@Nullable Object arg0, @Nullable Object arg1) { return super.containsEntry(arg0, arg1); }
 
 @Override
-public boolean containsKey(@Nullable Object arg0) { return super.containsKey(arg0); }
+public boolean containsKey(@Nullable @UnknownSignedness Object arg0) { return super.containsKey(arg0); }
 
 @Override
 public boolean containsValue(@Nullable @UnknownSignedness Object arg0) { return super.containsValue(arg0); }

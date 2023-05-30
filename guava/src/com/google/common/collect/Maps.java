@@ -79,6 +79,7 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.framework.qual.CFComment;
 
 /**
  * Static utility methods pertaining to {@link Map} instances (including instances of {@link
@@ -1557,8 +1558,10 @@ public final class Maps {
 
     // See java.util.Collections.UnmodifiableEntrySet for details on attacks.
 
+    @CFComment({"signedness: is not applicable te `Entry` objects, which are the elements of the array",
+            "nullness: the receiver is a collection of non-null `Entry` objects"})
     @Override
-    public @PolyNull @PolySigned Object[] toArray() {
+    public Object[] toArray() {
       /*
        * standardToArray returns `@Nullable Object[]` rather than `Object[]` but only because it can
        * be used with collections that may contain null. This collection never contains nulls, so we
@@ -1637,6 +1640,7 @@ public final class Maps {
       return convert(bimap.inverse(), b);
     }
 
+    @SuppressWarnings("signedness:argument")  // diagnostic output
     private static <X, Y> Y convert(BiMap<X, Y> bimap, X input) {
       Y output = bimap.get(input);
       checkArgument(output != null, "No non-null mapping present for input: %s", input);
@@ -3921,7 +3925,7 @@ public final class Maps {
    * NullPointerException}.
    */
   @CheckForNull
-  static <V extends @Nullable Object> V safeGet(Map<?, V> map, @CheckForNull Object key) {
+  static <V extends @Nullable Object> V safeGet(Map<?, V> map, @CheckForNull @UnknownSignedness Object key) {
     checkNotNull(map);
     try {
       return map.get(key);
@@ -3958,12 +3962,12 @@ public final class Maps {
   }
 
   /** An admittedly inefficient implementation of {@link Map#containsKey}. */
-  static boolean containsKeyImpl(Map<?, ?> map, @CheckForNull Object key) {
+  static boolean containsKeyImpl(Map<?, ?> map, @CheckForNull @UnknownSignedness Object key) {
     return Iterators.contains(keyIterator(map.entrySet().iterator()), key);
   }
 
   /** An implementation of {@link Map#containsValue}. */
-  static boolean containsValueImpl(Map<?, ?> map, @CheckForNull Object value) {
+  static boolean containsValueImpl(Map<?, ?> map, @CheckForNull @UnknownSignedness Object value) {
     return Iterators.contains(valueIterator(map.entrySet().iterator()), value);
   }
 
@@ -4008,7 +4012,7 @@ public final class Maps {
   }
 
   /** An implementation of {@link Map#equals}. */
-  static boolean equalsImpl(Map<?, ?> map, @CheckForNull Object object) {
+  static boolean equalsImpl(Map<?, ?> map, @CheckForNull @UnknownSignedness Object object) {
     if (map == object) {
       return true;
     } else if (object instanceof Map) {

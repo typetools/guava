@@ -613,7 +613,7 @@ public class LinkedListMultimap<K extends @Nullable Object, V extends @Nullable 
 
   @Pure
   @Override
-  public boolean containsKey(@CheckForNull Object key) {
+  public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
     return keyToKeyList.containsKey(key);
   }
 
@@ -758,7 +758,7 @@ public class LinkedListMultimap<K extends @Nullable Object, V extends @Nullable 
       }
 
       @Override
-      public boolean remove(@CheckForNull Object o) { // for performance
+      public boolean remove(@CheckForNull @UnknownSignedness Object o) { // for performance
         return !LinkedListMultimap.this.removeAll(o).isEmpty();
       }
     }

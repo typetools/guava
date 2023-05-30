@@ -35,6 +35,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Implementation of {@link Multimaps#filterEntries(Multimap, Predicate)}.
@@ -96,7 +97,7 @@ class FilteredEntryMultimap<K extends @Nullable Object, V extends @Nullable Obje
   }
 
   @Override
-  public boolean containsKey(@CheckForNull Object key) {
+  public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
     return asMap().get(key) != null;
   }
 
@@ -169,7 +170,7 @@ class FilteredEntryMultimap<K extends @Nullable Object, V extends @Nullable Obje
   @WeakOuter
   class AsMap extends ViewCachingAbstractMap<K, Collection<V>> {
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       return get(key) != null;
     }
 
@@ -237,7 +238,7 @@ class FilteredEntryMultimap<K extends @Nullable Object, V extends @Nullable Obje
         }
 
         @Override
-        public boolean remove(@CheckForNull Object o) {
+        public boolean remove(@CheckForNull @UnknownSignedness Object o) {
           return AsMap.this.remove(o) != null;
         }
       }
@@ -303,7 +304,7 @@ class FilteredEntryMultimap<K extends @Nullable Object, V extends @Nullable Obje
         }
 
         @Override
-        public boolean remove(@CheckForNull Object o) {
+        public boolean remove(@CheckForNull @UnknownSignedness Object o) {
           if (o instanceof Collection) {
             Collection<?> c = (Collection<?>) o;
             Iterator<Entry<K, Collection<V>>> entryIterator =

@@ -35,6 +35,7 @@ import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.PolySigned;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.framework.qual.CFComment;
 
 /**
  * A mutable class-to-instance map backed by an arbitrary user-provided map. See also {@link
@@ -129,6 +130,7 @@ public final class MutableClassToInstanceMap<B> extends ForwardingMap<Class<? ex
         };
       }
 
+      @CFComment("cannot write type qualifiers on receiver that is an anonymous class")
       @Override
       public @PolyNull @PolySigned Object[] toArray() {
         /*
