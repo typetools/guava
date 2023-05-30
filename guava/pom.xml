@@ -397,30 +397,9 @@
       </dependencies>
     </profile>
     <profile>
-      <id>jdk11</id>
+      <id>jdk9plus</id>
       <activation>
-        <jdk>11</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <fork>true</fork>
-              <maxmem>6000m</maxmem>
-              <compilerArgs combine.children="append">
-                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
-              </compilerArgs>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>jdk17</id>
-      <activation>
-        <jdk>[16,)</jdk>
+        <jdk>[9,)</jdk>
       </activation>
       <build>
         <plugins>
