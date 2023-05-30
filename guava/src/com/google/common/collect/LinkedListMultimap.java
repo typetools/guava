@@ -43,6 +43,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -612,13 +613,13 @@ public class LinkedListMultimap<K extends @Nullable Object, V extends @Nullable 
 
   @Pure
   @Override
-  public boolean containsKey(@CheckForNull Object key) {
+  public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
     return keyToKeyList.containsKey(key);
   }
 
   @Pure
   @Override
-  public boolean containsValue(@CheckForNull Object value) {
+  public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
     return values().contains(value);
   }
 
@@ -757,7 +758,7 @@ public class LinkedListMultimap<K extends @Nullable Object, V extends @Nullable 
       }
 
       @Override
-      public boolean remove(@CheckForNull Object o) { // for performance
+      public boolean remove(@CheckForNull @UnknownSignedness Object o) { // for performance
         return !LinkedListMultimap.this.removeAll(o).isEmpty();
       }
     }

@@ -40,7 +40,9 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.function.BiFunction;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * An implementation of {@code RangeMap} based on a {@code TreeMap}, supporting all optional
@@ -340,13 +342,13 @@ public final class TreeRangeMap<K extends Comparable, V> implements RangeMap<K, 
     }
 
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       return get(key) != null;
     }
 
     @Override
     @CheckForNull
-    public V get(@CheckForNull Object key) {
+    public V get(@CheckForNull @UnknownSignedness Object key) {
       if (key instanceof Range) {
         Range<?> range = (Range<?>) key;
         RangeMapEntry<K, V> rangeMapEntry = entriesByLowerBound.get(range.lowerBound);
@@ -642,13 +644,13 @@ public final class TreeRangeMap<K extends Comparable, V> implements RangeMap<K, 
     class SubRangeMapAsMap extends AbstractMap<Range<K>, V> {
 
       @Override
-      public boolean containsKey(@CheckForNull Object key) {
+      public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
         return get(key) != null;
       }
 
       @Override
       @CheckForNull
-      public V get(@CheckForNull Object key) {
+      public V get(@CheckForNull @UnknownSignedness Object key) {
         try {
           if (key instanceof Range) {
             @SuppressWarnings("unchecked") // we catch ClassCastExceptions
@@ -682,7 +684,7 @@ public final class TreeRangeMap<K extends Comparable, V> implements RangeMap<K, 
 
       @Override
       @CheckForNull
-      public V remove(@CheckForNull Object key) {
+      public V remove(@CheckForNull @UnknownSignedness Object key) {
         V value = get(key);
         if (value != null) {
           // it's definitely in the map, so the cast and requireNonNull are safe
@@ -716,7 +718,7 @@ public final class TreeRangeMap<K extends Comparable, V> implements RangeMap<K, 
       public Set<Range<K>> keySet() {
         return new Maps.KeySet<Range<K>, V>(SubRangeMapAsMap.this) {
           @Override
-          public boolean remove(@CheckForNull Object o) {
+          public boolean remove(@CheckForNull @UnknownSignedness Object o) {
             return SubRangeMapAsMap.this.remove(o) != null;
           }
 

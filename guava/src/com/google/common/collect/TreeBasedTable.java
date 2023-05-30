@@ -32,6 +32,7 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 
 /**
  * Implementation of {@code Table} whose row keys and column keys are ordered by their natural
@@ -190,7 +191,7 @@ public class TreeBasedTable<R, C, V> extends StandardRowSortedTable<R, C, V> {
     }
 
     @Override
-    public SortedSet<C> keySet() {
+    public SortedSet<@KeyFor({"this"}) C> keySet() {
       return new Maps.SortedKeySet<>(this);
     }
 
@@ -231,7 +232,7 @@ public class TreeBasedTable<R, C, V> extends StandardRowSortedTable<R, C, V> {
     }
 
     @Override
-    public C firstKey() {
+    public @KeyFor("this") C firstKey() {
       updateBackingRowMapField();
       if (backingRowMap == null) {
         throw new NoSuchElementException();
@@ -240,7 +241,7 @@ public class TreeBasedTable<R, C, V> extends StandardRowSortedTable<R, C, V> {
     }
 
     @Override
-    public C lastKey() {
+    public @KeyFor("this") C lastKey() {
       updateBackingRowMapField();
       if (backingRowMap == null) {
         throw new NoSuchElementException();

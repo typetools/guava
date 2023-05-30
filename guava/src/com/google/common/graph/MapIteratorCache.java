@@ -102,7 +102,7 @@ class MapIteratorCache<K, V> {
     return backingMap.get(key);
   }
 
-  final boolean containsKey(@CheckForNull Object key) {
+  final boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
     return getIfCached(key) != null || backingMap.containsKey(key);
   }
 

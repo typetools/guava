@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.LongBinaryOperator;
 import java.util.function.LongUnaryOperator;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A map containing {@code long} values that can be atomically updated. While writes to a
@@ -276,7 +277,7 @@ public final class AtomicLongMap<K> implements Serializable {
   }
 
   /** Returns true if this map contains a mapping for the specified key. */
-  public boolean containsKey(Object key) {
+  public boolean containsKey(@UnknownSignedness Object key) {
     return map.containsKey(key);
   }
 

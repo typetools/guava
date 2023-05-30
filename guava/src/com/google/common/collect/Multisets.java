@@ -45,6 +45,7 @@ import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
@@ -366,7 +367,7 @@ public final class Multisets {
     }
 
     @Override
-    public int count(@CheckForNull Object element) {
+    public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
       int count = unfiltered.count(element);
       if (count > 0) {
         @SuppressWarnings("unchecked") // element is equal to an E
@@ -436,7 +437,7 @@ public final class Multisets {
       }
 
       @Override
-      public int count(@CheckForNull Object element) {
+      public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
         return Math.max(multiset1.count(element), multiset2.count(element));
       }
 
@@ -498,7 +499,7 @@ public final class Multisets {
 
     return new ViewMultiset<E>() {
       @Override
-      public int count(@CheckForNull Object element) {
+      public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
         int count1 = multiset1.count(element);
         return (count1 == 0) ? 0 : Math.min(count1, multiset2.count(element));
       }
@@ -572,7 +573,7 @@ public final class Multisets {
       }
 
       @Override
-      public int count(@CheckForNull Object element) {
+      public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
         return multiset1.count(element) + multiset2.count(element);
       }
 
@@ -635,7 +636,7 @@ public final class Multisets {
     // TODO(lowasser): consider making the entries live views
     return new ViewMultiset<E>() {
       @Override
-      public int count(@CheckForNull Object element) {
+      public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
         int count1 = multiset1.count(element);
         return (count1 == 0) ? 0 : Math.max(0, count1 - multiset2.count(element));
       }
@@ -884,7 +885,7 @@ public final class Multisets {
   }
 
   /** An implementation of {@link Multiset#equals}. */
-  static boolean equalsImpl(Multiset<?> multiset, @CheckForNull Object object) {
+  static boolean equalsImpl(Multiset<?> multiset, @CheckForNull @UnknownSignedness Object object) {
     if (object == multiset) {
       return true;
     }

@@ -36,11 +36,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiFunction;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.framework.qual.CFComment;
 
 /**
  * A general-purpose bimap implementation using any two backing {@code Map} instances.
@@ -116,7 +120,7 @@ abstract class AbstractBiMap<K extends @Nullable Object, V extends @Nullable Obj
 
   @Pure
   @Override
-  public boolean containsValue(@CheckForNull Object value) {
+  public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
     return inverse.containsKey(value);
   }
 
@@ -169,7 +173,7 @@ abstract class AbstractBiMap<K extends @Nullable Object, V extends @Nullable Obj
   @CanIgnoreReturnValue
   @Override
   @CheckForNull
-  public V remove(@CheckForNull Object key) {
+  public V remove(@CheckForNull @UnknownSignedness Object key) {
     return containsKey(key) ? removeFromBothMaps(key) : null;
   }
 
@@ -235,7 +239,7 @@ abstract class AbstractBiMap<K extends @Nullable Object, V extends @Nullable Obj
 
   @SideEffectFree
   @Override
-  public Set<K> keySet() {
+  public Set<@KeyFor({"this"}) K> keySet() {
     Set<K> result = keySet;
     return (result == null) ? keySet = new KeySet() : result;
   }
@@ -253,7 +257,7 @@ abstract class AbstractBiMap<K extends @Nullable Object, V extends @Nullable Obj
     }
 
     @Override
-    public boolean remove(@CheckForNull Object key) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object key) {
       if (!contains(key)) {
         return false;
       }
@@ -304,14 +308,15 @@ abstract class AbstractBiMap<K extends @Nullable Object, V extends @Nullable Obj
       return Maps.valueIterator(entrySet().iterator());
     }
 
+    @CFComment("signedness: is same as signedness of V, which this method doesn't know")
     @Override
-    public @PolyNull Object[] toArray() {
+    public @PolyNull @PolySigned Object[] toArray(ValueSet this) {
       return standardToArray();
     }
 
     @Override
     @SuppressWarnings("nullness") // bug in our checker's handling of toArray signatures
-    public <T extends @Nullable Object> T[] toArray(T[] array) {
+    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] array) {
       return standardToArray(array);
     }
 
@@ -326,7 +331,7 @@ abstract class AbstractBiMap<K extends @Nullable Object, V extends @Nullable Obj
 
   @SideEffectFree
   @Override
-  public Set<Entry<K, V>> entrySet() {
+  public Set<Entry<@KeyFor({"this"}) K, V>> entrySet() {
     Set<Entry<K, V>> result = entrySet;
     return (result == null) ? entrySet = new EntrySet() : result;
   }
@@ -404,7 +409,7 @@ abstract class AbstractBiMap<K extends @Nullable Object, V extends @Nullable Obj
     }
 
     @Override
-    public boolean remove(@CheckForNull Object object) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object object) {
       /*
        * `o instanceof Entry` is guaranteed by `contains`, but we check it here to satisfy our
        * nullness checker.
@@ -431,8 +436,9 @@ abstract class AbstractBiMap<K extends @Nullable Object, V extends @Nullable Obj
 
     // See java.util.Collections.CheckedEntrySet for details on attacks.
 
+    @CFComment("signedeness: is same as V, which this method does not know")
     @Override
-    public Object[] toArray() {
+    public @PolyNull @PolySigned Object[] toArray() {
       /*
        * standardToArray returns `@Nullable Object[]` rather than `Object[]` but only because it can
        * be used with collections that may contain null. This collection never contains nulls, so we
@@ -445,13 +451,13 @@ abstract class AbstractBiMap<K extends @Nullable Object, V extends @Nullable Obj
 
     @Override
     @SuppressWarnings("nullness") // bug in our checker's handling of toArray signatures
-    public <T extends @Nullable Object> T[] toArray(T[] array) {
+    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] array) {
       return standardToArray(array);
     }
 
     @Pure
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       return Maps.containsEntryImpl(delegate(), o);
     }
 

@@ -139,7 +139,7 @@ public abstract class ForwardingCollection<E extends @Nullable Object> extends F
   @CanIgnoreReturnValue
   @Override
   @SuppressWarnings("nullness:return")
-  public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] array) {
+  public <T extends @Nullable @UnknownSignedness Object> T[] toArray(@PolyNull T[] array) {
     return delegate().toArray(array);
   }
 

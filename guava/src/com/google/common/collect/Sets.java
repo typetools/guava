@@ -1770,7 +1770,7 @@ public final class Sets {
   }
 
   /** An implementation for {@link Set#equals(Object)}. */
-  static boolean equalsImpl(Set<?> s, @CheckForNull Object object) {
+  static boolean equalsImpl(Set<?> s, @CheckForNull @UnknownSignedness Object object) {
     if (s == object) {
       return true;
     }

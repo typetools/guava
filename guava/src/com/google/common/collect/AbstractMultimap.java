@@ -55,7 +55,7 @@ abstract class AbstractMultimap<K extends @Nullable Object, V extends @Nullable 
 
   @Pure
   @Override
-  public boolean containsValue(@CheckForNull Object value) {
+  public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
     for (Collection<V> collection : asMap().values()) {
       if (collection.contains(value)) {
         return true;

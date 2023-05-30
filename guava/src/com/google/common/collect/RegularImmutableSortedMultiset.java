@@ -24,6 +24,8 @@ import com.google.common.primitives.Ints;
 import java.util.Comparator;
 import java.util.function.ObjIntConsumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * An immutable sorted multiset with one or more distinct elements.
@@ -89,7 +91,7 @@ final class RegularImmutableSortedMultiset<E> extends ImmutableSortedMultiset<E>
   }
 
   @Override
-  public int count(@CheckForNull Object element) {
+  public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
     int index = elementSet.indexOf(element);
     return (index >= 0) ? getCount(index) : 0;
   }

@@ -51,6 +51,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.PolySigned;
@@ -693,7 +694,7 @@ class CompactHashMap<K extends @Nullable Object, V extends @Nullable Object>
   @CheckForNull private transient Set<K> keySetView;
 
   @Override
-  public Set<K> keySet() {
+  public Set<@KeyFor({"this"}) K> keySet() {
     return (keySetView == null) ? keySetView = createKeySet() : keySetView;
   }
 
@@ -803,7 +804,7 @@ class CompactHashMap<K extends @Nullable Object, V extends @Nullable Object>
   @CheckForNull private transient Set<Entry<K, V>> entrySetView;
 
   @Override
-  public Set<Entry<K, V>> entrySet() {
+  public Set<Entry<@KeyFor({"this"}) K, V>> entrySet() {
     return (entrySetView == null) ? entrySetView = createEntrySet() : entrySetView;
   }
 

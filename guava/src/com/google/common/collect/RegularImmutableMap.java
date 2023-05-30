@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.IdentityHashMap;
 import java.util.function.BiConsumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
@@ -424,13 +425,13 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
 
   @SideEffectFree
   @Override
-  public ImmutableSet<Map.Entry<K, V>> entrySet() {
+  public ImmutableSet<Map.Entry<@KeyFor({"this"}) K, V>> entrySet() {
     return super.entrySet();
   }
 
   @SideEffectFree
   @Override
-  public ImmutableSet<K> keySet() {
+  public ImmutableSet<@KeyFor({"this"}) K> keySet() {
     return super.keySet();
   }
 

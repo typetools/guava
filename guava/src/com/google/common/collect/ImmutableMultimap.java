@@ -41,6 +41,7 @@ import java.util.Set;
 import java.util.Spliterator;
 import java.util.function.BiConsumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
@@ -496,13 +497,13 @@ public abstract class ImmutableMultimap<K, V> extends BaseImmutableMultimap<K, V
 
   @Pure
   @Override
-  public boolean containsKey(@CheckForNull Object key) {
+  public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
     return map.containsKey(key);
   }
 
   @Pure
   @Override
-  public boolean containsValue(@CheckForNull Object value) {
+  public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
     return value != null && super.containsValue(value);
   }
 
@@ -667,7 +668,7 @@ public abstract class ImmutableMultimap<K, V> extends BaseImmutableMultimap<K, V
     }
 
     @Override
-    public int count(@CheckForNull Object element) {
+    public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
       Collection<V> values = map.get(element);
       return (values == null) ? 0 : values.size();
     }

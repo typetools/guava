@@ -551,7 +551,7 @@ public final class ByteStreams {
     }
 
     @Override
-    public void write(byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
+    public void write(@PolySigned byte[] b, @IndexOrHigh("#1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
       try {
         output.write(b, off, len);
       } catch (IOException impossible) {

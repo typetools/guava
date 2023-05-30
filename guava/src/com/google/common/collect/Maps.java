@@ -71,6 +71,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.stream.Collector;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.PolySigned;
@@ -78,6 +79,7 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.framework.qual.CFComment;
 
 /**
  * Static utility methods pertaining to {@link Map} instances (including instances of {@link
@@ -1035,7 +1037,7 @@ public final class Maps {
     }
 
     @Override
-    public Set<K> keySet() {
+    public Set<@KeyFor({"this"}) K> keySet() {
       return removeOnlySortedSet(backingSet());
     }
 
@@ -1056,13 +1058,13 @@ public final class Maps {
 
     @Override
     @ParametricNullness
-    public K firstKey() {
+    public @KeyFor("this") K firstKey() {
       return backingSet().first();
     }
 
     @Override
     @ParametricNullness
-    public K lastKey() {
+    public @KeyFor("this") K lastKey() {
       return backingSet().last();
     }
   }
@@ -1153,7 +1155,7 @@ public final class Maps {
     }
 
     @Override
-    public NavigableSet<K> navigableKeySet() {
+    public NavigableSet<@KeyFor({"this"}) K> navigableKeySet() {
       return removeOnlyNavigableSet(set);
     }
 
@@ -1556,8 +1558,10 @@ public final class Maps {
 
     // See java.util.Collections.UnmodifiableEntrySet for details on attacks.
 
+    @CFComment({"signedness: is not applicable te `Entry` objects, which are the elements of the array",
+            "nullness: the receiver is a collection of non-null `Entry` objects"})
     @Override
-    public @PolySigned Object[] toArray() {
+    public Object[] toArray() {
       /*
        * standardToArray returns `@Nullable Object[]` rather than `Object[]` but only because it can
        * be used with collections that may contain null. This collection never contains nulls, so we
@@ -1636,6 +1640,7 @@ public final class Maps {
       return convert(bimap.inverse(), b);
     }
 
+    @SuppressWarnings("signedness:argument")  // diagnostic output
     private static <X, Y> Y convert(BiMap<X, Y> bimap, X input) {
       Y output = bimap.get(input);
       checkArgument(output != null, "No non-null mapping present for input: %s", input);
@@ -1768,26 +1773,26 @@ public final class Maps {
     }
 
     @Override
-    public V computeIfAbsent(
-        K key, java.util.function.Function<? super K, ? extends V> mappingFunction) {
+    public @PolyNull V computeIfAbsent(
+        K key, java.util.function.Function<? super K, ? extends @PolyNull V> mappingFunction) {
       throw new UnsupportedOperationException();
     }
 
     @Override
-    public V computeIfPresent(
-        K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+    public @PolyNull V computeIfPresent(
+        K key, BiFunction<? super K, ? super V, ? extends @PolyNull V> remappingFunction) {
       throw new UnsupportedOperationException();
     }
 
     @Override
-    public V compute(
-        K key, BiFunction<? super K, ? super @Nullable V, ? extends V> remappingFunction) {
+    public @PolyNull V compute(
+        K key, BiFunction<? super K, ? super @Nullable V, ? extends @PolyNull V> remappingFunction) {
       throw new UnsupportedOperationException();
     }
 
     @Override
-    public V merge(
-        K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
+    public @PolyNull V merge(
+        K key, V value, BiFunction<? super V, ? super V, ? extends @PolyNull V> remappingFunction) {
       throw new UnsupportedOperationException();
     }
 
@@ -2262,7 +2267,7 @@ public final class Maps {
     }
 
     @Override
-    public Set<K> keySet() {
+    public Set<@KeyFor({"this"}) K> keySet() {
       return fromMap.keySet();
     }
 
@@ -2312,7 +2317,7 @@ public final class Maps {
 
     @Override
     @ParametricNullness
-    public K firstKey() {
+    public @KeyFor("this") K firstKey() {
       return fromMap().firstKey();
     }
 
@@ -2323,7 +2328,7 @@ public final class Maps {
 
     @Override
     @ParametricNullness
-    public K lastKey() {
+    public @KeyFor("this") K lastKey() {
       return fromMap().lastKey();
     }
 
@@ -2361,7 +2366,7 @@ public final class Maps {
     }
 
     @Override
-    public NavigableSet<K> descendingKeySet() {
+    public NavigableSet<@KeyFor({"this"}) K> descendingKeySet() {
       return fromMap().descendingKeySet();
     }
 
@@ -2429,7 +2434,7 @@ public final class Maps {
     }
 
     @Override
-    public NavigableSet<K> navigableKeySet() {
+    public NavigableSet<@KeyFor({"this"}) K> navigableKeySet() {
       return fromMap().navigableKeySet();
     }
 
@@ -3050,7 +3055,7 @@ public final class Maps {
     }
 
     @Override
-    public @Nullable @PolySigned Object[] toArray() {
+    public @PolyNull @PolySigned Object[] toArray(FilteredMapValues<@PolyNull @PolySigned K, V> this) {
       // creating an ArrayList so filtering happens once
       return Lists.newArrayList(iterator()).toArray();
     }
@@ -3232,7 +3237,7 @@ public final class Maps {
     }
 
     @Override
-    public SortedSet<K> keySet() {
+    public SortedSet<@KeyFor({"this"}) K> keySet() {
       return (SortedSet<K>) super.keySet();
     }
 
@@ -3286,14 +3291,14 @@ public final class Maps {
 
     @Override
     @ParametricNullness
-    public K firstKey() {
+    public @KeyFor("this") K firstKey() {
       // correctly throws NoSuchElementException when filtered map is empty.
       return keySet().iterator().next();
     }
 
     @Override
     @ParametricNullness
-    public K lastKey() {
+    public @KeyFor("this") K lastKey() {
       SortedMap<K, V> headMap = sortedMap();
       while (true) {
         // correctly throws NoSuchElementException when filtered map is empty.
@@ -3350,7 +3355,7 @@ public final class Maps {
     }
 
     @Override
-    public NavigableSet<K> navigableKeySet() {
+    public NavigableSet<@KeyFor({"this"}) K> navigableKeySet() {
       return new Maps.NavigableKeySet<K, V>(this) {
         @Override
         public boolean removeAll(Collection<?> collection) {
@@ -3423,7 +3428,7 @@ public final class Maps {
     }
 
     @Override
-    public Set<Entry<K, V>> entrySet() {
+    public Set<Entry<@KeyFor({"this"}) K, V>> entrySet() {
       return filteredDelegate.entrySet();
     }
 
@@ -3681,26 +3686,26 @@ public final class Maps {
     }
 
     @Override
-    public V computeIfAbsent(
-        K key, java.util.function.Function<? super K, ? extends V> mappingFunction) {
+    public @PolyNull V computeIfAbsent(
+        K key, java.util.function.Function<? super K, ? extends @PolyNull V> mappingFunction) {
       throw new UnsupportedOperationException();
     }
 
     @Override
-    public V computeIfPresent(
-        K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+    public @PolyNull V computeIfPresent(
+        K key, BiFunction<? super K, ? super V, ? extends @PolyNull V> remappingFunction) {
       throw new UnsupportedOperationException();
     }
 
     @Override
-    public V compute(
-        K key, BiFunction<? super K, ? super @Nullable V, ? extends V> remappingFunction) {
+    public @PolyNull V compute(
+        K key, BiFunction<? super K, ? super @Nullable V, ? extends @PolyNull V> remappingFunction) {
       throw new UnsupportedOperationException();
     }
 
     @Override
-    public V merge(
-        K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
+    public @PolyNull V merge(
+        K key, V value, BiFunction<? super V, ? super V, ? extends @PolyNull V> remappingFunction) {
       throw new UnsupportedOperationException();
     }
 
@@ -3715,17 +3720,17 @@ public final class Maps {
     }
 
     @Override
-    public Set<K> keySet() {
+    public Set<@KeyFor({"this"}) K> keySet() {
       return navigableKeySet();
     }
 
     @Override
-    public NavigableSet<K> navigableKeySet() {
+    public NavigableSet<@KeyFor({"this"}) K> navigableKeySet() {
       return Sets.unmodifiableNavigableSet(delegate.navigableKeySet());
     }
 
     @Override
-    public NavigableSet<K> descendingKeySet() {
+    public NavigableSet<@KeyFor({"this"}) K> descendingKeySet() {
       return Sets.unmodifiableNavigableSet(delegate.descendingKeySet());
     }
 
@@ -3837,7 +3842,7 @@ public final class Maps {
     @CheckForNull private transient Set<Entry<K, V>> entrySet;
 
     @Override
-    public Set<Entry<K, V>> entrySet() {
+    public Set<Entry<@KeyFor({"this"}) K, V>> entrySet() {
       Set<Entry<K, V>> result = entrySet;
       return (result == null) ? entrySet = createEntrySet() : result;
     }
@@ -3845,7 +3850,7 @@ public final class Maps {
     @CheckForNull private transient Set<K> keySet;
 
     @Override
-    public Set<K> keySet() {
+    public Set<@KeyFor({"this"}) K> keySet() {
       Set<K> result = keySet;
       return (result == null) ? keySet = createKeySet() : result;
     }
@@ -3881,7 +3886,7 @@ public final class Maps {
     }
 
     @Override
-    public Set<Entry<K, V>> entrySet() {
+    public Set<Entry<@KeyFor({"this"}) K, V>> entrySet() {
       return new EntrySet<K, V>() {
         @Override
         Map<K, V> map() {
@@ -3920,7 +3925,7 @@ public final class Maps {
    * NullPointerException}.
    */
   @CheckForNull
-  static <V extends @Nullable Object> V safeGet(Map<?, V> map, @CheckForNull Object key) {
+  static <V extends @Nullable Object> V safeGet(Map<?, V> map, @CheckForNull @UnknownSignedness Object key) {
     checkNotNull(map);
     try {
       return map.get(key);
@@ -3957,12 +3962,12 @@ public final class Maps {
   }
 
   /** An admittedly inefficient implementation of {@link Map#containsKey}. */
-  static boolean containsKeyImpl(Map<?, ?> map, @CheckForNull Object key) {
+  static boolean containsKeyImpl(Map<?, ?> map, @CheckForNull @UnknownSignedness Object key) {
     return Iterators.contains(keyIterator(map.entrySet().iterator()), key);
   }
 
   /** An implementation of {@link Map#containsValue}. */
-  static boolean containsValueImpl(Map<?, ?> map, @CheckForNull Object value) {
+  static boolean containsValueImpl(Map<?, ?> map, @CheckForNull @UnknownSignedness Object value) {
     return Iterators.contains(valueIterator(map.entrySet().iterator()), value);
   }
 
@@ -4007,7 +4012,7 @@ public final class Maps {
   }
 
   /** An implementation of {@link Map#equals}. */
-  static boolean equalsImpl(Map<?, ?> map, @CheckForNull Object object) {
+  static boolean equalsImpl(Map<?, ?> map, @CheckForNull @UnknownSignedness Object object) {
     if (map == object) {
       return true;
     } else if (object instanceof Map) {
@@ -4440,13 +4445,13 @@ public final class Maps {
 
     @Override
     @ParametricNullness
-    public K firstKey() {
+    public @KeyFor("this") K firstKey() {
       return forward().lastKey();
     }
 
     @Override
     @ParametricNullness
-    public K lastKey() {
+    public @KeyFor("this") K lastKey() {
       return forward().firstKey();
     }
 
@@ -4530,7 +4535,7 @@ public final class Maps {
     @CheckForNull private transient Set<Entry<K, V>> entrySet;
 
     @Override
-    public Set<Entry<K, V>> entrySet() {
+    public Set<Entry<@KeyFor({"this"}) K, V>> entrySet() {
       Set<Entry<K, V>> result = entrySet;
       return (result == null) ? entrySet = createEntrySet() : result;
     }
@@ -4554,20 +4559,20 @@ public final class Maps {
     }
 
     @Override
-    public Set<K> keySet() {
+    public Set<@KeyFor({"this"}) K> keySet() {
       return navigableKeySet();
     }
 
     @CheckForNull private transient NavigableSet<K> navigableKeySet;
 
     @Override
-    public NavigableSet<K> navigableKeySet() {
+    public NavigableSet<@KeyFor({"this"}) K> navigableKeySet() {
       NavigableSet<K> result = navigableKeySet;
       return (result == null) ? navigableKeySet = new NavigableKeySet<>(this) : result;
     }
 
     @Override
-    public NavigableSet<K> descendingKeySet() {
+    public NavigableSet<@KeyFor({"this"}) K> descendingKeySet() {
       return forward().navigableKeySet();
     }
 

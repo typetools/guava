@@ -49,6 +49,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -178,7 +179,7 @@ public final class Iterators {
 
   /** Returns {@code true} if {@code iterator} contains {@code element}. */
   @Pure
-  public static boolean contains(Iterator<?> iterator, @CheckForNull Object element) {
+  public static boolean contains(Iterator<?> iterator, @CheckForNull @UnknownSignedness Object element) {
     if (element == null) {
       while (iterator.hasNext()) {
         if (iterator.next() == null) {

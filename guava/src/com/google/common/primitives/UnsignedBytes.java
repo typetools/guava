@@ -64,7 +64,6 @@ public final class UnsignedBytes {
    *
    * @since 10.0
    */
-  @SuppressWarnings("value:cast.unsafe") // https://github.com/kelloggm/checker-framework/issues/149
   public static final @Unsigned byte MAX_POWER_OF_TWO = (byte) 0x80;
 
   /**
@@ -72,7 +71,6 @@ public final class UnsignedBytes {
    *
    * @since 13.0
    */
-  @SuppressWarnings("value:cast.unsafe") // https://github.com/kelloggm/checker-framework/issues/149
   public static final @Unsigned byte MAX_VALUE = (byte) 0xFF;
 
   private static final int UNSIGNED_MASK = 0xFF;

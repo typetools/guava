@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
@@ -133,7 +134,7 @@ public abstract class ForwardingMap<K extends @Nullable Object, V extends @Nulla
 
   @SideEffectFree
   @Override
-  public Set<K> keySet() {
+  public Set<@KeyFor({"this"}) K> keySet() {
     return delegate().keySet();
   }
 
@@ -145,7 +146,7 @@ public abstract class ForwardingMap<K extends @Nullable Object, V extends @Nulla
 
   @SideEffectFree
   @Override
-  public Set<Entry<K, V>> entrySet() {
+  public Set<Entry<@KeyFor({"this"}) K, V>> entrySet() {
     return delegate().entrySet();
   }
 

@@ -39,6 +39,7 @@ import java.util.function.BinaryOperator;
 import java.util.stream.Collector;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Provides static methods that involve a {@code Table}.
@@ -261,7 +262,7 @@ public final class Tables {
     }
 
     @Override
-    public boolean containsValue(@CheckForNull Object value) {
+    public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
       return original.containsValue(value);
     }
 
@@ -751,7 +752,7 @@ public final class Tables {
     return Synchronized.table(table, null);
   }
 
-  static boolean equalsImpl(Table<?, ?, ?> table, @CheckForNull Object obj) {
+  static boolean equalsImpl(Table<?, ?, ?> table, @CheckForNull @UnknownSignedness Object obj) {
     if (obj == table) {
       return true;
     } else if (obj instanceof Table) {

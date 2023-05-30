@@ -41,7 +41,9 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -262,7 +264,7 @@ public final class HashBiMap<K extends @Nullable Object, V extends @Nullable Obj
   }
 
   @Override
-  public boolean containsKey(@CheckForNull Object key) {
+  public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
     return seekByKey(key, smearedHash(key)) != null;
   }
 
@@ -278,7 +280,7 @@ public final class HashBiMap<K extends @Nullable Object, V extends @Nullable Obj
    */
   @Pure
   @Override
-  public boolean containsValue(@CheckForNull Object value) {
+  public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
     return seekByValue(value, smearedHash(value)) != null;
   }
 
@@ -409,7 +411,7 @@ public final class HashBiMap<K extends @Nullable Object, V extends @Nullable Obj
   @CanIgnoreReturnValue
   @Override
   @CheckForNull
-  public V remove(@CheckForNull Object key) {
+  public V remove(@CheckForNull @UnknownSignedness Object key) {
     BiEntry<K, V> entry = seekByKey(key, smearedHash(key));
     if (entry == null) {
       return null;
@@ -481,7 +483,7 @@ public final class HashBiMap<K extends @Nullable Object, V extends @Nullable Obj
   }
 
   @Override
-  public Set<K> keySet() {
+  public Set<@KeyFor({"this"}) K> keySet() {
     return new KeySet();
   }
 
@@ -502,7 +504,7 @@ public final class HashBiMap<K extends @Nullable Object, V extends @Nullable Obj
     }
 
     @Override
-    public boolean remove(@CheckForNull Object o) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object o) {
       BiEntry<K, V> entry = seekByKey(o, smearedHash(o));
       if (entry == null) {
         return false;
@@ -617,7 +619,7 @@ public final class HashBiMap<K extends @Nullable Object, V extends @Nullable Obj
     }
 
     @Override
-    public boolean containsKey(@CheckForNull Object value) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object value) {
       return forward().containsValue(value);
     }
 
@@ -642,7 +644,7 @@ public final class HashBiMap<K extends @Nullable Object, V extends @Nullable Obj
 
     @Override
     @CheckForNull
-    public K remove(@CheckForNull Object value) {
+    public K remove(@CheckForNull @UnknownSignedness Object value) {
       BiEntry<K, V> entry = seekByValue(value, smearedHash(value));
       if (entry == null) {
         return null;
@@ -660,7 +662,7 @@ public final class HashBiMap<K extends @Nullable Object, V extends @Nullable Obj
     }
 
     @Override
-    public Set<V> keySet() {
+    public Set<@KeyFor({"this"}) V> keySet() {
       return new InverseKeySet();
     }
 
@@ -670,7 +672,7 @@ public final class HashBiMap<K extends @Nullable Object, V extends @Nullable Obj
       }
 
       @Override
-      public boolean remove(@CheckForNull Object o) {
+      public boolean remove(@CheckForNull @UnknownSignedness Object o) {
         BiEntry<K, V> entry = seekByValue(o, smearedHash(o));
         if (entry == null) {
           return false;
@@ -801,5 +803,5 @@ public final class HashBiMap<K extends @Nullable Object, V extends @Nullable Obj
   private static final long serialVersionUID = 0;
 
 @SideEffectFree
-public Set<Map.Entry<K, V>> entrySet() { return super.entrySet(); }
+public Set<Map.Entry<@KeyFor({"this"}) K, V>> entrySet() { return super.entrySet(); }
 }

@@ -39,7 +39,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.ObjIntConsumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -245,7 +247,7 @@ public final class TreeMultiset<E extends @Nullable Object> extends AbstractSort
   }
 
   @Override
-  public int count(@CheckForNull Object element) {
+  public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
     try {
       @SuppressWarnings("unchecked")
       E e = (E) element;

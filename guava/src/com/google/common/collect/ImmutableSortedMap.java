@@ -41,7 +41,9 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -814,7 +816,7 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
   /** Returns an immutable set of the mappings in this map, sorted by the key ordering. */
   @SideEffectFree
   @Override
-  public ImmutableSet<Entry<K, V>> entrySet() {
+  public ImmutableSet<Entry<@KeyFor({"this"}) K, V>> entrySet() {
     return super.entrySet();
   }
 
@@ -873,7 +875,7 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
   /** Returns an immutable sorted set of the keys in this map. */
   @SideEffectFree
   @Override
-  public ImmutableSortedSet<K> keySet() {
+  public ImmutableSortedSet<@KeyFor({"this"}) K> keySet() {
     return keySet;
   }
 
@@ -909,12 +911,12 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
   }
 
   @Override
-  public K firstKey() {
+  public @KeyFor("this") K firstKey() {
     return keySet().first();
   }
 
   @Override
-  public K lastKey() {
+  public @KeyFor("this") K lastKey() {
     return keySet().last();
   }
 
@@ -1138,12 +1140,12 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
   }
 
   @Override
-  public ImmutableSortedSet<K> navigableKeySet() {
+  public ImmutableSortedSet<@KeyFor({"this"}) K> navigableKeySet() {
     return keySet;
   }
 
   @Override
-  public ImmutableSortedSet<K> descendingKeySet() {
+  public ImmutableSortedSet<@KeyFor({"this"}) K> descendingKeySet() {
     return keySet.descendingSet();
   }
 
@@ -1178,5 +1180,5 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
   private static final long serialVersionUID = 0;
 
 @Pure
-public boolean containsValue(@Nullable Object arg0) { return super.containsValue(arg0); }
+public boolean containsValue(@Nullable @UnknownSignedness Object arg0) { return super.containsValue(arg0); }
 }

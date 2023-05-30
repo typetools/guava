@@ -45,6 +45,7 @@ import java.util.SortedSet;
 import java.util.Spliterator;
 import java.util.function.BiConsumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
@@ -178,7 +179,7 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
   }
 
   @Override
-  public boolean containsKey(@CheckForNull Object key) {
+  public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
     return map.containsKey(key);
   }
 
@@ -1375,7 +1376,7 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public Set<K> keySet() {
+    public Set<@KeyFor({"this"}) K> keySet() {
       return AbstractMapBasedMultimap.this.keySet();
     }
 
@@ -1510,13 +1511,13 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
 
     @Override
     @ParametricNullness
-    public K firstKey() {
+    public @KeyFor("this") K firstKey() {
       return sortedMap().firstKey();
     }
 
     @Override
     @ParametricNullness
-    public K lastKey() {
+    public @KeyFor("this") K lastKey() {
       return sortedMap().lastKey();
     }
 
@@ -1541,7 +1542,7 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     // returns a SortedSet, even though returning a Set would be sufficient to
     // satisfy the SortedMap.keySet() interface
     @Override
-    public SortedSet<K> keySet() {
+    public SortedSet<@KeyFor({"this"}) K> keySet() {
       SortedSet<K> result = sortedKeySet;
       return (result == null) ? sortedKeySet = createKeySet() : result;
     }
@@ -1659,7 +1660,7 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public NavigableSet<K> keySet() {
+    public NavigableSet<@KeyFor({"this"}) K> keySet() {
       return (NavigableSet<K>) super.keySet();
     }
 
@@ -1669,12 +1670,12 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public NavigableSet<K> navigableKeySet() {
+    public NavigableSet<@KeyFor({"this"}) K> navigableKeySet() {
       return keySet();
     }
 
     @Override
-    public NavigableSet<K> descendingKeySet() {
+    public NavigableSet<@KeyFor({"this"}) K> descendingKeySet() {
       return descendingMap().navigableKeySet();
     }
 

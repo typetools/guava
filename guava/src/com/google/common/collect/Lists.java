@@ -996,7 +996,7 @@ public final class Lists {
   }
 
   /** An implementation of {@link List#equals(Object)}. */
-  static boolean equalsImpl(List<?> thisList, @CheckForNull Object other) {
+  static boolean equalsImpl(List<?> thisList, @CheckForNull @UnknownSignedness Object other) {
     if (other == checkNotNull(thisList)) {
       return true;
     }
@@ -1034,7 +1034,7 @@ public final class Lists {
   }
 
   /** An implementation of {@link List#indexOf(Object)}. */
-  static int indexOfImpl(List<?> list, @CheckForNull Object element) {
+  static int indexOfImpl(List<?> list, @CheckForNull @UnknownSignedness Object element) {
     if (list instanceof RandomAccess) {
       return indexOfRandomAccess(list, element);
     } else {
@@ -1067,7 +1067,7 @@ public final class Lists {
   }
 
   /** An implementation of {@link List#lastIndexOf(Object)}. */
-  static int lastIndexOfImpl(List<?> list, @CheckForNull Object element) {
+  static int lastIndexOfImpl(List<?> list, @CheckForNull @UnknownSignedness Object element) {
     if (list instanceof RandomAccess) {
       return lastIndexOfRandomAccess(list, element);
     } else {
