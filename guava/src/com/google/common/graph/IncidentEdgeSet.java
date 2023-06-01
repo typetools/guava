@@ -20,6 +20,7 @@ import java.util.AbstractSet;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
@@ -42,7 +43,7 @@ abstract class IncidentEdgeSet<N> extends AbstractSet<EndpointPair<N>> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     if (graph.isDirected()) {
       return graph.inDegree(node)
           + graph.outDegree(node)

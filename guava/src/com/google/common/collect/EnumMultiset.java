@@ -127,7 +127,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return Ints.saturatedCast(size);
   }
 

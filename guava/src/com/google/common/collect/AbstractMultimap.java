@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
@@ -217,7 +218,7 @@ abstract class AbstractMultimap<K extends @Nullable Object, V extends @Nullable 
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return AbstractMultimap.this.size();
     }
 

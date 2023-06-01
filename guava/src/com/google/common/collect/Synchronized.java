@@ -250,7 +250,7 @@ final class Synchronized {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       synchronized (mutex) {
         return delegate().size();
       }
@@ -1292,7 +1292,7 @@ final class Synchronized {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       synchronized (mutex) {
         return delegate().size();
       }

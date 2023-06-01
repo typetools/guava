@@ -35,6 +35,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -353,7 +354,7 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
     ImmutableList<Range<K>> subRanges =
         new ImmutableList<Range<K>>() {
           @Override
-          public int size() {
+          public @NonNegative int size() {
             return len;
           }
 

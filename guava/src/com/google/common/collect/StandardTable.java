@@ -45,6 +45,7 @@ import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
@@ -390,7 +391,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       updateBackingRowMapField();
       return (backingRowMap == null) ? 0 : backingRowMap.size();
     }
@@ -524,7 +525,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         int size = 0;
         for (Map<C, V> map : backingMap.values()) {
           if (map.containsKey(columnKey)) {
@@ -700,7 +701,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return Iterators.size(iterator());
     }
 
@@ -861,7 +862,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return backingMap.size();
       }
 
@@ -950,7 +951,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializa
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return columnKeySet().size();
       }
 

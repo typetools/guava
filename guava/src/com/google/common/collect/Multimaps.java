@@ -1196,7 +1196,7 @@ public final class Multimaps {
 
         @Pure
         @Override
-        public int size() {
+        public @NonNegative int size() {
           return map.containsKey(key) ? 1 : 0;
         }
       };
@@ -1786,7 +1786,7 @@ public final class Multimaps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multimap.size();
     }
 
@@ -1854,7 +1854,7 @@ public final class Multimaps {
     abstract Multimap<K, V> multimap();
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multimap().size();
     }
 
@@ -1892,7 +1892,7 @@ public final class Multimaps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multimap.keySet().size();
     }
 

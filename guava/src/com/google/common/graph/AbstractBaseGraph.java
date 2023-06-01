@@ -31,6 +31,7 @@ import java.util.AbstractSet;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
@@ -73,7 +74,7 @@ abstract class AbstractBaseGraph<N> implements BaseGraph<N> {
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return Ints.saturatedCast(edgeCount());
       }
 

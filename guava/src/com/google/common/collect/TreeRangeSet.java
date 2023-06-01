@@ -31,6 +31,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeMap;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * An implementation of {@link RangeSet} backed by a {@link TreeMap}.
@@ -436,7 +437,7 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       if (upperBoundWindow.equals(Range.all())) {
         return rangesByLowerBound.size();
       }
@@ -627,7 +628,7 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return Iterators.size(entryIterator());
     }
 
@@ -860,7 +861,7 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return Iterators.size(entryIterator());
     }
   }

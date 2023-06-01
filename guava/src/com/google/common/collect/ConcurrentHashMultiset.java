@@ -160,7 +160,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    */
   @Pure
   @Override
-  public int size() {
+  public @NonNegative int size() {
     long sum = 0L;
     for (AtomicInteger value : countMap.values()) {
       sum += value.get();
@@ -602,7 +602,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
 
   @Pure
   @Override
-  public int size() { return super.size(); }
+  public @NonNegative int size() { return super.size(); }
 
   @Pure
   @Override

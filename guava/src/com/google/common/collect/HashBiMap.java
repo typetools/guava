@@ -41,6 +41,7 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
@@ -434,7 +435,7 @@ public final class HashBiMap<K extends @Nullable Object, V extends @Nullable Obj
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return size;
   }
 
@@ -609,7 +610,7 @@ public final class HashBiMap<K extends @Nullable Object, V extends @Nullable Obj
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return size;
     }
 

@@ -25,6 +25,7 @@ import com.google.common.annotations.GwtIncompatible;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * An implementation of {@link ContiguousSet} that contains one or more elements.
@@ -147,7 +148,7 @@ final class RegularContiguousSet<C extends Comparable> extends ContiguousSet<C> 
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     long distance = domain.distance(first(), last());
     return (distance >= Integer.MAX_VALUE) ? Integer.MAX_VALUE : (int) distance + 1;
   }

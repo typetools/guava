@@ -568,7 +568,7 @@ public final class Multisets {
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return IntMath.saturatedAdd(multiset1.size(), multiset2.size());
       }
 
@@ -1029,7 +1029,7 @@ public final class Multisets {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multiset().entrySet().size();
     }
   }
@@ -1198,7 +1198,7 @@ public final class Multisets {
   private abstract static class ViewMultiset<E extends @Nullable Object>
       extends AbstractMultiset<E> {
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return linearTimeSizeImpl(this);
     }
 

@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Spliterator;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
@@ -216,7 +217,7 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, @Nullable V>
     abstract V setValue(int index, @ParametricNullness V newValue);
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return keyIndex.size();
     }
 

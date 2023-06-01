@@ -23,6 +23,7 @@ import java.util.Map.Entry;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
@@ -85,7 +86,7 @@ abstract class ImmutableMapEntrySet<K, V> extends ImmutableSet.CachingAsList<Ent
   abstract ImmutableMap<K, V> map();
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return map().size();
   }
 

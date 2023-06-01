@@ -87,7 +87,7 @@ final class JdkBackedImmutableMultiset<E> extends ImmutableMultiset<E> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return Ints.saturatedCast(size);
   }
 }

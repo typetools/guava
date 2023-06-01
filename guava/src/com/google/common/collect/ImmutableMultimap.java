@@ -576,7 +576,7 @@ public abstract class ImmutableMultimap<K, V> extends BaseImmutableMultimap<K, V
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multimap.size();
     }
 
@@ -679,7 +679,7 @@ public abstract class ImmutableMultimap<K, V> extends BaseImmutableMultimap<K, V
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return ImmutableMultimap.this.size();
     }
 
@@ -778,7 +778,7 @@ public abstract class ImmutableMultimap<K, V> extends BaseImmutableMultimap<K, V
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multimap.size();
     }
 

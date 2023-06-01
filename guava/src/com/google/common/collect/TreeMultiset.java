@@ -233,7 +233,7 @@ public final class TreeMultiset<E extends @Nullable Object> extends AbstractSort
 
   @Pure
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return Ints.saturatedCast(aggregateForEntries(Aggregate.SIZE));
   }
 

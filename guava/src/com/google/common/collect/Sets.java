@@ -53,6 +53,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.PolySigned;
@@ -716,7 +717,7 @@ public final class Sets {
     return new SetView<E>() {
       @Pure
       @Override
-      public int size() {
+      public @NonNegative int size() {
         int size = set1.size();
         for (E e : set2) {
           if (!set1.contains(e)) {
@@ -848,7 +849,7 @@ public final class Sets {
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         int size = 0;
         for (E e : set1) {
           if (set2.contains(e)) {
@@ -921,7 +922,7 @@ public final class Sets {
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         int size = 0;
         for (E e : set1) {
           if (!set2.contains(e)) {
@@ -986,7 +987,7 @@ public final class Sets {
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         int size = 0;
         for (E e : set1) {
           if (!set2.contains(e)) {
@@ -1415,7 +1416,7 @@ public final class Sets {
       ImmutableList<List<E>> listAxes =
           new ImmutableList<List<E>>() {
             @Override
-            public int size() {
+            public @NonNegative int size() {
               return axes.size();
             }
 
@@ -1557,7 +1558,7 @@ public final class Sets {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return Integer.bitCount(mask);
     }
 
@@ -1578,7 +1579,7 @@ public final class Sets {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return 1 << inputSet.size();
     }
 
@@ -1736,7 +1737,7 @@ public final class Sets {
               }
 
               @Override
-              public int size() {
+              public @NonNegative int size() {
                 return size;
               }
             };
@@ -1745,7 +1746,7 @@ public final class Sets {
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return IntMath.binomial(index.size(), size);
       }
 

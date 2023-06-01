@@ -25,6 +25,7 @@ import java.util.Map.Entry;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * {@code values()} implementation for {@link ImmutableMap}.
@@ -42,7 +43,7 @@ final class ImmutableMapValues<K, V> extends ImmutableCollection<V> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return map.size();
   }
 

@@ -42,6 +42,7 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
@@ -468,7 +469,7 @@ public final class LinkedHashMultimap<K extends @Nullable Object, V extends @Nul
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return size;
     }
 

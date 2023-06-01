@@ -43,6 +43,7 @@ import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.PolySigned;
@@ -252,7 +253,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return size;
   }
 
