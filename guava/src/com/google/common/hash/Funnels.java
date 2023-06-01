@@ -270,7 +270,7 @@ public final class Funnels {
     }
 
     @Override
-     public void write(@PolySigned byte[] bytes, @IndexOrHigh({"#1"}) int off, @LTLengthOf(value={"#1"}, offset={"#2 - 1"}) @NonNegative int len) throws IOException {
+    public void write(@PolySigned byte[] bytes, @IndexOrHigh({"#1"}) int off, @LTLengthOf(value={"#1"}, offset={"#2 - 1"}) @NonNegative int len) throws IOException {
       sink.putBytes(bytes, off, len);
     }
 
