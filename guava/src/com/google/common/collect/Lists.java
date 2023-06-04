@@ -50,6 +50,7 @@ import java.util.RandomAccess;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Predicate;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
@@ -331,7 +332,7 @@ public final class Lists {
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return IntMath.saturatedAdd(rest.length, 1);
     }
 
@@ -361,7 +362,7 @@ public final class Lists {
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return IntMath.saturatedAdd(rest.length, 2);
     }
 
@@ -566,7 +567,7 @@ public final class Lists {
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return fromList.size();
     }
 
@@ -654,7 +655,7 @@ public final class Lists {
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return fromList.size();
     }
 
@@ -703,7 +704,7 @@ public final class Lists {
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return IntMath.divide(list.size(), size, RoundingMode.CEILING);
     }
 
@@ -781,7 +782,7 @@ public final class Lists {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return string.length();
     }
   }
@@ -800,7 +801,7 @@ public final class Lists {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return sequence.length();
     }
   }
@@ -889,7 +890,7 @@ public final class Lists {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return forwardList.size();
     }
 
@@ -940,7 +941,7 @@ public final class Lists {
         }
 
         @Override
-        public int nextIndex() {
+        public @NonNegative int nextIndex() {
           return reversePosition(forwardIterator.nextIndex());
         }
 
@@ -955,7 +956,7 @@ public final class Lists {
         }
 
         @Override
-        public int previousIndex() {
+        public @NonNegative int previousIndex() {
           return nextIndex() - 1;
         }
 
@@ -1172,7 +1173,7 @@ public final class Lists {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return backingList.size();
     }
   }

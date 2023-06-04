@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * An empty contiguous set.
@@ -44,7 +45,7 @@ final class EmptyContiguousSet<C extends Comparable> extends ContiguousSet<C> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return 0;
   }
 

@@ -85,6 +85,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
@@ -919,7 +920,7 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
         }
 
         @Override
-        public int size() {
+        public @NonNegative int size() {
           return 0;
         }
 
@@ -3728,7 +3729,7 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       int size = 0;
       for (ReferenceEntry<K, V> e = head.getNextInWriteQueue();
           e != head;
@@ -3867,7 +3868,7 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       int size = 0;
       for (ReferenceEntry<K, V> e = head.getNextInAccessQueue();
           e != head;
@@ -3952,7 +3953,7 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return Ints.saturatedCast(longSize());
   }
 
@@ -4514,7 +4515,7 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
 
   abstract class AbstractCacheSet<T> extends AbstractSet<T> {
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return LocalCache.this.size();
     }
 
@@ -4586,7 +4587,7 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
 
   final class Values extends AbstractCollection<V> {
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return LocalCache.this.size();
     }
 

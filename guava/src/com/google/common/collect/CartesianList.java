@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * Implementation of {@link Lists#cartesianProduct(List)}.
@@ -117,7 +118,7 @@ final class CartesianList<E> extends AbstractList<List<E>> implements RandomAcce
     return new ImmutableList<E>() {
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return axes.size();
       }
 
@@ -136,7 +137,7 @@ final class CartesianList<E> extends AbstractList<List<E>> implements RandomAcce
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return axesSizeProduct[0];
   }
 

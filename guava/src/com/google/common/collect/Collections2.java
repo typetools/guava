@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.PolySigned;
@@ -230,7 +231,7 @@ public final class Collections2 {
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       int size = 0;
       for (E e : unfiltered) {
         if (predicate.apply(e)) {
@@ -326,7 +327,7 @@ public final class Collections2 {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return fromCollection.size();
     }
   }
@@ -497,7 +498,7 @@ public final class Collections2 {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return size;
     }
 
@@ -624,7 +625,7 @@ public final class Collections2 {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return IntMath.factorial(inputList.size());
     }
 

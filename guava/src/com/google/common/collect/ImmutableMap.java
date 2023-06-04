@@ -51,6 +51,7 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -1115,7 +1116,7 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
       extends IteratorBasedImmutableMap<K, ImmutableSet<V>> {
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return ImmutableMap.this.size();
     }
 

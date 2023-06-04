@@ -47,6 +47,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.concurrent.locks.ReentrantLock;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
@@ -2329,7 +2330,7 @@ class MapMakerInternalMap<
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     Segment<K, V, E, S>[] segments = this.segments;
     long sum = 0;
     for (int i = 0; i < segments.length; ++i) {
@@ -2693,7 +2694,7 @@ class MapMakerInternalMap<
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return MapMakerInternalMap.this.size();
     }
 
@@ -2727,7 +2728,7 @@ class MapMakerInternalMap<
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return MapMakerInternalMap.this.size();
     }
 
@@ -2795,7 +2796,7 @@ class MapMakerInternalMap<
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return MapMakerInternalMap.this.size();
     }
 

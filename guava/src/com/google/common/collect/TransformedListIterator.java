@@ -19,6 +19,7 @@ package com.google.common.collect;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Function;
 import java.util.ListIterator;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -51,12 +52,12 @@ abstract class TransformedListIterator<F extends @Nullable Object, T extends @Nu
   }
 
   @Override
-  public final int nextIndex() {
+  public final @NonNegative int nextIndex() {
     return backingIterator().nextIndex();
   }
 
   @Override
-  public final int previousIndex() {
+  public final @NonNegative int previousIndex() {
     return backingIterator().previousIndex();
   }
 

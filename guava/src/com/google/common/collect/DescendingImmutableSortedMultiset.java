@@ -52,7 +52,7 @@ final class DescendingImmutableSortedMultiset<E> extends ImmutableSortedMultiset
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return forward.size();
   }
 

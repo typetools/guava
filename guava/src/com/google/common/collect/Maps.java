@@ -71,6 +71,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.stream.Collector;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
@@ -939,7 +940,7 @@ public final class Maps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return backingSet().size();
     }
 
@@ -1160,7 +1161,7 @@ public final class Maps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return set.size();
     }
 
@@ -2222,7 +2223,7 @@ public final class Maps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return fromMap.size();
     }
 
@@ -3385,7 +3386,7 @@ public final class Maps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return filteredDelegate.size();
     }
 
@@ -3876,7 +3877,7 @@ public final class Maps {
           K extends @Nullable Object, V extends @Nullable Object>
       extends AbstractMap<K, V> {
     @Override
-    public abstract int size();
+    public abstract @NonNegative int size();
 
     abstract Iterator<Entry<K, V>> entryIterator();
 
@@ -4069,7 +4070,7 @@ public final class Maps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return map().size();
     }
 
@@ -4316,7 +4317,7 @@ public final class Maps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return map().size();
     }
 
@@ -4341,7 +4342,7 @@ public final class Maps {
     abstract Map<K, V> map();
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return map().size();
     }
 

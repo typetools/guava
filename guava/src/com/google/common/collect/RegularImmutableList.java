@@ -20,6 +20,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.VisibleForTesting;
 import java.util.Spliterator;
 import java.util.Spliterators;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
@@ -46,7 +47,7 @@ class RegularImmutableList<E> extends ImmutableList<E> {
 
   @Pure
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return array.length;
   }
 

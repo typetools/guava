@@ -22,6 +22,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Preconditions;
 import java.util.Collections;
 import java.util.Spliterator;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
@@ -62,7 +63,7 @@ final class SingletonImmutableList<E> extends ImmutableList<E> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return 1;
   }
 

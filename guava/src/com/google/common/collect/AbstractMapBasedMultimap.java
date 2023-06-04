@@ -45,6 +45,7 @@ import java.util.SortedSet;
 import java.util.Spliterator;
 import java.util.function.BiConsumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
@@ -397,7 +398,7 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       refreshIfEmpty();
       return delegate.size();
     }
@@ -891,12 +892,12 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
       }
 
       @Override
-      public int nextIndex() {
+      public @NonNegative int nextIndex() {
         return getDelegateListIterator().nextIndex();
       }
 
       @Override
-      public int previousIndex() {
+      public @NonNegative int previousIndex() {
         return getDelegateListIterator().previousIndex();
       }
 
@@ -1381,7 +1382,7 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return submap.size();
     }
 
