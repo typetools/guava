@@ -18,6 +18,7 @@ import com.google.common.annotations.GwtCompatible;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * ImmutableSet implementation backed by a JDK HashSet, used to defend against apparent hash
@@ -43,7 +44,7 @@ final class JdkBackedImmutableSet<E> extends IndexedImmutableSet<E> {
   }
 
   @Override
-  public boolean contains(@CheckForNull Object object) {
+  public boolean contains(@CheckForNull @UnknownSignedness Object object) {
     return delegate.contains(object);
   }
 

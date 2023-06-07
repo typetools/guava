@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Spliterator;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -85,14 +86,14 @@ final class SingletonImmutableList<E> extends ImmutableList<E> {
   }
 
 @Pure
-public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
+public boolean contains(@Nullable @UnknownSignedness Object arg0) { return super.contains(arg0); }
 
 @Pure
-public boolean equals(@Nullable Object arg0) { return super.equals(arg0); }
+public boolean equals(@Nullable @UnknownSignedness Object arg0) { return super.equals(arg0); }
 
 @Pure
-public int indexOf(@Nullable Object arg0) { return super.indexOf(arg0); }
+public int indexOf(@Nullable @UnknownSignedness Object arg0) { return super.indexOf(arg0); }
 
 @Pure
-public int lastIndexOf(@Nullable Object arg0) { return super.lastIndexOf(arg0); }
+public int lastIndexOf(@Nullable @UnknownSignedness Object arg0) { return super.lastIndexOf(arg0); }
 }

@@ -607,7 +607,7 @@ public final class ImmutableDoubleArray implements Serializable {
 
     // Because we happen to use the same formula. If that changes, just don't override this.
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness AsList this) {
       return parent.hashCode();
     }
 
@@ -649,7 +649,7 @@ public final class ImmutableDoubleArray implements Serializable {
 
   /** Returns an unspecified hash code for the contents of this immutable array. */
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ImmutableDoubleArray this) {
     int hash = 1;
     for (int i = start; i < end; i++) {
       hash *= 31;

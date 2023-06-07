@@ -125,7 +125,7 @@ public interface Table<
    * its cell view, as returned by {@link #cellSet}.
    */
   @Override
-  int hashCode();
+  int hashCode(@UnknownSignedness Table<R, C, V> this);
 
   // Mutators
 
@@ -285,6 +285,6 @@ public interface Table<
      * e.getColumnKey(), e.getValue())}.
      */
     @Override
-    int hashCode();
+    int hashCode(@UnknownSignedness Cell<R, C, V> this);
   }
 }

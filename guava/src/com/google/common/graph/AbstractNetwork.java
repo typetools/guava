@@ -275,7 +275,7 @@ public abstract class AbstractNetwork<N, E> implements Network<N, E> {
   }
 
   @Override
-  public final int hashCode() {
+  public final int hashCode(@UnknownSignedness AbstractNetwork<N, E> this) {
     return edgeIncidentNodesMap(this).hashCode();
   }
 

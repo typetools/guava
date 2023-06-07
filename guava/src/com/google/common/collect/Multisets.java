@@ -864,7 +864,7 @@ public final class Multisets {
      */
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness AbstractEntry<E> this) {
       E e = getElement();
       return ((e == null) ? 0 : e.hashCode()) ^ getCount();
     }

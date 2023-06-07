@@ -633,7 +633,7 @@ public final class TreeRangeMap<K extends Comparable, V> implements RangeMap<K, 
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SubRangeMap this) {
       return asMapOfRanges().hashCode();
     }
 
@@ -815,7 +815,7 @@ public final class TreeRangeMap<K extends Comparable, V> implements RangeMap<K, 
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness TreeRangeMap<K, V> this) {
     return asMapOfRanges().hashCode();
   }
 

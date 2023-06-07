@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A {@link Type} with generics.
@@ -838,7 +839,7 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness TypeToken<T> this) {
     return runtimeType.hashCode();
   }
 

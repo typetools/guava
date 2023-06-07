@@ -38,6 +38,7 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.MinLen;
 
 /**
@@ -441,7 +442,7 @@ public final class Stats implements Serializable {
    * including the floating point values. See the note on {@link #equals} for details.
    */
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness Stats this) {
     return Objects.hashCode(count, mean, sumOfSquaresOfDeltas, min, max);
   }
 

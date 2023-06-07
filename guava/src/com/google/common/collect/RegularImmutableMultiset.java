@@ -194,7 +194,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness RegularImmutableMultiset<E> this) {
     return hashCode;
   }
 }

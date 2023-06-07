@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * An interface for <a
@@ -361,5 +362,5 @@ public interface ValueGraph<N, V> extends BaseGraph<N> {
    * <p>A reference implementation of this is provided by {@link AbstractValueGraph#hashCode()}.
    */
   @Override
-  int hashCode();
+  int hashCode(@UnknownSignedness ValueGraph<N, V> this);
 }

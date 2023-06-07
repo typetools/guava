@@ -46,6 +46,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.MinLen;
 
 /**
@@ -239,7 +240,7 @@ final class Types {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness GenericArrayTypeImpl this) {
       return componentType.hashCode();
     }
 
@@ -301,7 +302,7 @@ final class Types {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness ParameterizedTypeImpl this) {
       return (ownerType == null ? 0 : ownerType.hashCode())
           ^ argumentsList.hashCode()
           ^ rawType.hashCode();
@@ -435,7 +436,7 @@ final class Types {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness TypeVariableImpl<D> this) {
       return genericDeclaration.hashCode() ^ name.hashCode();
     }
 
@@ -500,7 +501,7 @@ final class Types {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness WildcardTypeImpl this) {
       return lowerBounds.hashCode() ^ upperBounds.hashCode();
     }
 

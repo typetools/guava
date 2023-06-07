@@ -17,6 +17,7 @@ package com.google.common.collect;
 import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A mutable value of type {@code int}, for multisets to use in tracking counts of values.
@@ -55,7 +56,7 @@ final class Count implements Serializable {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness Count this) {
     return value;
   }
 

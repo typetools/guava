@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A subscriber method on a specific object, plus the executor that should be used for dispatching
@@ -101,7 +102,7 @@ class Subscriber {
   }
 
   @Override
-  public final int hashCode() {
+  public final int hashCode(@UnknownSignedness Subscriber this) {
     return (31 + method.hashCode()) * 31 + System.identityHashCode(target);
   }
 

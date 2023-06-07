@@ -709,7 +709,7 @@ public final class Ints extends IntsMethodsForWeb {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness IntArrayAsList this) {
       int result = 1;
       for (int i = start; i < end; i++) {
         result = 31 * result + Ints.hashCode(array[i]);

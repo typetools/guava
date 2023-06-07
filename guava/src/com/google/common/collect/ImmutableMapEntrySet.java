@@ -112,7 +112,7 @@ abstract class ImmutableMapEntrySet<K, V> extends ImmutableSet.CachingAsList<Ent
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ImmutableMapEntrySet<K, V> this) {
     return map().hashCode();
   }
 

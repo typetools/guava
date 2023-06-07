@@ -287,7 +287,7 @@ public final class HashBiMap<K extends @Nullable Object, V extends @Nullable Obj
 
   @Override
   @CheckForNull
-  public V get(@CheckForNull Object key) {
+  public V get(@CheckForNull @UnknownSignedness Object key) {
     return Maps.valueOrNull(seekByKey(key, smearedHash(key)));
   }
 
@@ -626,7 +626,7 @@ public final class HashBiMap<K extends @Nullable Object, V extends @Nullable Obj
 
     @Override
     @CheckForNull
-    public K get(@CheckForNull Object value) {
+    public K get(@CheckForNull @UnknownSignedness Object value) {
       return Maps.keyOrNull(seekByValue(value, smearedHash(value)));
     }
 

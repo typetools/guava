@@ -26,6 +26,7 @@ import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A mapping from disjoint nonempty ranges to non-null values. Queries look up the value associated
@@ -189,7 +190,7 @@ public interface RangeMap<K extends Comparable, V> {
 
   /** Returns {@code asMapOfRanges().hashCode()}. */
   @Override
-  int hashCode();
+  int hashCode(@UnknownSignedness RangeMap<K, V> this);
 
   /** Returns a readable string representation of this range map. */
   @Override

@@ -159,7 +159,7 @@ public abstract class ForwardingMap<K extends @Nullable Object, V extends @Nulla
 
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ForwardingMap<K, V> this) {
     return delegate().hashCode();
   }
 

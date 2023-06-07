@@ -153,7 +153,7 @@ abstract class AbstractMultimap<K extends @Nullable Object, V extends @Nullable 
   class EntrySet extends Entries implements Set<Entry<K, V>> {
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness EntrySet this) {
       return Sets.hashCodeImpl(this);
     }
 
@@ -270,7 +270,7 @@ abstract class AbstractMultimap<K extends @Nullable Object, V extends @Nullable 
    */
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness AbstractMultimap<K, V> this) {
     return asMap().hashCode();
   }
 

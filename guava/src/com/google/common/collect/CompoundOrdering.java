@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -68,7 +69,7 @@ final class CompoundOrdering<T extends @Nullable Object> extends Ordering<T>
 
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness CompoundOrdering<T> this) {
     return Arrays.hashCode(comparators);
   }
 

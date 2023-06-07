@@ -118,7 +118,7 @@ public ImmutableList<E> subList(int arg0, int arg1) { return super.subList(arg0,
 
 @Pure
 @Override
-public int hashCode() { return super.hashCode(); }
+public int hashCode(@UnknownSignedness RegularImmutableList<E> this) { return super.hashCode(); }
 
 @Pure
 @Override

@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -141,7 +142,7 @@ public final class Enums {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness StringConverter<T> this) {
       return enumClass.hashCode();
     }
 

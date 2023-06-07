@@ -229,7 +229,7 @@ abstract class AbstractMultiset<E extends @Nullable Object> extends AbstractColl
    */
   @Pure
   @Override
-  public final int hashCode() {
+  public final int hashCode(@UnknownSignedness AbstractMultiset<E> this) {
     return entrySet().hashCode();
   }
 

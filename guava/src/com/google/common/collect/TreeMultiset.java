@@ -1108,7 +1108,7 @@ public final class TreeMultiset<E extends @Nullable Object> extends AbstractSort
   private static final long serialVersionUID = 1;
 
 @Pure
-public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
+public boolean contains(@Nullable @UnknownSignedness Object arg0) { return super.contains(arg0); }
 
 public boolean containsAll(Collection<?> arg0) { return super.containsAll(arg0); }
 

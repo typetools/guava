@@ -22,6 +22,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /** An ordering which sorts iterables by comparing corresponding elements pairwise. */
 @GwtCompatible(serializable = true)
@@ -66,7 +67,7 @@ final class LexicographicalOrdering<T extends @Nullable Object> extends Ordering
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness LexicographicalOrdering<T> this) {
     return elementOrder.hashCode() ^ 2075626741; // meaningless
   }
 

@@ -20,6 +20,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.net.InetAddress;
 import java.text.ParseException;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A syntactically valid host specifier, suitable for use in a URI. This may be either a numeric IP
@@ -152,7 +153,7 @@ public final class HostSpecifier {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness HostSpecifier this) {
     return canonicalForm.hashCode();
   }
 

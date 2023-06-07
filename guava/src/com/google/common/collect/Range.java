@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.SortedSet;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A range (or "interval") defines the <i>boundaries</i> around a contiguous span of values of some
@@ -684,7 +685,7 @@ public final class Range<C extends Comparable> extends RangeGwtSerializationDepe
 
   /** Returns a hash code for this range. */
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness Range<C> this) {
     return lowerBound.hashCode() * 31 + upperBound.hashCode();
   }
 

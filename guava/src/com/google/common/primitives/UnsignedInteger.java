@@ -236,7 +236,7 @@ public final class UnsignedInteger extends Number implements Comparable<Unsigned
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness UnsignedInteger this) {
     return value;
   }
 

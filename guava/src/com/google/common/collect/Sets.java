@@ -1145,7 +1145,7 @@ public final class Sets {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness FilteredSet<E> this) {
       return hashCodeImpl(this);
     }
   }
@@ -1474,7 +1474,7 @@ public final class Sets {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness CartesianSet<E> this) {
       // Warning: this is broken if size() == 0, so it is critical that we
       // substitute an empty ImmutableSet to the user in place of this
 
@@ -1617,7 +1617,7 @@ public final class Sets {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness PowerSet<E> this) {
       /*
        * The sum of the sums of the hash codes in each subset is just the sum of
        * each input element's hash code times the number of sets that element

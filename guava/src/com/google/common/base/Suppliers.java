@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -79,7 +80,7 @@ public final class Suppliers {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SupplierComposition<F, T> this) {
       return Objects.hashCode(function, supplier);
     }
 
@@ -315,7 +316,7 @@ public final class Suppliers {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SupplierOfInstance<T> this) {
       return Objects.hashCode(instance);
     }
 

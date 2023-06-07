@@ -51,7 +51,7 @@ final class FilteredMultimapValues<K extends @Nullable Object, V extends @Nullab
   }
 
   @Override
-  public boolean contains(@CheckForNull Object o) {
+  public boolean contains(@CheckForNull @UnknownSignedness Object o) {
     return multimap.containsValue(o);
   }
 

@@ -29,6 +29,7 @@ import java.util.Iterator;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A function from {@code A} to {@code B} with an associated <i>reverse</i> function from {@code B}
@@ -369,7 +370,7 @@ public abstract class Converter<A, B> implements Function<A, B> {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness ReverseConverter<A, B> this) {
       return ~original.hashCode();
     }
 
@@ -446,7 +447,7 @@ public abstract class Converter<A, B> implements Function<A, B> {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness ConverterComposition<A, B, C> this) {
       return 31 * first.hashCode() + second.hashCode();
     }
 
@@ -572,7 +573,7 @@ public abstract class Converter<A, B> implements Function<A, B> {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness FunctionBasedConverter<A, B> this) {
       return forwardFunction.hashCode() * 31 + backwardFunction.hashCode();
     }
 

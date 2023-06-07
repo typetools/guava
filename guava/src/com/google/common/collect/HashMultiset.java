@@ -99,7 +99,7 @@ public final class HashMultiset<E extends @Nullable Object> extends AbstractMapB
   private static final long serialVersionUID = 0;
 
 @Override
-public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
+public boolean contains(@Nullable @UnknownSignedness Object arg0) { return super.contains(arg0); }
 
 @Override
 public @NonNegative int count(@Nullable @UnknownSignedness Object arg0) { return super.count(arg0); }

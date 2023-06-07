@@ -4487,7 +4487,7 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness WriteThroughEntry this) {
       // Cannot use key and value equivalence
       return key.hashCode() ^ value.hashCode();
     }

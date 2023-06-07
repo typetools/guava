@@ -804,7 +804,7 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
 
   @Override
   @CheckForNull
-  public V get(@CheckForNull Object key) {
+  public V get(@CheckForNull @UnknownSignedness Object key) {
     int index = keySet.indexOf(key);
     return (index == -1) ? null : valueList.get(index);
   }
@@ -868,7 +868,7 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
 
     @Pure
     @Override
-    public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
+    public boolean contains(@Nullable @UnknownSignedness Object arg0) { return super.contains(arg0); }
     }
     return isEmpty() ? ImmutableSet.<Entry<K, V>>of() : new EntrySet();
   }

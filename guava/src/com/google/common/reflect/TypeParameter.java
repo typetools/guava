@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Captures a free type variable that can be used in {@link TypeToken#where}. For example:
@@ -55,7 +56,7 @@ public abstract class TypeParameter<T> extends TypeCapture<T> {
   }
 
   @Override
-  public final int hashCode() {
+  public final int hashCode(@UnknownSignedness TypeParameter<T> this) {
     return typeVariable.hashCode();
   }
 

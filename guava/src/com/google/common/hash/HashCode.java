@@ -29,6 +29,7 @@ import org.checkerframework.checker.index.qual.LengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.ArrayLenRange;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
@@ -403,7 +404,7 @@ public abstract class HashCode {
    * probably not what you want to use.
    */
   @Override
-  public final int hashCode() {
+  public final int hashCode(@UnknownSignedness HashCode this) {
     // If we have at least 4 bytes (32 bits), just take the first 4 bytes. Since this is
     // already a (presumably) high-quality hash code, any four bytes of it will do.
     if (bits() >= 32) {

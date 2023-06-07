@@ -24,6 +24,7 @@ import com.google.common.base.Objects;
 import java.io.Serializable;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -65,7 +66,7 @@ final class ByFunctionOrdering<F extends @Nullable Object, T extends @Nullable O
 
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ByFunctionOrdering<F, T> this) {
     return Objects.hashCode(function, ordering);
   }
 

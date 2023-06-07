@@ -21,6 +21,7 @@ import com.google.common.primitives.Booleans;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Implementation detail for the internal structure of {@link Range} instances. Represents a unique
@@ -107,7 +108,7 @@ abstract class Cut<C extends Comparable> implements Comparable<Cut<C>>, Serializ
 
   // Prevent "missing hashCode" warning by explicitly forcing subclasses implement it
   @Override
-  public abstract int hashCode();
+  public abstract int hashCode(@UnknownSignedness Cut<C> this);
 
   /*
    * The implementation neither produces nor consumes any non-null instance of type C, so
@@ -200,7 +201,7 @@ abstract class Cut<C extends Comparable> implements Comparable<Cut<C>>, Serializ
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness BelowAll this) {
       return System.identityHashCode(this);
     }
 
@@ -291,7 +292,7 @@ abstract class Cut<C extends Comparable> implements Comparable<Cut<C>>, Serializ
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness AboveAll this) {
       return System.identityHashCode(this);
     }
 
@@ -379,7 +380,7 @@ abstract class Cut<C extends Comparable> implements Comparable<Cut<C>>, Serializ
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness BelowValue<C> this) {
       return endpoint.hashCode();
     }
 
@@ -469,7 +470,7 @@ abstract class Cut<C extends Comparable> implements Comparable<Cut<C>>, Serializ
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness AboveValue<C> this) {
       return ~endpoint.hashCode();
     }
 

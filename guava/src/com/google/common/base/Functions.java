@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.util.Map;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -173,7 +174,7 @@ public final class Functions {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness FunctionForMapNoDefault<K, V> this) {
       return map.hashCode();
     }
 
@@ -218,7 +219,7 @@ public final class Functions {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness ForMapWithDefault<K,V> this) {
       return Objects.hashCode(map, defaultValue);
     }
 
@@ -278,7 +279,7 @@ public final class Functions {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness FunctionComposition<A, B, C> this) {
       return f.hashCode() ^ g.hashCode();
     }
 
@@ -331,7 +332,7 @@ public final class Functions {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness PredicateFunction<T> this) {
       return predicate.hashCode();
     }
 
@@ -383,7 +384,7 @@ public final class Functions {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness ConstantFunction<E> this) {
       return (value == null) ? 0 : value.hashCode();
     }
 
@@ -434,7 +435,7 @@ public final class Functions {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SupplierFunction<F, T> this) {
       return supplier.hashCode();
     }
 

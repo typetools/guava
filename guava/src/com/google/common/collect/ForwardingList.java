@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.ListIterator;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -87,14 +88,14 @@ public abstract class ForwardingList<E extends @Nullable Object> extends Forward
   @Pure
   @Override
   @SuppressWarnings("nullness:argument")
-  public int indexOf(@CheckForNull Object element) {
+  public int indexOf(@CheckForNull @UnknownSignedness Object element) {
     return delegate().indexOf(element);
   }
 
   @Pure
   @Override
   @SuppressWarnings("nullness:argument")
-  public int lastIndexOf(@CheckForNull Object element) {
+  public int lastIndexOf(@CheckForNull @UnknownSignedness Object element) {
     return delegate().lastIndexOf(element);
   }
 
@@ -130,13 +131,13 @@ public abstract class ForwardingList<E extends @Nullable Object> extends Forward
 
   @Pure
   @Override
-  public boolean equals(@CheckForNull Object object) {
+  public boolean equals(@CheckForNull @UnknownSignedness Object object) {
     return object == this || delegate().equals(object);
   }
 
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ForwardingList<E> this) {
     return delegate().hashCode();
   }
 

@@ -663,7 +663,7 @@ public final class Doubles extends DoublesMethodsForWeb {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness DoubleArrayAsList this) {
       int result = 1;
       for (int i = start; i < end; i++) {
         result = 31 * result + Doubles.hashCode(array[i]);

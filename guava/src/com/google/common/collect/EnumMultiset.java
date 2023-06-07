@@ -326,7 +326,7 @@ public final class EnumMultiset<E extends Enum<E>> extends AbstractMultiset<E>
 
   @Pure
   @Override
-  public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
+  public boolean contains(@Nullable @UnknownSignedness Object arg0) { return super.contains(arg0); }
 
   @Pure
   @Override

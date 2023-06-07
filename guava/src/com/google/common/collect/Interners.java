@@ -23,6 +23,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.MapMaker.Dummy;
 import com.google.common.collect.MapMakerInternalMap.InternalEntry;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Contains static methods pertaining to instances of {@link Interner}.
@@ -175,7 +176,7 @@ public final class Interners {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness InternerFunction<E> this) {
       return interner.hashCode();
     }
 

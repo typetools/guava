@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.function.BiPredicate;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A strategy for determining whether two instances are considered equivalent, and for computing
@@ -267,7 +268,7 @@ public abstract class Equivalence<T> implements BiPredicate<@Nullable T, @Nullab
 
     /** Returns the result of {@link Equivalence#hash(Object)} applied to the wrapped reference. */
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness Wrapper<T> this) {
       return equivalence.hash(reference);
     }
 
@@ -340,7 +341,7 @@ public abstract class Equivalence<T> implements BiPredicate<@Nullable T, @Nullab
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness EquivalentToPredicate<T> this) {
       return Objects.hashCode(equivalence, target);
     }
 
