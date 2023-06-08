@@ -44,6 +44,7 @@ import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.ArrayLen;
 import org.checkerframework.common.value.qual.MinLen;
 
@@ -567,7 +568,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness Alphabet this) {
       return Arrays.hashCode(chars);
     }
   }
@@ -892,7 +893,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness StandardBaseEncoding this) {
       return alphabet.hashCode() ^ Objects.hashCode(paddingChar);
     }
   }

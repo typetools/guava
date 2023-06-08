@@ -18,6 +18,7 @@ package com.google.common.graph;
 
 import com.google.common.annotations.Beta;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * This class provides a skeletal implementation of {@link Graph}. It is recommended to extend this
@@ -47,7 +48,7 @@ public abstract class AbstractGraph<N> extends AbstractBaseGraph<N> implements G
   }
 
   @Override
-  public final int hashCode() {
+  public final int hashCode(@UnknownSignedness AbstractGraph<N> this) {
     return edges().hashCode();
   }
 

@@ -397,5 +397,5 @@ public interface Multimap<K extends @Nullable Object, V extends @Nullable Object
    */
   @Pure
   @Override
-  int hashCode();
+  int hashCode(@UnknownSignedness Multimap<K, V> this);
 }

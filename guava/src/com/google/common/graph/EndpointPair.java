@@ -25,6 +25,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.UnmodifiableIterator;
 import com.google.errorprone.annotations.Immutable;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * An immutable pair representing the two endpoints of an edge in a graph. The {@link EndpointPair}
@@ -142,7 +143,7 @@ public abstract class EndpointPair<N> implements Iterable<N> {
    * nodeU().hashCode() + nodeV().hashCode()}.
    */
   @Override
-  public abstract int hashCode();
+  public abstract int hashCode(@UnknownSignedness EndpointPair<N> this);
 
   private static final class Ordered<N> extends EndpointPair<N> {
     private Ordered(N source, N target) {
@@ -182,7 +183,7 @@ public abstract class EndpointPair<N> implements Iterable<N> {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness Ordered<N> this) {
       return Objects.hashCode(source(), target());
     }
 
@@ -242,7 +243,7 @@ public abstract class EndpointPair<N> implements Iterable<N> {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness Unordered<N> this) {
       return nodeU().hashCode() + nodeV().hashCode();
     }
 

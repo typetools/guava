@@ -1143,7 +1143,7 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness ImmutableMap<K, V>.MapViewOfValuesAsSingletonSets this) {
       // ImmutableSet.of(value).hashCode() == value.hashCode(), so the hashes are the same
       return ImmutableMap.this.hashCode();
     }
@@ -1191,7 +1191,7 @@ public abstract class ImmutableMap<K, V> implements Map<K, V>, Serializable {
 
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ImmutableMap<K, V> this) {
     return Sets.hashCodeImpl(entrySet());
   }
 

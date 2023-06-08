@@ -165,7 +165,7 @@ public abstract class ForwardingMultimap<K extends @Nullable Object, V extends @
 
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ForwardingMultimap<K, V> this) {
     return delegate().hashCode();
   }
 }

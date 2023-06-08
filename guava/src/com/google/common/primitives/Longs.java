@@ -807,7 +807,7 @@ public final class Longs {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness LongArrayAsList this) {
       int result = 1;
       for (int i = start; i < end; i++) {
         result = 31 * result + Longs.hashCode(array[i]);

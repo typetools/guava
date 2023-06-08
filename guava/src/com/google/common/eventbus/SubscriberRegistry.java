@@ -47,6 +47,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Registry of subscribers to a single event bus.
@@ -254,7 +255,7 @@ final class SubscriberRegistry {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness MethodIdentifier this) {
       return Objects.hashCode(name, parameterTypes);
     }
 

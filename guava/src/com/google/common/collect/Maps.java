@@ -706,7 +706,7 @@ public final class Maps {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness MapDifferenceImpl<K, V> this) {
       return Objects.hashCode(
           entriesOnlyOnLeft(), entriesOnlyOnRight(), entriesInCommon(), entriesDiffering());
     }
@@ -772,7 +772,7 @@ public final class Maps {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness ValueDifferenceImpl<V> this) {
       return Objects.hashCode(left, right);
     }
 
@@ -1562,7 +1562,7 @@ public final class Maps {
     @CFComment({"signedness: is not applicable te `Entry` objects, which are the elements of the array",
             "nullness: the receiver is a collection of non-null `Entry` objects"})
     @Override
-    public Object[] toArray() {
+    public @PolyNull @PolySigned Object[] toArray() {
       /*
        * standardToArray returns `@Nullable Object[]` rather than `Object[]` but only because it can
        * be used with collections that may contain null. This collection never contains nulls, so we
@@ -1575,7 +1575,7 @@ public final class Maps {
 
     @Override
     @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] array) {
+    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(@PolyNull T[] array) {
       return standardToArray(array);
     }
 
@@ -1605,7 +1605,7 @@ public final class Maps {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness UnmodifiableEntrySet<K, V> this) {
       return Sets.hashCodeImpl(this);
     }
   }
@@ -1658,7 +1658,7 @@ public final class Maps {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness BiMapConverter<A, B> this) {
       return bimap.hashCode();
     }
 

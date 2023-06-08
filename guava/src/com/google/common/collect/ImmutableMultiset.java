@@ -348,7 +348,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
 
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ImmutableMultiset<E> this) {
     return Sets.hashCodeImpl(entrySet());
   }
 
@@ -411,7 +411,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness EntrySet this) {
       return ImmutableMultiset.this.hashCode();
     }
 

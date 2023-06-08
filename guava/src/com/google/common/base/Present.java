@@ -22,6 +22,7 @@ import java.util.Set;
 import javax.annotation.CheckForNull;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /** Implementation of an {@link Optional} containing a reference. */
 @GwtCompatible
@@ -89,7 +90,7 @@ final class Present<T> extends Optional<T> {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness Present<T> this) {
     return 0x598df91c + reference.hashCode();
   }
 

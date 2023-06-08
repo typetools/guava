@@ -44,6 +44,7 @@ import java.nio.charset.UnsupportedCharsetException;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Represents an <a href="http://en.wikipedia.org/wiki/Internet_media_type">Internet Media Type</a>
@@ -1144,7 +1145,7 @@ public final class MediaType {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness MediaType this) {
     // racy single-check idiom
     int h = hashCode;
     if (h == 0) {

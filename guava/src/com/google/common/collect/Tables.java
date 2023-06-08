@@ -188,7 +188,7 @@ public final class Tables {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness AbstractCell<R, C, V> this) {
       return Objects.hashCode(getRowKey(), getColumnKey(), getValue());
     }
 

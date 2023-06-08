@@ -649,7 +649,7 @@ public final class Chars {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness CharArrayAsList this) {
       int result = 1;
       for (int i = start; i < end; i++) {
         result = 31 * result + Chars.hashCode(array[i]);

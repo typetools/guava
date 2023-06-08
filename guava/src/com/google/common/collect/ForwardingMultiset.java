@@ -102,7 +102,7 @@ public abstract class ForwardingMultiset<E extends @Nullable Object> extends For
 
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ForwardingMultiset<E> this) {
     return delegate().hashCode();
   }
 

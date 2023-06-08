@@ -327,7 +327,7 @@ public interface Multiset<E extends @Nullable Object> extends Collection<E> {
      */
     @Pure
     @Override
-    int hashCode();
+    int hashCode(@UnknownSignedness Entry<E> this);
 
     /**
      * Returns the canonical string representation of this entry, defined as follows. If the count
@@ -378,7 +378,7 @@ public interface Multiset<E extends @Nullable Object> extends Collection<E> {
    */
   @Pure
   @Override
-  int hashCode();
+  int hashCode(@UnknownSignedness Multiset<E> this);
 
   /**
    * {@inheritDoc}

@@ -177,7 +177,7 @@ class RegularImmutableBiMap<K, V> extends ImmutableBiMap<K, V> {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness RegularImmutableBiMap<K, V> this) {
     return hashCode;
   }
 
@@ -259,7 +259,7 @@ class RegularImmutableBiMap<K, V> extends ImmutableBiMap<K, V> {
       }
 
       @Override
-      public int hashCode() {
+      public int hashCode(@UnknownSignedness InverseEntrySet this) {
         return hashCode;
       }
 

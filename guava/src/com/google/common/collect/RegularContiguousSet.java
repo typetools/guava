@@ -26,6 +26,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * An implementation of {@link ContiguousSet} that contains one or more elements.
@@ -154,7 +155,7 @@ final class RegularContiguousSet<C extends Comparable> extends ContiguousSet<C> 
   }
 
   @Override
-  public boolean contains(@CheckForNull Object object) {
+  public boolean contains(@CheckForNull @UnknownSignedness Object object) {
     if (object == null) {
       return false;
     }
@@ -203,7 +204,7 @@ final class RegularContiguousSet<C extends Comparable> extends ContiguousSet<C> 
   }
 
   @Override
-  public boolean equals(@CheckForNull Object object) {
+  public boolean equals(@CheckForNull @UnknownSignedness Object object) {
     if (object == this) {
       return true;
     } else if (object instanceof RegularContiguousSet) {
@@ -217,7 +218,7 @@ final class RegularContiguousSet<C extends Comparable> extends ContiguousSet<C> 
 
   // copied to make sure not to use the GWT-emulated version
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness RegularContiguousSet<C> this) {
     return Sets.hashCodeImpl(this);
   }
 

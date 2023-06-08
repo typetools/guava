@@ -22,6 +22,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Implementation of {@link Multimaps#filterKeys(SetMultimap, Predicate)}.
@@ -69,12 +70,12 @@ final class FilteredKeySetMultimap<K extends @Nullable Object, V extends @Nullab
 
   class EntrySet extends Entries implements Set<Entry<K, V>> {
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness EntrySet this) {
       return Sets.hashCodeImpl(this);
     }
 
     @Override
-    public boolean equals(@CheckForNull Object o) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object o) {
       return Sets.equalsImpl(this, o);
     }
   }

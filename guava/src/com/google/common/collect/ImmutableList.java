@@ -702,7 +702,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ImmutableList<E> this) {
     int hashCode = 1;
     int n = size();
     for (int i = 0; i < n; i++) {

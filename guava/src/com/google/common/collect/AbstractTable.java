@@ -240,7 +240,7 @@ abstract class AbstractTable<
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness AbstractTable<R, C, V> this) {
     return cellSet().hashCode();
   }
 

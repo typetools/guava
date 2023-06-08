@@ -1282,7 +1282,7 @@ public final class Multimaps {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness MapMultimap<K, V> this) {
       return map.hashCode();
     }
 

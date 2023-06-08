@@ -70,7 +70,7 @@ public abstract class ForwardingSet<E extends @Nullable Object> extends Forwardi
 
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ForwardingSet<E> this) {
     return delegate().hashCode();
   }
 

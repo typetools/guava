@@ -43,6 +43,7 @@ import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.MinLen;
 
 /**
@@ -105,7 +106,7 @@ final class Murmur3_32HashFunction extends AbstractHashFunction implements Seria
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness Murmur3_32HashFunction this) {
     return getClass().hashCode() ^ seed;
   }
 

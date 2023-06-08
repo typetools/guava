@@ -151,7 +151,7 @@ public abstract class ForwardingTable<
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ForwardingTable<R, C, V> this) {
     return delegate().hashCode();
   }
 }

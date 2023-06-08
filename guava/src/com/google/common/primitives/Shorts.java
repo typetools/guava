@@ -701,7 +701,7 @@ public final class Shorts extends ShortsMethodsForWeb {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness ShortArrayAsList this) {
       int result = 1;
       for (int i = start; i < end; i++) {
         result = 31 * result + Shorts.hashCode(array[i]);

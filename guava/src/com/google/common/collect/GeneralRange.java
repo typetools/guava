@@ -26,6 +26,7 @@ import java.io.Serializable;
 import java.util.Comparator;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A generalized interval on any ordering, for internal use. Supports {@code null}. Unlike {@link
@@ -252,7 +253,7 @@ final class GeneralRange<T extends @Nullable Object> implements Serializable {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness GeneralRange<T> this) {
     return Objects.hashCode(
         comparator,
         getLowerEndpoint(),

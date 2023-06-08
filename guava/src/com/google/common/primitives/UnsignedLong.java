@@ -25,6 +25,7 @@ import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.Signed;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.PolyValue;
@@ -258,7 +259,7 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
 
   @Override
   @SuppressWarnings("signedness:argument")
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness UnsignedLong this) {
     return Longs.hashCode(value);
   }
 

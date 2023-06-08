@@ -413,7 +413,7 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness WrappedCollection this) {
       refreshIfEmpty();
       return delegate.hashCode();
     }
@@ -1015,7 +1015,7 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness KeySet this) {
       return map().keySet().hashCode();
     }
   }
@@ -1407,7 +1407,7 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness AsMap this) {
       return submap.hashCode();
     }
 

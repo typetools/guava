@@ -29,6 +29,7 @@ import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * An immutable value object capturing some basic statistics about a collection of paired double
@@ -234,7 +235,7 @@ public final class PairedStats implements Serializable {
    * including the floating point values. See the note on {@link #equals} for details.
    */
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness PairedStats this) {
     return Objects.hashCode(xStats, yStats, sumOfProductsOfDeltas);
   }
 

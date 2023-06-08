@@ -754,7 +754,7 @@ public class LinkedListMultimap<K extends @Nullable Object, V extends @Nullable 
 
       @Pure
       @Override
-      public boolean contains(@CheckForNull Object key) { // for performance
+      public boolean contains(@CheckForNull @UnknownSignedness Object key) { // for performance
         return containsKey(key);
       }
 

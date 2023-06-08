@@ -182,7 +182,7 @@ class FilteredEntryMultimap<K extends @Nullable Object, V extends @Nullable Obje
 
     @Override
     @CheckForNull
-    public Collection<V> get(@CheckForNull Object key) {
+    public Collection<V> get(@CheckForNull @UnknownSignedness Object key) {
       Collection<V> result = unfiltered.asMap().get(key);
       if (result == null) {
         return null;
@@ -195,7 +195,7 @@ class FilteredEntryMultimap<K extends @Nullable Object, V extends @Nullable Obje
 
     @Override
     @CheckForNull
-    public Collection<V> remove(@CheckForNull Object key) {
+    public Collection<V> remove(@CheckForNull @UnknownSignedness Object key) {
       Collection<V> collection = unfiltered.asMap().get(key);
       if (collection == null) {
         return null;

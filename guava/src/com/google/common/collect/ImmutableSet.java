@@ -334,7 +334,7 @@ public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements 
 
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ImmutableSet<E> this) {
     return Sets.hashCodeImpl(this);
   }
 

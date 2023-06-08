@@ -379,7 +379,7 @@ public final class Bytes {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness ByteArrayAsList this) {
       int result = 1;
       for (int i = start; i < end; i++) {
         result = 31 * result + Bytes.hashCode(array[i]);

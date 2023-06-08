@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * An implementation of {@link RangeSet} backed by a {@link TreeMap}.
@@ -109,12 +110,12 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness AsRanges this) {
       return Sets.hashCodeImpl(this);
     }
 
     @Override
-    public boolean equals(@CheckForNull Object o) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object o) {
       return Sets.equalsImpl(this, o);
     }
   }
@@ -338,13 +339,13 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
     }
 
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       return get(key) != null;
     }
 
     @Override
     @CheckForNull
-    public Range<C> get(@CheckForNull Object key) {
+    public Range<C> get(@CheckForNull @UnknownSignedness Object key) {
       if (key instanceof Cut) {
         try {
           @SuppressWarnings("unchecked") // we catch CCEs
@@ -634,7 +635,7 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
 
     @Override
     @CheckForNull
-    public Range<C> get(@CheckForNull Object key) {
+    public Range<C> get(@CheckForNull @UnknownSignedness Object key) {
       if (key instanceof Cut) {
         try {
           @SuppressWarnings("unchecked")
@@ -652,7 +653,7 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
     }
 
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       return get(key) != null;
     }
   }
@@ -746,13 +747,13 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C>
     }
 
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       return get(key) != null;
     }
 
     @Override
     @CheckForNull
-    public Range<C> get(@CheckForNull Object key) {
+    public Range<C> get(@CheckForNull @UnknownSignedness Object key) {
       if (key instanceof Cut) {
         try {
           @SuppressWarnings("unchecked") // we catch CCE's

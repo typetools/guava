@@ -466,7 +466,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
       }
 
       @Override
-      public boolean contains(@CheckForNull Object object) {
+      public boolean contains(@CheckForNull @UnknownSignedness Object object) {
         return object != null && Collections2.safeContains(delegate, object);
       }
 
@@ -610,7 +610,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
 
   @Pure
   @Override
-  public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
+  public boolean contains(@Nullable @UnknownSignedness Object arg0) { return super.contains(arg0); }
 
   @Pure
   @Override
@@ -634,7 +634,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
   private static final long serialVersionUID = 1;
 
 @Override
-public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
+public boolean contains(@Nullable @UnknownSignedness Object arg0) { return super.contains(arg0); }
 
 @Pure
 @Override

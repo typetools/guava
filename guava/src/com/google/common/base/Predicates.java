@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -330,7 +331,7 @@ public final class Predicates {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness NotPredicate<T> this) {
       return ~predicate.hashCode();
     }
 
@@ -375,7 +376,7 @@ public final class Predicates {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness AndPredicate<T> this) {
       // add a random number to avoid collisions with OrPredicate
       return components.hashCode() + 0x12472c2c;
     }
@@ -421,7 +422,7 @@ public final class Predicates {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness OrPredicate<T> this) {
       // add a random number to avoid collisions with AndPredicate
       return components.hashCode() + 0x053c91cf;
     }
@@ -473,7 +474,7 @@ public final class Predicates {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness IsEqualToPredicate this) {
       return target.hashCode();
     }
 
@@ -518,7 +519,7 @@ public final class Predicates {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness InstanceOfPredicate<T> this) {
       return clazz.hashCode();
     }
 
@@ -556,7 +557,7 @@ public final class Predicates {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SubtypeOfPredicate this) {
       return clazz.hashCode();
     }
 
@@ -607,7 +608,7 @@ public final class Predicates {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness InPredicate<T> this) {
       return target.hashCode();
     }
 
@@ -648,7 +649,7 @@ public final class Predicates {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness CompositionPredicate<A, B> this) {
       return f.hashCode() ^ p.hashCode();
     }
 
@@ -677,7 +678,7 @@ public final class Predicates {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness ContainsPatternPredicate this) {
       // Pattern uses Object.hashCode, so we have to reach
       // inside to build a hashCode consistent with equals.
 

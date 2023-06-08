@@ -29,6 +29,7 @@ import com.google.errorprone.annotations.Immutable;
 import java.util.Comparator;
 import java.util.Map;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Used to represent the order of elements in a data structure that supports different options for
@@ -174,7 +175,7 @@ public final class ElementOrder<T> {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ElementOrder<T> this) {
     return Objects.hashCode(type, comparator);
   }
 

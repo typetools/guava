@@ -305,7 +305,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SynchronizedSet<E> this) {
       synchronized (mutex) {
         return delegate().hashCode();
       }
@@ -496,7 +496,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SynchronizedList<E> this) {
       synchronized (mutex) {
         return delegate().hashCode();
       }
@@ -606,7 +606,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SynchronizedMultiset<E> this) {
       synchronized (mutex) {
         return delegate().hashCode();
       }
@@ -659,7 +659,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       synchronized (mutex) {
         return delegate().containsKey(key);
       }
@@ -810,7 +810,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SynchronizedMultimap<K, V> this) {
       synchronized (mutex) {
         return delegate().hashCode();
       }
@@ -1322,7 +1322,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SynchronizedMap<K, V> this) {
       synchronized (mutex) {
         return delegate().hashCode();
       }
@@ -1918,7 +1918,7 @@ final class Synchronized {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SynchronizedEntry<K, V> this) {
       synchronized (mutex) {
         return delegate().hashCode();
       }
@@ -2320,7 +2320,7 @@ final class Synchronized {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SynchronizedTable<R, C, V> this) {
       synchronized (mutex) {
         return delegate().hashCode();
       }

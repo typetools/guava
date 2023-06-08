@@ -649,7 +649,7 @@ public final class Floats extends FloatsMethodsForWeb {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness FloatArrayAsList this) {
       int result = 1;
       for (int i = start; i < end; i++) {
         result = 31 * result + Floats.hashCode(array[i]);

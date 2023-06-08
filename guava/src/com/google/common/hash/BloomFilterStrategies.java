@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicLongArray;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 
@@ -314,7 +315,7 @@ enum BloomFilterStrategies implements BloomFilter.Strategy {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness LockFreeBitArray this) {
       // TODO(lowasser): avoid allocation here
       return Arrays.hashCode(toPlainArray(data));
     }

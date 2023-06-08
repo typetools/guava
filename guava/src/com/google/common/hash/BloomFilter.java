@@ -40,6 +40,7 @@ import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.IntRange;
 
 /**
@@ -296,7 +297,7 @@ public final class BloomFilter<T extends @Nullable Object> implements Predicate<
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness BloomFilter<T> this) {
     return Objects.hashCode(numHashFunctions, funnel, strategy, bits);
   }
 

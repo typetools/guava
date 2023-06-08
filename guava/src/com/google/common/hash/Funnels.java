@@ -26,6 +26,7 @@ import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.MinLen;
 
 /**
@@ -122,7 +123,7 @@ public final class Funnels {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness StringCharsetFunnel this) {
       return StringCharsetFunnel.class.hashCode() ^ charset.hashCode();
     }
 
@@ -209,7 +210,7 @@ public final class Funnels {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SequentialFunnel<E> this) {
       return SequentialFunnel.class.hashCode() ^ elementFunnel.hashCode();
     }
   }

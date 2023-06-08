@@ -95,7 +95,7 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
       }
 
       @Override
-      public int hashCode() {
+      public int hashCode(@UnknownSignedness Pred<N> this) {
         // Adding the class hashCode to avoid a clash with Succ instances.
         return Pred.class.hashCode() + node.hashCode();
       }
@@ -116,7 +116,7 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
       }
 
       @Override
-      public int hashCode() {
+      public int hashCode(@UnknownSignedness Succ<N> this) {
         // Adding the class hashCode to avoid a clash with Pred instances.
         return Succ.class.hashCode() + node.hashCode();
       }
@@ -465,7 +465,7 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
   @SuppressWarnings("unchecked")
   @Override
   @CheckForNull
-  public V removeSuccessor(Object node) {
+  public V removeSuccessor(@UnknownSignedness Object node) {
     checkNotNull(node);
     Object previousValue = adjacentNodeValues.get(node);
     Object removedValue;

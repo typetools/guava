@@ -50,6 +50,7 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.logging.Logger;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Scans the source of a {@link ClassLoader} and finds all loadable classes and resources.
@@ -272,7 +273,7 @@ public final class ClassPath {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness ResourceInfo this) {
       return resourceName.hashCode();
     }
 
@@ -559,7 +560,7 @@ public final class ClassPath {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness LocationInfo this) {
       return home.hashCode();
     }
 
