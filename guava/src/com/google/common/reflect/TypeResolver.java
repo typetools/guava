@@ -35,6 +35,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * An object of this class encapsulates type mappings from type variables. Mappings are established
@@ -556,7 +557,7 @@ public final class TypeResolver {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness TypeVariableKey this) {
       return Objects.hashCode(var.getGenericDeclaration(), var.getName());
     }
 

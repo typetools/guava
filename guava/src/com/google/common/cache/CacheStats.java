@@ -23,6 +23,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.util.concurrent.Callable;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Statistics about the performance of a {@link Cache}. Instances of this class are immutable.
@@ -271,7 +272,7 @@ public final class CacheStats {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness CacheStats this) {
     return Objects.hashCode(
         hitCount, missCount, loadSuccessCount, loadExceptionCount, totalLoadTime, evictionCount);
   }

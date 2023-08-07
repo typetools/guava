@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkPositionIndex;
 import com.google.common.annotations.GwtCompatible;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -83,7 +84,7 @@ abstract class AbstractIndexedListIterator<E extends @Nullable Object>
   }
 
   @Override
-  public final int nextIndex() {
+  public final @NonNegative int nextIndex() {
     return position;
   }
 
@@ -102,7 +103,7 @@ abstract class AbstractIndexedListIterator<E extends @Nullable Object>
   }
 
   @Override
-  public final int previousIndex() {
+  public final @NonNegative int previousIndex() {
     return position - 1;
   }
 }

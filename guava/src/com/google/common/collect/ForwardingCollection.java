@@ -22,7 +22,11 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Collection;
 import java.util.Iterator;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -68,8 +72,7 @@ public abstract class ForwardingCollection<E extends @Nullable Object> extends F
 
   @Pure
   @Override
-  @SuppressWarnings("index:override.return")
-  public int size() {
+  public @NonNegative int size() {
     return delegate().size();
   }
 
@@ -88,7 +91,7 @@ public abstract class ForwardingCollection<E extends @Nullable Object> extends F
   @Pure
   @Override
   @SuppressWarnings("nullness:argument")
-  public boolean contains(@CheckForNull Object object) {
+  public boolean contains(@CheckForNull @UnknownSignedness Object object) {
     return delegate().contains(object);
   }
 
@@ -101,13 +104,12 @@ public abstract class ForwardingCollection<E extends @Nullable Object> extends F
   @CanIgnoreReturnValue
   @Override
   @SuppressWarnings("nullness:argument")
-  public boolean remove(@CheckForNull Object object) {
+  public boolean remove(@CheckForNull @UnknownSignedness Object object) {
     return delegate().remove(object);
   }
 
   @Pure
   @Override
-  @SuppressWarnings("nullness") // Suppressed due to the containsAll method in Collection
   public boolean containsAll(Collection<?> collection) {
     return delegate().containsAll(collection);
   }
@@ -120,7 +122,6 @@ public abstract class ForwardingCollection<E extends @Nullable Object> extends F
 
   @CanIgnoreReturnValue
   @Override
-  @SuppressWarnings("nullness") // Suppressed due to the containsAll method in Collection
   public boolean retainAll(Collection<?> collection) {
     return delegate().retainAll(collection);
   }
@@ -131,15 +132,14 @@ public abstract class ForwardingCollection<E extends @Nullable Object> extends F
   }
 
   @Override
-  @SuppressWarnings("nullness") // Suppressed due to annotations of toArray
-  public @Nullable Object[] toArray() {
+  public @PolyNull @PolySigned Object[] toArray(ForwardingCollection<@PolyNull @PolySigned E> this) {
     return delegate().toArray();
   }
 
   @CanIgnoreReturnValue
   @Override
-  @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-  public <T extends @Nullable Object> T[] toArray(T[] array) {
+  @SuppressWarnings("nullness:return")
+  public <T extends @Nullable @UnknownSignedness Object> T[] toArray(@PolyNull T[] array) {
     return delegate().toArray(array);
   }
 

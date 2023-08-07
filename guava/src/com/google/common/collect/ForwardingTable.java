@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A table which forwards all its method calls to another table. Subclasses should override one or
@@ -84,7 +85,7 @@ public abstract class ForwardingTable<
   }
 
   @Override
-  public boolean containsValue(@CheckForNull Object value) {
+  public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
     return delegate().containsValue(value);
   }
 
@@ -150,7 +151,7 @@ public abstract class ForwardingTable<
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ForwardingTable<R, C, V> this) {
     return delegate().hashCode();
   }
 }

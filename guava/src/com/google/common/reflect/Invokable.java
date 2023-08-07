@@ -33,6 +33,7 @@ import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Wrapper around either a {@link Method} or a {@link Constructor}. Convenience API is provided to
@@ -221,7 +222,7 @@ public abstract class Invokable<T, R> implements AnnotatedElement, Member {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness Invokable<T, R> this) {
     return member.hashCode();
   }
 

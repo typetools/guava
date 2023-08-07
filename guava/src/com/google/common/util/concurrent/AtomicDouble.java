@@ -62,6 +62,7 @@ import org.checkerframework.common.value.qual.PolyValue;
 public class AtomicDouble extends Number implements java.io.Serializable {
   private static final long serialVersionUID = 0L;
 
+  // This is not a long integral value, but the bit pattern for a double value.
   private transient volatile long value;
 
   private static final AtomicLongFieldUpdater<AtomicDouble> updater =
@@ -86,7 +87,8 @@ public class AtomicDouble extends Number implements java.io.Serializable {
    *
    * @return the current value
    */
-  public final double get() {
+  @SuppressWarnings("value:return") // bit manipulation of double representation
+  public final @PolyValue double get(@PolyValue AtomicDouble this) {
     return longBitsToDouble(value);
   }
 

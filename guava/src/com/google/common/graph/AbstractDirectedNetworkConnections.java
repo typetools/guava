@@ -33,6 +33,9 @@ import java.util.Map;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
+
 /**
  * A base implementation of {@link NetworkConnections} for directed networks.
  *
@@ -75,12 +78,12 @@ abstract class AbstractDirectedNetworkConnections<N, E> implements NetworkConnec
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return IntMath.saturatedAdd(inEdgeMap.size(), outEdgeMap.size() - selfLoopCount);
       }
 
       @Override
-      public boolean contains(@CheckForNull Object obj) {
+      public boolean contains(@CheckForNull @UnknownSignedness Object obj) {
         return inEdgeMap.containsKey(obj) || outEdgeMap.containsKey(obj);
       }
     };

@@ -24,7 +24,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -64,7 +66,7 @@ public abstract class ForwardingMultiset<E extends @Nullable Object> extends For
   protected abstract Multiset<E> delegate();
 
   @Override
-  public int count(@CheckForNull Object element) {
+  public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
     return delegate().count(element);
   }
 
@@ -94,13 +96,13 @@ public abstract class ForwardingMultiset<E extends @Nullable Object> extends For
 
   @Pure
   @Override
-  public boolean equals(@CheckForNull Object object) {
+  public boolean equals(@CheckForNull @UnknownSignedness Object object) {
     return object == this || delegate().equals(object);
   }
 
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ForwardingMultiset<E> this) {
     return delegate().hashCode();
   }
 

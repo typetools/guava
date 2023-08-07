@@ -31,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.formatter.qual.FormatMethod;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A specification of a {@link CacheBuilder} configuration.
@@ -237,7 +238,7 @@ public final class CacheBuilderSpec {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness CacheBuilderSpec this) {
     return Objects.hashCode(
         initialCapacity,
         maximumSize,

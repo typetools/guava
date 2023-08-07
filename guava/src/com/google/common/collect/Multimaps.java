@@ -57,7 +57,10 @@ import java.util.function.Consumer;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -1139,13 +1142,13 @@ public final class Multimaps {
 
     @Pure
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       return map.containsKey(key);
     }
 
     @Pure
     @Override
-    public boolean containsValue(@CheckForNull Object value) {
+    public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
       return map.containsValue(value);
     }
 
@@ -1193,7 +1196,7 @@ public final class Multimaps {
 
         @Pure
         @Override
-        public int size() {
+        public @NonNegative int size() {
           return map.containsKey(key) ? 1 : 0;
         }
       };
@@ -1279,7 +1282,7 @@ public final class Multimaps {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness MapMultimap<K, V> this) {
       return map.hashCode();
     }
 
@@ -1538,7 +1541,7 @@ public final class Multimaps {
     }
 
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       return fromMultimap.containsKey(key);
     }
 
@@ -1783,12 +1786,12 @@ public final class Multimaps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multimap.size();
     }
 
     @Override
-    public boolean contains(@CheckForNull Object element) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object element) {
       return multimap.containsKey(element);
     }
 
@@ -1798,7 +1801,7 @@ public final class Multimaps {
     }
 
     @Override
-    public int count(@CheckForNull Object element) {
+    public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
       Collection<V> values = Maps.safeGet(multimap.asMap(), element);
       return (values == null) ? 0 : values.size();
     }
@@ -1851,12 +1854,12 @@ public final class Multimaps {
     abstract Multimap<K, V> multimap();
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multimap().size();
     }
 
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       if (o instanceof Map.Entry) {
         Map.Entry<?, ?> entry = (Map.Entry<?, ?>) o;
         return multimap().containsEntry(entry.getKey(), entry.getValue());
@@ -1865,7 +1868,7 @@ public final class Multimaps {
     }
 
     @Override
-    public boolean remove(@CheckForNull Object o) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object o) {
       if (o instanceof Map.Entry) {
         Map.Entry<?, ?> entry = (Map.Entry<?, ?>) o;
         return multimap().remove(entry.getKey(), entry.getValue());
@@ -1889,7 +1892,7 @@ public final class Multimaps {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multimap.keySet().size();
     }
 
@@ -1922,7 +1925,7 @@ public final class Multimaps {
       }
 
       @Override
-      public boolean remove(@CheckForNull Object o) {
+      public boolean remove(@CheckForNull @UnknownSignedness Object o) {
         if (!contains(o)) {
           return false;
         }
@@ -1936,18 +1939,18 @@ public final class Multimaps {
     @SuppressWarnings("unchecked")
     @Override
     @CheckForNull
-    public Collection<V> get(@CheckForNull Object key) {
+    public Collection<V> get(@CheckForNull @UnknownSignedness Object key) {
       return containsKey(key) ? multimap.get((K) key) : null;
     }
 
     @Override
     @CheckForNull
-    public Collection<V> remove(@CheckForNull Object key) {
+    public Collection<V> remove(@CheckForNull @UnknownSignedness Object key) {
       return containsKey(key) ? multimap.removeAll(key) : null;
     }
 
     @Override
-    public Set<K> keySet() {
+    public Set<@KeyFor({"this"}) K> keySet() {
       return multimap.keySet();
     }
 
@@ -1957,7 +1960,7 @@ public final class Multimaps {
     }
 
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       return multimap.containsKey(key);
     }
 
@@ -2258,7 +2261,7 @@ public final class Multimaps {
     return new FilteredEntrySetMultimap<>(multimap.unfiltered(), predicate);
   }
 
-  static boolean equalsImpl(Multimap<?, ?> multimap, @CheckForNull Object object) {
+  static boolean equalsImpl(Multimap<?, ?> multimap, @CheckForNull @UnknownSignedness Object object) {
     if (object == multimap) {
       return true;
     }

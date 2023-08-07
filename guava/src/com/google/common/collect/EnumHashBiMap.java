@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -140,5 +141,5 @@ public final class EnumHashBiMap<K extends Enum<K>, V extends @Nullable Object>
 
 @Pure
 @Override
-public boolean containsValue(@Nullable Object arg0) { return super.containsValue(arg0); }
+public boolean containsValue(@Nullable @UnknownSignedness Object arg0) { return super.containsValue(arg0); }
 }

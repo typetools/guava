@@ -144,7 +144,6 @@ public final class Utf8 {
   }
 
   @SuppressWarnings({
-    "value:cast.unsafe", // https://github.com/kelloggm/checker-framework/issues/149
     "upperbound:unary.increment",
     "upperbound:array.access.unsafe.high" // https://github.com/kelloggm/checker-framework/issues/158
   })

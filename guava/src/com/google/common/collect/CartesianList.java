@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.RandomAccess;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Implementation of {@link Lists#cartesianProduct(List)}.
@@ -68,7 +70,7 @@ final class CartesianList<E> extends AbstractList<List<E>> implements RandomAcce
   }
 
   @Override
-  public int indexOf(@CheckForNull Object o) {
+  public int indexOf(@CheckForNull @UnknownSignedness Object o) {
     if (!(o instanceof List)) {
       return -1;
     }
@@ -90,7 +92,7 @@ final class CartesianList<E> extends AbstractList<List<E>> implements RandomAcce
   }
 
   @Override
-  public int lastIndexOf(@CheckForNull Object o) {
+  public int lastIndexOf(@CheckForNull @UnknownSignedness Object o) {
     if (!(o instanceof List)) {
       return -1;
     }
@@ -117,7 +119,7 @@ final class CartesianList<E> extends AbstractList<List<E>> implements RandomAcce
     return new ImmutableList<E>() {
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return axes.size();
       }
 
@@ -136,12 +138,12 @@ final class CartesianList<E> extends AbstractList<List<E>> implements RandomAcce
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return axesSizeProduct[0];
   }
 
   @Override
-  public boolean contains(@CheckForNull Object object) {
+  public boolean contains(@CheckForNull @UnknownSignedness Object object) {
     if (!(object instanceof List)) {
       return false;
     }

@@ -21,6 +21,7 @@ import com.google.common.base.Objects;
 import java.util.Map.Entry;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -65,7 +66,7 @@ abstract class AbstractMapEntry<K extends @Nullable Object, V extends @Nullable 
 
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness AbstractMapEntry<K, V> this) {
     K k = getKey();
     V v = getValue();
     return ((k == null) ? 0 : k.hashCode()) ^ ((v == null) ? 0 : v.hashCode());

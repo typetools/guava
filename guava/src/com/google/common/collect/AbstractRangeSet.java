@@ -16,6 +16,7 @@ package com.google.common.collect;
 
 import com.google.common.annotations.GwtIncompatible;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A skeletal implementation of {@code RangeSet}.
@@ -91,7 +92,7 @@ abstract class AbstractRangeSet<C extends Comparable> implements RangeSet<C> {
   }
 
   @Override
-  public final int hashCode() {
+  public final int hashCode(@UnknownSignedness AbstractRangeSet<C> this) {
     return asRanges().hashCode();
   }
 

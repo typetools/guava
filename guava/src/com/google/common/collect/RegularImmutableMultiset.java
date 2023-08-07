@@ -25,7 +25,10 @@ import com.google.errorprone.annotations.concurrent.LazyInit;
 import java.util.Arrays;
 import java.util.Collection;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Implementation of {@link ImmutableMultiset} with zero or more elements.
@@ -157,7 +160,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
   }
 
   @Override
-  public int count(@CheckForNull Object element) {
+  public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
     @Nullable ImmutableEntry<?>[] hashTable = this.hashTable;
     if (element == null || hashTable.length == 0) {
       return 0;
@@ -175,7 +178,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return size;
   }
 
@@ -191,7 +194,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness RegularImmutableMultiset<E> this) {
     return hashCode;
   }
 }

@@ -20,6 +20,7 @@ import com.google.errorprone.annotations.DoNotMock;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A set comprising zero or more {@linkplain Range#isEmpty nonempty}, {@linkplain
@@ -268,7 +269,7 @@ public interface RangeSet<C extends Comparable> {
 
   /** Returns {@code asRanges().hashCode()}. */
   @Override
-  int hashCode();
+  int hashCode(@UnknownSignedness RangeSet<C> this);
 
   /**
    * Returns a readable string representation of this range set. For example, if this {@code

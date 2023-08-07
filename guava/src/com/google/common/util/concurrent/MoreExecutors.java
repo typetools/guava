@@ -52,6 +52,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Factory and utility methods for {@link java.util.concurrent.Executor}, {@link ExecutorService},
@@ -657,7 +658,7 @@ public final class MoreExecutors {
     }
 
     @Override
-    public <V extends @Nullable Object> ListenableScheduledFuture<V> schedule(
+    public <V extends @Nullable @UnknownSignedness Object> ListenableScheduledFuture<V> schedule(
         Callable<V> callable, long delay, TimeUnit unit) {
       TrustedListenableFutureTask<V> task = TrustedListenableFutureTask.create(callable);
       ScheduledFuture<?> scheduled = delegate.schedule(task, delay, unit);

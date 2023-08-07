@@ -28,6 +28,9 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * CompactLinkedHashSet is an implementation of a Set, which a predictable iteration order that
@@ -233,13 +236,13 @@ class CompactLinkedHashSet<E extends @Nullable Object> extends CompactHashSet<E>
   }
 
   @Override
-  public @Nullable Object[] toArray() {
+  public @PolyNull @PolySigned Object[] toArray(CompactLinkedHashSet<@PolyNull @PolySigned E> this) {
     return ObjectArrays.toArrayImpl(this);
   }
 
   @Override
   @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-  public <T extends @Nullable Object> T[] toArray(T[] a) {
+  public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] a) {
     return ObjectArrays.toArrayImpl(this, a);
   }
 

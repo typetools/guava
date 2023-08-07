@@ -19,6 +19,8 @@ import java.io.Serializable;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * An empty contiguous set.
@@ -44,7 +46,7 @@ final class EmptyContiguousSet<C extends Comparable> extends ContiguousSet<C> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return 0;
   }
 
@@ -80,7 +82,7 @@ final class EmptyContiguousSet<C extends Comparable> extends ContiguousSet<C> {
   }
 
   @Override
-  public boolean contains(@CheckForNull Object object) {
+  public boolean contains(@CheckForNull @UnknownSignedness Object object) {
     return false;
   }
 
@@ -122,7 +124,7 @@ final class EmptyContiguousSet<C extends Comparable> extends ContiguousSet<C> {
   }
 
   @Override
-  public boolean equals(@CheckForNull Object object) {
+  public boolean equals(@CheckForNull @UnknownSignedness Object object) {
     if (object instanceof Set) {
       Set<?> that = (Set<?>) object;
       return that.isEmpty();
@@ -137,7 +139,7 @@ final class EmptyContiguousSet<C extends Comparable> extends ContiguousSet<C> {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness EmptyContiguousSet<C> this) {
     return 0;
   }
 

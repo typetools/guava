@@ -36,7 +36,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.ObjIntConsumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -189,7 +191,7 @@ abstract class AbstractMapBasedMultiset<E extends @Nullable Object> extends Abst
 
   @Pure
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return Ints.saturatedCast(size);
   }
 
@@ -254,7 +256,7 @@ abstract class AbstractMapBasedMultiset<E extends @Nullable Object> extends Abst
   }
 
   @Override
-  public int count(@CheckForNull Object element) {
+  public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
     Count frequency = Maps.safeGet(backingMap, element);
     return (frequency == null) ? 0 : frequency.get();
   }

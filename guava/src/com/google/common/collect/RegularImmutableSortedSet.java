@@ -29,7 +29,9 @@ import java.util.Set;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -95,13 +97,13 @@ final class RegularImmutableSortedSet<E> extends ImmutableSortedSet<E> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return elements.size();
   }
 
   @Pure
   @Override
-  public boolean contains(@CheckForNull Object o) {
+  public boolean contains(@CheckForNull @UnknownSignedness Object o) {
     try {
       return o != null && unsafeBinarySearch(o) >= 0;
     } catch (ClassCastException e) {
@@ -178,7 +180,7 @@ final class RegularImmutableSortedSet<E> extends ImmutableSortedSet<E> {
 
   @Pure
   @Override
-  public boolean equals(@CheckForNull Object object) {
+  public boolean equals(@CheckForNull @UnknownSignedness Object object) {
     if (object == this) {
       return true;
     }

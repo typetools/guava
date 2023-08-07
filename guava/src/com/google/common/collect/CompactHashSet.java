@@ -46,7 +46,9 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.PolySigned;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
@@ -618,7 +620,7 @@ class CompactHashSet<E extends @Nullable Object> extends AbstractSet<E> implemen
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     Set<E> delegate = delegateOrNull();
     return (delegate != null) ? delegate.size() : size;
   }
@@ -629,8 +631,7 @@ class CompactHashSet<E extends @Nullable Object> extends AbstractSet<E> implemen
   }
 
   @Override
-  //public @PolySigned Object[] toArray(CompactHashSet<@PolySigned E> this) {
-  public @Nullable Object[] toArray() {
+  public @PolyNull @PolySigned Object[] toArray(CompactHashSet<@PolyNull @PolySigned E> this) {
     if (needsAllocArrays()) {
       return new Object[0];
     }
@@ -641,7 +642,7 @@ class CompactHashSet<E extends @Nullable Object> extends AbstractSet<E> implemen
   @CanIgnoreReturnValue
   @Override
   @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-  public <T extends @Nullable Object> T[] toArray(T[] a) {
+  public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] a) {
     if (needsAllocArrays()) {
       if (a.length > 0) {
         a[0] = null;
@@ -681,7 +682,6 @@ class CompactHashSet<E extends @Nullable Object> extends AbstractSet<E> implemen
   }
 
   @Override
-  @SuppressWarnings("signedness:argument")
   public void clear() {
     if (needsAllocArrays()) {
       return;

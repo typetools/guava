@@ -42,6 +42,9 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.CheckForNull;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
+
 /**
  * An implementation of {@link GraphConnections} for directed graphs.
  *
@@ -92,7 +95,7 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
       }
 
       @Override
-      public int hashCode() {
+      public int hashCode(@UnknownSignedness Pred<N> this) {
         // Adding the class hashCode to avoid a clash with Succ instances.
         return Pred.class.hashCode() + node.hashCode();
       }
@@ -113,7 +116,7 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
       }
 
       @Override
-      public int hashCode() {
+      public int hashCode(@UnknownSignedness Succ<N> this) {
         // Adding the class hashCode to avoid a clash with Pred instances.
         return Succ.class.hashCode() + node.hashCode();
       }
@@ -258,12 +261,12 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
         }
 
         @Override
-        public int size() {
+        public @NonNegative int size() {
           return adjacentNodeValues.size();
         }
 
         @Override
-        public boolean contains(@CheckForNull Object obj) {
+        public boolean contains(@CheckForNull @UnknownSignedness Object obj) {
           return adjacentNodeValues.containsKey(obj);
         }
       };
@@ -309,12 +312,12 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return predecessorCount;
       }
 
       @Override
-      public boolean contains(@CheckForNull Object obj) {
+      public boolean contains(@CheckForNull @UnknownSignedness Object obj) {
         return isPredecessor(adjacentNodeValues.get(obj));
       }
     };
@@ -359,12 +362,12 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return successorCount;
       }
 
       @Override
-      public boolean contains(@CheckForNull Object obj) {
+      public boolean contains(@CheckForNull @UnknownSignedness Object obj) {
         return isSuccessor(adjacentNodeValues.get(obj));
       }
     };
@@ -462,7 +465,7 @@ final class DirectedGraphConnections<N, V> implements GraphConnections<N, V> {
   @SuppressWarnings("unchecked")
   @Override
   @CheckForNull
-  public V removeSuccessor(Object node) {
+  public V removeSuccessor(@UnknownSignedness Object node) {
     checkNotNull(node);
     Object previousValue = adjacentNodeValues.get(node);
     Object removedValue;

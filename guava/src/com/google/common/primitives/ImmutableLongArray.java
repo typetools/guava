@@ -37,19 +37,20 @@ import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.EnsuresLTLengthOf;
 import org.checkerframework.checker.index.qual.EnsuresLTLengthOfIf;
 import org.checkerframework.checker.index.qual.GTENegativeOne;
+import org.checkerframework.checker.index.qual.HasSubsequence;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
-import org.checkerframework.checker.index.qual.HasSubsequence;
-import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.framework.qual.CFComment;
 
 /**
  * An immutable array of {@code long} values, with an API resembling {@link List}.
@@ -398,7 +399,10 @@ public final class ImmutableLongArray implements Serializable {
   }
 
   @SuppressWarnings(
-          "index") // these three fields need to be initialized in some order, and any ordering leads to the first two issuing errors - since each field is dependent on at least one of the others
+      "index" // these three fields need to be initialized in some order, and any ordering
+  // leads to the first two issuing errors - since each field is dependent on
+  // at least one of the others
+  )
   private ImmutableLongArray(long[] array, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     this.array = array;
     this.start = start;
@@ -523,6 +527,8 @@ public final class ImmutableLongArray implements Serializable {
     return new AsList(this);
   }
 
+  @CFComment({"signedness: A non-generic container class permits only signed values.",
+              "Clients must suppress warnings when storing unsigned values."})
   static class AsList extends AbstractList<Long> implements RandomAccess, Serializable {
     private final @SameLen("this") ImmutableLongArray parent;
 
@@ -603,7 +609,7 @@ public final class ImmutableLongArray implements Serializable {
 
     // Because we happen to use the same formula. If that changes, just don't override this.
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness AsList this) {
       return parent.hashCode();
     }
 
@@ -639,7 +645,7 @@ public final class ImmutableLongArray implements Serializable {
 
   /** Returns an unspecified hash code for the contents of this immutable array. */
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ImmutableLongArray this) {
     int hash = 1;
     for (int i = start; i < end; i++) {
       hash *= 31;

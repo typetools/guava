@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -189,14 +190,14 @@ public interface Multimap<K extends @Nullable Object, V extends @Nullable Object
    * key}.
    */
   @Pure
-  boolean containsKey(@CompatibleWith("K") @CheckForNull Object key);
+  boolean containsKey(@CompatibleWith("K") @CheckForNull @UnknownSignedness Object key);
 
   /**
    * Returns {@code true} if this multimap contains at least one key-value pair with the value
    * {@code value}.
    */
   @Pure
-  boolean containsValue(@CompatibleWith("V") @CheckForNull Object value);
+  boolean containsValue(@CompatibleWith("V") @CheckForNull @UnknownSignedness Object value);
 
   /**
    * Returns {@code true} if this multimap contains at least one key-value pair with the key {@code
@@ -396,5 +397,5 @@ public interface Multimap<K extends @Nullable Object, V extends @Nullable Object
    */
   @Pure
   @Override
-  int hashCode();
+  int hashCode(@UnknownSignedness Multimap<K, V> this);
 }

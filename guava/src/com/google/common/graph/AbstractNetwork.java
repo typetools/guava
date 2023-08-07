@@ -37,6 +37,9 @@ import java.util.Optional;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
+
 /**
  * This class provides a skeletal implementation of {@link Network}. It is recommended to extend
  * this class rather than implement {@link Network} directly.
@@ -82,7 +85,7 @@ public abstract class AbstractNetwork<N, E> implements Network<N, E> {
           }
 
           @Override
-          public int size() {
+          public @NonNegative int size() {
             return AbstractNetwork.this.edges().size();
           }
 
@@ -91,7 +94,7 @@ public abstract class AbstractNetwork<N, E> implements Network<N, E> {
           // Network<LinkedList>.
           @SuppressWarnings("unchecked")
           @Override
-          public boolean contains(@CheckForNull Object obj) {
+          public boolean contains(@CheckForNull @UnknownSignedness Object obj) {
             if (!(obj instanceof EndpointPair)) {
               return false;
             }
@@ -272,7 +275,7 @@ public abstract class AbstractNetwork<N, E> implements Network<N, E> {
   }
 
   @Override
-  public final int hashCode() {
+  public final int hashCode(@UnknownSignedness AbstractNetwork<N, E> this) {
     return edgeIncidentNodesMap(this).hashCode();
   }
 

@@ -31,6 +31,7 @@ import com.google.thirdparty.publicsuffix.PublicSuffixPatterns;
 import com.google.thirdparty.publicsuffix.PublicSuffixType;
 import java.util.List;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * An immutable well-formed internet domain name, such as {@code com} or {@code foo.co.uk}. Only
@@ -638,7 +639,7 @@ public final class InternetDomainName {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness InternetDomainName this) {
     return name.hashCode();
   }
 }

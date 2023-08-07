@@ -26,6 +26,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.Immutable;
 import java.io.Serializable;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * An immutable representation of a host and port.
@@ -293,7 +294,7 @@ public final class HostAndPort implements Serializable {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness HostAndPort this) {
     return Objects.hashCode(host, port);
   }
 

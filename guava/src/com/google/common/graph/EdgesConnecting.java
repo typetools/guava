@@ -25,6 +25,9 @@ import java.util.AbstractSet;
 import java.util.Map;
 import javax.annotation.CheckForNull;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
+
 /**
  * A class to represent the set of edges connecting an (implicit) origin node to a target node.
  *
@@ -54,12 +57,12 @@ final class EdgesConnecting<E> extends AbstractSet<E> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return getConnectingEdge() == null ? 0 : 1;
   }
 
   @Override
-  public boolean contains(@CheckForNull Object edge) {
+  public boolean contains(@CheckForNull @UnknownSignedness Object edge) {
     E connectingEdge = getConnectingEdge();
     return (connectingEdge != null && connectingEdge.equals(edge));
   }

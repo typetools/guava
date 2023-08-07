@@ -36,7 +36,9 @@ import java.util.function.Function;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -268,7 +270,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
   }
 
   @Override
-  public boolean contains(@CheckForNull Object object) {
+  public boolean contains(@CheckForNull @UnknownSignedness Object object) {
     return count(object) > 0;
   }
 
@@ -340,13 +342,13 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
 
   @Pure
   @Override
-  public boolean equals(@CheckForNull Object object) {
+  public boolean equals(@CheckForNull @UnknownSignedness Object object) {
     return Multisets.equalsImpl(this, object);
   }
 
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ImmutableMultiset<E> this) {
     return Sets.hashCodeImpl(entrySet());
   }
 
@@ -389,13 +391,13 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return elementSet().size();
     }
 
     @Pure
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       if (o instanceof Entry) {
         Entry<?> entry = (Entry<?>) o;
         if (entry.getCount() <= 0) {
@@ -409,7 +411,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness EntrySet this) {
       return ImmutableMultiset.this.hashCode();
     }
 
@@ -611,7 +613,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
     }
 
     @Override
-    public boolean contains(@CheckForNull Object object) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object object) {
       return delegate.contains(object);
     }
 
@@ -621,7 +623,7 @@ public abstract class ImmutableMultiset<E> extends ImmutableMultisetGwtSerializa
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return entries.size();
     }
   }

@@ -42,7 +42,9 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.function.Consumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -411,12 +413,12 @@ public class LinkedListMultimap<K extends @Nullable Object, V extends @Nullable 
     }
 
     @Override
-    public int nextIndex() {
+    public @NonNegative int nextIndex() {
       return nextIndex;
     }
 
     @Override
-    public int previousIndex() {
+    public @NonNegative int previousIndex() {
       return nextIndex - 1;
     }
 
@@ -560,12 +562,12 @@ public class LinkedListMultimap<K extends @Nullable Object, V extends @Nullable 
     }
 
     @Override
-    public int nextIndex() {
+    public @NonNegative int nextIndex() {
       return nextIndex;
     }
 
     @Override
-    public int previousIndex() {
+    public @NonNegative int previousIndex() {
       return nextIndex - 1;
     }
 
@@ -612,13 +614,13 @@ public class LinkedListMultimap<K extends @Nullable Object, V extends @Nullable 
 
   @Pure
   @Override
-  public boolean containsKey(@CheckForNull Object key) {
+  public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
     return keyToKeyList.containsKey(key);
   }
 
   @Pure
   @Override
-  public boolean containsValue(@CheckForNull Object value) {
+  public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
     return values().contains(value);
   }
 
@@ -724,7 +726,7 @@ public class LinkedListMultimap<K extends @Nullable Object, V extends @Nullable 
     return new AbstractSequentialList<V>() {
       @Pure
       @Override
-      public int size() {
+      public @NonNegative int size() {
         KeyList<K, V> keyList = keyToKeyList.get(key);
         return (keyList == null) ? 0 : keyList.count;
       }
@@ -741,7 +743,7 @@ public class LinkedListMultimap<K extends @Nullable Object, V extends @Nullable 
     @WeakOuter
     class KeySetImpl extends Sets.ImprovedAbstractSet<K> {
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return keyToKeyList.size();
       }
 
@@ -752,12 +754,12 @@ public class LinkedListMultimap<K extends @Nullable Object, V extends @Nullable 
 
       @Pure
       @Override
-      public boolean contains(@CheckForNull Object key) { // for performance
+      public boolean contains(@CheckForNull @UnknownSignedness Object key) { // for performance
         return containsKey(key);
       }
 
       @Override
-      public boolean remove(@CheckForNull Object o) { // for performance
+      public boolean remove(@CheckForNull @UnknownSignedness Object o) { // for performance
         return !LinkedListMultimap.this.removeAll(o).isEmpty();
       }
     }
@@ -788,7 +790,7 @@ public class LinkedListMultimap<K extends @Nullable Object, V extends @Nullable 
     @WeakOuter
     class ValuesImpl extends AbstractSequentialList<V> {
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return size;
       }
 
@@ -839,7 +841,7 @@ public class LinkedListMultimap<K extends @Nullable Object, V extends @Nullable 
     @WeakOuter
     class EntriesImpl extends AbstractSequentialList<Entry<K, V>> {
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return size;
       }
 

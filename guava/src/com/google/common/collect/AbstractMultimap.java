@@ -31,7 +31,9 @@ import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -54,7 +56,7 @@ abstract class AbstractMultimap<K extends @Nullable Object, V extends @Nullable 
 
   @Pure
   @Override
-  public boolean containsValue(@CheckForNull Object value) {
+  public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
     for (Collection<V> collection : asMap().values()) {
       if (collection.contains(value)) {
         return true;
@@ -151,13 +153,13 @@ abstract class AbstractMultimap<K extends @Nullable Object, V extends @Nullable 
   class EntrySet extends Entries implements Set<Entry<K, V>> {
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness EntrySet this) {
       return Sets.hashCodeImpl(this);
     }
 
     @Pure
     @Override
-    public boolean equals(@CheckForNull Object obj) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object obj) {
       return Sets.equalsImpl(this, obj);
     }
   }
@@ -216,13 +218,13 @@ abstract class AbstractMultimap<K extends @Nullable Object, V extends @Nullable 
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return AbstractMultimap.this.size();
     }
 
     @Pure
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       return AbstractMultimap.this.containsValue(o);
     }
 
@@ -268,7 +270,7 @@ abstract class AbstractMultimap<K extends @Nullable Object, V extends @Nullable 
    */
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness AbstractMultimap<K, V> this) {
     return asMap().hashCode();
   }
 

@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -96,7 +97,7 @@ final class ReverseOrdering<T extends @Nullable Object> extends Ordering<T>
 
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ReverseOrdering<T> this) {
     return -forwardOrder.hashCode();
   }
 

@@ -30,16 +30,16 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.RandomAccess;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.HasSubsequence;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
-import org.checkerframework.checker.index.qual.HasSubsequence;
-import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
@@ -412,7 +412,10 @@ public final class Booleans {
     }
 
     @SuppressWarnings(
-            "index") // these three fields need to be initialized in some order, and any ordering leads to the first two issuing errors - since each field is dependent on at least one of the others
+        "index" // these three fields need to be initialized in some order, and any ordering
+    // leads to the first two issuing errors - since each field is dependent on
+    // at least one of the others
+    )
     BooleanArrayAsList(boolean @MinLen(1)[] array, @IndexFor("#1") @LessThan("#3") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
@@ -436,7 +439,7 @@ public final class Booleans {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // CF bug? Boolean should always be @Signed
     public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Boolean)
@@ -444,10 +447,10 @@ public final class Booleans {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
     public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Boolean) {
+        @SuppressWarnings("signedness:cast.unsafe") // https://github.com/typetools/checker-framework/pull/5862
         int i = Booleans.indexOf(array, (@Signed Boolean) target, start, end);
         if (i >= 0) {
           return i - start;
@@ -457,10 +460,10 @@ public final class Booleans {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
     public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Boolean) {
+        @SuppressWarnings("signedness:cast.unsafe") // https://github.com/typetools/checker-framework/pull/5862
         int i = Booleans.lastIndexOf(array, (@Signed Boolean) target, start, end);
         if (i >= 0) {
           return i - start;
@@ -511,7 +514,7 @@ public final class Booleans {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness BooleanArrayAsList this) {
       int result = 1;
       for (int i = start; i < end; i++) {
         result = 31 * result + Booleans.hashCode(array[i]);

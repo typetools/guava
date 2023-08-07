@@ -29,8 +29,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Spliterator;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.framework.qual.CFComment;
 
 /**
  * A mutable class-to-instance map backed by an arbitrary user-provided map. See also {@link
@@ -100,7 +105,7 @@ public final class MutableClassToInstanceMap<B> extends ForwardingMap<Class<? ex
   }
 
   @Override
-  public Set<Entry<Class<? extends B>, B>> entrySet() {
+  public Set<Entry<@KeyFor({"this"}) Class<? extends B>, B>> entrySet() {
     return new ForwardingSet<Entry<Class<? extends B>, B>>() {
 
       @Override
@@ -125,8 +130,9 @@ public final class MutableClassToInstanceMap<B> extends ForwardingMap<Class<? ex
         };
       }
 
+      @CFComment("cannot write type qualifiers on receiver that is an anonymous class")
       @Override
-      public Object[] toArray() {
+      public @PolyNull @PolySigned Object[] toArray() {
         /*
          * standardToArray returns `@Nullable Object[]` rather than `Object[]` but only because it
          * can be used with collections that may contain null. This collection is a collection of
@@ -140,7 +146,7 @@ public final class MutableClassToInstanceMap<B> extends ForwardingMap<Class<? ex
 
       @Override
       @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-      public <T extends @Nullable Object> T[] toArray(T[] array) {
+      public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] array) {
         return standardToArray(array);
       }
     };

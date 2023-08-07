@@ -20,13 +20,16 @@ import static com.google.common.base.Preconditions.checkState;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /** Precondition checks useful in collection implementations. */
 @GwtCompatible
 @ElementTypesAreNonnullByDefault
 final class CollectPreconditions {
 
-  static void checkEntryNotNull(Object key, Object value) {
+  static void checkEntryNotNull(@UnknownSignedness Object key, @UnknownSignedness Object value) {
     if (key == null) {
       throw new NullPointerException("null key in entry: null=" + value);
     } else if (value == null) {
@@ -35,7 +38,7 @@ final class CollectPreconditions {
   }
 
   @CanIgnoreReturnValue
-  static int checkNonnegative(int value, String name) {
+  static int checkNonnegative(@NonNegative int value, String name) {
     if (value < 0) {
       throw new IllegalArgumentException(name + " cannot be negative but was: " + value);
     }
@@ -43,14 +46,14 @@ final class CollectPreconditions {
   }
 
   @CanIgnoreReturnValue
-  static long checkNonnegative(long value, String name) {
+  static long checkNonnegative(@NonNegative long value, String name) {
     if (value < 0) {
       throw new IllegalArgumentException(name + " cannot be negative but was: " + value);
     }
     return value;
   }
 
-  static void checkPositive(int value, String name) {
+  static void checkPositive(@Positive int value, String name) {
     if (value <= 0) {
       throw new IllegalArgumentException(name + " must be positive but was: " + value);
     }

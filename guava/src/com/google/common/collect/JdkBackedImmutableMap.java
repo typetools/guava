@@ -25,7 +25,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Implementation of ImmutableMap backed by a JDK HashMap, which has smartness protecting against
@@ -95,13 +97,13 @@ final class JdkBackedImmutableMap<K, V> extends ImmutableMap<K, V> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return entries.size();
   }
 
   @Override
   @CheckForNull
-  public V get(@CheckForNull Object key) {
+  public V get(@CheckForNull @UnknownSignedness Object key) {
     return delegateMap.get(key);
   }
 

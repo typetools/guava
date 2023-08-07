@@ -24,6 +24,7 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.AnnotatedType;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Represents a method or constructor parameter.
@@ -140,7 +141,7 @@ public final class Parameter implements AnnotatedElement {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness Parameter this) {
     return position;
   }
 

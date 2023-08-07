@@ -45,7 +45,10 @@ import java.util.SortedSet;
 import java.util.Spliterator;
 import java.util.function.BiConsumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Basic implementation of the {@link Multimap} interface. This class represents a multimap as a map
@@ -177,7 +180,7 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
   }
 
   @Override
-  public boolean containsKey(@CheckForNull Object key) {
+  public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
     return map.containsKey(key);
   }
 
@@ -395,13 +398,13 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       refreshIfEmpty();
       return delegate.size();
     }
 
     @Override
-    public boolean equals(@CheckForNull Object object) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object object) {
       if (object == this) {
         return true;
       }
@@ -410,7 +413,7 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness WrappedCollection this) {
       refreshIfEmpty();
       return delegate.hashCode();
     }
@@ -525,7 +528,7 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       refreshIfEmpty();
       return delegate.contains(o);
     }
@@ -548,7 +551,7 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public boolean remove(@CheckForNull Object o) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object o) {
       refreshIfEmpty();
       boolean changed = delegate.remove(o);
       if (changed) {
@@ -833,13 +836,13 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public int indexOf(@CheckForNull Object o) {
+    public int indexOf(@CheckForNull @UnknownSignedness Object o) {
       refreshIfEmpty();
       return getListDelegate().indexOf(o);
     }
 
     @Override
-    public int lastIndexOf(@CheckForNull Object o) {
+    public int lastIndexOf(@CheckForNull @UnknownSignedness Object o) {
       refreshIfEmpty();
       return getListDelegate().lastIndexOf(o);
     }
@@ -889,12 +892,12 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
       }
 
       @Override
-      public int nextIndex() {
+      public @NonNegative int nextIndex() {
         return getDelegateListIterator().nextIndex();
       }
 
       @Override
-      public int previousIndex() {
+      public @NonNegative int previousIndex() {
         return getDelegateListIterator().previousIndex();
       }
 
@@ -985,7 +988,7 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public boolean remove(@CheckForNull Object key) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object key) {
       int count = 0;
       Collection<V> collection = map().remove(key);
       if (collection != null) {
@@ -1007,12 +1010,12 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public boolean equals(@CheckForNull Object object) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object object) {
       return this == object || this.map().keySet().equals(object);
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness KeySet this) {
       return map().keySet().hashCode();
     }
   }
@@ -1357,13 +1360,13 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     // The following methods are included for performance.
 
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       return Maps.safeContainsKey(submap, key);
     }
 
     @Override
     @CheckForNull
-    public Collection<V> get(@CheckForNull Object key) {
+    public Collection<V> get(@CheckForNull @UnknownSignedness Object key) {
       Collection<V> collection = Maps.safeGet(submap, key);
       if (collection == null) {
         return null;
@@ -1374,18 +1377,18 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public Set<K> keySet() {
+    public Set<@KeyFor({"this"}) K> keySet() {
       return AbstractMapBasedMultimap.this.keySet();
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return submap.size();
     }
 
     @Override
     @CheckForNull
-    public Collection<V> remove(@CheckForNull Object key) {
+    public Collection<V> remove(@CheckForNull @UnknownSignedness Object key) {
       Collection<V> collection = submap.remove(key);
       if (collection == null) {
         return null;
@@ -1404,7 +1407,7 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness AsMap this) {
       return submap.hashCode();
     }
 
@@ -1447,12 +1450,12 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
       // The following methods are included for performance.
 
       @Override
-      public boolean contains(@CheckForNull Object o) {
+      public boolean contains(@CheckForNull @UnknownSignedness Object o) {
         return Collections2.safeContains(submap.entrySet(), o);
       }
 
       @Override
-      public boolean remove(@CheckForNull Object o) {
+      public boolean remove(@CheckForNull @UnknownSignedness Object o) {
         if (!contains(o)) {
           return false;
         }
@@ -1509,13 +1512,13 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
 
     @Override
     @ParametricNullness
-    public K firstKey() {
+    public @KeyFor("this") K firstKey() {
       return sortedMap().firstKey();
     }
 
     @Override
     @ParametricNullness
-    public K lastKey() {
+    public @KeyFor("this") K lastKey() {
       return sortedMap().lastKey();
     }
 
@@ -1540,7 +1543,7 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     // returns a SortedSet, even though returning a Set would be sufficient to
     // satisfy the SortedMap.keySet() interface
     @Override
-    public SortedSet<K> keySet() {
+    public SortedSet<@KeyFor({"this"}) K> keySet() {
       SortedSet<K> result = sortedKeySet;
       return (result == null) ? sortedKeySet = createKeySet() : result;
     }
@@ -1658,7 +1661,7 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public NavigableSet<K> keySet() {
+    public NavigableSet<@KeyFor({"this"}) K> keySet() {
       return (NavigableSet<K>) super.keySet();
     }
 
@@ -1668,12 +1671,12 @@ abstract class AbstractMapBasedMultimap<K extends @Nullable Object, V extends @N
     }
 
     @Override
-    public NavigableSet<K> navigableKeySet() {
+    public NavigableSet<@KeyFor({"this"}) K> navigableKeySet() {
       return keySet();
     }
 
     @Override
-    public NavigableSet<K> descendingKeySet() {
+    public NavigableSet<@KeyFor({"this"}) K> descendingKeySet() {
       return descendingMap().navigableKeySet();
     }
 

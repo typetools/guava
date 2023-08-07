@@ -25,6 +25,8 @@ import java.util.Map.Entry;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * {@code values()} implementation for {@link ImmutableMap}.
@@ -42,7 +44,7 @@ final class ImmutableMapValues<K, V> extends ImmutableCollection<V> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return map.size();
   }
 
@@ -69,7 +71,7 @@ final class ImmutableMapValues<K, V> extends ImmutableCollection<V> {
   }
 
   @Override
-  public boolean contains(@CheckForNull Object object) {
+  public boolean contains(@CheckForNull @UnknownSignedness Object object) {
     return object != null && Iterators.contains(iterator(), object);
   }
 

@@ -43,7 +43,10 @@ import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.PolySigned;
 
 /**
  * A double-ended priority queue, which provides constant-time access to both its least element and
@@ -250,7 +253,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return size;
   }
 
@@ -911,7 +914,7 @@ public final class MinMaxPriorityQueue<E> extends AbstractQueue<E> {
   }
 
   @Override
-  public Object[] toArray() {
+  public @PolyNull @PolySigned Object[] toArray(MinMaxPriorityQueue<@PolyNull @PolySigned E> this) {
     Object[] copyTo = new Object[size];
     System.arraycopy(queue, 0, copyTo, 0, size);
     return copyTo;

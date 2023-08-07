@@ -20,7 +20,9 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.concurrent.LazyInit;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -47,13 +49,13 @@ final class SingletonImmutableSet<E> extends ImmutableSet<E> {
 
   @Pure
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return 1;
   }
 
   @Pure
   @Override
-  public boolean contains(@CheckForNull Object target) {
+  public boolean contains(@CheckForNull @UnknownSignedness Object target) {
     return element.equals(target);
   }
 
@@ -80,7 +82,7 @@ final class SingletonImmutableSet<E> extends ImmutableSet<E> {
 
   @Pure
   @Override
-  public final int hashCode() {
+  public int hashCode(@UnknownSignedness SingletonImmutableSet<E> this) {
     return element.hashCode();
   }
 
@@ -91,5 +93,5 @@ final class SingletonImmutableSet<E> extends ImmutableSet<E> {
   }
 
 @Pure
-public boolean equals(@Nullable Object arg0) { return super.equals(arg0); }
+public boolean equals(@Nullable @UnknownSignedness Object arg0) { return super.equals(arg0); }
 }

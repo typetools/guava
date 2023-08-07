@@ -22,7 +22,9 @@ import com.google.errorprone.annotations.Immutable;
 import com.google.j2objc.annotations.WeakOuter;
 import java.util.Map;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /** A {@code RegularImmutableTable} optimized for dense data. */
 @GwtCompatible
@@ -114,13 +116,13 @@ final class DenseImmutableTable<R, C, V> extends RegularImmutableTable<R, C, V> 
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return size;
     }
 
     @Override
     @CheckForNull
-    public V get(@CheckForNull Object key) {
+    public V get(@CheckForNull @UnknownSignedness Object key) {
       Integer keyIndex = keyToIndex().get(key);
       return (keyIndex == null) ? null : getValue(keyIndex);
     }

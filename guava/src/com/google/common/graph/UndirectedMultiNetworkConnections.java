@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * An implementation of {@link NetworkConnections} for undirected networks with parallel edges.
@@ -76,7 +77,7 @@ final class UndirectedMultiNetworkConnections<N, E>
   public Set<E> edgesConnecting(N node) {
     return new MultiEdgesConnecting<E>(incidentEdgeMap, node) {
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return adjacentNodesMultiset().count(node);
       }
     };

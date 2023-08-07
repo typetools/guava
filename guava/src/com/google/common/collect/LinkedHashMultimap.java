@@ -42,7 +42,10 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -466,12 +469,12 @@ public final class LinkedHashMultimap<K extends @Nullable Object, V extends @Nul
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return size;
     }
 
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       int smearedHash = Hashing.smearedHash(o);
       for (ValueEntry<K, V> entry = hashTable[smearedHash & mask()];
           entry != null;
@@ -525,7 +528,7 @@ public final class LinkedHashMultimap<K extends @Nullable Object, V extends @Nul
 
     @CanIgnoreReturnValue
     @Override
-    public boolean remove(@CheckForNull Object o) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object o) {
       int smearedHash = Hashing.smearedHash(o);
       int bucket = smearedHash & mask();
       ValueEntry<K, V> prev = null;

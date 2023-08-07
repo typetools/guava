@@ -27,7 +27,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -60,7 +62,7 @@ abstract class AbstractMultiset<E extends @Nullable Object> extends AbstractColl
 
   @Pure
   @Override
-  public boolean contains(@CheckForNull Object element) {
+  public boolean contains(@CheckForNull @UnknownSignedness Object element) {
     return count(element) > 0;
   }
 
@@ -80,7 +82,7 @@ abstract class AbstractMultiset<E extends @Nullable Object> extends AbstractColl
 
   @CanIgnoreReturnValue
   @Override
-  public final boolean remove(@CheckForNull Object element) {
+  public final boolean remove(@CheckForNull @UnknownSignedness Object element) {
     return remove(element, 1) > 0;
   }
 
@@ -193,7 +195,7 @@ abstract class AbstractMultiset<E extends @Nullable Object> extends AbstractColl
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return distinctElements();
     }
   }
@@ -216,7 +218,7 @@ abstract class AbstractMultiset<E extends @Nullable Object> extends AbstractColl
    */
   @Pure
   @Override
-  public final boolean equals(@CheckForNull Object object) {
+  public final boolean equals(@CheckForNull @UnknownSignedness Object object) {
     return Multisets.equalsImpl(this, object);
   }
 
@@ -227,7 +229,7 @@ abstract class AbstractMultiset<E extends @Nullable Object> extends AbstractColl
    */
   @Pure
   @Override
-  public final int hashCode() {
+  public final int hashCode(@UnknownSignedness AbstractMultiset<E> this) {
     return entrySet().hashCode();
   }
 

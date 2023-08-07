@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A collection that associates an ordered pair of keys, called a row key and a column key, with a
@@ -92,7 +93,7 @@ public interface Table<
    *
    * @param value value to search for
    */
-  boolean containsValue(@CompatibleWith("V") @CheckForNull Object value);
+  boolean containsValue(@CompatibleWith("V") @CheckForNull @UnknownSignedness Object value);
 
   /**
    * Returns the value corresponding to the given row and column keys, or {@code null} if no such
@@ -124,7 +125,7 @@ public interface Table<
    * its cell view, as returned by {@link #cellSet}.
    */
   @Override
-  int hashCode();
+  int hashCode(@UnknownSignedness Table<R, C, V> this);
 
   // Mutators
 
@@ -284,6 +285,6 @@ public interface Table<
      * e.getColumnKey(), e.getValue())}.
      */
     @Override
-    int hashCode();
+    int hashCode(@UnknownSignedness Cell<R, C, V> this);
   }
 }

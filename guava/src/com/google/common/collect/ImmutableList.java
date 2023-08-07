@@ -46,8 +46,10 @@ import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collector;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -436,18 +438,18 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
   }
 
   @Override
-  public int indexOf(@CheckForNull Object object) {
+  public int indexOf(@CheckForNull @UnknownSignedness Object object) {
     return (object == null) ? -1 : Lists.indexOfImpl(this, object);
   }
 
   @Pure
   @Override
-  public int lastIndexOf(@CheckForNull Object object) {
+  public int lastIndexOf(@CheckForNull @UnknownSignedness Object object) {
     return (object == null) ? -1 : Lists.lastIndexOfImpl(this, object);
   }
 
   @Override
-  public boolean contains(@CheckForNull Object object) {
+  public boolean contains(@CheckForNull @UnknownSignedness Object object) {
     return indexOf(object) >= 0;
   }
 
@@ -491,7 +493,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return length;
     }
 
@@ -655,18 +657,18 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
     }
 
     @Override
-    public boolean contains(@CheckForNull Object object) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object object) {
       return forwardList.contains(object);
     }
 
     @Override
-    public int indexOf(@CheckForNull Object object) {
+    public int indexOf(@CheckForNull @UnknownSignedness Object object) {
       int index = forwardList.lastIndexOf(object);
       return (index >= 0) ? reverseIndex(index) : -1;
     }
 
     @Override
-    public int lastIndexOf(@CheckForNull Object object) {
+    public int lastIndexOf(@CheckForNull @UnknownSignedness Object object) {
       int index = forwardList.indexOf(object);
       return (index >= 0) ? reverseIndex(index) : -1;
     }
@@ -684,7 +686,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return forwardList.size();
     }
 
@@ -695,12 +697,12 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
   }
 
   @Override
-  public boolean equals(@CheckForNull Object obj) {
+  public boolean equals(@CheckForNull @UnknownSignedness Object obj) {
     return Lists.equalsImpl(this, obj);
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ImmutableList<E> this) {
     int hashCode = 1;
     int n = size();
     for (int i = 0; i < n; i++) {

@@ -21,6 +21,7 @@ import com.google.errorprone.annotations.DoNotMock;
 import java.util.Collection;
 import java.util.Set;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * An interface for <a
@@ -299,5 +300,5 @@ public interface Graph<N> extends BaseGraph<N> {
    * <p>A reference implementation of this is provided by {@link AbstractGraph#hashCode()}.
    */
   @Override
-  int hashCode();
+  int hashCode(@UnknownSignedness Graph<N> this);
 }

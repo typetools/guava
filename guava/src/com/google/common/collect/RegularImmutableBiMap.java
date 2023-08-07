@@ -34,7 +34,9 @@ import java.io.Serializable;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -145,7 +147,7 @@ class RegularImmutableBiMap<K, V> extends ImmutableBiMap<K, V> {
 
   @Override
   @CheckForNull
-  public V get(@CheckForNull Object key) {
+  public V get(@CheckForNull @UnknownSignedness Object key) {
     return RegularImmutableMap.get(key, keyTable, mask);
   }
 
@@ -175,7 +177,7 @@ class RegularImmutableBiMap<K, V> extends ImmutableBiMap<K, V> {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness RegularImmutableBiMap<K, V> this) {
     return hashCode;
   }
 
@@ -185,7 +187,7 @@ class RegularImmutableBiMap<K, V> extends ImmutableBiMap<K, V> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return entries.length;
   }
 
@@ -203,7 +205,7 @@ class RegularImmutableBiMap<K, V> extends ImmutableBiMap<K, V> {
   private final class Inverse extends ImmutableBiMap<V, K> {
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return inverse().size();
     }
 
@@ -220,7 +222,7 @@ class RegularImmutableBiMap<K, V> extends ImmutableBiMap<K, V> {
 
     @Override
     @CheckForNull
-    public K get(@CheckForNull Object value) {
+    public K get(@CheckForNull @UnknownSignedness Object value) {
       if (value == null || valueTable == null) {
         return null;
       }
@@ -257,7 +259,7 @@ class RegularImmutableBiMap<K, V> extends ImmutableBiMap<K, V> {
       }
 
       @Override
-      public int hashCode() {
+      public int hashCode(@UnknownSignedness InverseEntrySet this) {
         return hashCode;
       }
 

@@ -25,6 +25,7 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.PolySigned;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 /**
@@ -211,12 +212,12 @@ public final class ObjectArrays {
   }
 
   @CanIgnoreReturnValue
-  static Object[] checkElementsNotNull(Object... array) {
+  static @PolySigned Object[] checkElementsNotNull(@PolySigned Object... array) {
     return checkElementsNotNull(array, array.length);
   }
 
   @CanIgnoreReturnValue
-  static Object[] checkElementsNotNull(Object[] array, int length) {
+  static @PolySigned Object[] checkElementsNotNull(@PolySigned Object[] array, int length) {
     for (int i = 0; i < length; i++) {
       checkElementNotNull(array[i], i);
     }
@@ -226,7 +227,7 @@ public final class ObjectArrays {
   // We do this instead of Preconditions.checkNotNull to save boxing and array
   // creation cost.
   @CanIgnoreReturnValue
-  static Object checkElementNotNull(Object element, int index) {
+  static @PolySigned Object checkElementNotNull(@PolySigned Object element, int index) {
     if (element == null) {
       throw new NullPointerException("at index " + index);
     }

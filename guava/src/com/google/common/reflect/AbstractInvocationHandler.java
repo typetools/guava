@@ -20,6 +20,7 @@ import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Abstract implementation of {@link InvocationHandler} that handles {@link Object#equals}, {@link
@@ -120,7 +121,7 @@ public abstract class AbstractInvocationHandler implements InvocationHandler {
    * delegate to this method. Subclasses can override this method to provide custom equality.
    */
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness AbstractInvocationHandler this) {
     return super.hashCode();
   }
 

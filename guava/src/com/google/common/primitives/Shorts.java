@@ -32,22 +32,23 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.RandomAccess;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.HasSubsequence;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
-import org.checkerframework.checker.index.qual.HasSubsequence;
-import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.framework.qual.CFComment;
 
 /**
  * Static utility methods pertaining to {@code short} primitives, that are not already found in
@@ -584,6 +585,8 @@ public final class Shorts extends ShortsMethodsForWeb {
     return new ShortArrayAsList(backingArray);
   }
 
+  @CFComment({"signedness: A non-generic container class permits only signed values.",
+              "Clients must suppress warnings when storing unsigned values."})
   @GwtCompatible
   private static class ShortArrayAsList extends AbstractList<Short>
       implements RandomAccess, Serializable {
@@ -597,7 +600,10 @@ public final class Shorts extends ShortsMethodsForWeb {
     }
 
     @SuppressWarnings(
-            "index") // these three fields need to be initialized in some order, and any ordering leads to the first two issuing errors - since each field is dependent on at least one of the others
+        "index" // these three fields need to be initialized in some order, and any ordering
+    // leads to the first two issuing errors - since each field is dependent on
+    // at least one of the others
+    )
     ShortArrayAsList(short @MinLen(1)[] array, @IndexFor("#1") @LessThan("#3") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
@@ -621,15 +627,14 @@ public final class Shorts extends ShortsMethodsForWeb {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // non-generic container class
     public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Short) && Shorts.indexOf(array, (@Signed Short) target, start, end) != -1;
     }
 
-
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // non-generic container class
     public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Short) {
@@ -642,7 +647,7 @@ public final class Shorts extends ShortsMethodsForWeb {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // non-generic container class
     public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Short) {
@@ -696,7 +701,7 @@ public final class Shorts extends ShortsMethodsForWeb {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness ShortArrayAsList this) {
       int result = 1;
       for (int i = start; i < end; i++) {
         result = 31 * result + Shorts.hashCode(array[i]);

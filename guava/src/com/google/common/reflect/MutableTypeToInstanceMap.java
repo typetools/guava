@@ -27,7 +27,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A mutable type-to-instance map. See also {@link ImmutableTypeToInstanceMap}.
@@ -99,7 +103,7 @@ public final class MutableTypeToInstanceMap<B> extends ForwardingMap<TypeToken<?
   }
 
   @Override
-  public Set<Entry<TypeToken<? extends B>, B>> entrySet() {
+  public Set<Entry<@KeyFor({"this"}) TypeToken<? extends B>, B>> entrySet() {
     return UnmodifiableEntry.transformEntries(super.entrySet());
   }
 
@@ -137,7 +141,7 @@ public final class MutableTypeToInstanceMap<B> extends ForwardingMap<TypeToken<?
         }
 
         @Override
-        public Object[] toArray() {
+        public @PolyNull @PolySigned Object[] toArray() {
           /*
            * standardToArray returns `@Nullable Object[]` rather than `Object[]` but only because it
            * can be used with collections that may contain null. This collection is a collection of
@@ -151,7 +155,7 @@ public final class MutableTypeToInstanceMap<B> extends ForwardingMap<TypeToken<?
 
         @Override
         @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-        public <T extends @Nullable Object> T[] toArray(T[] array) {
+        public <T extends @Nullable @UnknownSignedness Object> T[] toArray(T[] array) {
           return standardToArray(array);
         }
       };

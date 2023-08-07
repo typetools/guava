@@ -28,21 +28,23 @@ import java.util.Collections;
 import java.util.List;
 import java.util.RandomAccess;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.HasSubsequence;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
-import org.checkerframework.checker.index.qual.HasSubsequence;
-import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.PolySigned;
 import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.MinLen;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.framework.qual.CFComment;
 
 /**
  * Static utility methods pertaining to {@code byte} primitives, that are not already found in
@@ -73,8 +75,9 @@ public final class Bytes {
    * @param value a primitive {@code byte} value
    * @return a hash code for the value
    */
-  public static int hashCode(byte value) {
-    return value;
+  @SuppressWarnings("signedness:cast.unsafe") // UnknownSignedness byte to Signed int is ok for hashing
+  public static int hashCode(@UnknownSignedness byte value) {
+    return (@Signed int) value;
   }
 
   /**
@@ -84,7 +87,7 @@ public final class Bytes {
    * @param target a primitive {@code byte} value
    * @return {@code true} if {@code array[i] == target} for some value of {@code i}
    */
-  public static boolean contains(byte[] array, byte target) {
+  public static boolean contains(@PolySigned byte[] array, @PolySigned byte target) {
     for (byte value : array) {
       if (value == target) {
         return true;
@@ -101,12 +104,12 @@ public final class Bytes {
    * @return the least index {@code i} for which {@code array[i] == target}, or {@code -1} if no
    *     such index exists.
    */
-  public static @IndexOrLow("#1") int indexOf(byte[] array, byte target) {
+  public static @IndexOrLow("#1") int indexOf(@PolySigned byte[] array, @PolySigned byte target) {
     return indexOf(array, target, 0, array.length);
   }
 
   // TODO(kevinb): consider making this public
-  private static @IndexOrLow("#1") @LessThan("#4") int indexOf(byte[] array, byte target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
+  private static @IndexOrLow("#1") @LessThan("#4") int indexOf(@PolySigned byte[] array, @PolySigned byte target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = start; i < end; i++) {
       if (array[i] == target) {
         return i;
@@ -126,7 +129,7 @@ public final class Bytes {
    * @param target the array to search for as a sub-sequence of {@code array}
    */
   @SuppressWarnings("substringindex:return") // https://github.com/kelloggm/checker-framework/issues/206, 207 and 208
-  public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset = "#2.length - 1") int indexOf(byte[] array, byte[] target) {
+  public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset = "#2.length - 1") int indexOf(@PolySigned byte[] array, @PolySigned byte[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
     if (target.length == 0) {
@@ -153,12 +156,12 @@ public final class Bytes {
    * @return the greatest index {@code i} for which {@code array[i] == target}, or {@code -1} if no
    *     such index exists.
    */
-  public static @IndexOrLow("#1") int lastIndexOf(byte[] array, byte target) {
+  public static @IndexOrLow("#1") int lastIndexOf(@PolySigned byte[] array, @PolySigned byte target) {
     return lastIndexOf(array, target, 0, array.length);
   }
 
   // TODO(kevinb): consider making this public
-  private static @IndexOrLow("#1") @LessThan("#4") int lastIndexOf(byte[] array, byte target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
+  private static @IndexOrLow("#1") @LessThan("#4") int lastIndexOf(@PolySigned byte[] array, @PolySigned byte target, @IndexOrHigh("#1") int start, @IndexOrHigh("#1") int end) {
     for (int i = end - 1; i >= start; i--) {
       if (array[i] == target) {
         return i;
@@ -180,15 +183,15 @@ public final class Bytes {
    * pos is increased the same way as length, so pos points to a valid
    * range of length array.length in result.
    */
-  @SuppressWarnings("upperbound:argument") // sum of lengths
-  public static byte[] concat(byte[]... arrays) {
+  @SuppressWarnings("signedness:enhancedfor")
+  public static @PolySigned byte[] concat(@PolySigned byte[]... arrays) {
     int length = 0;
     for (byte[] array : arrays) {
       length += array.length;
     }
-    byte[] result = new byte[length];
+    @PolySigned byte[] result = new byte[length];
     int pos = 0;
-    for (byte[] array : arrays) {
+    for (@PolySigned byte[] array : arrays) {
       System.arraycopy(array, 0, result, pos, array.length);
       pos += array.length;
     }
@@ -208,7 +211,7 @@ public final class Bytes {
    * @return an array containing the values of {@code array}, with guaranteed minimum length {@code
    *     minLength}
    */
-  public static byte[] ensureCapacity(byte[] array, @NonNegative int minLength, @NonNegative int padding) {
+  public static @PolySigned byte[] ensureCapacity(@PolySigned byte[] array, @NonNegative int minLength, @NonNegative int padding) {
     checkArgument(minLength >= 0, "Invalid minLength: %s", minLength);
     checkArgument(padding >= 0, "Invalid padding: %s", padding);
     return (array.length < minLength) ? Arrays.copyOf(array, minLength + padding) : array;
@@ -227,14 +230,15 @@ public final class Bytes {
    * @throws NullPointerException if {@code collection} or any of its elements is null
    * @since 1.0 (parameter was {@code Collection<Byte>} before 12.0)
    */
-  public static byte[] toArray(Collection<? extends Number> collection) {
+  @SuppressWarnings("signedness:return") // Signed byte to PolySigned byte is ok
+  public static <T extends Number> @PolySigned byte[] toArray(Collection<@PolySigned T> collection) {
     if (collection instanceof ByteArrayAsList) {
       return ((ByteArrayAsList) collection).toByteArray();
     }
 
-    Object[] boxedArray = collection.toArray();
+    @PolySigned Object[] boxedArray = collection.toArray();
     int len = boxedArray.length;
-    byte[] array = new byte[len];
+    @PolySigned byte[] array = new byte[len];
     for (int i = 0; i < len; i++) {
       // checkNotNull for GWT (do not optimize)
       array[i] = ((Number) checkNotNull(boxedArray[i])).byteValue();
@@ -254,13 +258,16 @@ public final class Bytes {
    * @param backingArray the array to back the list
    * @return a list view of the array
    */
-  public static List<Byte> asList(byte... backingArray) {
+  @SuppressWarnings({"signedness:argument", "signedness:return"}) // non-generic container class
+  public static List<@PolySigned Byte> asList(@PolySigned byte... backingArray) {
     if (backingArray.length == 0) {
       return Collections.emptyList();
     }
     return new ByteArrayAsList(backingArray);
   }
 
+  @CFComment({"signedness: A non-generic container class permits only signed values.",
+              "Clients must suppress warnings when storing unsigned values."})
   @GwtCompatible
   private static class ByteArrayAsList extends AbstractList<Byte>
       implements RandomAccess, Serializable {
@@ -274,7 +281,10 @@ public final class Bytes {
     }
 
     @SuppressWarnings(
-            "index") // these three fields need to be initialized in some order, and any ordering leads to the first two issuing errors - since each field is dependent on at least one of the others
+        "index" // these three fields need to be initialized in some order, and any ordering
+    // leads to the first two issuing errors - since each field is dependent on
+    // at least one of the others
+    )
     ByteArrayAsList(byte @MinLen(1)[] array, @IndexFor("#1") @LessThan("#3") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
@@ -298,18 +308,16 @@ public final class Bytes {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
     public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
-      return (target instanceof Byte) && Bytes.indexOf(array, (@Signed Byte) target, start, end) != -1;
+      return (target instanceof Byte) && Bytes.indexOf(array, (Byte) target, start, end) != -1;
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
     public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Byte) {
-        int i = Bytes.indexOf(array, (@Signed Byte) target, start, end);
+        int i = Bytes.indexOf(array, (Byte) target, start, end);
         if (i >= 0) {
           return i - start;
         }
@@ -318,11 +326,10 @@ public final class Bytes {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
     public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Byte) {
-        int i = Bytes.lastIndexOf(array, (@Signed Byte) target, start, end);
+        int i = Bytes.lastIndexOf(array, (Byte) target, start, end);
         if (i >= 0) {
           return i - start;
         }
@@ -372,7 +379,7 @@ public final class Bytes {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness ByteArrayAsList this) {
       int result = 1;
       for (int i = start; i < end; i++) {
         result = 31 * result + Bytes.hashCode(array[i]);

@@ -39,7 +39,12 @@ import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.Signed;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -104,7 +109,7 @@ public final class Collections2 {
    * Delegates to {@link Collection#contains}. Returns {@code false} if the {@code contains} method
    * throws a {@code ClassCastException} or {@code NullPointerException}.
    */
-  static boolean safeContains(Collection<?> collection, @CheckForNull Object object) {
+  static boolean safeContains(Collection<?> collection, @CheckForNull @UnknownSignedness Object object) {
     checkNotNull(collection);
     try {
       return collection.contains(object);
@@ -161,7 +166,7 @@ public final class Collections2 {
 
     @Pure
     @Override
-    public boolean contains(@CheckForNull Object element) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object element) {
       if (safeContains(unfiltered, element)) {
         @SuppressWarnings("unchecked") // element is in unfiltered, so it must be an E
         E e = (E) element;
@@ -204,7 +209,7 @@ public final class Collections2 {
     }
 
     @Override
-    public boolean remove(@CheckForNull Object element) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object element) {
       return contains(element) && unfiltered.remove(element);
     }
 
@@ -226,7 +231,7 @@ public final class Collections2 {
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       int size = 0;
       for (E e : unfiltered) {
         if (predicate.apply(e)) {
@@ -237,14 +242,14 @@ public final class Collections2 {
     }
 
     @Override
-    public @Nullable Object[] toArray() {
+    public @PolyNull @PolySigned Object[] toArray(FilteredCollection<@PolyNull @PolySigned E> this) {
       // creating an ArrayList so filtering happens once
       return Lists.newArrayList(iterator()).toArray();
     }
 
     @Override
-    @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-    public <T extends @Nullable Object> T[] toArray(T[] array) {
+    @SuppressWarnings("nullness:return")
+    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(@PolyNull T[] array) {
       return Lists.newArrayList(iterator()).toArray(array);
     }
 
@@ -322,7 +327,7 @@ public final class Collections2 {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return fromCollection.size();
     }
   }
@@ -348,7 +353,7 @@ public final class Collections2 {
   }
 
   /** An implementation of {@link Collection#toString()}. */
-  static String toStringImpl(final Collection<?> collection) {
+  static String toStringImpl(final Collection<? extends @Signed Object> collection) {
     StringBuilder sb = newStringBuilderForCollection(collection.size()).append('[');
     boolean first = true;
     for (Object o : collection) {
@@ -493,7 +498,7 @@ public final class Collections2 {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return size;
     }
 
@@ -508,7 +513,7 @@ public final class Collections2 {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object obj) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object obj) {
       if (obj instanceof List) {
         List<?> list = (List<?>) obj;
         return isPermutation(inputList, list);
@@ -620,7 +625,7 @@ public final class Collections2 {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return IntMath.factorial(inputList.size());
     }
 
@@ -635,7 +640,7 @@ public final class Collections2 {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object obj) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object obj) {
       if (obj instanceof List) {
         List<?> list = (List<?>) obj;
         return isPermutation(inputList, list);

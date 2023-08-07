@@ -34,6 +34,7 @@ import java.nio.ByteOrder;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * See MurmurHash3_x64_128 in <a href="http://smhasher.googlecode.com/svn/trunk/MurmurHash3.cpp">the
@@ -82,7 +83,7 @@ final class Murmur3_128HashFunction extends AbstractHashFunction implements Seri
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness Murmur3_128HashFunction this) {
     return getClass().hashCode() ^ seed;
   }
 

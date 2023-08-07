@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 
 /**
  * Implementation of {@code Table} whose iteration ordering across row keys is sorted by their
@@ -94,7 +95,7 @@ class StandardRowSortedTable<R, C, V> extends StandardTable<R, C, V>
   @WeakOuter
   private class RowSortedMap extends RowMap implements SortedMap<R, Map<C, V>> {
     @Override
-    public SortedSet<R> keySet() {
+    public SortedSet<@KeyFor({"this"}) R> keySet() {
       return (SortedSet<R>) super.keySet();
     }
 
@@ -110,12 +111,12 @@ class StandardRowSortedTable<R, C, V> extends StandardTable<R, C, V>
     }
 
     @Override
-    public R firstKey() {
+    public @KeyFor("this") R firstKey() {
       return sortedBackingMap().firstKey();
     }
 
     @Override
-    public R lastKey() {
+    public @KeyFor("this") R lastKey() {
       return sortedBackingMap().lastKey();
     }
 

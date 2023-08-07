@@ -25,6 +25,7 @@ import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.Signed;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.checker.signedness.qual.Unsigned;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.PolyValue;
@@ -98,7 +99,7 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
    * @throws IllegalArgumentException if {@code value} is negative or {@code value >= 2^64}
    */
   @CanIgnoreReturnValue
-  @SuppressWarnings("signedness:cast.unsafe")
+  @SuppressWarnings("signedness:cast.unsafe") // checkArgument guarantees value fits in Unsigned long
   public static UnsignedLong valueOf(BigInteger value) {
     checkNotNull(value);
     checkArgument(
@@ -183,9 +184,9 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
 
   /** Returns the value of this {@code UnsignedLong} as an {@code int}. */
   @Override
-  @SuppressWarnings("return")
+  @SuppressWarnings("cast.unsafe") // Unsigned long to Signed int is function intention
   public @PolyValue int intValue(@PolyValue UnsignedLong this) {
-    return (int) value;
+    return (@PolyValue @Signed int) value;
   }
 
   /**
@@ -196,18 +197,19 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
    * will be equal to {@code this - 2^64}.
    */
   @Override
-  @SuppressWarnings("return")
+  @SuppressWarnings("cast.unsafe") // Unsigned long to Signed long is function intention
   public @PolyValue long longValue(@PolyValue UnsignedLong this) {
-    return value;
+    return (@PolyValue @Signed long) value;
   }
 
   /**
    * Returns the value of this {@code UnsignedLong} as a {@code float}, analogous to a widening
    * primitive conversion from {@code long} to {@code float}, and correctly rounded.
    */
+  @Override
   @SuppressWarnings({
     "signedness:comparison", // unsigned compare
-    "value:return" // forDigit
+    "value:return" // bit manipulation preserves value from integral to float
   })
   public @PolyValue float floatValue(@PolyValue UnsignedLong this) {
     if (value >= 0) {
@@ -225,7 +227,7 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
   @Override
   @SuppressWarnings({
     "signedness:comparison", // unsigned compare
-    "value:return" // forDigit
+    "value:return" // bit manipulation preserves value from integral to double
   })
   public @PolyValue double doubleValue(@PolyValue UnsignedLong this) {
     if (value >= 0) {
@@ -257,7 +259,7 @@ public final class UnsignedLong extends Number implements Comparable<UnsignedLon
 
   @Override
   @SuppressWarnings("signedness:argument")
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness UnsignedLong this) {
     return Longs.hashCode(value);
   }
 

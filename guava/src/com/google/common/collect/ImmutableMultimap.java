@@ -41,7 +41,9 @@ import java.util.Set;
 import java.util.Spliterator;
 import java.util.function.BiConsumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -495,13 +497,13 @@ public abstract class ImmutableMultimap<K, V> extends BaseImmutableMultimap<K, V
 
   @Pure
   @Override
-  public boolean containsKey(@CheckForNull Object key) {
+  public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
     return map.containsKey(key);
   }
 
   @Pure
   @Override
-  public boolean containsValue(@CheckForNull Object value) {
+  public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
     return value != null && super.containsValue(value);
   }
 
@@ -574,13 +576,13 @@ public abstract class ImmutableMultimap<K, V> extends BaseImmutableMultimap<K, V
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multimap.size();
     }
 
     @Pure
     @Override
-    public boolean contains(@CheckForNull Object object) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object object) {
       if (object instanceof Entry) {
         Entry<?, ?> entry = (Entry<?, ?>) object;
         return multimap.containsEntry(entry.getKey(), entry.getValue());
@@ -661,12 +663,12 @@ public abstract class ImmutableMultimap<K, V> extends BaseImmutableMultimap<K, V
   @WeakOuter
   class Keys extends ImmutableMultiset<K> {
     @Override
-    public boolean contains(@CheckForNull Object object) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object object) {
       return containsKey(object);
     }
 
     @Override
-    public int count(@CheckForNull Object element) {
+    public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
       Collection<V> values = map.get(element);
       return (values == null) ? 0 : values.size();
     }
@@ -677,7 +679,7 @@ public abstract class ImmutableMultimap<K, V> extends BaseImmutableMultimap<K, V
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return ImmutableMultimap.this.size();
     }
 
@@ -756,7 +758,7 @@ public abstract class ImmutableMultimap<K, V> extends BaseImmutableMultimap<K, V
     }
 
     @Override
-    public boolean contains(@CheckForNull Object object) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object object) {
       return multimap.containsValue(object);
     }
 
@@ -776,7 +778,7 @@ public abstract class ImmutableMultimap<K, V> extends BaseImmutableMultimap<K, V
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multimap.size();
     }
 

@@ -27,6 +27,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
+
 /**
  * A map-like data structure that wraps a backing map and caches values while iterating through
  * {@link #unmodifiableKeySet()}. By design, the cache is cleared when this structure is mutated. If
@@ -100,7 +103,7 @@ class MapIteratorCache<K, V> {
     return backingMap.get(key);
   }
 
-  final boolean containsKey(@CheckForNull Object key) {
+  final boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
     return getIfCached(key) != null || backingMap.containsKey(key);
   }
 
@@ -126,12 +129,12 @@ class MapIteratorCache<K, V> {
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return backingMap.size();
       }
 
       @Override
-      public boolean contains(@CheckForNull Object key) {
+      public boolean contains(@CheckForNull @UnknownSignedness Object key) {
         return containsKey(key);
       }
     };

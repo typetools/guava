@@ -21,6 +21,9 @@ import java.util.Collections;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
+
 /** Implementation of an {@link Optional} containing a reference. */
 @GwtCompatible
 @ElementTypesAreNonnullByDefault
@@ -37,12 +40,12 @@ final class Present<T> extends Optional<T> {
   }
 
   @Override
-  public T get() {
+  public @NonNull T get() {
     return reference;
   }
 
   @Override
-  public T or(T defaultValue) {
+  public @NonNull T or(T defaultValue) {
     checkNotNull(defaultValue, "use Optional.orNull() instead of Optional.or(null)");
     return reference;
   }
@@ -54,7 +57,7 @@ final class Present<T> extends Optional<T> {
   }
 
   @Override
-  public T or(Supplier<? extends T> supplier) {
+  public @NonNull T or(Supplier<? extends T> supplier) {
     checkNotNull(supplier);
     return reference;
   }
@@ -65,12 +68,12 @@ final class Present<T> extends Optional<T> {
   }
 
   @Override
-  public Set<T> asSet() {
+  public Set<@NonNull T> asSet() {
     return Collections.singleton(reference);
   }
 
   @Override
-  public <V> Optional<V> transform(Function<? super T, V> function) {
+  public <V extends @NonNull Object> Optional<V> transform(Function<? super T, V> function) {
     return new Present<>(
         checkNotNull(
             function.apply(reference),
@@ -87,7 +90,7 @@ final class Present<T> extends Optional<T> {
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness Present<T> this) {
     return 0x598df91c + reference.hashCode();
   }
 

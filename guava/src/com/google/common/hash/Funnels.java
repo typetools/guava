@@ -16,14 +16,17 @@ package com.google.common.hash;
 
 import com.google.common.annotations.Beta;
 import com.google.common.base.Preconditions;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.MinLen;
 
 /**
@@ -120,7 +123,7 @@ public final class Funnels {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness StringCharsetFunnel this) {
       return StringCharsetFunnel.class.hashCode() ^ charset.hashCode();
     }
 
@@ -207,7 +210,7 @@ public final class Funnels {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SequentialFunnel<E> this) {
       return SequentialFunnel.class.hashCode() ^ elementFunnel.hashCode();
     }
   }
@@ -268,7 +271,7 @@ public final class Funnels {
     }
 
     @Override
-    public void write(@PolySigned byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int len) {
+    public void write(@PolySigned byte[] bytes, @IndexOrHigh({"#1"}) int off, @LTLengthOf(value={"#1"}, offset={"#2 - 1"}) @NonNegative int len) throws IOException {
       sink.putBytes(bytes, off, len);
     }
 

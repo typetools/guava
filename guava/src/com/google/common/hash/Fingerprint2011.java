@@ -8,6 +8,7 @@ import static com.google.common.hash.LittleEndianByteArray.load64Safely;
 import static java.lang.Long.rotateRight;
 
 import com.google.common.annotations.VisibleForTesting;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 /**
  * Implementation of Geoff Pike's fingerprint2011 hash function. See {@link Hashing#fingerprint2011}
@@ -45,7 +46,7 @@ final class Fingerprint2011 extends AbstractNonStreamingHashFunction {
   }
 
   @Override
-  public int bits() {
+  public @NonNegative int bits() {
     return 64;
   }
 

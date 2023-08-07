@@ -19,10 +19,11 @@ import java.io.Serializable;
 import java.util.Iterator;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 @GwtCompatible(serializable = true)
 @ElementTypesAreNonnullByDefault
-final class PairwiseEquivalence<E, T extends @Nullable E> extends Equivalence<Iterable<T>>
+final class PairwiseEquivalence<E, T extends E> extends Equivalence<Iterable<T>>
     implements Serializable {
   final Equivalence<E> elementEquivalence;
 
@@ -64,7 +65,7 @@ final class PairwiseEquivalence<E, T extends @Nullable E> extends Equivalence<It
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness PairwiseEquivalence<E, T> this) {
     return elementEquivalence.hashCode() ^ 0x46a3eb07;
   }
 

@@ -38,7 +38,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Spliterator;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Fixed-size {@link Table} implementation backed by a two-dimensional array.
@@ -197,7 +200,7 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, @Nullable V>
     }
 
     @Override
-    public Set<K> keySet() {
+    public Set<@KeyFor({"this"}) K> keySet() {
       return keyIndex.keySet();
     }
 
@@ -214,7 +217,7 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, @Nullable V>
     abstract V setValue(int index, @ParametricNullness V newValue);
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return keyIndex.size();
     }
 
@@ -263,13 +266,13 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, @Nullable V>
     // TODO(lowasser): consider an optimized values() implementation
 
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       return keyIndex.containsKey(key);
     }
 
     @CheckForNull
     @Override
-    public V get(@CheckForNull Object key) {
+    public V get(@CheckForNull @UnknownSignedness Object key) {
       Integer index = keyIndex.get(key);
       if (index == null) {
         return null;
@@ -291,7 +294,7 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, @Nullable V>
 
     @Override
     @CheckForNull
-    public V remove(@CheckForNull Object key) {
+    public V remove(@CheckForNull @UnknownSignedness Object key) {
       throw new UnsupportedOperationException();
     }
 
@@ -429,7 +432,7 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, @Nullable V>
   }
 
   @Override
-  public boolean containsValue(@CheckForNull Object value) {
+  public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
     for (@Nullable V[] row : array) {
       for (V element : row) {
         if (Objects.equal(value, element)) {

@@ -48,7 +48,12 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -160,7 +165,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       synchronized (mutex) {
         return delegate().contains(o);
       }
@@ -216,7 +221,7 @@ final class Synchronized {
     }
 
     @Override
-    public boolean remove(@CheckForNull Object o) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object o) {
       synchronized (mutex) {
         return delegate().remove(o);
       }
@@ -245,22 +250,23 @@ final class Synchronized {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       synchronized (mutex) {
         return delegate().size();
       }
     }
 
     @Override
-    public @Nullable Object[] toArray() {
+    @SuppressWarnings("nullness:return")
+    public @PolyNull @PolySigned Object[] toArray() {
       synchronized (mutex) {
         return delegate().toArray();
       }
     }
 
     @Override
-    @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-    public <T extends @Nullable Object> T[] toArray(T[] a) {
+    @SuppressWarnings("nullness:return")
+    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(@PolyNull T[] a) {
       synchronized (mutex) {
         return delegate().toArray(a);
       }
@@ -288,7 +294,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean equals(@CheckForNull Object o) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object o) {
       if (o == this) {
         return true;
       }
@@ -299,7 +305,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SynchronizedSet<E> this) {
       synchronized (mutex) {
         return delegate().hashCode();
       }
@@ -417,7 +423,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public int indexOf(@CheckForNull Object o) {
+    public int indexOf(@CheckForNull @UnknownSignedness Object o) {
       synchronized (mutex) {
         return delegate().indexOf(o);
       }
@@ -425,7 +431,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public int lastIndexOf(@CheckForNull Object o) {
+    public int lastIndexOf(@CheckForNull @UnknownSignedness Object o) {
       synchronized (mutex) {
         return delegate().lastIndexOf(o);
       }
@@ -479,7 +485,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean equals(@CheckForNull Object o) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object o) {
       if (o == this) {
         return true;
       }
@@ -490,7 +496,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SynchronizedList<E> this) {
       synchronized (mutex) {
         return delegate().hashCode();
       }
@@ -531,7 +537,7 @@ final class Synchronized {
     }
 
     @Override
-    public int count(@CheckForNull Object o) {
+    public @NonNegative int count(@CheckForNull @UnknownSignedness Object o) {
       synchronized (mutex) {
         return delegate().count(o);
       }
@@ -589,7 +595,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean equals(@CheckForNull Object o) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object o) {
       if (o == this) {
         return true;
       }
@@ -600,7 +606,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SynchronizedMultiset<E> this) {
       synchronized (mutex) {
         return delegate().hashCode();
       }
@@ -653,7 +659,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       synchronized (mutex) {
         return delegate().containsKey(key);
       }
@@ -661,7 +667,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean containsValue(@CheckForNull Object value) {
+    public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
       synchronized (mutex) {
         return delegate().containsValue(value);
       }
@@ -804,7 +810,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SynchronizedMultimap<K, V> this) {
       synchronized (mutex) {
         return delegate().hashCode();
       }
@@ -1023,7 +1029,7 @@ final class Synchronized {
     // See Collections.CheckedMap.CheckedEntrySet for details on attacks.
 
     @Override
-    public @Nullable Object[] toArray() {
+    public @PolyNull @PolySigned Object[] toArray() {
       synchronized (mutex) {
         /*
          * toArrayImpl returns `@Nullable Object[]` rather than `Object[]` but only because it can
@@ -1037,8 +1043,8 @@ final class Synchronized {
     }
 
     @Override
-    @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-    public <T extends @Nullable Object> T[] toArray(T[] array) {
+    //@SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
+    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(@PolyNull T[] array) {
       synchronized (mutex) {
         return ObjectArrays.toArrayImpl(delegate(), array);
       }
@@ -1046,7 +1052,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       synchronized (mutex) {
         return Maps.containsEntryImpl(delegate(), o);
       }
@@ -1062,7 +1068,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean equals(@CheckForNull Object o) {
+    public boolean equals(@CheckForNull @UnknownSignedness Object o) {
       if (o == this) {
         return true;
       }
@@ -1072,7 +1078,7 @@ final class Synchronized {
     }
 
     @Override
-    public boolean remove(@CheckForNull Object o) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object o) {
       synchronized (mutex) {
         return Maps.removeEntryImpl(delegate(), o);
       }
@@ -1126,7 +1132,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean containsKey(@CheckForNull Object key) {
+    public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
       synchronized (mutex) {
         return delegate().containsKey(key);
       }
@@ -1134,7 +1140,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean containsValue(@CheckForNull Object value) {
+    public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
       synchronized (mutex) {
         return delegate().containsValue(value);
       }
@@ -1142,7 +1148,7 @@ final class Synchronized {
 
     @SideEffectFree
     @Override
-    public Set<Map.Entry<K, V>> entrySet() {
+    public Set<Map.Entry<@KeyFor({"this"}) K, V>> entrySet() {
       synchronized (mutex) {
         if (entrySet == null) {
           entrySet = set(delegate().entrySet(), mutex);
@@ -1160,7 +1166,7 @@ final class Synchronized {
 
     @Override
     @CheckForNull
-    public V get(@CheckForNull Object key) {
+    public V get(@CheckForNull @UnknownSignedness Object key) {
       synchronized (mutex) {
         return delegate().get(key);
       }
@@ -1169,7 +1175,7 @@ final class Synchronized {
     @Pure
     @Override
     @CheckForNull
-    public V getOrDefault(@CheckForNull Object key, @CheckForNull V defaultValue) {
+    public V getOrDefault(@CheckForNull @UnknownSignedness Object key, @CheckForNull V defaultValue) {
       synchronized (mutex) {
         return delegate().getOrDefault(key, defaultValue);
       }
@@ -1184,7 +1190,7 @@ final class Synchronized {
 
     @SideEffectFree
     @Override
-    public Set<K> keySet() {
+    public Set<@KeyFor({"this"}) K> keySet() {
       synchronized (mutex) {
         if (keySet == null) {
           keySet = set(delegate().keySet(), mutex);
@@ -1225,31 +1231,31 @@ final class Synchronized {
     }
 
     @Override
-    public V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
+    public @PolyNull V computeIfAbsent(K key, Function<? super K, ? extends @PolyNull V> mappingFunction) {
       synchronized (mutex) {
         return delegate().computeIfAbsent(key, mappingFunction);
       }
     }
 
     @Override
-    public V computeIfPresent(
-        K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+    public @PolyNull V computeIfPresent(
+        K key, BiFunction<? super K, ? super V, ? extends @PolyNull V> remappingFunction) {
       synchronized (mutex) {
         return delegate().computeIfPresent(key, remappingFunction);
       }
     }
 
     @Override
-    public V compute(
-        K key, BiFunction<? super K, ? super @Nullable V, ? extends V> remappingFunction) {
+    public @PolyNull V compute(
+        K key, BiFunction<? super K, ? super @Nullable V, ? extends @PolyNull V> remappingFunction) {
       synchronized (mutex) {
         return delegate().compute(key, remappingFunction);
       }
     }
 
     @Override
-    public V merge(
-        K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
+    public @PolyNull V merge(
+        K key, V value, BiFunction<? super V, ? super V, ? extends @PolyNull V> remappingFunction) {
       synchronized (mutex) {
         return delegate().merge(key, value, remappingFunction);
       }
@@ -1271,7 +1277,7 @@ final class Synchronized {
 
     @Override
     @CheckForNull
-    public V remove(@CheckForNull Object key) {
+    public V remove(@CheckForNull @UnknownSignedness Object key) {
       synchronized (mutex) {
         return delegate().remove(key);
       }
@@ -1279,14 +1285,14 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean remove(@CheckForNull Object key, @CheckForNull Object value) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object key, @CheckForNull @UnknownSignedness Object value) {
       synchronized (mutex) {
         return delegate().remove(key, value);
       }
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       synchronized (mutex) {
         return delegate().size();
       }
@@ -1316,7 +1322,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SynchronizedMap<K, V> this) {
       synchronized (mutex) {
         return delegate().hashCode();
       }
@@ -1351,7 +1357,7 @@ final class Synchronized {
     }
 
     @Override
-    public K firstKey() {
+    public @KeyFor("this") K firstKey() {
       synchronized (mutex) {
         return delegate().firstKey();
       }
@@ -1365,7 +1371,7 @@ final class Synchronized {
     }
 
     @Override
-    public K lastKey() {
+    public @KeyFor("this") K lastKey() {
       synchronized (mutex) {
         return delegate().lastKey();
       }
@@ -1456,7 +1462,7 @@ final class Synchronized {
 
     @Override
     @CheckForNull
-    public Collection<V> get(@CheckForNull Object key) {
+    public Collection<V> get(@CheckForNull @UnknownSignedness Object key) {
       synchronized (mutex) {
         Collection<V> collection = super.get(key);
         return (collection == null) ? null : typePreservingCollection(collection, mutex);
@@ -1465,7 +1471,7 @@ final class Synchronized {
 
     @SideEffectFree
     @Override
-    public Set<Map.Entry<K, Collection<V>>> entrySet() {
+    public Set<Map.Entry<@KeyFor({"this"}) K, Collection<V>>> entrySet() {
       synchronized (mutex) {
         if (asMapEntrySet == null) {
           asMapEntrySet = new SynchronizedAsMapEntries<>(delegate().entrySet(), mutex);
@@ -1487,7 +1493,7 @@ final class Synchronized {
 
     @Pure
     @Override
-    public boolean containsValue(@CheckForNull Object o) {
+    public boolean containsValue(@CheckForNull @UnknownSignedness Object o) {
       // values() and its contains() method are both synchronized.
       return values().contains(o);
     }
@@ -1518,14 +1524,14 @@ final class Synchronized {
   //Suppressed due to annotations on toArray
   @SuppressWarnings("nullness")
   @Override
-  public @Nullable Object[] toArray() { return super.toArray(); }
+  public @PolyNull @PolySigned Object[] toArray(SynchronizedAsMapValues<@PolyNull @PolySigned V> this) { return super.toArray(); }
 
   @SuppressWarnings("nullness")
   @Override public <T> T[] toArray(T[] arg0) { return super.toArray(arg0); }
 
   @Pure
   @Override
-  public boolean contains(@Nullable Object arg0) { return super.contains(arg0); }
+  public boolean contains(@Nullable @UnknownSignedness Object arg0) { return super.contains(arg0); }
 
   @SuppressWarnings("nullness")
   @Pure
@@ -1533,7 +1539,7 @@ final class Synchronized {
   public boolean containsAll(Collection<?> arg0) { return super.containsAll(arg0); }
 
   @Override
-  public boolean remove(@Nullable Object arg0) { return super.remove(arg0); }
+  public boolean remove(@Nullable @UnknownSignedness Object arg0) { return super.remove(arg0); }
 
   @SuppressWarnings("nullness")
   @Override
@@ -1721,7 +1727,7 @@ final class Synchronized {
     @CheckForNull transient NavigableSet<K> descendingKeySet;
 
     @Override
-    public NavigableSet<K> descendingKeySet() {
+    public NavigableSet<@KeyFor({"this"}) K> descendingKeySet() {
       synchronized (mutex) {
         if (descendingKeySet == null) {
           return descendingKeySet = Synchronized.navigableSet(delegate().descendingKeySet(), mutex);
@@ -1819,14 +1825,14 @@ final class Synchronized {
     }
 
     @Override
-    public Set<K> keySet() {
+    public Set<@KeyFor({"this"}) K> keySet() {
       return navigableKeySet();
     }
 
     @CheckForNull transient NavigableSet<K> navigableKeySet;
 
     @Override
-    public NavigableSet<K> navigableKeySet() {
+    public NavigableSet<@KeyFor({"this"}) K> navigableKeySet() {
       synchronized (mutex) {
         if (navigableKeySet == null) {
           return navigableKeySet = Synchronized.navigableSet(delegate().navigableKeySet(), mutex);
@@ -1912,7 +1918,7 @@ final class Synchronized {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SynchronizedEntry<K, V> this) {
       synchronized (mutex) {
         return delegate().hashCode();
       }
@@ -2181,7 +2187,7 @@ final class Synchronized {
     }
 
     @Override
-    public boolean containsValue(@CheckForNull Object value) {
+    public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
       synchronized (mutex) {
         return delegate().containsValue(value);
       }
@@ -2314,7 +2320,7 @@ final class Synchronized {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness SynchronizedTable<R, C, V> this) {
       synchronized (mutex) {
         return delegate().hashCode();
       }

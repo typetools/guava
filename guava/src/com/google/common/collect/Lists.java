@@ -50,7 +50,9 @@ import java.util.RandomAccess;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Predicate;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -330,7 +332,7 @@ public final class Lists {
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return IntMath.saturatedAdd(rest.length, 1);
     }
 
@@ -360,7 +362,7 @@ public final class Lists {
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return IntMath.saturatedAdd(rest.length, 2);
     }
 
@@ -565,7 +567,7 @@ public final class Lists {
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return fromList.size();
     }
 
@@ -653,7 +655,7 @@ public final class Lists {
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return fromList.size();
     }
 
@@ -702,7 +704,7 @@ public final class Lists {
 
     @Pure
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return IntMath.divide(list.size(), size, RoundingMode.CEILING);
     }
 
@@ -753,12 +755,12 @@ public final class Lists {
     }
 
     @Override
-    public int indexOf(@CheckForNull Object object) {
+    public int indexOf(@CheckForNull @UnknownSignedness Object object) {
       return (object instanceof Character) ? string.indexOf((Character) object) : -1;
     }
 
     @Override
-    public int lastIndexOf(@CheckForNull Object object) {
+    public int lastIndexOf(@CheckForNull @UnknownSignedness Object object) {
       return (object instanceof Character) ? string.lastIndexOf((Character) object) : -1;
     }
 
@@ -780,7 +782,7 @@ public final class Lists {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return string.length();
     }
   }
@@ -799,7 +801,7 @@ public final class Lists {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return sequence.length();
     }
   }
@@ -888,7 +890,7 @@ public final class Lists {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return forwardList.size();
     }
 
@@ -939,7 +941,7 @@ public final class Lists {
         }
 
         @Override
-        public int nextIndex() {
+        public @NonNegative int nextIndex() {
           return reversePosition(forwardIterator.nextIndex());
         }
 
@@ -954,7 +956,7 @@ public final class Lists {
         }
 
         @Override
-        public int previousIndex() {
+        public @NonNegative int previousIndex() {
           return nextIndex() - 1;
         }
 
@@ -995,7 +997,7 @@ public final class Lists {
   }
 
   /** An implementation of {@link List#equals(Object)}. */
-  static boolean equalsImpl(List<?> thisList, @CheckForNull Object other) {
+  static boolean equalsImpl(List<?> thisList, @CheckForNull @UnknownSignedness Object other) {
     if (other == checkNotNull(thisList)) {
       return true;
     }
@@ -1033,7 +1035,7 @@ public final class Lists {
   }
 
   /** An implementation of {@link List#indexOf(Object)}. */
-  static int indexOfImpl(List<?> list, @CheckForNull Object element) {
+  static int indexOfImpl(List<?> list, @CheckForNull @UnknownSignedness Object element) {
     if (list instanceof RandomAccess) {
       return indexOfRandomAccess(list, element);
     } else {
@@ -1066,7 +1068,7 @@ public final class Lists {
   }
 
   /** An implementation of {@link List#lastIndexOf(Object)}. */
-  static int lastIndexOfImpl(List<?> list, @CheckForNull Object element) {
+  static int lastIndexOfImpl(List<?> list, @CheckForNull @UnknownSignedness Object element) {
     if (list instanceof RandomAccess) {
       return lastIndexOfRandomAccess(list, element);
     } else {
@@ -1166,12 +1168,12 @@ public final class Lists {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       return backingList.contains(o);
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return backingList.size();
     }
   }

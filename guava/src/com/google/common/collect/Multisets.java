@@ -45,7 +45,9 @@ import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -187,7 +189,7 @@ public final class Multisets {
     }
 
     @Override
-    public boolean remove(@CheckForNull Object element) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object element) {
       throw new UnsupportedOperationException();
     }
 
@@ -365,7 +367,7 @@ public final class Multisets {
     }
 
     @Override
-    public int count(@CheckForNull Object element) {
+    public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
       int count = unfiltered.count(element);
       if (count > 0) {
         @SuppressWarnings("unchecked") // element is equal to an E
@@ -425,7 +427,7 @@ public final class Multisets {
 
     return new ViewMultiset<E>() {
       @Override
-      public boolean contains(@CheckForNull Object element) {
+      public boolean contains(@CheckForNull @UnknownSignedness Object element) {
         return multiset1.contains(element) || multiset2.contains(element);
       }
 
@@ -435,7 +437,7 @@ public final class Multisets {
       }
 
       @Override
-      public int count(@CheckForNull Object element) {
+      public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
         return Math.max(multiset1.count(element), multiset2.count(element));
       }
 
@@ -497,7 +499,7 @@ public final class Multisets {
 
     return new ViewMultiset<E>() {
       @Override
-      public int count(@CheckForNull Object element) {
+      public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
         int count1 = multiset1.count(element);
         return (count1 == 0) ? 0 : Math.min(count1, multiset2.count(element));
       }
@@ -556,7 +558,7 @@ public final class Multisets {
     // TODO(lowasser): consider making the entries live views
     return new ViewMultiset<E>() {
       @Override
-      public boolean contains(@CheckForNull Object element) {
+      public boolean contains(@CheckForNull @UnknownSignedness Object element) {
         return multiset1.contains(element) || multiset2.contains(element);
       }
 
@@ -566,12 +568,12 @@ public final class Multisets {
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return IntMath.saturatedAdd(multiset1.size(), multiset2.size());
       }
 
       @Override
-      public int count(@CheckForNull Object element) {
+      public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
         return multiset1.count(element) + multiset2.count(element);
       }
 
@@ -634,7 +636,7 @@ public final class Multisets {
     // TODO(lowasser): consider making the entries live views
     return new ViewMultiset<E>() {
       @Override
-      public int count(@CheckForNull Object element) {
+      public @NonNegative int count(@CheckForNull @UnknownSignedness Object element) {
         int count1 = multiset1.count(element);
         return (count1 == 0) ? 0 : Math.max(0, count1 - multiset2.count(element));
       }
@@ -862,7 +864,7 @@ public final class Multisets {
      */
     @Pure
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness AbstractEntry<E> this) {
       E e = getElement();
       return ((e == null) ? 0 : e.hashCode()) ^ getCount();
     }
@@ -883,7 +885,7 @@ public final class Multisets {
   }
 
   /** An implementation of {@link Multiset#equals}. */
-  static boolean equalsImpl(Multiset<?> multiset, @CheckForNull Object object) {
+  static boolean equalsImpl(Multiset<?> multiset, @CheckForNull @UnknownSignedness Object object) {
     if (object == multiset) {
       return true;
     }
@@ -1004,7 +1006,7 @@ public final class Multisets {
     }
 
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       return multiset().contains(o);
     }
 
@@ -1022,12 +1024,12 @@ public final class Multisets {
     public abstract Iterator<E> iterator();
 
     @Override
-    public boolean remove(@CheckForNull Object o) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object o) {
       return multiset().remove(o, Integer.MAX_VALUE) > 0;
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return multiset().entrySet().size();
     }
   }
@@ -1037,7 +1039,7 @@ public final class Multisets {
     abstract Multiset<E> multiset();
 
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       if (o instanceof Entry) {
         /*
          * The GWT compiler wrongly issues a warning here.
@@ -1056,7 +1058,7 @@ public final class Multisets {
     // GWT compiler warning; see contains().
     @SuppressWarnings("cast")
     @Override
-    public boolean remove(@CheckForNull Object object) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object object) {
       if (object instanceof Multiset.Entry) {
         Entry<?> entry = (Entry<?>) object;
         Object element = entry.getElement();
@@ -1196,7 +1198,7 @@ public final class Multisets {
   private abstract static class ViewMultiset<E extends @Nullable Object>
       extends AbstractMultiset<E> {
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return linearTimeSizeImpl(this);
     }
 

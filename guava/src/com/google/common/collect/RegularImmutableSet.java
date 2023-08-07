@@ -21,7 +21,9 @@ import com.google.common.annotations.VisibleForTesting;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -55,7 +57,7 @@ final class RegularImmutableSet<E> extends ImmutableSet.CachingAsList<E> {
 
   @Pure
   @Override
-  public boolean contains(@CheckForNull Object target) {
+  public boolean contains(@CheckForNull @UnknownSignedness Object target) {
     @Nullable Object[] table = this.table;
     if (target == null || table.length == 0) {
       return false;
@@ -72,7 +74,7 @@ final class RegularImmutableSet<E> extends ImmutableSet.CachingAsList<E> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return elements.length;
   }
 
@@ -121,7 +123,7 @@ final class RegularImmutableSet<E> extends ImmutableSet.CachingAsList<E> {
 
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness RegularImmutableSet<E> this) {
     return hashCode;
   }
 

@@ -23,7 +23,11 @@ import java.util.Iterator;
 import java.util.NavigableSet;
 import java.util.Set;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * A skeleton implementation of a descending multiset. Only needs {@code forwardMultiset()} and
@@ -138,7 +142,7 @@ abstract class DescendingMultiset<E extends @Nullable Object> extends Forwarding
       }
 
       @Override
-      public int size() {
+      public @NonNegative int size() {
         return forwardMultiset().entrySet().size();
       }
     }
@@ -151,13 +155,13 @@ abstract class DescendingMultiset<E extends @Nullable Object> extends Forwarding
   }
 
   @Override
-  public @Nullable Object[] toArray() {
+  public @PolyNull @PolySigned Object[] toArray(DescendingMultiset<@PolyNull @PolySigned E> this) {
     return standardToArray();
   }
 
   @Override
   @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-  public <T extends @Nullable Object> T[] toArray(T[] array) {
+  public <T extends @Nullable @UnknownSignedness Object> T[] toArray(@PolyNull T[] array) {
     return standardToArray(array);
   }
 

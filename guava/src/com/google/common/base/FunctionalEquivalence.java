@@ -21,6 +21,7 @@ import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Equivalence applied on functional result.
@@ -67,7 +68,7 @@ final class FunctionalEquivalence<F, T> extends Equivalence<F> implements Serial
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness FunctionalEquivalence<F, T> this) {
     return Objects.hashCode(function, resultEquivalence);
   }
 

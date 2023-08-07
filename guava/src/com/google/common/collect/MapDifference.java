@@ -21,6 +21,7 @@ import com.google.errorprone.annotations.DoNotMock;
 import java.util.Map;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -85,7 +86,7 @@ public interface MapDifference<K extends @Nullable Object, V extends @Nullable O
    */
   @Pure
   @Override
-  int hashCode();
+  int hashCode(@UnknownSignedness MapDifference<K, V> this);
 
   /**
    * A difference between the mappings from two maps with the same key. The {@link #leftValue} and
@@ -116,6 +117,6 @@ public interface MapDifference<K extends @Nullable Object, V extends @Nullable O
      */
     @Pure
     @Override
-    int hashCode();
+    int hashCode(@UnknownSignedness ValueDifference<V> this);
   }
 }

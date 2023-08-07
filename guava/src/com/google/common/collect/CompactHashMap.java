@@ -51,6 +51,8 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.PolySigned;
@@ -693,7 +695,7 @@ class CompactHashMap<K extends @Nullable Object, V extends @Nullable Object>
   @CheckForNull private transient Set<K> keySetView;
 
   @Override
-  public Set<K> keySet() {
+  public Set<@KeyFor({"this"}) K> keySet() {
     return (keySetView == null) ? keySetView = createKeySet() : keySetView;
   }
 
@@ -708,8 +710,7 @@ class CompactHashMap<K extends @Nullable Object, V extends @Nullable Object>
     }
 
     @Override
-    //public @PolySigned Object[] toArray(CompactHashMap<@PolySigned K, @PolySigned V>.KeySetView this) {
-    public @Nullable Object[] toArray() {
+    public @PolyNull @PolySigned Object[] toArray(CompactHashMap<@PolyNull @PolySigned K, @PolyNull @PolySigned V>.KeySetView this) {
       if (needsAllocArrays()) {
         return new Object[0];
       }
@@ -721,7 +722,7 @@ class CompactHashMap<K extends @Nullable Object, V extends @Nullable Object>
 
     @Override
     @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-    public <T extends @Nullable Object> T[] toArray(T[] a) {
+    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(@PolyNull T[] a) {
       if (needsAllocArrays()) {
         if (a.length > 0) {
           @Nullable Object[] unsoundlyCovariantArray = a;
@@ -736,7 +737,7 @@ class CompactHashMap<K extends @Nullable Object, V extends @Nullable Object>
     }
 
     @Override
-    public boolean remove(@CheckForNull Object o) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object o) {
       Map<K, V> delegate = delegateOrNull();
       return (delegate != null)
           ? delegate.keySet().remove(o)
@@ -804,7 +805,7 @@ class CompactHashMap<K extends @Nullable Object, V extends @Nullable Object>
   @CheckForNull private transient Set<Entry<K, V>> entrySetView;
 
   @Override
-  public Set<Entry<K, V>> entrySet() {
+  public Set<Entry<@KeyFor({"this"}) K, V>> entrySet() {
     return (entrySetView == null) ? entrySetView = createEntrySet() : entrySetView;
   }
 
@@ -834,7 +835,7 @@ class CompactHashMap<K extends @Nullable Object, V extends @Nullable Object>
     }
 
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       Map<K, V> delegate = delegateOrNull();
       if (delegate != null) {
         return delegate.entrySet().contains(o);
@@ -847,7 +848,7 @@ class CompactHashMap<K extends @Nullable Object, V extends @Nullable Object>
     }
 
     @Override
-    public boolean remove(@CheckForNull Object o) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object o) {
       Map<K, V> delegate = delegateOrNull();
       if (delegate != null) {
         return delegate.entrySet().remove(o);
@@ -960,7 +961,7 @@ class CompactHashMap<K extends @Nullable Object, V extends @Nullable Object>
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     Map<K, V> delegate = delegateOrNull();
     return (delegate != null) ? delegate.size() : size;
   }
@@ -971,7 +972,7 @@ class CompactHashMap<K extends @Nullable Object, V extends @Nullable Object>
   }
 
   @Override
-  public boolean containsValue(@CheckForNull Object value) {
+  public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
     Map<K, V> delegate = delegateOrNull();
     if (delegate != null) {
       return delegate.containsValue(value);
@@ -1031,7 +1032,7 @@ class CompactHashMap<K extends @Nullable Object, V extends @Nullable Object>
     }
 
     @Override
-    public @Nullable Object[] toArray() {
+    public @PolyNull @PolySigned Object[] toArray() {
       if (needsAllocArrays()) {
         return new Object[0];
       }
@@ -1043,7 +1044,7 @@ class CompactHashMap<K extends @Nullable Object, V extends @Nullable Object>
 
     @Override
     @SuppressWarnings("nullness") // b/192354773 in our checker affects toArray declarations
-    public <T extends @Nullable Object> T[] toArray(T[] a) {
+    public <T extends @Nullable @UnknownSignedness Object> T[] toArray(@PolyNull T[] a) {
       if (needsAllocArrays()) {
         if (a.length > 0) {
           @Nullable Object[] unsoundlyCovariantArray = a;

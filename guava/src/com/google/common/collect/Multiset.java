@@ -31,6 +31,7 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.ObjIntConsumer;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
@@ -102,7 +103,7 @@ public interface Multiset<E extends @Nullable Object> extends Collection<E> {
    * multiset, which is given by {@code entrySet().size()}.
    */
   @Override
-  int size();
+  @NonNegative int size();
 
   /**
    * Returns the number of occurrences of an element in this multiset (the <i>count</i> of the
@@ -326,7 +327,7 @@ public interface Multiset<E extends @Nullable Object> extends Collection<E> {
      */
     @Pure
     @Override
-    int hashCode();
+    int hashCode(@UnknownSignedness Entry<E> this);
 
     /**
      * Returns the canonical string representation of this entry, defined as follows. If the count
@@ -377,7 +378,7 @@ public interface Multiset<E extends @Nullable Object> extends Collection<E> {
    */
   @Pure
   @Override
-  int hashCode();
+  int hashCode(@UnknownSignedness Multiset<E> this);
 
   /**
    * {@inheritDoc}

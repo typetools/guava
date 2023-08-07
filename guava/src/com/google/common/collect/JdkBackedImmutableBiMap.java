@@ -24,7 +24,9 @@ import com.google.j2objc.annotations.RetainedWith;
 import com.google.j2objc.annotations.WeakOuter;
 import java.util.Map;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Implementation of ImmutableBiMap backed by a pair of JDK HashMaps, which have smartness
@@ -66,7 +68,7 @@ final class JdkBackedImmutableBiMap<K, V> extends ImmutableBiMap<K, V> {
   }
 
   @Override
-  public int size() {
+  public @NonNegative int size() {
     return entries.size();
   }
 
@@ -99,14 +101,14 @@ final class JdkBackedImmutableBiMap<K, V> extends ImmutableBiMap<K, V> {
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return entries.size();
     }
   }
 
   @Override
   @CheckForNull
-  public V get(@CheckForNull Object key) {
+  public V get(@CheckForNull @UnknownSignedness Object key) {
     return forwardDelegate.get(key);
   }
 

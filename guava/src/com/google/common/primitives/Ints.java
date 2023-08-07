@@ -34,23 +34,24 @@ import java.util.RandomAccess;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.HasSubsequence;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
+import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.PolyLowerBound;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.index.qual.SubstringIndexFor;
-import org.checkerframework.checker.index.qual.HasSubsequence;
-import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.IntRange;
 import org.checkerframework.common.value.qual.MinLen;
 import org.checkerframework.framework.qual.AnnotatedFor;
+import org.checkerframework.framework.qual.CFComment;
 
 /**
  * Static utility methods pertaining to {@code int} primitives, that are not already found in either
@@ -191,7 +192,6 @@ public final class Ints extends IntsMethodsForWeb {
    * @param array the array to search for the sequence {@code target}
    * @param target the array to search for as a sub-sequence of {@code array}
    */
-  @SuppressWarnings("substringindex:return")
   public static @LTEqLengthOf("#1") @SubstringIndexFor(value = "#1", offset="#2.length - 1") int indexOf(int[] array, int[] target) {
     checkNotNull(array, "array");
     checkNotNull(target, "target");
@@ -588,6 +588,8 @@ public final class Ints extends IntsMethodsForWeb {
     return new IntArrayAsList(backingArray);
   }
 
+  @CFComment({"signedness: A non-generic container class permits only signed values.",
+              "Clients must suppress warnings when storing unsigned values."})
   @GwtCompatible
   private static class IntArrayAsList extends AbstractList<Integer>
       implements RandomAccess, Serializable {
@@ -600,7 +602,11 @@ public final class Ints extends IntsMethodsForWeb {
       this(array, 0, array.length);
     }
 
-    @SuppressWarnings("index:assignment") // these three fields need to be initialized in some order, and any ordering leads to the first two issuing errors - since each field is dependent on at least one of the others
+    @SuppressWarnings(
+        "index" // these three fields need to be initialized in some order, and any ordering
+    // leads to the first two issuing errors - since each field is dependent on
+    // at least one of the others
+    )
     IntArrayAsList(int @MinLen(1)[] array, @IndexFor("#1") @LessThan("#3") int start, @IndexOrHigh("#1") int end) {
       this.array = array;
       this.start = start;
@@ -629,14 +635,14 @@ public final class Ints extends IntsMethodsForWeb {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // non-generic container class
     public boolean contains(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       return (target instanceof Integer) && Ints.indexOf(array, (@Signed Integer) target, start, end) != -1;
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
+    @SuppressWarnings("signedness:cast.unsafe") // non-generic container class
     public @IndexOrLow("this") int indexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Integer) {
@@ -649,8 +655,8 @@ public final class Ints extends IntsMethodsForWeb {
     }
 
     @Override
-    @SuppressWarnings("signedness:cast.unsafe")
-    public @IndexOrLow("this")int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
+    @SuppressWarnings("signedness:cast.unsafe") // non-generic container class
+    public @IndexOrLow("this") int lastIndexOf(@CheckForNull @UnknownSignedness Object target) {
       // Overridden to prevent a ton of boxing
       if (target instanceof Integer) {
         int i = Ints.lastIndexOf(array, (@Signed Integer) target, start, end);
@@ -703,7 +709,7 @@ public final class Ints extends IntsMethodsForWeb {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness IntArrayAsList this) {
       int result = 1;
       for (int i = start; i < end; i++) {
         result = 31 * result + Ints.hashCode(array[i]);

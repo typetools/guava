@@ -26,7 +26,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Spliterator;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * Skeletal, implementation-agnostic implementation of the {@link Table} interface.
@@ -60,7 +62,7 @@ abstract class AbstractTable<
   }
 
   @Override
-  public boolean containsValue(@CheckForNull Object value) {
+  public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
     for (Map<C, V> row : rowMap().values()) {
       if (row.containsValue(value)) {
         return true;
@@ -134,7 +136,7 @@ abstract class AbstractTable<
   @WeakOuter
   class CellSet extends AbstractSet<Cell<R, C, V>> {
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       if (o instanceof Cell) {
         Cell<?, ?, ?> cell = (Cell<?, ?, ?>) o;
         Map<C, V> row = Maps.safeGet(rowMap(), cell.getRowKey());
@@ -146,7 +148,7 @@ abstract class AbstractTable<
     }
 
     @Override
-    public boolean remove(@CheckForNull Object o) {
+    public boolean remove(@CheckForNull @UnknownSignedness Object o) {
       if (o instanceof Cell) {
         Cell<?, ?, ?> cell = (Cell<?, ?, ?>) o;
         Map<C, V> row = Maps.safeGet(rowMap(), cell.getRowKey());
@@ -173,7 +175,7 @@ abstract class AbstractTable<
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return AbstractTable.this.size();
     }
   }
@@ -217,7 +219,7 @@ abstract class AbstractTable<
     }
 
     @Override
-    public boolean contains(@CheckForNull Object o) {
+    public boolean contains(@CheckForNull @UnknownSignedness Object o) {
       return containsValue(o);
     }
 
@@ -227,7 +229,7 @@ abstract class AbstractTable<
     }
 
     @Override
-    public int size() {
+    public @NonNegative int size() {
       return AbstractTable.this.size();
     }
   }
@@ -238,7 +240,7 @@ abstract class AbstractTable<
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness AbstractTable<R, C, V> this) {
     return cellSet().hashCode();
   }
 

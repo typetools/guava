@@ -27,6 +27,7 @@ import java.nio.ByteBuffer;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
  * {@link HashFunction} implementation of SipHash-c-d.
@@ -93,7 +94,7 @@ final class SipHashFunction extends AbstractHashFunction implements Serializable
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness SipHashFunction this) {
     return (int) (getClass().hashCode() ^ c ^ d ^ k0 ^ k1);
   }
 

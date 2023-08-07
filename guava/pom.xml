@@ -91,7 +91,7 @@
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker</artifactId>
-      <version>3.32.0</version>
+      <version>3.35.0</version>
     </dependency>
   </dependencies>
   <build>
@@ -344,7 +344,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-help-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>3.1.1</version>
         <executions>
           <execution>
             <id>show-profiles</id>
@@ -397,30 +397,9 @@
       </dependencies>
     </profile>
     <profile>
-      <id>jdk11</id>
+      <id>jdk9plus</id>
       <activation>
-        <jdk>11</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <fork>true</fork>
-              <maxmem>6000m</maxmem>
-              <compilerArgs combine.children="append">
-                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
-              </compilerArgs>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>jdk17</id>
-      <activation>
-        <jdk>[16,)</jdk>
+        <jdk>[9,)</jdk>
       </activation>
       <build>
         <plugins>

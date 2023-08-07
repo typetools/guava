@@ -25,7 +25,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
 import org.checkerframework.framework.qual.AnnotatedFor;
@@ -74,7 +77,7 @@ public abstract class ForwardingMap<K extends @Nullable Object, V extends @Nulla
   @Pure
   @Override
   @SuppressWarnings("index:overriding.return")
-  public int size() {
+  public @NonNegative int size() {
     return delegate().size();
   }
 
@@ -88,7 +91,7 @@ public abstract class ForwardingMap<K extends @Nullable Object, V extends @Nulla
   @Override
   @SuppressWarnings("nullness:argument") // Suppressed due to annotations on remove in Java.Map
   @CheckForNull
-  public V remove(@CheckForNull Object key) {
+  public V remove(@CheckForNull @UnknownSignedness Object key) {
     return delegate().remove(key);
   }
 
@@ -100,21 +103,21 @@ public abstract class ForwardingMap<K extends @Nullable Object, V extends @Nulla
   @Pure
   @Override
   @SuppressWarnings("nullness:argument") // Suppressed due to annotations on containsKey in Java.Map
-  public boolean containsKey(@CheckForNull Object key) {
+  public boolean containsKey(@CheckForNull @UnknownSignedness Object key) {
     return delegate().containsKey(key);
   }
 
   @Pure
   @Override
   @SuppressWarnings("nullness:argument") // Suppressed due to annotations on containsValue in Java.Map
-  public boolean containsValue(@CheckForNull Object value) {
+  public boolean containsValue(@CheckForNull @UnknownSignedness Object value) {
     return delegate().containsValue(value);
   }
 
   @Override
   @SuppressWarnings("nullness:argument") // Suppressed due to annotations on get in Java.Map
   @CheckForNull
-  public V get(@CheckForNull Object key) {
+  public V get(@CheckForNull @UnknownSignedness Object key) {
     return delegate().get(key);
   }
 
@@ -132,7 +135,7 @@ public abstract class ForwardingMap<K extends @Nullable Object, V extends @Nulla
 
   @SideEffectFree
   @Override
-  public Set<K> keySet() {
+  public Set<@KeyFor({"this"}) K> keySet() {
     return delegate().keySet();
   }
 
@@ -144,7 +147,7 @@ public abstract class ForwardingMap<K extends @Nullable Object, V extends @Nulla
 
   @SideEffectFree
   @Override
-  public Set<Entry<K, V>> entrySet() {
+  public Set<Entry<@KeyFor({"this"}) K, V>> entrySet() {
     return delegate().entrySet();
   }
 
@@ -156,7 +159,7 @@ public abstract class ForwardingMap<K extends @Nullable Object, V extends @Nulla
 
   @Pure
   @Override
-  public int hashCode() {
+  public int hashCode(@UnknownSignedness ForwardingMap<K, V> this) {
     return delegate().hashCode();
   }
 

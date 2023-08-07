@@ -36,12 +36,15 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Arrays;
 import javax.annotation.CheckForNull;
+import org.checkerframework.checker.index.qual.GTENegativeOne;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
+import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.common.value.qual.ArrayLen;
 import org.checkerframework.common.value.qual.MinLen;
 
@@ -565,7 +568,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness Alphabet this) {
       return Arrays.hashCode(chars);
     }
   }
@@ -745,7 +748,7 @@ public abstract class BaseEncoding {
         boolean hitPadding = false;
 
         @Override
-        public int read() throws IOException {
+        public @GTENegativeOne int read() throws IOException {
           while (true) {
             int readChar = reader.read();
             if (readChar == -1) {
@@ -779,7 +782,7 @@ public abstract class BaseEncoding {
         }
 
         @Override
-        public int read(byte[] buf, int off, int len) throws IOException {
+        public @GTENegativeOne @LTEqLengthOf({"#1"}) int read(byte[] buf, @IndexOrHigh({"#1"}) int off, @LTLengthOf(value={"#1"}, offset={"#2 - 1"}) @NonNegative int len) throws IOException {
           // Overriding this to work around the fact that InputStream's default implementation of
           // this method will silently swallow exceptions thrown by the single-byte read() method
           // (other than on the first call to it), which in this case can cause invalid encoded
@@ -890,7 +893,7 @@ public abstract class BaseEncoding {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(@UnknownSignedness StandardBaseEncoding this) {
       return alphabet.hashCode() ^ Objects.hashCode(paddingChar);
     }
   }
@@ -1005,7 +1008,7 @@ public abstract class BaseEncoding {
     checkNotNull(toIgnore);
     return new Reader() {
       @Override
-      public int read() throws IOException {
+      public @GTENegativeOne int read() throws IOException {
         int readChar;
         do {
           readChar = delegate.read();
@@ -1014,7 +1017,7 @@ public abstract class BaseEncoding {
       }
 
       @Override
-      public int read(char[] cbuf, int off, int len) throws IOException {
+      public @GTENegativeOne @LTEqLengthOf({"#1"}) int read(char[] cbuf, @IndexOrHigh({"#1"}) int off, @LTLengthOf(value={"#1"}, offset={"#2 - 1"}) @NonNegative int len) throws IOException {
         throw new UnsupportedOperationException();
       }
 
