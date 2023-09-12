@@ -350,7 +350,7 @@ public final class BloomFilter<T extends @Nullable Object> implements Predicate<
    * @since 23.0
    */
   public static <T extends @Nullable Object> Collector<T, ?, BloomFilter<T>> toBloomFilter(
-      Funnel<? super T> funnel, @Positive long expectedInsertions, @NonNegative double fpp) {
+      Funnel<? super T> funnel, @Positive long expectedInsertions, double fpp) {
     checkNotNull(funnel);
     checkArgument(
         expectedInsertions >= 0, "Expected insertions (%s) must be >= 0", expectedInsertions);
@@ -414,13 +414,13 @@ public final class BloomFilter<T extends @Nullable Object> implements Predicate<
    * @since 19.0
    */
   public static <T extends @Nullable Object> BloomFilter<T> create(
-      Funnel<? super T> funnel, @Positive long expectedInsertions, @NonNegative double fpp) {
+      Funnel<? super T> funnel, @Positive long expectedInsertions, double fpp) {
     return create(funnel, expectedInsertions, fpp, BloomFilterStrategies.MURMUR128_MITZ_64);
   }
 
   @VisibleForTesting
   static <T extends @Nullable Object> BloomFilter<T> create(
-      Funnel<? super T> funnel, @NonNegative long expectedInsertions, @NonNegative double fpp, Strategy strategy) {
+      Funnel<? super T> funnel, @NonNegative long expectedInsertions, double fpp, Strategy strategy) {
     checkNotNull(funnel);
     checkArgument(
         expectedInsertions >= 0, "Expected insertions (%s) must be >= 0", expectedInsertions);
@@ -436,7 +436,8 @@ public final class BloomFilter<T extends @Nullable Object> implements Predicate<
      * is proportional to -log(p), but there is not much of a point after all, e.g.
      * optimalM(1000, 0.0000000000000001) = 76680 which is less than 10kb. Who cares!
      */
-    long numBits = optimalNumOfBits(expectedInsertions, fpp);
+    @SuppressWarnings("value:assignment") // This warning might be a true postive.
+    @IntRange(from=0, to=2147483647) long numBits = optimalNumOfBits(expectedInsertions, fpp);
     int numHashFunctions = optimalNumOfHashFunctions(expectedInsertions, numBits);
     try {
       return new BloomFilter<T>(new LockFreeBitArray(numBits), numHashFunctions, funnel, strategy);
@@ -533,7 +534,7 @@ public final class BloomFilter<T extends @Nullable Object> implements Predicate<
    * @param p false positive rate (must be 0 < p < 1)
    */
   @VisibleForTesting
-  static @Positive long optimalNumOfBits(@Positive long n, @NonNegative double p) {
+  static @Positive long optimalNumOfBits(@Positive long n, double p) {
     if (p == 0) {
       p = Double.MIN_VALUE;//(2)
     }
