@@ -17,7 +17,8 @@ if [ -z "${CHECKERFRAMEWORK}" ] && [ ! -d "../checker-framework/" ] ; then
   CHECKERFRAMEWORK=$(cd ../checker-framework/ >/dev/null 2>&1 && pwd -P)
   export CHECKERFRAMEWORK
   # This also builds annotation-tools.
-  (cd "${CHECKERFRAMEWORK}" && ./gradlew assemble --console=plain -Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000 )
+  # Run assembleForJavac because it does not build the javadoc, so it is faster than assemble.
+  (cd "${CHECKERFRAMEWORK}" && ./gradlew assembleForJavac --console=plain -Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000 )
 fi
 
 # As of 7/27/2019, there are only annotations for:
