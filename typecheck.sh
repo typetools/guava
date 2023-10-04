@@ -10,15 +10,15 @@
 set -e
 
 ## Build Checker Framework
-# If variable is set or directory exists, assume the Checker Framework is built.
-# Don't re-build because we might use wrong arguments (e.g., downloadjdk).
 if [ -z "${CHECKERFRAMEWORK}" ] && [ ! -d "../checker-framework/" ] ; then
   (cd .. && git clone --depth 1 https://github.com/typetools/checker-framework.git)
   CHECKERFRAMEWORK=$(cd ../checker-framework/ >/dev/null 2>&1 && pwd -P)
   export CHECKERFRAMEWORK
-  # This also builds annotation-tools and jsr308-langtools
-  (cd "${CHECKERFRAMEWORK}" && checker/bin-devel/build.sh downloadjdk)
 fi
+
+# This also builds annotation-tools.
+# Run assembleForJavac because it does not build the javadoc, so it is faster than assemble.
+(cd "${CHECKERFRAMEWORK}" && ./gradlew assembleForJavac --console=plain -Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000 )
 
 # As of 7/27/2019, there are only annotations for:
 #  * index
