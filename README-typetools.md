@@ -1,4 +1,4 @@
- This is a version of Guava that is annotated with type annotations for the Checker Framework.
+This is a version of Guava that is annotated with type annotations for the Checker Framework.
 
 The annotations are only in the main Guava project, not in the "Android" variant that supports JDK 7 and Android.
 
