@@ -23,6 +23,7 @@ import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.dataflow.qual.AssertMethod;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
@@ -132,6 +133,7 @@ public final class Preconditions {
    * @param expression a boolean expression
    * @throws IllegalArgumentException if {@code expression} is false
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(boolean expression) {
     if (!expression) {
@@ -147,6 +149,7 @@ public final class Preconditions {
    *     string using {@link String#valueOf(Object)}
    * @throws IllegalArgumentException if {@code expression} is false
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(boolean expression, @CheckForNull Object errorMessage) {
     if (!expression) {
@@ -167,6 +170,7 @@ public final class Preconditions {
    *     are converted to strings using {@link String#valueOf(Object)}.
    * @throws IllegalArgumentException if {@code expression} is false
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(
       boolean expression,
@@ -184,6 +188,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(boolean b, String errorMessageTemplate, char p1) {
     if (!b) {
@@ -198,6 +203,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(boolean b, String errorMessageTemplate, int p1) {
     if (!b) {
@@ -212,6 +218,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(boolean b, String errorMessageTemplate, long p1) {
     if (!b) {
@@ -226,6 +233,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(
       boolean b, String errorMessageTemplate, @CheckForNull Object p1) {
@@ -241,6 +249,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(boolean b, String errorMessageTemplate, char p1, char p2) {
     if (!b) {
@@ -255,6 +264,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(boolean b, String errorMessageTemplate, char p1, int p2) {
     if (!b) {
@@ -269,6 +279,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(boolean b, String errorMessageTemplate, char p1, long p2) {
     if (!b) {
@@ -283,6 +294,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(
       boolean b, String errorMessageTemplate, char p1, @CheckForNull Object p2) {
@@ -298,6 +310,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(boolean b, String errorMessageTemplate, int p1, char p2) {
     if (!b) {
@@ -312,6 +325,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(boolean b, String errorMessageTemplate, int p1, int p2) {
     if (!b) {
@@ -326,6 +340,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(boolean b, String errorMessageTemplate, int p1, long p2) {
     if (!b) {
@@ -340,6 +355,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(
       boolean b, String errorMessageTemplate, int p1, @CheckForNull Object p2) {
@@ -355,6 +371,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(boolean b, String errorMessageTemplate, long p1, char p2) {
     if (!b) {
@@ -369,6 +386,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(boolean b, String errorMessageTemplate, long p1, int p2) {
     if (!b) {
@@ -383,6 +401,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(boolean b, String errorMessageTemplate, long p1, long p2) {
     if (!b) {
@@ -397,6 +416,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(
       boolean b, String errorMessageTemplate, long p1, @CheckForNull Object p2) {
@@ -412,6 +432,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(
       boolean b, String errorMessageTemplate, @CheckForNull Object p1, char p2) {
@@ -427,6 +448,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(
       boolean b, String errorMessageTemplate, @CheckForNull Object p1, int p2) {
@@ -442,6 +464,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(
       boolean b, String errorMessageTemplate, @CheckForNull Object p1, long p2) {
@@ -457,6 +480,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(
       boolean b, String errorMessageTemplate, @CheckForNull Object p1, @CheckForNull Object p2) {
@@ -472,6 +496,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(
       boolean b,
@@ -491,6 +516,7 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalArgumentException.class)
   @Pure
   public static void checkArgument(
       boolean b,
@@ -512,6 +538,8 @@ public final class Preconditions {
    * @throws IllegalStateException if {@code expression} is false
    * @see Verify#verify Verify.verify()
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(boolean expression) {
     if (!expression) {
       throw new IllegalStateException();
@@ -528,6 +556,8 @@ public final class Preconditions {
    * @throws IllegalStateException if {@code expression} is false
    * @see Verify#verify Verify.verify()
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(boolean expression, @CheckForNull Object errorMessage) {
     if (!expression) {
       throw new IllegalStateException(String.valueOf(errorMessage));
@@ -549,6 +579,8 @@ public final class Preconditions {
    * @throws IllegalStateException if {@code expression} is false
    * @see Verify#verify Verify.verify()
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(
       boolean expression,
       /*
@@ -574,6 +606,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(boolean b, String errorMessageTemplate, char p1) {
     if (!b) {
       throw new IllegalStateException(lenientFormat(errorMessageTemplate, p1));
@@ -588,6 +622,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(boolean b, String errorMessageTemplate, int p1) {
     if (!b) {
       throw new IllegalStateException(lenientFormat(errorMessageTemplate, p1));
@@ -602,6 +638,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(boolean b, String errorMessageTemplate, long p1) {
     if (!b) {
       throw new IllegalStateException(lenientFormat(errorMessageTemplate, p1));
@@ -616,6 +654,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(boolean b, String errorMessageTemplate, @CheckForNull Object p1) {
     if (!b) {
       throw new IllegalStateException(lenientFormat(errorMessageTemplate, p1));
@@ -630,6 +670,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(boolean b, String errorMessageTemplate, char p1, char p2) {
     if (!b) {
       throw new IllegalStateException(lenientFormat(errorMessageTemplate, p1, p2));
@@ -644,6 +686,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(boolean b, String errorMessageTemplate, char p1, int p2) {
     if (!b) {
       throw new IllegalStateException(lenientFormat(errorMessageTemplate, p1, p2));
@@ -658,6 +702,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(boolean b, String errorMessageTemplate, char p1, long p2) {
     if (!b) {
       throw new IllegalStateException(lenientFormat(errorMessageTemplate, p1, p2));
@@ -672,6 +718,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(
       boolean b, String errorMessageTemplate, char p1, @CheckForNull Object p2) {
     if (!b) {
@@ -687,6 +735,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(boolean b, String errorMessageTemplate, int p1, char p2) {
     if (!b) {
       throw new IllegalStateException(lenientFormat(errorMessageTemplate, p1, p2));
@@ -701,6 +751,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(boolean b, String errorMessageTemplate, int p1, int p2) {
     if (!b) {
       throw new IllegalStateException(lenientFormat(errorMessageTemplate, p1, p2));
@@ -715,6 +767,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(boolean b, String errorMessageTemplate, int p1, long p2) {
     if (!b) {
       throw new IllegalStateException(lenientFormat(errorMessageTemplate, p1, p2));
@@ -729,6 +783,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(
       boolean b, String errorMessageTemplate, int p1, @CheckForNull Object p2) {
     if (!b) {
@@ -744,6 +800,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(boolean b, String errorMessageTemplate, long p1, char p2) {
     if (!b) {
       throw new IllegalStateException(lenientFormat(errorMessageTemplate, p1, p2));
@@ -758,6 +816,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(boolean b, String errorMessageTemplate, long p1, int p2) {
     if (!b) {
       throw new IllegalStateException(lenientFormat(errorMessageTemplate, p1, p2));
@@ -772,6 +832,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(boolean b, String errorMessageTemplate, long p1, long p2) {
     if (!b) {
       throw new IllegalStateException(lenientFormat(errorMessageTemplate, p1, p2));
@@ -786,6 +848,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(
       boolean b, String errorMessageTemplate, long p1, @CheckForNull Object p2) {
     if (!b) {
@@ -801,6 +865,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(
       boolean b, String errorMessageTemplate, @CheckForNull Object p1, char p2) {
     if (!b) {
@@ -816,6 +882,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(
       boolean b, String errorMessageTemplate, @CheckForNull Object p1, int p2) {
     if (!b) {
@@ -831,6 +899,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(
       boolean b, String errorMessageTemplate, @CheckForNull Object p1, long p2) {
     if (!b) {
@@ -846,6 +916,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(
       boolean b, String errorMessageTemplate, @CheckForNull Object p1, @CheckForNull Object p2) {
     if (!b) {
@@ -861,6 +933,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(
       boolean b,
       String errorMessageTemplate,
@@ -880,6 +954,8 @@ public final class Preconditions {
    *
    * @since 20.0 (varargs overload since 2.0)
    */
+  @AssertMethod(IllegalStateException.class)
+  @Pure
   public static void checkState(
       boolean b,
       String errorMessageTemplate,
