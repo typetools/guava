@@ -558,7 +558,11 @@ public abstract class ByteSource {
     }
 
     @Override
-    @SuppressWarnings("value:return") // off is at most equal to unslicedSize and length is non-negative
+    @SuppressWarnings({
+        // off is at most equal to unslicedSize and length is non-negative.
+        "value:return",
+        // poly + inference problem.
+        "type.arguments.not.inferred"})
     public Optional<@NonNegative Long> sizeIfKnown() {
       Optional<@NonNegative Long> optionalUnslicedSize = ByteSource.this.sizeIfKnown();
       if (optionalUnslicedSize.isPresent()) {
@@ -708,7 +712,7 @@ public abstract class ByteSource {
     }
 
     @Override
-    @SuppressWarnings("value:return") // Long.MAX_VALUE is non-negative
+    @SuppressWarnings("value:type.arguments.not.inferred") // Long.MAX_VALUE is non-negative
     public Optional<@NonNegative Long> sizeIfKnown() {
       if (!(sources instanceof Collection)) {
         // Infinite Iterables can cause problems here. Of course, it's true that most of the other
