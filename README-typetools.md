@@ -23,11 +23,12 @@ or change `guava/pom.xml`.
 To run the Guava test suite
 ---------------------------
 
-This not strictly necessary as the CI process will run them. But if you wish to do so,
-it is a two step process. This can take a long time: 20-30 minutes for the compile step
-and 30-35 minutes for the test step.  In order to shorten it a bit, the command lines
-below only run a single format checker.  First, you must run maven with the install
-target to get a copy of all the generated jar files in your local maven repository:
+This not strictly necessary as the CI process will run them. But if you wish to
+do so, it is a two-step process. This can take a long time: 20-30 minutes for
+the compile step and 30-35 minutes for the test step.  In order to shorten it a
+bit, the command lines below only run a single checker (the one for format
+strings).  First, you must run maven with the install target to get a copy of
+all the generated jar files in your local maven repository:
 
 mvn -V -B -U clean install -Dcheckerframework.checkers=org.checkerframework.checker.formatter.FormatterChecker  \
     -Dcheck.value.phase=skip -Dmaven.test.skip -Dmaven.javadoc.skip
