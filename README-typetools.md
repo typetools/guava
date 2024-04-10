@@ -169,7 +169,10 @@ yet written.
  * If a `cf-master` branch exists in this repository, follow the
    instructions above to merge it into master.
 
-2. Pull in the latest Guava version (https://github.com/google/guava/releases):
+2. Pull in the latest Guava version (https://github.com/google/guava/releases).
+Note that this command makes a merge, which must appear in the typetools/guava
+repository (no squash-and-merge if you are working on a different branch!).
+
 ```
 git fetch --tags https://github.com/google/guava
 git pull https://github.com/google/guava v31.1
@@ -180,7 +183,7 @@ git pull https://github.com/google/guava v31.1
 (cd guava && mvn -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
 ```
 
-4. Update the version number
+4. Update the Guava version number
  * multiple places in this file, and
  * in file guava/cfMavenCentral.xml .
 
@@ -194,7 +197,7 @@ This step must be done on a machine, such as a CSE machine, that has access to t
 Maybe he needs to export then import instead of copying.)
 
 ```
-PACKAGE=guava-30.1.1-jre
+PACKAGE=guava-31.1-jre
 
 cd guava
 
