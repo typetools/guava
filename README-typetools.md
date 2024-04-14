@@ -90,8 +90,14 @@ Whenever a Checker Framework release is made:
  * delete the `cf-master` branch.
 
 
-To update to a newer version of the upstream library
-----------------------------------------------------
+To update to a non-released version of the upstream library
+-----------------------------------------------------------
+
+Usually, you will want to update to a released version of the upstream library,
+in which case see the instructions at "To release to Maven Central".  This
+section is for updating to a commit in Guava that is different than the tag for
+a release.  Note that doing so makes it harder to make a new release of the
+typetools version of Guava at Maven Central.
 
 First, update to use the latest Checker Framework by editing file
 `pom.xml` (for `checker-qual`) and `guava/pom.xml` (for `checker`).
