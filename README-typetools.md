@@ -178,7 +178,7 @@ yet written.
 
 2. Pull in the latest Guava version (https://github.com/google/guava/releases).
 Note that this command makes a merge, which must appear in the typetools/guava
-repository (no squash-and-merge if you are working on a different branch!).
+repository.  (Do not squash-and-merge if you are working on a different branch!)
 
 ```
 git fetch --tags https://github.com/google/guava
