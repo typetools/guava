@@ -1559,7 +1559,7 @@ public final class Maps {
 
     // See java.util.Collections.UnmodifiableEntrySet for details on attacks.
 
-    @CFComment({"signedness: is not applicable te `Entry` objects, which are the elements of the array",
+    @CFComment({"signedness: is not applicable to `Entry` objects, which are the elements of the array",
             "nullness: the receiver is a collection of non-null `Entry` objects"})
     @Override
     public @PolyNull @PolySigned Object[] toArray() {
