@@ -78,7 +78,7 @@ public final class ArrayBasedEscaperMap {
     }
     char max = Collections.max(map.keySet());
     char[][] replacements = new char[max + 1][];
-    for (@LTLengthOf("replacements") char c : map.keySet()) {
+    for (@LTLengthOf("replacements") Character c : map.keySet()) {
       replacements[c] = map.get(c).toCharArray();
     }
     return replacements;

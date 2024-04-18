@@ -51,9 +51,7 @@ public final class Utf8 {
    * @throws IllegalArgumentException if {@code sequence} contains ill-formed UTF-16 (unpaired
    *     surrogates)
    */
-  @SuppressWarnings({
-    "lowerbound:compound.assignment", // unsigned right shift on int
-  })
+  @SuppressWarnings("lowerbound:compound.assignment") // unsigned right shift on int
   public static @NonNegative int encodedLength(CharSequence sequence) {
     // Warning to maintainers: this implementation is highly optimized.
     int utf16Length = sequence.length();
@@ -83,9 +81,7 @@ public final class Utf8 {
     }
     return utf8Length;
   }
-  @SuppressWarnings({
-    "lowerbound:compound.assignment", // unsigned right shift on int
-  })
+  @SuppressWarnings("lowerbound:compound.assignment") // unsigned right shift on int
   private static @NonNegative int encodedLengthGeneral(CharSequence sequence, @NonNegative/*!IndexFor("#1")*/ int start) {
     int utf16Length = sequence.length();
     @NonNegative int utf8Length = 0;

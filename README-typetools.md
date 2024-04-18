@@ -119,41 +119,55 @@ Note: Doing this `git pull` command
 makes it difficult to re-release a given version of Guava,
 compared to pulling in the tag corresponding to a release.
 
-If you wish to see a simplified diff between this fork of Guava and upstream (to make sure that you did not make any mistakes when resolving merge conflicts):
+Follow the instructions in section "to compare to upstream".
+
+
+To compare to upstream
+----------------------
+
+If you wish to see a simplified diff between this fork of Guava and upstream (to
+make sure that you did not make any mistakes when resolving merge conflicts):
 
  * Clone both upstream and this fork.
  * Make a copy of each clone, because you will destructively edit each one.
+ * Check each clone out to an appropriate commit.
  * Run the following commands in each temporary clone
    (preplace is in https://github.com/plume-lib/plume-scripts):
 ```
    rm -rf .git
    mvn -B clean
-   preplace '^\@AnnotatedFor.*\n' ''
-   preplace '^ *\@(Pure|Deterministic|SideEffectFree)\n' ''
-   # preplace '^ *\@SuppressWarnings.*\n' ''
+
    preplace '^import org.checker.*\n' ''
-   preplace '\@GTENegativeOne ' ''
-   preplace '\@IndexFor\([^()]+\) ' ''
-   preplace '\@IndexOr(Low|High)\([^()]+\) ' ''
-   preplace '\@IntRange\([^()]+\) ' ''
-   preplace '\@IntVal\([^()]+\) ' ''
-   preplace '\@(|LT|LTEq)LengthOf\([^()]+\) ' ''
-   preplace '\@MinLen\([^()]+\) ?' ''
-   preplace '\@NonNegative ' ''
-   preplace '\@NonNull ' ''
-   preplace '\@Nullable ' ''
-   preplace '\@PolyNull ' ''
-   preplace '\@PolySigned ' ''
-   preplace '\@Positive ' ''
-   preplace '\@SameLen\("[^"]+"\) ' ''
-   preplace '\@SignedPositive ' ''
-   preplace '\@Unsigned ' ''
-   preplace '\@UnknownSignedness ' ''
-   preplace ' extends Object>' '>'
-   preplace ' extends Object,' ','
+
+   # Annotations that take up an entire line
+   preplace '^\@AnnotatedFor.*\n' ''
+   preplace '^\@Covariant\([0-9]+\)\n' ''
+   preplace '^ *\@AssertMethod\([^()]+\)\n' ''
+   preplace '^ *\@CFComment\([^()]+\)\n' ''
+   preplace '^ *\@FormatMethod\n' ''
+   # preplace '^ *\@SuppressWarnings.*\n' ''
+   preplace '^ *\@SuppressWarnings\(\{?"(expression\.unparsable|index|lowerbound|nullness|samelen|signature|signedness|substringindex|upperbound|value).*\n' ''
+   preplace '^ *\@(Pure|Deterministic|SideEffectFree)\n' ''
+
+   # Annotations that take no argument
+   preplace '\@(GTENegativeOne|NonNegative|NonNull|Nullable|Poly[A-Za-z0-9_]+|PolySigned|Positive|Signed|SignednessGlb|SignedPositive|Unsigned|UnknownSignedness) ' ''
+
+   # Annotations that take an argument
+   preplace '\@(EnsuresLTLengthOf(If)?|Format|HasSubsequence|IndexFor|IndexOr(Low|High)|IntRange|IntVal|KeyFor|LessThan|(|LT|LTEq)LengthOf|SubstringIndexFor)\([^()]+(\(\))?\) ' ''
+
+   # Array-related spacing
+   preplace '\@(Array|Min|Same)Len\([^()]+\) ?' ''
    preplace ' \[\]' '[]'
    preplace ' \.\.\.' '...'
-   preplace '; *// *\([0-9]+\)$' ';'
+
+   preplace '([;{]) *// *\([0-9]+\)$' '\1'
+   preplace '([;{]) *// *#[0-9]+$' '\1'
+
+   # Extra syntax no longer needed
+   preplace ' extends Object>' '>'
+   preplace ' extends Object,' ','
+   preplace '\([A-Za-z0-9_.]+(<[A-Z](, [A-Z])*>(.[A-Za-z0-9_.]+)?)? this\)' '()'
+
 ```
  * Diff the two temporary clones.
 
@@ -185,18 +199,20 @@ git fetch --tags https://github.com/google/guava
 git pull https://github.com/google/guava v31.1
 ```
 
-3. Ensure that the project still builds:
+3. Follow the instructions in section "to compare to upstream".
+
+4. Ensure that the project still builds:
 ```
 (cd guava && mvn -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
 ```
 
-4. Update the Guava version number
+5. Update the Guava version number
  * multiple places in this file, and
  * in file guava/cfMavenCentral.xml .
 
 If it's not the same as the upstream version, then also edit pom.xml and guava/pom.xml.
 
-5. Run the following commands.
+6. Run the following commands.
 
 JAVA_HOME must be a JDK 8 JDK.
 This step must be done on a machine, such as a CSE machine, that has access to the necessary passwords.
@@ -233,4 +249,4 @@ mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/stagin
 mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=cfMavenCentral.xml -Dgpg.publicKeyring=$HOSTING_INFO_DIR/pubring.gpg -Dgpg.secretKeyring=$HOSTING_INFO_DIR/secring.gpg -Dgpg.keyname=ADF4D638 -Dgpg.passphrase="`cat $HOSTING_INFO_DIR/release-private.password`" -Dfile=target/site/apidocs/${PACKAGE}-javadoc.jar -Dclassifier=javadoc
 ```
 
-6. Complete the release at https://oss.sonatype.org/#stagingRepositories
+7. Complete the release at https://oss.sonatype.org/#stagingRepositories
