@@ -282,7 +282,7 @@
       </dependency>
       <dependency>
         <groupId>org.checkerframework</groupId>
-        <artifactId>checker-qual</artifactId>
+        <artifactId>checker-compat-qual</artifactId>
         <version>${checker-framework.version}</version>
         <classifier>sources</classifier>
       </dependency>

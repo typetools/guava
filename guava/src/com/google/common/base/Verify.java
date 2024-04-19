@@ -19,7 +19,6 @@ import static com.google.common.base.Strings.lenientFormat;
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import javax.annotation.CheckForNull;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.AssertMethod;
 import org.checkerframework.dataflow.qual.Pure;

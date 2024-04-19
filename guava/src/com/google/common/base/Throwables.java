@@ -34,7 +34,6 @@ import java.util.Collections;
 import java.util.List;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Static utility methods pertaining to instances of {@link Throwable}.

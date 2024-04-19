@@ -90,38 +90,6 @@ Whenever a Checker Framework release is made:
  * delete the `cf-master` branch.
 
 
-To update to a non-released version of the upstream library
------------------------------------------------------------
-
-Usually, you will want to update to a released version of the upstream library,
-in which case see the instructions at "To release to Maven Central".  This
-section is for updating to a commit in Guava that is different than the tag for
-a release.  Note that doing so makes it harder to make a new release of the
-typetools version of Guava at Maven Central.
-
-First, update to use the latest Checker Framework by editing file
-`pom.xml` (for `checker-qual`) and `guava/pom.xml` (for `checker`).
-Make a pull request to ensure that type-checking succeeds.
-
-Check for a release at
-  https://github.com/google/guava/releases
-.  If there has been one since the last time this repository was pulled,
-then follow the instructions at "To release to Maven Central".
-
-**After** checking and possibly releasing, run
-
-```
-git pull https://github.com/google/guava
-```
-
-and then re-build to ensure that typechecking still works.
-Note: Doing this `git pull` command
-makes it difficult to re-release a given version of Guava,
-compared to pulling in the tag corresponding to a release.
-
-Follow the instructions in section "to compare to upstream".
-
-
 To compare to upstream
 ----------------------
 
@@ -199,12 +167,12 @@ git fetch --tags https://github.com/google/guava
 git pull https://github.com/google/guava v31.1
 ```
 
-3. Follow the instructions in section "to compare to upstream".
-
-4. Ensure that the project still builds:
+3. Ensure that the project still builds:
 ```
 (cd guava && mvn -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
 ```
+
+4. Follow the instructions in section "to compare to upstream".
 
 5. Update the Guava version number
  * multiple places in this file, and
@@ -250,3 +218,37 @@ mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/stagin
 ```
 
 7. Complete the release at https://oss.sonatype.org/#stagingRepositories
+
+
+To update to a non-released version of the upstream library
+-----------------------------------------------------------
+
+Usually, you will want to update to a released version of the upstream library,
+in which case see the instructions at "To release to Maven Central".  This
+section is for updating to a commit in Guava that is different than the tag for
+a release.  Note that doing so makes it harder to make a new release of the
+typetools version of Guava at Maven Central.
+
+First, update to use the latest Checker Framework by editing file
+`pom.xml` (for `checker-qual`) and `guava/pom.xml` (for `checker`).
+Make a pull request to ensure that type-checking succeeds.
+
+Check for a release at
+  https://github.com/google/guava/releases
+.  If there has been one since the last time this repository was pulled,
+then follow the instructions at "To release to Maven Central".
+
+**After** checking and possibly releasing, run
+
+```
+git pull https://github.com/google/guava
+```
+
+and then re-build to ensure that typechecking still works.
+Note: Doing this `git pull` command
+makes it difficult to re-release a given version of Guava,
+compared to pulling in the tag corresponding to a release.
+
+Follow the instructions in section "to compare to upstream".
+
+

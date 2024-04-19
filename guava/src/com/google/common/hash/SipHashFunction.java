@@ -26,7 +26,6 @@ import java.io.Serializable;
 import java.nio.ByteBuffer;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**

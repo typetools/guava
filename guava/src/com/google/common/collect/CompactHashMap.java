@@ -710,7 +710,7 @@ class CompactHashMap<K extends @Nullable Object, V extends @Nullable Object>
     }
 
     @Override
-    public @PolyNull @PolySigned Object[] toArray(CompactHashMap<@PolyNull @PolySigned K, @PolyNull @PolySigned V>.KeySetView this) {
+    public @Nullable Object[] toArray() {
       if (needsAllocArrays()) {
         return new Object[0];
       }

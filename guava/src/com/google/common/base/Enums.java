@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 import javax.annotation.CheckForNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 import org.checkerframework.framework.qual.AnnotatedFor;
 

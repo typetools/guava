@@ -24,7 +24,6 @@ import com.google.j2objc.annotations.ReflectionSupport;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.function.DoubleBinaryOperator;
 import java.util.function.DoubleUnaryOperator;
-
 import org.checkerframework.common.value.qual.PolyValue;
 
 /**

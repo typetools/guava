@@ -141,6 +141,7 @@ public final class Iterables {
    * cases where {@link Collection#contains} might throw {@link NullPointerException} or {@link
    * ClassCastException}.
    */
+  // <? extends @Nullable Object> instead of <?> because of Kotlin b/189937072, discussed in Joiner.
   @Pure
   public static boolean contains(
       Iterable<? extends @Nullable Object> iterable, @CheckForNull Object element) {
