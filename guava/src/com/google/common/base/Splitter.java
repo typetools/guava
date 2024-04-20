@@ -17,9 +17,9 @@ package com.google.common.base;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -220,6 +220,7 @@ public final class Splitter {
    * @return a splitter, with default settings, that uses this pattern
    * @throws IllegalArgumentException if {@code separatorPattern} matches the empty string
    */
+  @J2ktIncompatible
   @GwtIncompatible // java.util.regex
   public static Splitter on(Pattern separatorPattern) {
     return on(new JdkPattern(separatorPattern));
@@ -263,6 +264,7 @@ public final class Splitter {
    * @throws IllegalArgumentException if {@code separatorPattern} matches the empty string or is a
    *     malformed expression
    */
+  @J2ktIncompatible
   @GwtIncompatible // java.util.regex
   public static Splitter onPattern(String separatorPattern) {
     return on(Platform.compilePattern(separatorPattern));
@@ -440,7 +442,6 @@ public final class Splitter {
    * @return a stream over the segments split from the parameter
    * @since 28.2
    */
-  @Beta
   public Stream<String> splitToStream(CharSequence sequence) {
     // Can't use Streams.stream() from base
     return StreamSupport.stream(split(sequence).spliterator(), false);
@@ -453,7 +454,6 @@ public final class Splitter {
    * @since 10.0
    */
   // MinLen requirement not in javadoc
-  @Beta
   public MapSplitter withKeyValueSeparator(@MinLen(1) String separator) {
     return withKeyValueSeparator(on(separator));
   }
@@ -464,7 +464,6 @@ public final class Splitter {
    *
    * @since 14.0
    */
-  @Beta
   public MapSplitter withKeyValueSeparator(char separator) {
     return withKeyValueSeparator(on(separator));
   }
@@ -488,7 +487,6 @@ public final class Splitter {
    *
    * @since 10.0
    */
-  @Beta
   public MapSplitter withKeyValueSeparator(Splitter keyValueSplitter) {
     return new MapSplitter(this, keyValueSplitter);
   }
@@ -501,7 +499,6 @@ public final class Splitter {
    *
    * @since 10.0
    */
-  @Beta
   public static final class MapSplitter {
     private static final String INVALID_ENTRY_MESSAGE = "Chunk [%s] is not a valid entry";
     private final Splitter outerSplitter;

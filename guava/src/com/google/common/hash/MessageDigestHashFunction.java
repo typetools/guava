@@ -19,6 +19,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 import com.google.errorprone.annotations.Immutable;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 
@@ -124,6 +126,10 @@ final class MessageDigestHashFunction extends AbstractHashFunction implements Se
 
   Object writeReplace() {
     return new SerializedForm(prototype.getAlgorithm(), bytes, toString);
+  }
+
+  private void readObject(ObjectInputStream stream) throws InvalidObjectException {
+    throw new InvalidObjectException("Use SerializedForm");
   }
 
   /** Hasher that updates a message digest. */

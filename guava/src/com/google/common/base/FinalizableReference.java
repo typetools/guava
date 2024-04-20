@@ -17,6 +17,7 @@ package com.google.common.base;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import com.google.errorprone.annotations.DoNotMock;
 
 /**
@@ -28,6 +29,7 @@ import com.google.errorprone.annotations.DoNotMock;
  */
 @AnnotatedFor({"nullness"})
 @DoNotMock("Use an instance of one of the Finalizable*Reference classes")
+@J2ktIncompatible
 @GwtIncompatible
 @ElementTypesAreNonnullByDefault
 public interface FinalizableReference {

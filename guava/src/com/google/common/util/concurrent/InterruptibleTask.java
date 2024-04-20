@@ -15,6 +15,7 @@
 package com.google.common.util.concurrent;
 
 import static com.google.common.util.concurrent.NullnessCasts.uncheckedCastNullableTToT;
+import static com.google.common.util.concurrent.Platform.restoreInterruptIfIsInterruptedException;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.VisibleForTesting;
@@ -74,6 +75,7 @@ abstract class InterruptibleTask<T extends @Nullable Object>
         result = runInterruptibly();
       }
     } catch (Throwable t) {
+      restoreInterruptIfIsInterruptedException(t);
       error = t;
     } finally {
       // Attempt to set the task as done so that further attempts to interrupt will fail.
@@ -229,6 +231,11 @@ abstract class InterruptibleTask<T extends @Nullable Object>
 
     private void setOwner(Thread thread) {
       super.setExclusiveOwnerThread(thread);
+    }
+
+    @VisibleForTesting
+    Thread getOwner() {
+      return super.getExclusiveOwnerThread();
     }
 
     @Override

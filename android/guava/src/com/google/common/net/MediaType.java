@@ -492,6 +492,13 @@ public final class MediaType {
   public static final MediaType JSON_UTF_8 = createConstantUtf8(APPLICATION_TYPE, "json");
 
   /**
+   * For <a href="https://tools.ietf.org/html/7519">JWT objects using the compact Serialization</a>.
+   *
+   * @since 32.0.0
+   */
+  public static final MediaType JWT = createConstant(APPLICATION_TYPE, "jwt");
+
+  /**
    * The <a href="http://www.w3.org/TR/appmanifest/">Manifest for a web application</a>.
    *
    * @since 19.0
@@ -886,7 +893,7 @@ public final class MediaType {
    * one.
    *
    * <p>If a charset must be specified that is not supported on this JVM (and thus is not
-   * representable as a {@link Charset} instance, use {@link #withParameter}.
+   * representable as a {@link Charset} instance), use {@link #withParameter}.
    */
   public MediaType withCharset(Charset charset) {
     checkNotNull(charset);

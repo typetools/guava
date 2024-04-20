@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -146,7 +147,7 @@ public class TreeMultimap<K extends @Nullable Object, V extends @Nullable Object
   @Override
   Collection<V> createCollection(@ParametricNullness K key) {
     if (key == null) {
-      keyComparator().compare(key, key);
+      int unused = keyComparator().compare(key, key);
     }
     return super.createCollection(key);
   }
@@ -207,6 +208,7 @@ public class TreeMultimap<K extends @Nullable Object, V extends @Nullable Object
    *     distinct key: the key, number of values for that key, and key values
    */
   @GwtIncompatible // java.io.ObjectOutputStream
+  @J2ktIncompatible
   private void writeObject(ObjectOutputStream stream) throws IOException {
     stream.defaultWriteObject();
     stream.writeObject(keyComparator());
@@ -215,6 +217,7 @@ public class TreeMultimap<K extends @Nullable Object, V extends @Nullable Object
   }
 
   @GwtIncompatible // java.io.ObjectInputStream
+  @J2ktIncompatible
   @SuppressWarnings("unchecked") // reading data stored by writeObject
   private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
     stream.defaultReadObject();
@@ -225,6 +228,7 @@ public class TreeMultimap<K extends @Nullable Object, V extends @Nullable Object
   }
 
   @GwtIncompatible // not needed in emulated source
+  @J2ktIncompatible
   private static final long serialVersionUID = 0;
 
 @Pure

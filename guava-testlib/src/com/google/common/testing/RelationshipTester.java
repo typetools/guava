@@ -22,6 +22,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Equivalence;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.List;
 import junit.framework.AssertionFailedError;
 
@@ -32,6 +33,7 @@ import junit.framework.AssertionFailedError;
  * @author Gregory Kick
  */
 @GwtCompatible
+@ElementTypesAreNonnullByDefault
 final class RelationshipTester<T> {
 
   static class ItemReporter {
@@ -66,6 +68,7 @@ final class RelationshipTester<T> {
   }
 
   // TODO(cpovirk): should we reject null items, since the tests already check null automatically?
+  @CanIgnoreReturnValue
   public RelationshipTester<T> addRelatedGroup(Iterable<? extends T> group) {
     groups.add(ImmutableList.copyOf(group));
     return this;

@@ -18,13 +18,15 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkElementIndex;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import com.google.common.collect.SortedLists.KeyAbsentBehavior;
 import com.google.common.collect.SortedLists.KeyPresentBehavior;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.DoNotCall;
 import com.google.errorprone.annotations.DoNotMock;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +42,6 @@ import javax.annotation.CheckForNull;
  * @author Louis Wasserman
  * @since 14.0
  */
-@Beta
 @GwtIncompatible // NavigableMap
 @ElementTypesAreNonnullByDefault
 public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K, V>, Serializable {
@@ -241,7 +242,7 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
   @Deprecated
   @Override
   @DoNotCall("Always throws UnsupportedOperationException")
-  public final void putAll(RangeMap<K, V> rangeMap) {
+  public final void putAll(RangeMap<K, ? extends V> rangeMap) {
     throw new UnsupportedOperationException();
   }
 
@@ -404,6 +405,11 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
 
   Object writeReplace() {
     return new SerializedForm<>(asMapOfRanges());
+  }
+
+  @J2ktIncompatible // java.io.ObjectInputStream
+  private void readObject(ObjectInputStream stream) throws InvalidObjectException {
+    throw new InvalidObjectException("Use SerializedForm");
   }
 
   private static final long serialVersionUID = 0;

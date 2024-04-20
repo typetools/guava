@@ -19,8 +19,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Objects.requireNonNull;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import com.google.errorprone.annotations.CheckReturnValue;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.Locale;
 import java.util.concurrent.Executors;
@@ -48,7 +48,7 @@ import org.checkerframework.checker.formatter.qual.FormatMethod;
  * @author Kurt Alfred Kluever
  * @since 4.0
  */
-@CanIgnoreReturnValue
+@J2ktIncompatible
 @GwtIncompatible
 @ElementTypesAreNonnullByDefault
 public final class ThreadFactoryBuilder {
@@ -72,6 +72,7 @@ public final class ThreadFactoryBuilder {
    *     "rpc-pool-1"}, {@code "rpc-pool-2"}, etc.
    * @return this for the builder pattern
    */
+  @CanIgnoreReturnValue
   public ThreadFactoryBuilder setNameFormat(@Format({ConversionCategory.INT}) String nameFormat) {
     String unused = format(nameFormat, 0); // fail fast if the format is bad or null
     this.nameFormat = nameFormat;
@@ -84,6 +85,7 @@ public final class ThreadFactoryBuilder {
    * @param daemon whether or not new Threads created with this ThreadFactory will be daemon threads
    * @return this for the builder pattern
    */
+  @CanIgnoreReturnValue
   public ThreadFactoryBuilder setDaemon(boolean daemon) {
     this.daemon = daemon;
     return this;
@@ -92,9 +94,13 @@ public final class ThreadFactoryBuilder {
   /**
    * Sets the priority for new threads created with this ThreadFactory.
    *
+   * <p><b>Warning:</b> relying on the thread scheduler is <a
+   * href="http://errorprone.info/bugpattern/ThreadPriorityCheck">discouraged</a>.
+   *
    * @param priority the priority for new Threads created with this ThreadFactory
    * @return this for the builder pattern
    */
+  @CanIgnoreReturnValue
   public ThreadFactoryBuilder setPriority(int priority) {
     // Thread#setPriority() already checks for validity. These error messages
     // are nicer though and will fail-fast.
@@ -119,6 +125,7 @@ public final class ThreadFactoryBuilder {
    *     this ThreadFactory
    * @return this for the builder pattern
    */
+  @CanIgnoreReturnValue
   public ThreadFactoryBuilder setUncaughtExceptionHandler(
       UncaughtExceptionHandler uncaughtExceptionHandler) {
     this.uncaughtExceptionHandler = checkNotNull(uncaughtExceptionHandler);
@@ -134,6 +141,7 @@ public final class ThreadFactoryBuilder {
    * @return this for the builder pattern
    * @see MoreExecutors
    */
+  @CanIgnoreReturnValue
   public ThreadFactoryBuilder setThreadFactory(ThreadFactory backingThreadFactory) {
     this.backingThreadFactory = checkNotNull(backingThreadFactory);
     return this;
@@ -146,7 +154,6 @@ public final class ThreadFactoryBuilder {
    *
    * @return the fully constructed {@link ThreadFactory}
    */
-  @CheckReturnValue
   public ThreadFactory build() {
     return doBuild(this);
   }
@@ -167,6 +174,8 @@ public final class ThreadFactoryBuilder {
       @Override
       public Thread newThread(Runnable runnable) {
         Thread thread = backingThreadFactory.newThread(runnable);
+        // TODO(b/139735208): Figure out what to do when the factory returns null.
+        requireNonNull(thread);
         if (nameFormat != null) {
           // requireNonNull is safe because we create `count` if (and only if) we have a nameFormat.
           thread.setName(format(nameFormat, requireNonNull(count).getAndIncrement()));

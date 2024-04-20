@@ -50,6 +50,9 @@ public abstract class DiscreteDomain<C extends Comparable> {
   /**
    * Returns the discrete domain for values of type {@code Integer}.
    *
+   * <p>This method always returns the same object. That object is serializable; deserializing it
+   * results in the same object too.
+   *
    * @since 14.0 (since 10.0 as {@code DiscreteDomains.integers()})
    */
   public static DiscreteDomain<Integer> integers() {
@@ -113,6 +116,9 @@ public abstract class DiscreteDomain<C extends Comparable> {
 
   /**
    * Returns the discrete domain for values of type {@code Long}.
+   *
+   * <p>This method always returns the same object. That object is serializable; deserializing it
+   * results in the same object too.
    *
    * @since 14.0 (since 10.0 as {@code DiscreteDomains.longs()})
    */
@@ -187,6 +193,9 @@ public abstract class DiscreteDomain<C extends Comparable> {
 
   /**
    * Returns the discrete domain for values of type {@code BigInteger}.
+   *
+   * <p>This method always returns the same object. That object is serializable; deserializing it
+   * results in the same object too.
    *
    * @since 15.0
    */

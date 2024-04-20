@@ -15,6 +15,7 @@
 package com.google.common.base;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import javax.annotation.CheckForNull;

@@ -22,11 +22,12 @@ import static com.google.common.base.Predicates.compose;
 import static com.google.common.collect.CollectPreconditions.checkEntryNotNull;
 import static com.google.common.collect.CollectPreconditions.checkNonnegative;
 import static com.google.common.collect.NullnessCasts.uncheckedCastNullableTToT;
+import static java.util.Collections.singletonMap;
 import static java.util.Objects.requireNonNull;
 
-import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import com.google.common.base.Converter;
 import com.google.common.base.Equivalence;
 import com.google.common.base.Function;
@@ -73,6 +74,7 @@ import java.util.stream.Collector;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.KeyFor;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.PolySigned;
@@ -97,6 +99,7 @@ import org.checkerframework.framework.qual.CFComment;
  * @since 2.0
  */
 @AnnotatedFor({"nullness"})
+@J2ktIncompatible
 @GwtCompatible(emulated = true)
 @ElementTypesAreNonnullByDefault
 public final class Maps {
@@ -163,6 +166,7 @@ public final class Maps {
    * @since 14.0
    */
   @GwtCompatible(serializable = true)
+  @J2ktIncompatible
   public static <K extends Enum<K>, V> ImmutableMap<K, V> immutableEnumMap(
       Map<K, ? extends V> map) {
     if (map instanceof ImmutableEnumMap) {
@@ -178,9 +182,8 @@ public final class Maps {
     K key1 = entry1.getKey();
     V value1 = entry1.getValue();
     checkEntryNotNull(key1, value1);
-    Class<K> clazz = key1.getDeclaringClass();
-    EnumMap<K, V> enumMap = new EnumMap<>(clazz);
-    enumMap.put(key1, value1);
+    // Do something that works for j2cl, where we can't call getDeclaredClass():
+    EnumMap<K, V> enumMap = new EnumMap<>(singletonMap(key1, value1));
     while (entryItr.hasNext()) {
       Entry<K, ? extends V> entry = entryItr.next();
       K key = entry.getKey();
@@ -205,6 +208,7 @@ public final class Maps {
    *
    * @since 21.0
    */
+  @J2ktIncompatible
   public static <T extends @Nullable Object, K extends Enum<K>, V>
       Collector<T, ?, ImmutableMap<K, V>> toImmutableEnumMap(
           java.util.function.Function<? super T, ? extends K> keyFunction,
@@ -223,6 +227,7 @@ public final class Maps {
    *
    * @since 21.0
    */
+  @J2ktIncompatible
   public static <T extends @Nullable Object, K extends Enum<K>, V>
       Collector<T, ?, ImmutableMap<K, V>> toImmutableEnumMap(
           java.util.function.Function<? super T, ? extends K> keyFunction,
@@ -294,10 +299,19 @@ public final class Maps {
       return expectedSize + 1;
     }
     if (expectedSize < Ints.MAX_POWER_OF_TWO) {
-      // This is the calculation used in JDK8 to resize when a putAll
-      // happens; it seems to be the most conservative calculation we
-      // can make.  0.75 is the default load factor.
-      return (int) ((float) expectedSize / 0.75F + 1.0F);
+      // This seems to be consistent across JDKs. The capacity argument to HashMap and LinkedHashMap
+      // ends up being used to compute a "threshold" size, beyond which the internal table
+      // will be resized. That threshold is ceilingPowerOfTwo(capacity*loadFactor), where
+      // loadFactor is 0.75 by default. So with the calculation here we ensure that the
+      // threshold is equal to ceilingPowerOfTwo(expectedSize). There is a separate code
+      // path when the first operation on the new map is putAll(otherMap). There, prior to
+      // https://github.com/openjdk/jdk/commit/3e393047e12147a81e2899784b943923fc34da8e, a bug
+      // meant that sometimes a too-large threshold is calculated. However, this new threshold is
+      // independent of the initial capacity, except that it won't be lower than the threshold
+      // computed from that capacity. Because the internal table is only allocated on the first
+      // write, we won't see copying because of the new threshold. So it is always OK to use the
+      // calculation here.
+      return (int) Math.ceil(expectedSize / 0.75);
     }
     return Integer.MAX_VALUE; // any large value
   }
@@ -479,28 +493,15 @@ public final class Maps {
    * @param right the map to treat as the "right" map for purposes of comparison
    * @return the difference between the two maps
    */
-  @SuppressWarnings("unchecked")
   public static <K extends @Nullable Object, V extends @Nullable Object>
       MapDifference<K, V> difference(
           Map<? extends K, ? extends V> left, Map<? extends K, ? extends V> right) {
     if (left instanceof SortedMap) {
+      @SuppressWarnings("unchecked")
       SortedMap<K, ? extends V> sortedLeft = (SortedMap<K, ? extends V>) left;
       return difference(sortedLeft, right);
     }
-    /*
-     * This cast is safe: The Equivalence-accepting overload of difference() (which we call below)
-     * has a weird signature because Equivalence is itself a little weird. Still, we know that
-     * Equivalence.equals() can handle all inputs, and we know that the resulting MapDifference will
-     * contain only Ks and Vs (as opposed to possibly containing @Nullable objects even when K and V
-     * are *not* @Nullable).
-     *
-     * An alternative to suppressing the warning would be to inline the body of the other
-     * difference() method into this one.
-     */
-    @SuppressWarnings("nullness")
-    MapDifference<K, V> result =
-        (MapDifference<K, V>) difference(left, right, Equivalence.equals());
-    return result;
+    return difference(left, right, Equivalence.equals());
   }
 
   /**
@@ -517,36 +518,11 @@ public final class Maps {
    * @return the difference between the two maps
    * @since 10.0
    */
-  /*
-   * This method should really be annotated to accept maps with @Nullable value types. Fortunately,
-   * no existing Google callers appear to pass null values (much less pass null values *and* run a
-   * nullness checker).
-   *
-   * Still, if we decide that we want to make that work, we'd need to introduce a new type parameter
-   * for the Equivalence input type:
-   *
-   * <E, K extends @Nullable Object, V extends @Nullable E> ... difference(..., Equivalence<E> ...)
-   *
-   * Maybe we should, even though it will break source compatibility.
-   *
-   * Alternatively, this is a case in which it would be useful to be able to express Equivalence<?
-   * super @Nonnull T>).
-   *
-   * As things stand now, though, we have to either:
-   *
-   * - require non-null inputs so that we can guarantee non-null outputs
-   *
-   * - accept nullable inputs but force users to cope with nullable outputs
-   *
-   * And the non-null option is far more useful to existing users.
-   *
-   * (Vaguely related: Another thing we could consider is an overload that accepts a BiPredicate:
-   * https://github.com/google/guava/issues/3913)
-   */
-  public static <K extends @Nullable Object, V> MapDifference<K, V> difference(
-      Map<? extends K, ? extends V> left,
-      Map<? extends K, ? extends V> right,
-      Equivalence<? super V> valueEquivalence) {
+  public static <K extends @Nullable Object, V extends @Nullable Object>
+      MapDifference<K, V> difference(
+          Map<? extends K, ? extends V> left,
+          Map<? extends K, ? extends V> right,
+          Equivalence<? super @NonNull V> valueEquivalence) {
     Preconditions.checkNotNull(valueEquivalence);
 
     Map<K, V> onlyOnLeft = newLinkedHashMap();
@@ -586,26 +562,14 @@ public final class Maps {
     SortedMap<K, V> onBoth = Maps.newTreeMap(comparator);
     SortedMap<K, MapDifference.ValueDifference<V>> differences = Maps.newTreeMap(comparator);
 
-    /*
-     * V is a possibly nullable type, but we decided to declare Equivalence with a type parameter
-     * that is restricted to non-nullable types. Still, this code is safe: We made that decision
-     * about Equivalence not because Equivalence is null-hostile but because *every* Equivalence can
-     * handle null inputs -- and thus it would be meaningless for the type system to distinguish
-     * between "an Equivalence for nullable Foo" and "an Equivalence for non-nullable Foo."
-     *
-     * (And the unchecked cast is safe because Equivalence is contravariant.)
-     */
-    @SuppressWarnings({"nullness", "unchecked"})
-    Equivalence<V> equalsEquivalence = (Equivalence<V>) Equivalence.equals();
-
-    doDifference(left, right, equalsEquivalence, onlyOnLeft, onlyOnRight, onBoth, differences);
+    doDifference(left, right, Equivalence.equals(), onlyOnLeft, onlyOnRight, onBoth, differences);
     return new SortedMapDifferenceImpl<>(onlyOnLeft, onlyOnRight, onBoth, differences);
   }
 
   private static <K extends @Nullable Object, V extends @Nullable Object> void doDifference(
       Map<? extends K, ? extends V> left,
       Map<? extends K, ? extends V> right,
-      Equivalence<? super V> valueEquivalence,
+      Equivalence<? super @NonNull V> valueEquivalence,
       Map<K, V> onlyOnLeft,
       Map<K, V> onlyOnRight,
       Map<K, V> onBoth,
@@ -1345,13 +1309,25 @@ public final class Maps {
    * ...
    * ImmutableSet<Color> allColors = ImmutableSet.of(red, green, blue);
    *
-   * Map<String, Color> colorForName =
-   *     uniqueIndex(allColors, toStringFunction());
+   * ImmutableMap<String, Color> colorForName =
+   *     uniqueIndex(allColors, c -> c.toString());
    * assertThat(colorForName).containsEntry("red", red);
    * }</pre>
    *
    * <p>If your index may associate multiple values with each key, use {@link
    * Multimaps#index(Iterable, Function) Multimaps.index}.
+   *
+   * <p><b>Note:</b> on Java 8 and later, it is usually better to use streams. For example:
+   *
+   * <pre>{@code
+   * import static com.google.common.collect.ImmutableMap.toImmutableMap;
+   * ...
+   * ImmutableMap<String, Color> colorForName =
+   *     allColors.stream().collect(toImmutableMap(c -> c.toString(), c -> c));
+   * }</pre>
+   *
+   * <p>Streams provide a more standard and flexible API and the lambdas make it clear what the keys
+   * and values in the map are.
    *
    * @param values the values to use when constructing the {@code Map}
    * @param keyFunction the function used to produce the key for each value
@@ -1365,7 +1341,12 @@ public final class Maps {
   @CanIgnoreReturnValue
   public static <K, V> ImmutableMap<K, V> uniqueIndex(
       Iterable<V> values, Function<? super V, K> keyFunction) {
-    // TODO(lowasser): consider presizing the builder if values is a Collection
+    if (values instanceof Collection) {
+      return uniqueIndex(
+          values.iterator(),
+          keyFunction,
+          ImmutableMap.builderWithExpectedSize(((Collection<?>) values).size()));
+    }
     return uniqueIndex(values.iterator(), keyFunction);
   }
 
@@ -1401,8 +1382,12 @@ public final class Maps {
   @CanIgnoreReturnValue
   public static <K, V> ImmutableMap<K, V> uniqueIndex(
       Iterator<V> values, Function<? super V, K> keyFunction) {
+    return uniqueIndex(values, keyFunction, ImmutableMap.builder());
+  }
+
+  private static <K, V> ImmutableMap<K, V> uniqueIndex(
+      Iterator<V> values, Function<? super V, K> keyFunction, ImmutableMap.Builder<K, V> builder) {
     checkNotNull(keyFunction);
-    ImmutableMap.Builder<K, V> builder = ImmutableMap.builder();
     while (values.hasNext()) {
       V value = values.next();
       builder.put(keyFunction.apply(value), value);
@@ -1426,6 +1411,7 @@ public final class Maps {
    * @throws ClassCastException if any key in {@code properties} is not a {@code String}
    * @throws NullPointerException if any key or value in {@code properties} is null
    */
+  @J2ktIncompatible
   @GwtIncompatible // java.util.Properties
   public static ImmutableMap<String, String> fromProperties(Properties properties) {
     ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
@@ -1497,7 +1483,7 @@ public final class Maps {
 
   /**
    * Returns an unmodifiable view of the specified map entry. The {@link Entry#setValue} operation
-   * throws an {@link UnsupportedOperationException}. This also has the side-effect of redefining
+   * throws an {@link UnsupportedOperationException}. This also has the side effect of redefining
    * {@code equals} to comply with the Entry contract, to avoid a possible nefarious implementation
    * of equals.
    *
@@ -1538,7 +1524,7 @@ public final class Maps {
     };
   }
 
-  /** @see Multimaps#unmodifiableEntries */
+  /** The implementation of {@link Multimaps#unmodifiableEntries}. */
   static class UnmodifiableEntries<K extends @Nullable Object, V extends @Nullable Object>
       extends ForwardingCollection<Entry<K, V>> {
     private final Collection<Entry<K, V>> entries;
@@ -1564,13 +1550,12 @@ public final class Maps {
     @Override
     public @PolyNull @PolySigned Object[] toArray() {
       /*
-       * standardToArray returns `@Nullable Object[]` rather than `Object[]` but only because it can
+       * standardToArray returns `@Nullable Object[]` rather than `Object[]` but because it can
        * be used with collections that may contain null. This collection never contains nulls, so we
-       * can treat it as a plain `Object[]`.
+       * could return `Object[]`. But this class is private and J2KT cannot change return types in
+       * overrides, so we declare `@Nullable Object[]` as the return type.
        */
-      @SuppressWarnings("nullness")
-      Object[] result = standardToArray();
-      return result;
+      return standardToArray();
     }
 
     @Override
@@ -1588,7 +1573,7 @@ public final class Maps {
   public boolean containsAll(Collection<?> arg0) { return super.containsAll(arg0); }
   }
 
-  /** @see Maps#unmodifiableEntrySet(Set) */
+  /** The implementation of {@link Maps#unmodifiableEntrySet(Set)}. */
   static class UnmodifiableEntrySet<K extends @Nullable Object, V extends @Nullable Object>
       extends UnmodifiableEntries<K, V> implements Set<Entry<K, V>> {
     UnmodifiableEntrySet(Set<Entry<K, V>> entries) {
@@ -1721,7 +1706,9 @@ public final class Maps {
     return new UnmodifiableBiMap<>(bimap, null);
   }
 
-  /** @see Maps#unmodifiableBiMap(BiMap) */
+  /**
+   * @see Maps#unmodifiableBiMap(BiMap)
+   */
   private static class UnmodifiableBiMap<K extends @Nullable Object, V extends @Nullable Object>
       extends ForwardingMap<K, V> implements BiMap<K, V>, Serializable {
     final Map<K, V> unmodifiableMap;
@@ -2133,6 +2120,7 @@ public final class Maps {
      * @throws NullPointerException if the key or value is null and this transformer does not accept
      *     null arguments
      */
+    @ParametricNullness
     V2 transformEntry(@ParametricNullness K key, @ParametricNullness V1 value);
   }
 
@@ -4648,7 +4636,6 @@ public final class Maps {
    *
    * @since 20.0
    */
-  @Beta
   @GwtIncompatible // NavigableMap
   public static <K extends Comparable<? super K>, V extends @Nullable Object>
       NavigableMap<K, V> subMap(NavigableMap<K, V> map, Range<K> range) {

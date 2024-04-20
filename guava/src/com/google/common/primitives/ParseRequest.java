@@ -26,8 +26,7 @@ final class ParseRequest {
   final String rawValue;
   final @IntRange(from = Character.MIN_RADIX, to = Character.MAX_RADIX) int radix;
 
-  private ParseRequest(
-      String rawValue, @IntRange(from = Character.MIN_RADIX, to = Character.MAX_RADIX) int radix) {
+  private ParseRequest(String rawValue, @IntRange(from = Character.MIN_RADIX, to = Character.MAX_RADIX) int radix) {
     this.rawValue = rawValue;
     this.radix = radix;
   }

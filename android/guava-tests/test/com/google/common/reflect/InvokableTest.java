@@ -32,8 +32,8 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.TypeVariable;
 import java.util.Collections;
-import javax.annotation.CheckForNull;
 import junit.framework.TestCase;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Unit tests for {@link Invokable}.
@@ -49,9 +49,9 @@ public class InvokableTest extends TestCase {
   public void testApiCompatibleWithAccessibleObject() {
     ImmutableSet<String> invokableMethods =
         publicMethodSignatures(Invokable.class, ImmutableSet.<String>of());
-    ImmutableSet<String> accesibleObjectMethods =
+    ImmutableSet<String> accessibleObjectMethods =
         publicMethodSignatures(AccessibleObject.class, ImmutableSet.of("canAccess"));
-    assertThat(invokableMethods).containsAtLeastElementsIn(accesibleObjectMethods);
+    assertThat(invokableMethods).containsAtLeastElementsIn(accessibleObjectMethods);
     Class<?> genericDeclaration;
     try {
       genericDeclaration = Class.forName("java.lang.reflect.GenericDeclaration");
@@ -453,7 +453,7 @@ public class InvokableTest extends TestCase {
 
   static class Foo {}
 
-  public void testConstructor_isOverridablel() throws Exception {
+  public void testConstructor_isOverridable() throws Exception {
     Invokable<?, ?> delegate = Invokable.from(Foo.class.getDeclaredConstructor());
     assertFalse(delegate.isOverridable());
     assertFalse(delegate.isVarArgs());
@@ -520,7 +520,7 @@ public class InvokableTest extends TestCase {
 
   private class InnerWithAnnotatedConstructorParameter {
     @SuppressWarnings("unused") // called by reflection
-    InnerWithAnnotatedConstructorParameter(@CheckForNull String s) {}
+    InnerWithAnnotatedConstructorParameter(@Nullable String s) {}
   }
 
   public void testInnerClassWithAnnotatedConstructorParameter() {
@@ -684,7 +684,7 @@ public class InvokableTest extends TestCase {
   public void testLocalClassWithAnnotatedConstructorParameter() throws Exception {
     class LocalWithAnnotatedConstructorParameter {
       @SuppressWarnings("unused") // called by reflection
-      LocalWithAnnotatedConstructorParameter(@CheckForNull String s) {}
+      LocalWithAnnotatedConstructorParameter(@Nullable String s) {}
     }
     Constructor<?> constructor =
         LocalWithAnnotatedConstructorParameter.class.getDeclaredConstructors()[0];
@@ -733,7 +733,7 @@ public class InvokableTest extends TestCase {
     private final String prefix;
     private final int times;
 
-    Prepender(@NotBlank String prefix, int times) throws NullPointerException {
+    Prepender(@NotBlank @Nullable String prefix, int times) throws NullPointerException {
       this.prefix = prefix;
       this.times = times;
     }

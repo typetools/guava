@@ -35,7 +35,6 @@ import org.checkerframework.common.value.qual.IntRange;
  *
  * @author Colin Decker
  */
-@CanIgnoreReturnValue
 @ElementTypesAreNonnullByDefault
 abstract class AbstractByteHasher extends AbstractHasher {
   private final ByteBuffer scratch = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN);
@@ -78,6 +77,7 @@ abstract class AbstractByteHasher extends AbstractHasher {
   Since `ByteBuffer scratch = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN);`, scratch.array() will
   return an array with length of 8.
   */
+  @CanIgnoreReturnValue
   private Hasher update(@IntRange(from = 0, to = 8) int bytes) {
     try {
       update(scratch.array(), 0, bytes);
@@ -88,12 +88,14 @@ abstract class AbstractByteHasher extends AbstractHasher {
   }
 
   @Override
+  @CanIgnoreReturnValue
   public Hasher putByte(byte b) {
     update(b);
     return this;
   }
 
   @Override
+  @CanIgnoreReturnValue
   public Hasher putBytes(byte[] bytes) {
     checkNotNull(bytes);
     update(bytes);
@@ -101,6 +103,7 @@ abstract class AbstractByteHasher extends AbstractHasher {
   }
 
   @Override
+  @CanIgnoreReturnValue
   public Hasher putBytes(byte[] bytes, @NonNegative @LTLengthOf(value = "#1",offset = "#3 - 1") int off, @NonNegative @LTLengthOf(value = "#1",offset = "#2 - 1") int len) {
     checkPositionIndexes(off, off + len, bytes.length);
     update(bytes, off, len);
@@ -108,30 +111,35 @@ abstract class AbstractByteHasher extends AbstractHasher {
   }
 
   @Override
+  @CanIgnoreReturnValue
   public Hasher putBytes(ByteBuffer bytes) {
     update(bytes);
     return this;
   }
 
   @Override
+  @CanIgnoreReturnValue
   public Hasher putShort(short s) {
     scratch.putShort(s);
     return update(Shorts.BYTES);
   }
 
   @Override
+  @CanIgnoreReturnValue
   public Hasher putInt(int i) {
     scratch.putInt(i);
     return update(Ints.BYTES);
   }
 
   @Override
+  @CanIgnoreReturnValue
   public Hasher putLong(long l) {
     scratch.putLong(l);
     return update(Longs.BYTES);
   }
 
   @Override
+  @CanIgnoreReturnValue
   public Hasher putChar(char c) {
     scratch.putChar(c);
     return update(Chars.BYTES);

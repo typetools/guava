@@ -23,6 +23,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Equivalence;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.errorprone.annotations.Immutable;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -105,6 +106,7 @@ import javax.annotation.CheckForNull;
  *       <i>P</i> if, for all ranges {@code b} also having property <i>P</i>, {@code a.encloses(b)}.
  *       Likewise, {@code a} is <i>minimal</i> when {@code b.encloses(a)} for all {@code b} having
  *       property <i>P</i>. See, for example, the definition of {@link #intersection intersection}.
+ *   <li>A {@code Range} is serializable if it has no bounds, or if each bound is serializable.
  * </ul>
  *
  * <h3>Further reading</h3>
@@ -118,6 +120,7 @@ import javax.annotation.CheckForNull;
  */
 @GwtCompatible
 @SuppressWarnings("rawtypes")
+@Immutable(containerOf = "C")
 @ElementTypesAreNonnullByDefault
 public final class Range<C extends Comparable> extends RangeGwtSerializationDependencies
     implements Predicate<C>, Serializable {
@@ -333,7 +336,7 @@ public final class Range<C extends Comparable> extends RangeGwtSerializationDepe
     if (values instanceof SortedSet) {
       SortedSet<C> set = (SortedSet<C>) values;
       Comparator<?> comparator = set.comparator();
-      if (Ordering.natural().equals(comparator) || comparator == null) {
+      if (Ordering.<C>natural().equals(comparator) || comparator == null) {
         return closed(set.first(), set.last());
       }
     }
@@ -342,8 +345,8 @@ public final class Range<C extends Comparable> extends RangeGwtSerializationDepe
     C max = min;
     while (valueIterator.hasNext()) {
       C value = checkNotNull(valueIterator.next());
-      min = Ordering.natural().min(min, value);
-      max = Ordering.natural().max(max, value);
+      min = Ordering.<C>natural().min(min, value);
+      max = Ordering.<C>natural().max(max, value);
     }
     return closed(min, max);
   }

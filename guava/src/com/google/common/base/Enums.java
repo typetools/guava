@@ -16,8 +16,8 @@ package com.google.common.base;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -36,7 +36,8 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @since 9.0
  */
 @AnnotatedFor({"nullness"})
-@GwtCompatible(emulated = true)
+@GwtIncompatible
+@J2ktIncompatible
 @ElementTypesAreNonnullByDefault
 public final class Enums {
 
@@ -51,7 +52,8 @@ public final class Enums {
    */
   @GwtIncompatible // reflection
   public static Field getField(Enum<?> enumValue) {
-    Class<?> clazz = enumValue.getDeclaringClass();
+    Class<?>
+        clazz = enumValue.getDeclaringClass();
     try {
       return clazz.getDeclaredField(enumValue.name());
     } catch (NoSuchFieldException impossible) {
@@ -101,17 +103,19 @@ public final class Enums {
   }
 
   /**
-   * Returns a converter that converts between strings and {@code enum} values of type {@code
-   * enumClass} using {@link Enum#valueOf(Class, String)} and {@link Enum#name()}. The converter
-   * will throw an {@code IllegalArgumentException} if the argument is not the name of any enum
-   * constant in the specified enum.
+   * Returns a serializable converter that converts between strings and {@code enum} values of type
+   * {@code enumClass} using {@link Enum#valueOf(Class, String)} and {@link Enum#name()}. The
+   * converter will throw an {@code IllegalArgumentException} if the argument is not the name of any
+   * enum constant in the specified enum.
    *
    * @since 16.0
    */
+  @GwtIncompatible
   public static <T extends Enum<T>> Converter<String, T> stringConverter(Class<T> enumClass) {
     return new StringConverter<>(enumClass);
   }
 
+  @GwtIncompatible
   private static final class StringConverter<T extends Enum<T>> extends Converter<String, T>
       implements Serializable {
 

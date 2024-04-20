@@ -16,7 +16,6 @@ package com.google.common.reflect;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.annotations.Beta;
 import com.google.common.collect.ImmutableList;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.lang.annotation.Annotation;
@@ -64,7 +63,6 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
  * @since 14.0 (no longer implements {@link AccessibleObject} or {@code GenericDeclaration} since
  *     31.0)
  */
-@Beta
 @ElementTypesAreNonnullByDefault
 public abstract class Invokable<T, R> implements AnnotatedElement, Member {
   private final AccessibleObject accessibleObject;
@@ -274,10 +272,12 @@ public abstract class Invokable<T, R> implements AnnotatedElement, Member {
    * of a non-static inner class, unlike {@link Constructor#getParameterTypes}, the hidden {@code
    * this} parameter of the enclosing class is excluded from the returned parameters.
    */
+  @IgnoreJRERequirement
   public final ImmutableList<Parameter> getParameters() {
     Type[] parameterTypes = getGenericParameterTypes();
     Annotation[][] annotations = getParameterAnnotations();
-    AnnotatedType[] annotatedTypes = getAnnotatedParameterTypes();
+    @Nullable Object[] annotatedTypes =
+        ANNOTATED_TYPE_EXISTS ? getAnnotatedParameterTypes() : new Object[parameterTypes.length];
     ImmutableList.Builder<Parameter> builder = ImmutableList.builder();
     for (int i = 0; i < parameterTypes.length; i++) {
       builder.add(
@@ -342,6 +342,8 @@ public abstract class Invokable<T, R> implements AnnotatedElement, Member {
 
   abstract Type[] getGenericParameterTypes();
 
+  @SuppressWarnings({"Java7ApiChecker", "AndroidJdkLibsChecker"})
+  @IgnoreJRERequirement
   abstract AnnotatedType[] getAnnotatedParameterTypes();
 
   /** This should never return a type that's not a subtype of Throwable. */
@@ -351,6 +353,15 @@ public abstract class Invokable<T, R> implements AnnotatedElement, Member {
 
   abstract Type getGenericReturnType();
 
+  /**
+   * Returns the {@link AnnotatedType} for the return type.
+   *
+   * <p>This method will fail if run under an Android VM.
+   *
+   * @since 14.0 for guava-jre (available since 32.0.0 in guava-android)
+   */
+  @SuppressWarnings({"Java7ApiChecker", "AndroidJdkLibsChecker"})
+  @IgnoreJRERequirement
   public abstract AnnotatedType getAnnotatedReturnType();
 
   static class MethodInvokable<T> extends Invokable<T, Object> {
@@ -380,11 +391,15 @@ public abstract class Invokable<T, R> implements AnnotatedElement, Member {
     }
 
     @Override
+    @SuppressWarnings({"Java7ApiChecker", "AndroidJdkLibsChecker"})
+    @IgnoreJRERequirement
     AnnotatedType[] getAnnotatedParameterTypes() {
       return method.getAnnotatedParameterTypes();
     }
 
     @Override
+    @SuppressWarnings({"Java7ApiChecker", "AndroidJdkLibsChecker", "DoNotCall"})
+    @IgnoreJRERequirement
     public AnnotatedType getAnnotatedReturnType() {
       return method.getAnnotatedReturnType();
     }
@@ -467,11 +482,15 @@ public abstract class Invokable<T, R> implements AnnotatedElement, Member {
     }
 
     @Override
+    @SuppressWarnings({"Java7ApiChecker", "AndroidJdkLibsChecker"})
+    @IgnoreJRERequirement
     AnnotatedType[] getAnnotatedParameterTypes() {
       return constructor.getAnnotatedParameterTypes();
     }
 
     @Override
+    @SuppressWarnings({"Java7ApiChecker", "AndroidJdkLibsChecker", "DoNotCall"})
+    @IgnoreJRERequirement
     public AnnotatedType getAnnotatedReturnType() {
       return constructor.getAnnotatedReturnType();
     }
@@ -538,5 +557,16 @@ public abstract class Invokable<T, R> implements AnnotatedElement, Member {
             && !Modifier.isStatic(declaringClass.getModifiers());
       }
     }
+  }
+
+  private static final boolean ANNOTATED_TYPE_EXISTS = initAnnotatedTypeExists();
+
+  private static boolean initAnnotatedTypeExists() {
+    try {
+      Class.forName("java.lang.reflect.AnnotatedType");
+    } catch (ClassNotFoundException e) {
+      return false;
+    }
+    return true;
   }
 }

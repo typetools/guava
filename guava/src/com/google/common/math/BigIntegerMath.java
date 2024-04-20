@@ -25,9 +25,9 @@ import static java.math.RoundingMode.HALF_DOWN;
 import static java.math.RoundingMode.HALF_EVEN;
 import static java.math.RoundingMode.UNNECESSARY;
 
-import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import com.google.common.annotations.VisibleForTesting;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -61,7 +61,6 @@ public final class BigIntegerMath {
    * @throws IllegalArgumentException if {@code x <= 0}
    * @since 20.0
    */
-  @Beta
   public static BigInteger ceilingPowerOfTwo(BigInteger x) {
     return BigInteger.ZERO.setBit(log2(x, CEILING));
   }
@@ -73,7 +72,6 @@ public final class BigIntegerMath {
    * @throws IllegalArgumentException if {@code x <= 0}
    * @since 20.0
    */
-  @Beta
   public static BigInteger floorPowerOfTwo(BigInteger x) {
     return BigInteger.ZERO.setBit(log2(x, FLOOR));
   }
@@ -150,6 +148,7 @@ public final class BigIntegerMath {
    * @throws ArithmeticException if {@code mode} is {@link RoundingMode#UNNECESSARY} and {@code x}
    *     is not a power of ten
    */
+  @J2ktIncompatible
   @GwtIncompatible // TODO
   @SuppressWarnings({"fallthrough","lowerbound:argument"// x fits in a long, then longValue is polymorphic over x's value
           // with respect to the lowerbound type system. 
@@ -230,6 +229,7 @@ public final class BigIntegerMath {
    * @throws ArithmeticException if {@code mode} is {@link RoundingMode#UNNECESSARY} and {@code
    *     sqrt(x)} is not an integer
    */
+  @J2ktIncompatible
   @GwtIncompatible // TODO
   @SuppressWarnings("fallthrough")
   public static BigInteger sqrt(BigInteger x, RoundingMode mode) {
@@ -266,6 +266,7 @@ public final class BigIntegerMath {
     }
   }
 
+  @J2ktIncompatible
   @GwtIncompatible // TODO
   private static BigInteger sqrtFloor(BigInteger x) {
     /*
@@ -310,6 +311,7 @@ public final class BigIntegerMath {
     return sqrt0;
   }
 
+  @J2ktIncompatible
   @GwtIncompatible // TODO
   private static BigInteger sqrtApproxWithDoubles(BigInteger x) {
     return DoubleMath.roundToBigInteger(Math.sqrt(DoubleUtils.bigToDouble(x)), HALF_EVEN);
@@ -336,11 +338,13 @@ public final class BigIntegerMath {
    *     is not precisely representable as a {@code double}
    * @since 30.0
    */
+  @J2ktIncompatible
   @GwtIncompatible
   public static double roundToDouble(BigInteger x, RoundingMode mode) {
     return BigIntegerToDoubleRounder.INSTANCE.roundToDouble(x, mode);
   }
 
+  @J2ktIncompatible
   @GwtIncompatible
   private static class BigIntegerToDoubleRounder extends ToDoubleRounder<BigInteger> {
     static final BigIntegerToDoubleRounder INSTANCE = new BigIntegerToDoubleRounder();
@@ -375,6 +379,7 @@ public final class BigIntegerMath {
    * @throws ArithmeticException if {@code q == 0}, or if {@code mode == UNNECESSARY} and {@code a}
    *     is not an integer multiple of {@code b}
    */
+  @J2ktIncompatible
   @GwtIncompatible // TODO
   public static BigInteger divide(BigInteger p, BigInteger q, RoundingMode mode) {
     BigDecimal pDec = new BigDecimal(p);
@@ -530,6 +535,7 @@ public final class BigIntegerMath {
   }
 
   // Returns true if BigInteger.valueOf(x.longValue()).equals(x).
+  @J2ktIncompatible
   @GwtIncompatible // TODO
   static boolean fitsInLong(BigInteger x) {
     return x.bitLength() <= Long.SIZE - 1;

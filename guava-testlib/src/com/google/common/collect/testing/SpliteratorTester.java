@@ -30,6 +30,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Ordering;
 import com.google.common.primitives.Ints;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -103,7 +104,7 @@ public final class SpliteratorTester<E> {
     }
 
     @Override
-    GeneralSpliterator<E> trySplit() {
+    @Nullable GeneralSpliterator<E> trySplit() {
       Spliterator<E> split = spliterator.trySplit();
       return split == null ? null : new GeneralSpliteratorOfObject<>(split);
     }
@@ -140,7 +141,7 @@ public final class SpliteratorTester<E> {
     }
 
     @Override
-    GeneralSpliterator<E> trySplit() {
+    @Nullable GeneralSpliterator<E> trySplit() {
       Spliterator.OfPrimitive<E, C, ?> split = spliterator.trySplit();
       return split == null ? null : new GeneralSpliteratorOfPrimitive<>(split, consumerizer);
     }
@@ -275,10 +276,12 @@ public final class SpliteratorTester<E> {
   }
 
   @SafeVarargs
+  @CanIgnoreReturnValue
   public final Ordered expect(Object... elements) {
     return expect(Arrays.asList(elements));
   }
 
+  @CanIgnoreReturnValue
   public final Ordered expect(Iterable<?> elements) {
     List<List<E>> resultsForAllStrategies = new ArrayList<>();
     for (Supplier<GeneralSpliterator<E>> spliteratorSupplier : spliteratorSuppliers) {

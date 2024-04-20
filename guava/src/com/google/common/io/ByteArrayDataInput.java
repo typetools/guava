@@ -15,6 +15,7 @@
 package com.google.common.io;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.io.DataInput;
 import java.io.IOException;
@@ -35,6 +36,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
  * @author Kevin Bourrillion
  * @since 1.0
  */
+@J2ktIncompatible
 @GwtIncompatible
 @ElementTypesAreNonnullByDefault
 public interface ByteArrayDataInput extends DataInput {

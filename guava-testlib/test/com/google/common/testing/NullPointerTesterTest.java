@@ -37,6 +37,7 @@ import com.google.common.collect.Table;
 import com.google.common.reflect.TypeToken;
 import com.google.common.testing.NullPointerTester.Visibility;
 import com.google.common.testing.anotherpackage.SomeClassThatDoesNotUseNullable;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -55,6 +56,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Mick Killianey
  */
 @SuppressWarnings("CheckReturnValue")
+@AndroidIncompatible // NullPointerTester refuses to run for c.g.c under Android
 public class NullPointerTesterTest extends TestCase {
 
   /** Non-NPE RuntimeException. */
@@ -383,7 +385,7 @@ public class NullPointerTesterTest extends TestCase {
     }
 
     /** Method that decides how to react to parameters. */
-    public void reactToNullParameters(Object first, Object second) {
+    public void reactToNullParameters(@Nullable Object first, @Nullable Object second) {
       if (first == null) {
         actionWhenFirstParamIsNull.act();
       }
@@ -962,6 +964,7 @@ public class NullPointerTesterTest extends TestCase {
 
     private final Map<Integer, Object> arguments = Maps.newHashMap();
 
+    @CanIgnoreReturnValue
     final DefaultValueChecker runTester() {
       new NullPointerTester().testInstanceMethods(this, Visibility.PACKAGE);
       return this;
@@ -1444,7 +1447,7 @@ public class NullPointerTesterTest extends TestCase {
   static class OverridesEquals {
     @SuppressWarnings("EqualsHashCode")
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
       return true;
     }
   }

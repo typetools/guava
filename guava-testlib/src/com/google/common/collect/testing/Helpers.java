@@ -23,6 +23,7 @@ import static junit.framework.Assert.assertTrue;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -39,11 +40,12 @@ import java.util.Map.Entry;
 import java.util.Set;
 import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 @GwtCompatible(emulated = true)
 public class Helpers {
   // Clone of Objects.equal
-  static boolean equal(Object a, Object b) {
+  static boolean equal(@Nullable Object a, @Nullable Object b) {
     return a == b || (a != null && a.equals(b));
   }
 
@@ -180,6 +182,7 @@ public class Helpers {
     }
   }
 
+  @CanIgnoreReturnValue
   public static <E> boolean addAll(Collection<E> addTo, Iterable<? extends E> elementsToAdd) {
     boolean modified = false;
     for (E e : elementsToAdd) {
@@ -250,17 +253,25 @@ public class Helpers {
     throw assertionFailedError;
   }
 
-  public static <K, V> Comparator<Entry<K, V>> entryComparator(
-      Comparator<? super K> keyComparator) {
-    return new Comparator<Entry<K, V>>() {
-      @Override
-      @SuppressWarnings("unchecked") // no less safe than putting it in the map!
-      public int compare(Entry<K, V> a, Entry<K, V> b) {
+  private static class EntryComparator<K, V> implements Comparator<Entry<K, V>> {
+    final @Nullable Comparator<? super K> keyComparator;
+
+    public EntryComparator(@Nullable Comparator<? super K> keyComparator) {
+      this.keyComparator = keyComparator;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked") // no less safe than putting it in the map!
+    public int compare(Entry<K, V> a, Entry<K, V> b) {
         return (keyComparator == null)
             ? ((Comparable) a.getKey()).compareTo(b.getKey())
             : keyComparator.compare(a.getKey(), b.getKey());
-      }
-    };
+    }
+  }
+
+  public static <K, V> Comparator<Entry<K, V>> entryComparator(
+      @Nullable Comparator<? super K> keyComparator) {
+    return new EntryComparator<K, V>(keyComparator);
   }
 
   /**
@@ -382,7 +393,7 @@ public class Helpers {
 
       @SuppressWarnings("unchecked")
       @Override
-      public boolean equals(Object o) {
+      public boolean equals(@Nullable Object o) {
         if (o instanceof Entry) {
           Entry<K, V> e = (Entry<K, V>) o;
           e.setValue(value); // muhahaha!
@@ -460,7 +471,7 @@ public class Helpers {
     }
 
     @Override
-    public int compare(String lhs, String rhs) {
+    public int compare(@Nullable String lhs, @Nullable String rhs) {
       if (lhs == rhs) {
         return 0;
       }
@@ -484,7 +495,7 @@ public class Helpers {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
       if (obj instanceof NullsBefore) {
         NullsBefore other = (NullsBefore) obj;
         return justAfterNull.equals(other.justAfterNull);

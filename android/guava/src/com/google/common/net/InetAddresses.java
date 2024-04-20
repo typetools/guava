@@ -18,6 +18,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.MoreObjects;
 import com.google.common.hash.Hashing;
@@ -95,6 +96,7 @@ import javax.annotation.CheckForNull;
  * @author Erik Kline
  * @since 5.0
  */
+@J2ktIncompatible
 @GwtIncompatible
 @ElementTypesAreNonnullByDefault
 public final class InetAddresses {
@@ -522,7 +524,7 @@ public final class InetAddresses {
    * want to accept ASCII digits only, you can use something like {@code
    * CharMatcher.ascii().matchesAllOf(ipString)}.
    *
-   * @param hostAddr A RFC 3986 section 3.2.2 encoded IPv4 or IPv6 address
+   * @param hostAddr an RFC 3986 section 3.2.2 encoded IPv4 or IPv6 address
    * @return an InetAddress representing the address in {@code hostAddr}
    * @throws IllegalArgumentException if {@code hostAddr} is not a valid IPv4 address, or IPv6
    *     address surrounded by square brackets
@@ -1026,7 +1028,7 @@ public final class InetAddresses {
 
   /**
    * Converts a BigInteger to either an IPv4 or IPv6 address. If the IP is IPv4, it must be
-   * constrainted to 32 bits, otherwise it is constrained to 128 bits.
+   * constrained to 32 bits, otherwise it is constrained to 128 bits.
    *
    * @param address the address represented as a big integer
    * @param isIpv6 whether the created address should be IPv4 or IPv6

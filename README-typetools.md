@@ -114,14 +114,14 @@ make sure that you did not make any mistakes when resolving merge conflicts):
    preplace '^ *\@CFComment\([^()]+\)\n' ''
    preplace '^ *\@FormatMethod\n' ''
    # preplace '^ *\@SuppressWarnings.*\n' ''
-   preplace '^ *\@SuppressWarnings\(\{?"(expression\.unparsable|index|lowerbound|nullness|samelen|signature|signedness|substringindex|upperbound|value).*\n' ''
+   preplace '^ *\@SuppressWarnings\(\{?"(cast\.unsafe|expression\.unparsable|index|lowerbound|nullness|override\.return|samelen|signature|signedness|substringindex|upperbound|value).*\n' ''
    preplace '^ *\@(Pure|Deterministic|SideEffectFree)\n' ''
 
    # Annotations that take no argument
    preplace '\@(GTENegativeOne|NonNegative|NonNull|Nullable|Poly[A-Za-z0-9_]+|PolySigned|Positive|Signed|SignednessGlb|SignedPositive|Unsigned|UnknownSignedness) ' ''
 
    # Annotations that take an argument
-   preplace '\@(EnsuresLTLengthOf(If)?|Format|HasSubsequence|IndexFor|IndexOr(Low|High)|IntRange|IntVal|KeyFor|LessThan|(|LT|LTEq)LengthOf|SubstringIndexFor)\([^()]+(\(\))?\) ' ''
+   preplace '\@(EnsuresLTLengthOf(If)?|Format|HasSubsequence|IndexFor|IndexOr(Low|High)|IntRange|IntVal|KeyFor|LessThan|(|LT|LTEq)LengthOf|SubstringIndexFor)\([^()]+\) ' ''
 
    # Array-related spacing
    preplace '\@(Array|Min|Same)Len\([^()]+\) ?' ''
@@ -134,7 +134,7 @@ make sure that you did not make any mistakes when resolving merge conflicts):
    # Extra syntax no longer needed
    preplace ' extends Object>' '>'
    preplace ' extends Object,' ','
-   preplace '\([A-Za-z0-9_.]+(<[A-Z](, [A-Z])*>(.[A-Za-z0-9_.]+)?)? this\)' '()'
+   preplace '\([A-Za-z0-9_.]+(<[A-Z](, ?[A-Z])*>(.[A-Za-z0-9_.]+)?)? this\)' '()'
 
 ```
  * Diff the two temporary clones.

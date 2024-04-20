@@ -23,7 +23,6 @@ import static com.google.common.base.Predicates.in;
 import static com.google.common.base.Predicates.not;
 import static java.util.Objects.requireNonNull;
 
-import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Predicate;
@@ -53,7 +52,6 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
  * @author Louis Wasserman
  * @since 14.0
  */
-@Beta
 @GwtIncompatible // NavigableMap
 @ElementTypesAreNonnullByDefault
 public final class TreeRangeMap<K extends Comparable, V> implements RangeMap<K, V> {
@@ -171,8 +169,8 @@ public final class TreeRangeMap<K extends Comparable, V> implements RangeMap<K, 
   }
 
   @Override
-  public void putAll(RangeMap<K, V> rangeMap) {
-    for (Entry<Range<K>, V> entry : rangeMap.asMapOfRanges().entrySet()) {
+  public void putAll(RangeMap<K, ? extends V> rangeMap) {
+    for (Entry<Range<K>, ? extends V> entry : rangeMap.asMapOfRanges().entrySet()) {
       put(entry.getKey(), entry.getValue());
     }
   }
@@ -419,7 +417,7 @@ public final class TreeRangeMap<K extends Comparable, V> implements RangeMap<K, 
         }
 
         @Override
-        public void putAll(RangeMap<Comparable<?>, Object> rangeMap) {
+        public void putAll(RangeMap<Comparable<?>, ? extends Object> rangeMap) {
           if (!rangeMap.asMapOfRanges().isEmpty()) {
             throw new IllegalArgumentException(
                 "Cannot putAll(nonEmptyRangeMap) into an empty subRangeMap");
@@ -536,7 +534,7 @@ public final class TreeRangeMap<K extends Comparable, V> implements RangeMap<K, 
     }
 
     @Override
-    public void putAll(RangeMap<K, V> rangeMap) {
+    public void putAll(RangeMap<K, ? extends V> rangeMap) {
       if (rangeMap.asMapOfRanges().isEmpty()) {
         return;
       }

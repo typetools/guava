@@ -21,8 +21,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.CollectPreconditions.checkNonnegative;
 
-import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Serialization.FieldSetter;
 import com.google.common.math.IntMath;
@@ -64,6 +64,7 @@ import org.checkerframework.framework.qual.CFComment;
  * @since 2.0
  */
 @AnnotatedFor({"nullness"})
+@J2ktIncompatible
 @GwtIncompatible
 @ElementTypesAreNonnullByDefault
 public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> implements Serializable {
@@ -127,7 +128,6 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
    * @throws IllegalArgumentException if {@code countMap} is not empty
    * @since 20.0
    */
-  @Beta
   public static <E> ConcurrentHashMultiset<E> create(ConcurrentMap<E, AtomicInteger> countMap) {
     return new ConcurrentHashMultiset<>(countMap);
   }
@@ -623,6 +623,7 @@ public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> impleme
     stream.writeObject(countMap);
   }
 
+  @J2ktIncompatible // serialization
   private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
     stream.defaultReadObject();
     @SuppressWarnings("unchecked") // reading data stored by writeObject

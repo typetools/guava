@@ -17,6 +17,7 @@ package com.google.common.io;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.io.Reader;
@@ -34,6 +35,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
  * @author Bin Zhu
  * @since 1.0
  */
+@J2ktIncompatible
 @GwtIncompatible
 @ElementTypesAreNonnullByDefault
 class MultiReader extends Reader {

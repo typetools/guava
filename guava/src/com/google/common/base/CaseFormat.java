@@ -161,7 +161,8 @@ public enum CaseFormat {
   }
 
   /**
-   * Returns a {@code Converter} that converts strings from this format to {@code targetFormat}.
+   * Returns a serializable {@code Converter} that converts strings from this format to {@code
+   * targetFormat}.
    *
    * @since 16.0
    */

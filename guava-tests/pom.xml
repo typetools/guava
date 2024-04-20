@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.google.guava</groupId>
     <artifactId>guava-parent</artifactId>
-    <version>31.1-jre</version>
+    <version>32.0.0-jre</version>
   </parent>
   <artifactId>guava-tests</artifactId>
   <name>Guava Unit Tests</name>
@@ -36,10 +36,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.easymock</groupId>
-      <artifactId>easymock</artifactId>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
@@ -83,13 +79,6 @@
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
-          <execution>
-            <id>default-jar</id>
-            <goals><goal>jar</goal></goals>
-            <configuration>
-              <skipIfEmpty>true</skipIfEmpty>
-            </configuration>
-          </execution>
           <execution>
             <id>create-test-jar</id>
             <goals><goal>test-jar</goal></goals>

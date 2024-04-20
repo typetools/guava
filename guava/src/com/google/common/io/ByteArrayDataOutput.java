@@ -15,6 +15,7 @@
 package com.google.common.io;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import java.io.DataOutput;
 import java.io.IOException;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
@@ -29,6 +30,7 @@ import org.checkerframework.checker.signedness.qual.PolySigned;
  * @author Jayaprabhakar Kadarkarai
  * @since 1.0
  */
+@J2ktIncompatible
 @GwtIncompatible
 @ElementTypesAreNonnullByDefault
 public interface ByteArrayDataOutput extends DataOutput {

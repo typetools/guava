@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.google.guava</groupId>
     <artifactId>guava-parent</artifactId>
-    <version>31.1-jre</version>
+    <version>32.0.0-jre</version>
   </parent>
   <artifactId>guava-gwt</artifactId>
   <name>Guava GWT compatible libs</name>
@@ -17,15 +17,15 @@
     This project includes GWT-friendly sources.
   </description>
   <properties>
-    <gwt.version>2.9.0</gwt.version>
-    <gwt.plugin.version>2.8.2</gwt.plugin.version>
+    <gwt.version>2.10.0</gwt.version>
+    <gwt.plugin.version>2.10.0</gwt.plugin.version>
     <gwt.logLevel>WARN</gwt.logLevel>
   </properties>
   <repositories>
     <repository>
-      <id>sonatype-snapshots</id>
-      <name>sonatype-snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <id>sonatype-google-snapshots</id>
+      <name>sonatype-google-snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/google-snapshots/</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
@@ -53,11 +53,6 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.google.elemental2</groupId>
-      <artifactId>elemental2-promise</artifactId>
-      <version>1.1.0</version>
-    </dependency>
-    <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava-testlib</artifactId>
       <version>${project.version}</version>
@@ -78,13 +73,13 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.google.gwt</groupId>
+      <groupId>org.gwtproject</groupId>
       <artifactId>gwt-dev</artifactId>
       <version>${gwt.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.google.gwt</groupId>
+      <groupId>org.gwtproject</groupId>
       <artifactId>gwt-user</artifactId>
       <version>${gwt.version}</version>
       <scope>test</scope>
@@ -299,12 +294,23 @@
                     <include name="**/InternalFutureFailureAccess.java" />
                   </fileset>
                 </copy>
+                <!-- Any manually written supersource should take priority over the original guava source, so we set overwrite=true. -->
+                <copy toDir="${project.build.directory}/guava-gwt-sources" overwrite="true">
+                  <fileset dir="src-super" />
+                </copy>
                 <copy toDir="${project.build.directory}/guava-test-gwt-sources">
                   <fileset dir="${project.build.directory}/guava-test-sources">
                     <contains text="@GwtCompatible"/>
                   </fileset>
                 </copy>
+                <!-- TODO(cpovirk): If we continue stripping these once we use @ElementTypesAreNonnullByDefault, then we should strip @ElementTypesAreNonnullByDefault, too, to reflect that the classes are *not* fully annotated. But hopefully we can stop stripping them, as https://github.com/jspecify/jspecify/issues/184 should make possible. -->
                 <replace token="@Nullable" value="">
+                  <fileset dir="${project.build.directory}">
+                    <include name="guava-gwt-sources/**/*.java"/>
+                    <include name="guava-test-gwt-sources/**/*.java"/>
+                  </fileset>
+                </replace>
+                <replace token="@NonNull" value="">
                   <fileset dir="${project.build.directory}">
                     <include name="guava-gwt-sources/**/*.java"/>
                     <include name="guava-test-gwt-sources/**/*.java"/>
@@ -401,9 +407,8 @@
       <resource>
         <directory>src</directory>
       </resource>
-      <resource>
-        <directory>src-super</directory>
-      </resource>
+      <!-- src-super is copied to guava-gwt-sources (so that we can strip its @Nullable annotations), so we don't need to list it here. We may want to arrange something similar for test-super someday. -->
+      <!-- TODO(cpovirk): Why do we have separate src and src-super directories, anyway? -->
       <resource>
         <directory>${project.build.directory}/guava-gwt-sources</directory>
       </resource>

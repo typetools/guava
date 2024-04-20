@@ -22,10 +22,12 @@ import static com.google.common.collect.CollectPreconditions.checkEntryNotNull;
 import static com.google.common.collect.Maps.keyOrNull;
 import static java.util.Objects.requireNonNull;
 
-import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.DoNotCall;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -96,9 +98,9 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
    * keys and values are the result of applying the provided mapping functions to the input
    * elements.
    *
-   * <p>If the mapped keys contain duplicates (according to the comparator), the the values are
-   * merged using the specified merging function. Entries will appear in the encounter order of the
-   * first occurrence of the key.
+   * <p>If the mapped keys contain duplicates (according to the comparator), the values are merged
+   * using the specified merging function. Entries will appear in the encounter order of the first
+   * occurrence of the key.
    *
    * @since 21.0
    */
@@ -410,7 +412,6 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
    * @throws IllegalArgumentException if any two keys are equal according to the comparator
    * @since 19.0
    */
-  @Beta
   public static <K, V> ImmutableSortedMap<K, V> copyOf(
       Iterable<? extends Entry<? extends K, ? extends V>> entries) {
     // Hack around K not being a subtype of Comparable.
@@ -428,7 +429,6 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
    * @throws IllegalArgumentException if any two keys are equal according to the comparator
    * @since 19.0
    */
-  @Beta
   public static <K, V> ImmutableSortedMap<K, V> copyOf(
       Iterable<? extends Entry<? extends K, ? extends V>> entries,
       Comparator<? super K> comparator) {
@@ -542,14 +542,11 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
               entryArray,
               0,
               size,
-              new Comparator<@Nullable Entry<K, V>>() {
-                @Override
-                public int compare(@CheckForNull Entry<K, V> e1, @CheckForNull Entry<K, V> e2) {
-                  // requireNonNull is safe because the first `size` elements have been filled in.
-                  requireNonNull(e1);
-                  requireNonNull(e2);
-                  return comparator.compare(e1.getKey(), e2.getKey());
-                }
+              (e1, e2) -> {
+                // requireNonNull is safe because the first `size` elements have been filled in.
+                requireNonNull(e1);
+                requireNonNull(e2);
+                return comparator.compare(e1.getKey(), e2.getKey());
               });
           // requireNonNull is safe because the first `size` elements have been filled in.
           Entry<K, V> firstEntry = requireNonNull(entryArray[0]);
@@ -601,7 +598,7 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
    * their natural ordering.
    */
   public static <K extends Comparable<?>, V> Builder<K, V> reverseOrder() {
-    return new Builder<>(Ordering.natural().reverse());
+    return new Builder<>(Ordering.<K>natural().reverse());
   }
 
   /**
@@ -686,7 +683,6 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
      * @since 19.0
      */
     @CanIgnoreReturnValue
-    @Beta
     @Override
     public Builder<K, V> putAll(Iterable<? extends Entry<? extends K, ? extends V>> entries) {
       super.putAll(entries);
@@ -700,7 +696,6 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
      * @deprecated Unsupported by ImmutableSortedMap.Builder.
      */
     @CanIgnoreReturnValue
-    @Beta
     @Override
     @Deprecated
     @DoNotCall("Always throws UnsupportedOperationException")
@@ -1155,6 +1150,7 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
    * are reconstructed using public factory methods. This ensures that the implementation types
    * remain as implementation details.
    */
+  @J2ktIncompatible // serialization
   private static class SerializedForm<K, V> extends ImmutableMap.SerializedForm<K, V> {
     private final Comparator<? super K> comparator;
 
@@ -1172,8 +1168,14 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
   }
 
   @Override
+  @J2ktIncompatible // serialization
   Object writeReplace() {
     return new SerializedForm<>(this);
+  }
+
+  @J2ktIncompatible // java.io.ObjectInputStream
+  private void readObject(ObjectInputStream stream) throws InvalidObjectException {
+    throw new InvalidObjectException("Use SerializedForm");
   }
 
   // This class is never actually serialized directly, but we have to make the

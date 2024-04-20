@@ -22,9 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
 import com.google.common.testing.NullPointerTester;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -42,6 +40,7 @@ import junit.framework.TestSuite;
 
 public class ResourcesTest extends IoTestCase {
 
+  @AndroidIncompatible // wouldn't run anyway, but strip the source entirely because of b/230620681
   public static TestSuite suite() {
     TestSuite suite = new TestSuite();
     suite.addTest(
@@ -62,9 +61,9 @@ public class ResourcesTest extends IoTestCase {
     assertThat(Resources.toString(resource, Charsets.US_ASCII)).isNotEqualTo(I18N);
   }
 
-  public void testToToByteArray() throws IOException {
-    byte[] data = Resources.toByteArray(classfile(Resources.class));
-    assertEquals(0xCAFEBABE, new DataInputStream(new ByteArrayInputStream(data)).readInt());
+  public void testToByteArray() throws IOException {
+    URL resource = getClass().getResource("testdata/i18n.txt");
+    assertThat(Resources.toByteArray(resource)).isEqualTo(I18N.getBytes(Charsets.UTF_8));
   }
 
   public void testReadLines() throws IOException {
@@ -181,6 +180,7 @@ public class ResourcesTest extends IoTestCase {
     }
   }
 
+  @AndroidIncompatible // .class files aren't available
   public void testNulls() {
     new NullPointerTester()
         .setDefault(URL.class, classfile(ResourcesTest.class))

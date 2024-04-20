@@ -124,7 +124,7 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
 
   private static long hashLength0to16(byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int offset, @IntRange(from = 0, to = 16) @LTLengthOf(value = "#1", offset = "#2 - 1") int length) {
     if (length >= 8) {
-      long mul = K2 + length * 2;
+      long mul = K2 + length * 2L;
       long a = load64(bytes, offset) + K2;
       long b = load64(bytes, offset + length - 8);//(1)
       long c = rotateRight(b, 37) * mul + a;
@@ -148,7 +148,7 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
   }
 
   private static long hashLength17to32(byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int offset, @IntRange(from = 17, to = 32) @LTLengthOf(value = "#1", offset = "#2 - 1") int length) {
-    long mul = K2 + length * 2;
+    long mul = K2 + length * 2L;
     long a = load64(bytes, offset) * K1;
     long b = load64(bytes, offset + 8);
     long c = load64(bytes, offset + length - 8) * mul;//(1)
@@ -158,7 +158,7 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
   }
 
   private static long hashLength33To64(byte[] bytes, @NonNegative  @LTLengthOf(value = "#1", offset = "#3 - 1") int offset, @IntRange(from = 33, to = 64) @LTLengthOf(value = "#1", offset = "#2 - 1") int length) {
-    long mul = K2 + length * 2;
+    long mul = K2 + length * 2L;
     long a = load64(bytes, offset) * K2;
     long b = load64(bytes, offset + 8);
     long c = load64(bytes, offset + length - 8) * mul;

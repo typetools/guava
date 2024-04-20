@@ -44,9 +44,9 @@ import javax.annotation.CheckForNull;
 abstract class AbstractBaseGraph<N> implements BaseGraph<N> {
 
   /**
-   * Returns the number of edges in this graph; used to calculate the size of {@link #edges()}. This
-   * implementation requires O(|N|) time. Classes extending this one may manually keep track of the
-   * number of edges as the graph is updated, and override this method for better performance.
+   * Returns the number of edges in this graph; used to calculate the size of {@link Graph#edges()}.
+   * This implementation requires O(|N|) time. Classes extending this one may manually keep track of
+   * the number of edges as the graph is updated, and override this method for better performance.
    */
   protected long edgeCount() {
     long degreeSum = 0L;
@@ -59,8 +59,8 @@ abstract class AbstractBaseGraph<N> implements BaseGraph<N> {
   }
 
   /**
-   * An implementation of {@link BaseGraph#edges()} defined in terms of {@link #nodes()} and {@link
-   * #successors(Object)}.
+   * An implementation of {@link BaseGraph#edges()} defined in terms of {@link Graph#nodes()} and
+   * {@link #successors(Object)}.
    */
   @Override
   public Set<EndpointPair<N>> edges() {
@@ -177,7 +177,11 @@ abstract class AbstractBaseGraph<N> implements BaseGraph<N> {
     checkArgument(isOrderingCompatible(endpoints), ENDPOINTS_MISMATCH);
   }
 
+  /**
+   * Returns {@code true} iff {@code endpoints}' ordering is compatible with the directionality of
+   * this graph.
+   */
   protected final boolean isOrderingCompatible(EndpointPair<?> endpoints) {
-    return endpoints.isOrdered() || !this.isDirected();
+    return endpoints.isOrdered() == this.isDirected();
   }
 }

@@ -18,6 +18,7 @@ import static java.lang.Double.doubleToRawLongBits;
 import static java.lang.Double.longBitsToDouble;
 
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import com.google.common.primitives.ImmutableLongArray;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.concurrent.atomic.AtomicLongArray;
@@ -47,6 +48,7 @@ import java.util.function.DoubleUnaryOperator;
  * @since 11.0
  */
 @GwtIncompatible
+@J2ktIncompatible
 @ElementTypesAreNonnullByDefault
 public class AtomicDoubleArray implements java.io.Serializable {
   private static final long serialVersionUID = 0L;
@@ -191,7 +193,7 @@ public class AtomicDoubleArray implements java.io.Serializable {
 
   /**
    * Atomically updates the element at index {@code i} with the results of applying the given
-   * function to the curernt and given values.
+   * function to the current and given values.
    *
    * @param i the index to update
    * @param x the update value
@@ -207,7 +209,7 @@ public class AtomicDoubleArray implements java.io.Serializable {
 
   /**
    * Atomically updates the element at index {@code i} with the results of applying the given
-   * function to the curernt and given values.
+   * function to the current and given values.
    *
    * @param i the index to update
    * @param x the update value
@@ -223,7 +225,7 @@ public class AtomicDoubleArray implements java.io.Serializable {
 
   /**
    * Atomically updates the element at index {@code i} with the results of applying the given
-   * function to the curernt value.
+   * function to the current value.
    *
    * @param i the index to update
    * @param updaterFunction the update function
@@ -245,7 +247,7 @@ public class AtomicDoubleArray implements java.io.Serializable {
 
   /**
    * Atomically updates the element at index {@code i} with the results of applying the given
-   * function to the curernt value.
+   * function to the current value.
    *
    * @param i the index to update
    * @param updaterFunction the update function

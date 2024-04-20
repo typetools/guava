@@ -22,7 +22,11 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.framework.qual.AnnotatedFor;
 
-/** @see com.google.common.collect.Maps#immutableEntry(Object, Object) */
+/**
+ * An immutable {@code Map.Entry}, used both by {@link
+ * com.google.common.collect.Maps#immutableEntry(Object, Object)} and by other parts of {@code
+ * common.collect} as a superclass.
+ */
 @AnnotatedFor({"nullness"})
 @GwtCompatible(serializable = true)
 @ElementTypesAreNonnullByDefault

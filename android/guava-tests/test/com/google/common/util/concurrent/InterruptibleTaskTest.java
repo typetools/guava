@@ -17,13 +17,13 @@ package com.google.common.util.concurrent;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import java.lang.reflect.Method;
+import com.google.common.util.concurrent.InterruptibleTask.Blocker;
 import java.nio.channels.spi.AbstractInterruptibleChannel;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.AbstractOwnableSynchronizer;
 import java.util.concurrent.locks.LockSupport;
 import junit.framework.TestCase;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class InterruptibleTaskTest extends TestCase {
 
@@ -31,10 +31,10 @@ public final class InterruptibleTaskTest extends TestCase {
   // transition to DONE
   public void testInterruptThrows() throws Exception {
     final CountDownLatch isInterruptibleRegistered = new CountDownLatch(1);
-    InterruptibleTask<Void> task =
-        new InterruptibleTask<Void>() {
+    InterruptibleTask<@Nullable Void> task =
+        new InterruptibleTask<@Nullable Void>() {
           @Override
-          Void runInterruptibly() throws Exception {
+          @Nullable Void runInterruptibly() throws Exception {
             BrokenChannel bc = new BrokenChannel();
             bc.doBegin();
             isInterruptibleRegistered.countDown();
@@ -53,7 +53,7 @@ public final class InterruptibleTaskTest extends TestCase {
           }
 
           @Override
-          void afterRanInterruptiblySuccess(Void result) {}
+          void afterRanInterruptiblySuccess(@Nullable Void result) {}
 
           @Override
           void afterRanInterruptiblyFailure(Throwable error) {}
@@ -101,10 +101,10 @@ public final class InterruptibleTaskTest extends TestCase {
   public void testInterruptIsSlow() throws Exception {
     final CountDownLatch isInterruptibleRegistered = new CountDownLatch(1);
     final SlowChannel slowChannel = new SlowChannel();
-    final InterruptibleTask<Void> task =
-        new InterruptibleTask<Void>() {
+    final InterruptibleTask<@Nullable Void> task =
+        new InterruptibleTask<@Nullable Void>() {
           @Override
-          Void runInterruptibly() throws Exception {
+          @Nullable Void runInterruptibly() throws Exception {
             slowChannel.doBegin();
             isInterruptibleRegistered.countDown();
             try {
@@ -127,7 +127,7 @@ public final class InterruptibleTaskTest extends TestCase {
           }
 
           @Override
-          void afterRanInterruptiblySuccess(Void result) {}
+          void afterRanInterruptiblySuccess(@Nullable Void result) {}
 
           @Override
           void afterRanInterruptiblyFailure(Throwable error) {}
@@ -152,12 +152,8 @@ public final class InterruptibleTaskTest extends TestCase {
     // waiting for the slow interrupting thread to complete Thread.interrupt
     awaitBlockedOnInstanceOf(runner, InterruptibleTask.Blocker.class);
 
-    Object blocker = LockSupport.getBlocker(runner);
-    assertThat(blocker).isInstanceOf(AbstractOwnableSynchronizer.class);
-    Method getExclusiveOwnerThread =
-        AbstractOwnableSynchronizer.class.getDeclaredMethod("getExclusiveOwnerThread");
-    getExclusiveOwnerThread.setAccessible(true);
-    Thread owner = (Thread) getExclusiveOwnerThread.invoke(blocker);
+    Blocker blocker = (Blocker) LockSupport.getBlocker(runner);
+    Thread owner = blocker.getOwner();
     assertThat(owner).isSameInstanceAs(interrupter);
 
     slowChannel.exitClose.countDown(); // release the interrupter

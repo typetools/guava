@@ -18,7 +18,6 @@ import static com.google.common.base.Preconditions.checkPositionIndexes;
 import static java.lang.Character.MAX_SURROGATE;
 import static java.lang.Character.MIN_SURROGATE;
 
-import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
 import org.checkerframework.checker.index.qual.LTLengthOf;
@@ -39,7 +38,6 @@ import org.checkerframework.checker.index.qual.NonNegative;
  * @author Clément Roux
  * @since 16.0
  */
-@Beta
 @GwtCompatible(emulated = true)
 @ElementTypesAreNonnullByDefault
 public final class Utf8 {

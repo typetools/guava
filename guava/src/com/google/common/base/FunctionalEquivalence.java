@@ -16,7 +16,6 @@ package com.google.common.base;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import java.io.Serializable;
 import javax.annotation.CheckForNull;
@@ -29,7 +28,6 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
  * @author Bob Lee
  * @since 10.0
  */
-@Beta
 @GwtCompatible
 @ElementTypesAreNonnullByDefault
 final class FunctionalEquivalence<F, T> extends Equivalence<F> implements Serializable {

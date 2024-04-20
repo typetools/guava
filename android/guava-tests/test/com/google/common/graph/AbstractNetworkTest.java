@@ -36,6 +36,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -785,7 +786,6 @@ public abstract class AbstractNetworkTest {
     assertThat(network.edgesConnecting(N1, N2)).containsExactly(E12);
   }
 
-
   @Test
   public void concurrentIteration() throws Exception {
     addEdge(1, 2, "foo");
@@ -799,9 +799,9 @@ public abstract class AbstractNetworkTest {
     for (int i = 0; i < threadCount; i++) {
       futures.add(
           executor.submit(
-              new Callable<Object>() {
+              new Callable<@Nullable Void>() {
                 @Override
-                public Object call() throws Exception {
+                public @Nullable Void call() throws Exception {
                   barrier.await();
                   Integer first = network.nodes().iterator().next();
                   for (Integer node : network.nodes()) {

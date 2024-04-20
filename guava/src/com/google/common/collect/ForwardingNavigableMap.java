@@ -18,7 +18,6 @@ package com.google.common.collect;
 
 import static com.google.common.collect.Maps.keyOrNull;
 
-import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtIncompatible;
 import java.util.Iterator;
 import java.util.NavigableMap;
@@ -302,7 +301,6 @@ public abstract class ForwardingNavigableMap<K extends @Nullable Object, V exten
    *
    * @since 12.0
    */
-  @Beta
   protected class StandardDescendingMap extends Maps.DescendingMap<K, V> {
     /** Constructor for use by subclasses. */
     public StandardDescendingMap() {}
@@ -366,7 +364,6 @@ public abstract class ForwardingNavigableMap<K extends @Nullable Object, V exten
    *
    * @since 12.0
    */
-  @Beta
   protected class StandardNavigableKeySet extends Maps.NavigableKeySet<K, V> {
     /** Constructor for use by subclasses. */
     public StandardNavigableKeySet() {
@@ -386,7 +383,6 @@ public abstract class ForwardingNavigableMap<K extends @Nullable Object, V exten
    * descendingMap}, you may wish to override {@code descendingKeySet} to forward to this
    * implementation.
    */
-  @Beta
   protected NavigableSet<K> standardDescendingKeySet() {
     return descendingMap().navigableKeySet();
   }

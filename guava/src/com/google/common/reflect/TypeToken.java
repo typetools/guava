@@ -19,7 +19,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static java.util.Objects.requireNonNull;
 
-import com.google.common.annotations.Beta;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
@@ -90,7 +89,7 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
  *
  * <p>{@code TypeToken} is serializable when no type variable is contained in the type.
  *
- * <p>Note to Guice users: {@code} TypeToken is similar to Guice's {@code TypeLiteral} class except
+ * <p>Note to Guice users: {@code TypeToken} is similar to Guice's {@code TypeLiteral} class except
  * that it is serializable and offers numerous additional utility methods.
  *
  * @author Bob Lee
@@ -591,7 +590,6 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
    *
    * @since 14.0
    */
-  @Beta
   public final Invokable<T, Object> method(Method method) {
     checkArgument(
         this.someRawTypeIsSubclassOf(method.getDeclaringClass()),
@@ -631,7 +629,6 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
    *
    * @since 14.0
    */
-  @Beta
   public final Invokable<T, T> constructor(Constructor<?> constructor) {
     checkArgument(
         constructor.getDeclaringClass() == getRawType(),
@@ -1317,7 +1314,7 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
   }
 
   /**
-   * Collects parent types from a sub type.
+   * Collects parent types from a subtype.
    *
    * @param <K> The type "kind". Either a TypeToken, or Class.
    */

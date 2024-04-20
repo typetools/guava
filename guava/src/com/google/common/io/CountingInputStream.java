@@ -16,8 +16,8 @@ package com.google.common.io;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +33,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
  * @author Chris Nokleberg
  * @since 1.0
  */
-@Beta
+@J2ktIncompatible
 @GwtIncompatible
 @ElementTypesAreNonnullByDefault
 public final class CountingInputStream extends FilterInputStream {

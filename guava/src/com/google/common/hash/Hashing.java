@@ -61,7 +61,8 @@ public final class Hashing {
    * <p>Repeated calls to this method on the same loaded {@code Hashing} class, using the same value
    * for {@code minimumBits}, will return identically-behaving {@link HashFunction} instances.
    *
-   * @param minimumBits a positive integer (can be arbitrarily large)
+   * @param minimumBits a positive integer. This can be arbitrarily large. The returned {@link
+   *     HashFunction} instance may use memory proportional to this integer.
    * @return a hash function, described above, that produces hash codes of length {@code
    *     minimumBits} or greater
    */
@@ -377,9 +378,13 @@ public final class Hashing {
   }
 
   private static String hmacToString(String methodName, Key key) {
-    return String.format(
-        "Hashing.%s(Key[algorithm=%s, format=%s])",
-        methodName, key.getAlgorithm(), key.getFormat());
+    return "Hashing."
+        + methodName
+        + "(Key[algorithm="
+        + key.getAlgorithm()
+        + ", format="
+        + key.getFormat()
+        + "])";
   }
 
   /**
@@ -393,7 +398,19 @@ public final class Hashing {
    * @since 18.0
    */
   public static HashFunction crc32c() {
-    return Crc32cHashFunction.CRC_32_C;
+    return Crc32CSupplier.HASH_FUNCTION;
+  }
+
+  @Immutable
+  private enum Crc32CSupplier implements ImmutableSupplier<HashFunction> {
+    ABSTRACT_HASH_FUNCTION {
+      @Override
+      public HashFunction get() {
+        return Crc32cHashFunction.CRC_32_C;
+      }
+    };
+
+    static final HashFunction HASH_FUNCTION = values()[0].get();
   }
 
   /**
