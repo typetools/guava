@@ -162,9 +162,19 @@ yet written.
 Note that this command makes a merge, which must appear in the typetools/guava
 repository.  (Do not squash-and-merge if you are working on a different branch!)
 
+If your clone of guava is in directory `$t/libraries` and is named
+`guava-fork-typetools`, then these commands will create a copy of the clone (not
+a new branch) and pull in the upstream changes:
+
 ```
+cd $t/libraries
+GUAVA_FORK_TYPETOOLS=guava-fork-typetools
+VER=32.1.3
+rm -rf ${GUAVA_FORK_TYPETOOLS}-version-${VER}
+cp -pr ${GUAVA_FORK_TYPETOOLS} ${GUAVA_FORK_TYPETOOLS}-version-${VER}
+cd ${GUAVA_FORK_TYPETOOLS}-version-${VER}
 git fetch --tags https://github.com/google/guava
-git pull https://github.com/google/guava v31.1
+git pull https://github.com/google/guava v${VER}
 ```
 
 3. Ensure that the project still builds:
