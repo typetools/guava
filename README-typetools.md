@@ -141,13 +141,13 @@ make sure that you did not make any mistakes when resolving merge conflicts):
 
 
 To release to Maven Central
---------------------------
+---------------------------
 
-Re-releasing:  If you want to re-release some version of Guava because you have
-added annotations or because the Checker Framework has changed, then *you will
-need to do something special*.  (Because you have probably pulled, from
-upstream, commits subsequent to the release.)  Those instructions are not
-yet written.
+(Note about re-releasing:  You can re-release a given version of Guava because
+you have added annotations or because the Checker Framework has changed.
+However, if you have pulled, from upstream, *commits subsequent to the release*,
+then you will need to do something special.  Those instructions are not yet
+written.)
 
 1. Use the latest Checker Framework release
 (https://github.com/typetools/checker-framework/releases):
