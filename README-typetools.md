@@ -7,7 +7,7 @@ To build this project
 ---------------------
 
 To create file `guava/target/guava-HEAD-jre-SNAPSHOT.jar`:
-(This takes about 25 minutes, because it performs pluggable type-checking.)
+(This takes 10+ minutes, because it performs pluggable type-checking.)
 
 ```
 (cd guava && mvn -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
@@ -39,7 +39,7 @@ MAVEN_OPTS=-Xmx6g mvn -V -B -U verify -Dcheckerframework.checkers=org.checkerfra
                       -Dcheck.value.phase=skip -Dmaven.javadoc.skip
 
 Running with the single FormatterChecker gets the total time down to about 20-25 minutes,
-almost all testing. (Over 850,000 tests are run.)
+almost all of which testing. (Over 850,000 tests are run.)
 
 
 Typechecking
