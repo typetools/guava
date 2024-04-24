@@ -90,56 +90,6 @@ Whenever a Checker Framework release is made:
  * delete the `cf-master` branch.
 
 
-To compare to upstream
-----------------------
-
-If you wish to see a simplified diff between this fork of Guava and upstream (to
-make sure that you did not make any mistakes when resolving merge conflicts):
-
- * Clone both upstream and this fork.
- * Make a copy of each clone, because you will destructively edit each one.
- * Check each clone out to an appropriate commit.
- * Run the following commands in each temporary clone
-   (preplace is in https://github.com/plume-lib/plume-scripts):
-```
-   rm -rf .git
-   mvn -B clean
-
-   preplace '^import org.checker.*\n' ''
-
-   # Annotations that take up an entire line
-   preplace '^\@AnnotatedFor.*\n' ''
-   preplace '^\@Covariant\([0-9]+\)\n' ''
-   preplace '^ *\@AssertMethod\([^()]+\)\n' ''
-   preplace '^ *\@CFComment\([^()]+\)\n' ''
-   preplace '^ *\@FormatMethod\n' ''
-   # preplace '^ *\@SuppressWarnings.*\n' ''
-   preplace '^ *\@SuppressWarnings\(\{?"(cast\.unsafe|expression\.unparsable|index|lowerbound|nullness|override\.return|samelen|signature|signedness|substringindex|upperbound|value).*\n' ''
-   preplace '^ *\@(Pure|Deterministic|SideEffectFree)\n' ''
-
-   # Annotations that take no argument
-   preplace '\@(GTENegativeOne|NonNegative|NonNull|Nullable|Poly[A-Za-z0-9_]+|PolySigned|Positive|Signed|SignednessGlb|SignedPositive|Unsigned|UnknownSignedness) ' ''
-
-   # Annotations that take an argument
-   preplace '\@(EnsuresLTLengthOf(If)?|Format|HasSubsequence|IndexFor|IndexOr(Low|High)|IntRange|IntVal|KeyFor|LessThan|(|LT|LTEq)LengthOf|SubstringIndexFor)\([^()]+\) ' ''
-
-   # Array-related spacing
-   preplace '\@(Array|Min|Same)Len\([^()]+\) ?' ''
-   preplace ' \[\]' '[]'
-   preplace ' \.\.\.' '...'
-
-   preplace '([;{]) *// *\([0-9]+\)$' '\1'
-   preplace '([;{]) *// *#[0-9]+$' '\1'
-
-   # Extra syntax no longer needed
-   preplace ' extends Object>' '>'
-   preplace ' extends Object,' ','
-   preplace '\([A-Za-z0-9_.]+(<[A-Z](, ?[A-Z])*>(.[A-Za-z0-9_.]+)?)? this\)' '()'
-
-```
- * Diff the two temporary clones.
-
-
 To release to Maven Central
 ---------------------------
 
@@ -161,7 +111,6 @@ written.)
 2. Pull in the latest Guava version (https://github.com/google/guava/releases).
 This will makes a merge, which must appear in the typetools/guava repository.
 (Do not squash-and-merge if you are working on a different branch!)
-
 If your clone of guava is in directory `$t/libraries` and is named
 `guava-fork-typetools`, then these commands will create a copy of the clone (not
 a new branch) and pull in the upstream changes:
@@ -233,6 +182,56 @@ mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/stagin
 ```
 
 8. Complete the release at https://oss.sonatype.org/#stagingRepositories
+
+
+To compare to upstream
+----------------------
+
+If you wish to see a simplified diff between this fork of Guava and upstream (to
+make sure that you did not make any mistakes when resolving merge conflicts):
+
+ * Clone both upstream and this fork.
+ * Make a copy of each clone, because you will destructively edit each one.
+ * Check each clone out to an appropriate commit.
+ * Run the following commands in each temporary clone
+   (preplace is in https://github.com/plume-lib/plume-scripts):
+```
+   rm -rf .git
+   mvn -B clean
+
+   preplace '^import org.checker.*\n' ''
+
+   # Annotations that take up an entire line
+   preplace '^\@AnnotatedFor.*\n' ''
+   preplace '^\@Covariant\([0-9]+\)\n' ''
+   preplace '^ *\@AssertMethod\([^()]+\)\n' ''
+   preplace '^ *\@CFComment\([^()]+\)\n' ''
+   preplace '^ *\@FormatMethod\n' ''
+   # preplace '^ *\@SuppressWarnings.*\n' ''
+   preplace '^ *\@SuppressWarnings\(\{?"(cast\.unsafe|expression\.unparsable|index|lowerbound|nullness|override\.return|samelen|signature|signedness|substringindex|upperbound|value).*\n' ''
+   preplace '^ *\@(Pure|Deterministic|SideEffectFree)\n' ''
+
+   # Annotations that take no argument
+   preplace '\@(GTENegativeOne|NonNegative|NonNull|Nullable|Poly[A-Za-z0-9_]+|PolySigned|Positive|Signed|SignednessGlb|SignedPositive|Unsigned|UnknownSignedness) ' ''
+
+   # Annotations that take an argument
+   preplace '\@(EnsuresLTLengthOf(If)?|Format|HasSubsequence|IndexFor|IndexOr(Low|High)|IntRange|IntVal|KeyFor|LessThan|(|LT|LTEq)LengthOf|SubstringIndexFor)\([^()]+\) ' ''
+
+   # Array-related spacing
+   preplace '\@(Array|Min|Same)Len\([^()]+\) ?' ''
+   preplace ' \[\]' '[]'
+   preplace ' \.\.\.' '...'
+
+   preplace '([;{]) *// *\([0-9]+\)$' '\1'
+   preplace '([;{]) *// *#[0-9]+$' '\1'
+
+   # Extra syntax no longer needed
+   preplace ' extends Object>' '>'
+   preplace ' extends Object,' ','
+   preplace '\([A-Za-z0-9_.]+(<[A-Z](, ?[A-Z])*>(.[A-Za-z0-9_.]+)?)? this\)' '()'
+
+```
+ * Diff the two temporary clones.
 
 
 To update to a non-released version of the upstream library
