@@ -6,7 +6,7 @@
 
     <name>Guava</name>
     <url>https://github.com/typetools/guava</url>
-    <description>Guava library, with additional type annotations</description>
+    <description>Guava library, with additional type annotations for verification</description>
 
     <groupId>org.checkerframework.annotatedlib</groupId>
     <artifactId>guava</artifactId>

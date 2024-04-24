@@ -10,12 +10,12 @@ To create file `guava/target/guava-HEAD-jre-SNAPSHOT.jar`:
 (This takes 10+ minutes, because it performs pluggable type-checking.)
 
 ```
-(cd guava && mvn -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
+(cd guava && ../mvnw -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
 ```
 
 To use a locally-built Checker Framework:
 ```
-(cd guava && mvn -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true -P checkerframework-local)
+(cd guava && ../mvnw -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true -P checkerframework-local)
 ```
 or change `guava/pom.xml`.
 
@@ -30,12 +30,12 @@ bit, the command lines below only run a single checker (the one for format
 strings).  First, you must run maven with the install target to get a copy of
 all the generated jar files in your local maven repository:
 
-mvn -V -B -U clean install -Dcheckerframework.checkers=org.checkerframework.checker.formatter.FormatterChecker  \
+./mvnw -V -B -U clean install -Dcheckerframework.checkers=org.checkerframework.checker.formatter.FormatterChecker  \
     -Dcheck.value.phase=skip -Dmaven.test.skip -Dmaven.javadoc.skip
 
 Then you run the test suite:
 
-MAVEN_OPTS=-Xmx6g mvn -V -B -U verify -Dcheckerframework.checkers=org.checkerframework.checker.formatter.FormatterChecker \
+MAVEN_OPTS=-Xmx6g ./mvnw -V -B -U verify -Dcheckerframework.checkers=org.checkerframework.checker.formatter.FormatterChecker \
                       -Dcheck.value.phase=skip -Dmaven.javadoc.skip
 
 Running with the single FormatterChecker gets the total time down to about 20-25 minutes,
@@ -103,7 +103,7 @@ written.)
 (https://github.com/typetools/checker-framework/releases):
  * Change `pom.xml` (in 1 place) and `guava/pom.xml` (in 1 place).
  * Re-build to ensure that typechecking still works:
-   (cd guava && mvn -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
+   (cd guava && ../mvnw -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
  * Commit and push.
  * If a `cf-master` branch exists in this repository, follow the
    instructions above to merge it into master.
@@ -133,7 +133,7 @@ etags $(git ls-files)
 
 4. Ensure that the project still builds:
 ```
-(cd guava && mvn -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
+(cd guava && ../mvnw -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
 ```
 
 5. Follow the instructions in section "to compare to upstream".
@@ -158,13 +158,13 @@ PACKAGE=guava-33.1.0-jre
 
 cd guava
 
-# Compile, and create Javadoc jar file (`mvn clean` removes MANIFEST.MF).
+# Compile, and create Javadoc jar file (`../mvnw clean` removes MANIFEST.MF).
 # This takes about 20 minutes.
 [ ! -z "$PACKAGE" ] && \
-mvn clean && \
-mvn package -Dmaven.test.skip=true -Danimal.sniffer.skip=true && \
-mvn source:jar && \
-mvn javadoc:javadoc && (cd target/site/apidocs && jar -cf ${PACKAGE}-javadoc.jar com)
+../mvnw clean && \
+../mvnw package -Dmaven.test.skip=true -Danimal.sniffer.skip=true && \
+../mvnw source:jar && \
+../mvnw javadoc:javadoc && (cd target/site/apidocs && jar -cf ${PACKAGE}-javadoc.jar com)
 
 if [ -d /projects/swlab1/checker-framework/hosting-info ] ; then
   HOSTING_INFO_DIR=/projects/swlab1/checker-framework/hosting-info
@@ -176,11 +176,11 @@ else
 fi
 
 [ ! -z "$PACKAGE" ] && \
-mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=cfMavenCentral.xml -Dgpg.publicKeyring=$HOSTING_INFO_DIR/pubring.gpg -Dgpg.secretKeyring=$HOSTING_INFO_DIR/secring.gpg -Dgpg.keyname=ADF4D638 -Dgpg.passphrase="`cat $HOSTING_INFO_DIR/release-private.password`" -Dfile=target/${PACKAGE}.jar \
+../mvnw gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=cfMavenCentral.xml -Dgpg.publicKeyring=$HOSTING_INFO_DIR/pubring.gpg -Dgpg.secretKeyring=$HOSTING_INFO_DIR/secring.gpg -Dgpg.keyname=ADF4D638 -Dgpg.passphrase="`cat $HOSTING_INFO_DIR/release-private.password`" -Dfile=target/${PACKAGE}.jar \
 && \
-mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=cfMavenCentral.xml -Dgpg.publicKeyring=$HOSTING_INFO_DIR/pubring.gpg -Dgpg.secretKeyring=$HOSTING_INFO_DIR/secring.gpg -Dgpg.keyname=ADF4D638 -Dgpg.passphrase="`cat $HOSTING_INFO_DIR/release-private.password`" -Dfile=target/${PACKAGE}-sources.jar -Dclassifier=sources \
+../mvnw gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=cfMavenCentral.xml -Dgpg.publicKeyring=$HOSTING_INFO_DIR/pubring.gpg -Dgpg.secretKeyring=$HOSTING_INFO_DIR/secring.gpg -Dgpg.keyname=ADF4D638 -Dgpg.passphrase="`cat $HOSTING_INFO_DIR/release-private.password`" -Dfile=target/${PACKAGE}-sources.jar -Dclassifier=sources \
 && \
-mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=cfMavenCentral.xml -Dgpg.publicKeyring=$HOSTING_INFO_DIR/pubring.gpg -Dgpg.secretKeyring=$HOSTING_INFO_DIR/secring.gpg -Dgpg.keyname=ADF4D638 -Dgpg.passphrase="`cat $HOSTING_INFO_DIR/release-private.password`" -Dfile=target/site/apidocs/${PACKAGE}-javadoc.jar -Dclassifier=javadoc
+../mvnw gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=cfMavenCentral.xml -Dgpg.publicKeyring=$HOSTING_INFO_DIR/pubring.gpg -Dgpg.secretKeyring=$HOSTING_INFO_DIR/secring.gpg -Dgpg.keyname=ADF4D638 -Dgpg.passphrase="`cat $HOSTING_INFO_DIR/release-private.password`" -Dfile=target/site/apidocs/${PACKAGE}-javadoc.jar -Dclassifier=javadoc
 ```
 
 9. Complete the release at https://oss.sonatype.org/#stagingRepositories
@@ -265,5 +265,3 @@ makes it difficult to re-release a given version of Guava,
 compared to pulling in the tag corresponding to a release.
 
 Follow the instructions in section "to compare to upstream".
-
-
