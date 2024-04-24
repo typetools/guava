@@ -15,6 +15,8 @@
 package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.index.qual.NonNegative;
@@ -56,5 +58,14 @@ final class JdkBackedImmutableSet<E> extends IndexedImmutableSet<E> {
   @Override
   public @NonNegative int size() {
     return delegateList.size();
+  }
+
+  // redeclare to help optimizers with b/310253115
+  @SuppressWarnings("RedundantOverride")
+  @Override
+  @J2ktIncompatible // serialization
+  @GwtIncompatible // serialization
+  Object writeReplace() {
+    return super.writeReplace();
   }
 }

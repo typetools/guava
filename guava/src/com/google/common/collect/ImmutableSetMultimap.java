@@ -559,6 +559,15 @@ public class ImmutableSetMultimap<K, V> extends ImmutableMultimap<K, V>
     boolean isPartialView() {
       return false;
     }
+
+    // redeclare to help optimizers with b/310253115
+    @SuppressWarnings("RedundantOverride")
+    @Override
+    @J2ktIncompatible // serialization
+    @GwtIncompatible // serialization
+    Object writeReplace() {
+      return super.writeReplace();
+    }
   }
 
   private static <V> ImmutableSet<V> valueSet(
@@ -603,8 +612,9 @@ public class ImmutableSetMultimap<K, V> extends ImmutableMultimap<K, V>
   @GwtIncompatible // java serialization
   @J2ktIncompatible
   private static final class SetFieldSettersHolder {
-    static final Serialization.FieldSetter<ImmutableSetMultimap> EMPTY_SET_FIELD_SETTER =
-        Serialization.getFieldSetter(ImmutableSetMultimap.class, "emptySet");
+    static final Serialization.FieldSetter<? super ImmutableSetMultimap<?, ?>>
+        EMPTY_SET_FIELD_SETTER =
+            Serialization.getFieldSetter(ImmutableSetMultimap.class, "emptySet");
   }
 
   @GwtIncompatible // java.io.ObjectInputStream

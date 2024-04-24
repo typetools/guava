@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.google.common.collect.testing.CollectionTestSuiteBuilder;
 import com.google.common.collect.testing.ListTestSuiteBuilder;
@@ -67,8 +68,10 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  */
 @GwtCompatible(emulated = true)
 @SuppressWarnings("AlwaysThrows")
+@ElementTypesAreNonnullByDefault
 public class ImmutableMapTest extends TestCase {
 
+  @J2ktIncompatible
   @GwtIncompatible // suite
   public static Test suite() {
     TestSuite suite = new TestSuite();
@@ -295,7 +298,7 @@ public class ImmutableMapTest extends TestCase {
   }
 
   private static class StringHolder {
-    String string;
+    @Nullable String string;
   }
 
   public void testBuilder_withMutableEntry() {
@@ -892,7 +895,9 @@ public class ImmutableMapTest extends TestCase {
     assertSame(multimap1, multimap2);
   }
 
+  @J2ktIncompatible
   @GwtIncompatible // NullPointerTester
+  @AndroidIncompatible // see ImmutableTableTest.testNullPointerInstance
   public void testNullPointers() {
     NullPointerTester tester = new NullPointerTester();
     tester.testAllPublicStaticMethods(ImmutableMap.class);
@@ -941,6 +946,7 @@ public class ImmutableMapTest extends TestCase {
     assertEquals(intMap.hashCode(), map.hashCode());
   }
 
+  @J2ktIncompatible
   @GwtIncompatible // SerializableTester
   public void testViewSerialization() {
     Map<String, Integer> map = ImmutableMap.of("one", 1, "two", 2, "three", 3);
@@ -952,6 +958,7 @@ public class ImmutableMapTest extends TestCase {
     assertTrue(reserializedValues instanceof ImmutableCollection);
   }
 
+  @J2ktIncompatible
   @GwtIncompatible // SerializableTester
   public void testKeySetIsSerializable_regularImmutableMap() {
     class NonSerializableClass {}
@@ -963,6 +970,7 @@ public class ImmutableMapTest extends TestCase {
     LenientSerializableTester.reserializeAndAssertLenient(set);
   }
 
+  @J2ktIncompatible
   @GwtIncompatible // SerializableTester
   public void testValuesCollectionIsSerializable_regularImmutableMap() {
     class NonSerializableClass {}
@@ -975,6 +983,7 @@ public class ImmutableMapTest extends TestCase {
   }
 
   // TODO: Re-enable this test after moving to new serialization format in ImmutableMap.
+  @J2ktIncompatible
   @GwtIncompatible // SerializableTester
   @SuppressWarnings("unchecked")
   public void ignore_testSerializationNoDuplication_regularImmutableMap() throws Exception {
@@ -1060,15 +1069,15 @@ public class ImmutableMapTest extends TestCase {
   }
 
   public void testOfEntriesNull() {
-    Entry<Integer, Integer> nullKey = entry(null, 23);
+    Entry<@Nullable Integer, @Nullable Integer> nullKey = entry(null, 23);
     try {
-      ImmutableMap.ofEntries(nullKey);
+      ImmutableMap.ofEntries((Entry<Integer, Integer>) nullKey);
       fail();
     } catch (NullPointerException expected) {
     }
-    Entry<Integer, Integer> nullValue = entry(23, null);
+    Entry<@Nullable Integer, @Nullable Integer> nullValue = entry(23, null);
     try {
-      ImmutableMap.ofEntries(nullValue);
+      ImmutableMap.ofEntries((Entry<Integer, Integer>) nullValue);
       fail();
     } catch (NullPointerException expected) {
     }
@@ -1086,7 +1095,7 @@ public class ImmutableMapTest extends TestCase {
     return map;
   }
 
-  private static <T> Entry<T, T> entry(T key, T value) {
+  private static <T extends @Nullable Object> Entry<T, T> entry(T key, T value) {
     return new AbstractMap.SimpleImmutableEntry<>(key, value);
   }
 

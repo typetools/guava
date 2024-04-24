@@ -70,7 +70,7 @@ import javax.annotation.CheckForNull;
  *       create a "fake" converter for a unit test. It is unnecessary (and confusing) to <i>mock</i>
  *       the {@code Converter} type using a mocking framework.
  *   <li>Extend this class and implement its {@link #doForward} and {@link #doBackward} methods.
- *   <li><b>Java 8 users:</b> you may prefer to pass two lambda expressions or method references to
+ *   <li><b>Java 8+ users:</b> you may prefer to pass two lambda expressions or method references to
  *       the {@link #from from} factory method.
  * </ul>
  *
@@ -571,7 +571,7 @@ public abstract class Converter<A, B> implements Function<A, B> {
    * "pass-through type".
    */
   private static final class IdentityConverter<T> extends Converter<T, T> implements Serializable {
-    static final IdentityConverter<?> INSTANCE = new IdentityConverter<>();
+    static final Converter<?, ?> INSTANCE = new IdentityConverter<>();
 
     @Override
     protected T doForward(T t) {

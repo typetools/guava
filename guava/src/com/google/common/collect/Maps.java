@@ -100,7 +100,6 @@ import org.checkerframework.framework.qual.CFComment;
  * @since 2.0
  */
 @AnnotatedFor({"nullness"})
-@J2ktIncompatible
 @GwtCompatible(emulated = true)
 @ElementTypesAreNonnullByDefault
 public final class Maps {
@@ -167,7 +166,6 @@ public final class Maps {
    * @since 14.0
    */
   @GwtCompatible(serializable = true)
-  @J2ktIncompatible
   public static <K extends Enum<K>, V> ImmutableMap<K, V> immutableEnumMap(
       Map<K, ? extends V> map) {
     if (map instanceof ImmutableEnumMap) {
@@ -209,7 +207,6 @@ public final class Maps {
    *
    * @since 21.0
    */
-  @J2ktIncompatible
   public static <T extends @Nullable Object, K extends Enum<K>, V>
       Collector<T, ?, ImmutableMap<K, V>> toImmutableEnumMap(
           java.util.function.Function<? super T, ? extends K> keyFunction,
@@ -228,7 +225,6 @@ public final class Maps {
    *
    * @since 21.0
    */
-  @J2ktIncompatible
   public static <T extends @Nullable Object, K extends Enum<K>, V>
       Collector<T, ?, ImmutableMap<K, V>> toImmutableEnumMap(
           java.util.function.Function<? super T, ? extends K> keyFunction,
@@ -389,6 +385,7 @@ public final class Maps {
    *
    * @return a new, empty {@code TreeMap}
    */
+  @SuppressWarnings("rawtypes") // https://github.com/google/guava/issues/989
   public static <K extends Comparable, V extends @Nullable Object> TreeMap<K, V> newTreeMap() {
     return new TreeMap<>();
   }
@@ -1318,7 +1315,7 @@ public final class Maps {
    * <p>If your index may associate multiple values with each key, use {@link
    * Multimaps#index(Iterable, Function) Multimaps.index}.
    *
-   * <p><b>Note:</b> on Java 8 and later, it is usually better to use streams. For example:
+   * <p><b>Note:</b> on Java 8+, it is usually better to use streams. For example:
    *
    * <pre>{@code
    * import static com.google.common.collect.ImmutableMap.toImmutableMap;
@@ -1767,14 +1764,15 @@ public final class Maps {
       throw new UnsupportedOperationException();
     }
 
-    /*
-     * TODO(cpovirk): Uncomment the @NonNull annotations below once our JDK stubs and J2KT
-     * emulations include them.
-     */
     @Override
+    /*
+     * Our checker arguably should produce a nullness error here until we see @NonNull in JDK APIs.
+     * But it doesn't, which may be a sign that we still permit parameter contravariance in some
+     * cases?
+     */
     public @PolyNull V computeIfPresent(
         K key,
-        BiFunction<? super K, ? super /*@NonNull*/ V, ? extends @PolyNull V> remappingFunction) {
+        BiFunction<? super K, ? super @NonNull V, ? extends @PolyNull V> remappingFunction) {
       throw new UnsupportedOperationException();
     }
 
@@ -1786,10 +1784,11 @@ public final class Maps {
     }
 
     @Override
+    @SuppressWarnings("nullness") // TODO(b/262880368): Remove once we see @NonNull in JDK APIs
     public @PolyNull V merge(
         K key,
-        /*@NonNull*/ V value,
-        BiFunction<? super /*@NonNull*/ V, ? super/*@NonNull*/ V, ? extends @PolyNull V>
+        @NonNull V value,
+        BiFunction<? super @NonNull V, ? super@NonNull V, ? extends @PolyNull V>
             function) {
       throw new UnsupportedOperationException();
     }
@@ -3690,27 +3689,35 @@ public final class Maps {
       throw new UnsupportedOperationException();
     }
 
-    /*
-     * TODO(cpovirk): Uncomment the @NonNull annotations below once our JDK stubs and J2KT
+     /*
+     * TODO(cpovirk): Uncomment the annotations below once our JDK stubs and J2KT
      * emulations include them.
      */
     @Override
+    /*
+     * Our checker arguably should produce a nullness error here until we see @NonNull in JDK APIs.
+     * But it doesn't, which may be a sign that we still permit parameter contravariance in some
+     * cases?
+     */
     public @PolyNull V computeIfPresent(
-        K key, BiFunction<? super K, ? super V, ? extends @PolyNull V> remappingFunction) {
+        K key,
+        BiFunction<? super K, ? super V, ? extends @PolyNull V> remappingFunction) {
       throw new UnsupportedOperationException();
     }
 
     @Override
     public @PolyNull V compute(
-        K key, BiFunction<? super K, ? super @Nullable V, ? extends @PolyNull V> remappingFunction) {
+        K key,
+        BiFunction<? super K, ? super @Nullable V, ? extends @PolyNull V> remappingFunction) {
       throw new UnsupportedOperationException();
     }
 
     @Override
+    @SuppressWarnings("nullness") // TODO(b/262880368): Remove once we see @NonNull in JDK APIs
     public @PolyNull V merge(
-        /*@NonNull*/ K key,
+        @NonNull K key,
         V value,
-        BiFunction<? super /*@NonNull*/ V, ? super /*@NonNull*/ V, ? extends @PolyNull V> function) {
+        BiFunction<? super @NonNull V, ? super @NonNull V, ? extends @PolyNull V> function) {
       throw new UnsupportedOperationException();
     }
 

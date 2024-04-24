@@ -344,9 +344,9 @@ public abstract class ImmutableMultimap<K, V> extends BaseImmutableMultimap<K, V
   @GwtIncompatible // java serialization is not supported
   @J2ktIncompatible
   static class FieldSettersHolder {
-    static final Serialization.FieldSetter<ImmutableMultimap> MAP_FIELD_SETTER =
+    static final Serialization.FieldSetter<? super ImmutableMultimap<?, ?>> MAP_FIELD_SETTER =
         Serialization.getFieldSetter(ImmutableMultimap.class, "map");
-    static final Serialization.FieldSetter<ImmutableMultimap> SIZE_FIELD_SETTER =
+    static final Serialization.FieldSetter<? super ImmutableMultimap<?, ?>> SIZE_FIELD_SETTER =
         Serialization.getFieldSetter(ImmutableMultimap.class, "size");
   }
 
@@ -576,6 +576,15 @@ public abstract class ImmutableMultimap<K, V> extends BaseImmutableMultimap<K, V
       return false;
     }
 
+    // redeclare to help optimizers with b/310253115
+    @SuppressWarnings("RedundantOverride")
+    @Override
+    @J2ktIncompatible // serialization
+    @GwtIncompatible // serialization
+    Object writeReplace() {
+      return super.writeReplace();
+    }
+
     private static final long serialVersionUID = 0;
   }
 
@@ -755,6 +764,15 @@ public abstract class ImmutableMultimap<K, V> extends BaseImmutableMultimap<K, V
     @Override
     boolean isPartialView() {
       return true;
+    }
+
+    // redeclare to help optimizers with b/310253115
+    @SuppressWarnings("RedundantOverride")
+    @Override
+    @J2ktIncompatible // serialization
+    @GwtIncompatible // serialization
+    Object writeReplace() {
+      return super.writeReplace();
     }
 
     @J2ktIncompatible // serialization

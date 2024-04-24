@@ -18,6 +18,7 @@ package com.google.common.testing;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Throwables.throwIfUnchecked;
+import static java.util.Objects.requireNonNull;
 
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.annotations.J2ktIncompatible;
@@ -119,6 +120,7 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
+import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -210,7 +212,7 @@ class FreshValueGenerator {
       return pickInstance(rawType.getEnumConstants(), null);
     }
     if (type.isArray()) {
-      TypeToken<?> componentType = checkNotNull(type.getComponentType());
+      TypeToken<?> componentType = requireNonNull(type.getComponentType());
       Object array = Array.newInstance(componentType.getRawType(), 1);
       Array.set(array, 0, generate(componentType));
       return array;
@@ -289,6 +291,7 @@ class FreshValueGenerator {
     }
 
     @Override
+    @CheckForNull
     protected Object handleInvocation(Object proxy, Method method, @Nullable Object[] args) {
       return interfaceMethodCalled(interfaceType, method);
     }
@@ -314,6 +317,7 @@ class FreshValueGenerator {
   }
 
   /** Subclasses can override to provide different return value for proxied interface methods. */
+  @CheckForNull
   Object interfaceMethodCalled(Class<?> interfaceType, Method method) {
     throw new UnsupportedOperationException();
   }
@@ -376,6 +380,7 @@ class FreshValueGenerator {
     return freshness.get();
   }
 
+  @SuppressWarnings("removal") // b/321209431 -- maybe just use valueOf here?
   @Generates
   Integer generateInteger() {
     return new Integer(generateInt());
@@ -386,6 +391,7 @@ class FreshValueGenerator {
     return generateInt();
   }
 
+  @SuppressWarnings("removal") // b/321209431 -- maybe just use valueOf here?
   @Generates
   Long generateLongObject() {
     return new Long(generateLong());
@@ -396,6 +402,7 @@ class FreshValueGenerator {
     return generateInt();
   }
 
+  @SuppressWarnings("removal") // b/321209431 -- maybe just use valueOf here?
   @Generates
   Float generateFloatObject() {
     return new Float(generateFloat());
@@ -406,6 +413,7 @@ class FreshValueGenerator {
     return generateInt();
   }
 
+  @SuppressWarnings("removal") // b/321209431 -- maybe just use valueOf here?
   @Generates
   Double generateDoubleObject() {
     return new Double(generateDouble());
@@ -416,6 +424,7 @@ class FreshValueGenerator {
     return (short) generateInt();
   }
 
+  @SuppressWarnings("removal") // b/321209431 -- maybe just use valueOf here?
   @Generates
   Short generateShortObject() {
     return new Short(generateShort());
@@ -426,6 +435,7 @@ class FreshValueGenerator {
     return (byte) generateInt();
   }
 
+  @SuppressWarnings("removal") // b/321209431 -- maybe just use valueOf here?
   @Generates
   Byte generateByteObject() {
     return new Byte(generateByte());
@@ -436,6 +446,7 @@ class FreshValueGenerator {
     return generateString().charAt(0);
   }
 
+  @SuppressWarnings("removal") // b/321209431 -- maybe just use valueOf here?
   @Generates
   Character generateCharacter() {
     return new Character(generateChar());
@@ -446,6 +457,7 @@ class FreshValueGenerator {
     return generateInt() % 2 == 0;
   }
 
+  @SuppressWarnings("removal") // b/321209431 -- maybe just use valueOf here?
   @Generates
   Boolean generateBooleanObject() {
     return new Boolean(generateBoolean());

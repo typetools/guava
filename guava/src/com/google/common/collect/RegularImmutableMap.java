@@ -355,6 +355,15 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
       return map.size();
     }
 
+    // redeclare to help optimizers with b/310253115
+    @SuppressWarnings("RedundantOverride")
+    @Override
+    @J2ktIncompatible // serialization
+    @GwtIncompatible // serialization
+    Object writeReplace() {
+      return super.writeReplace();
+    }
+
     // No longer used for new writes, but kept so that old data can still be read.
     @GwtIncompatible // serialization
     @J2ktIncompatible
@@ -403,6 +412,15 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
       return true;
     }
 
+    // redeclare to help optimizers with b/310253115
+    @SuppressWarnings("RedundantOverride")
+    @Override
+    @J2ktIncompatible // serialization
+    @GwtIncompatible // serialization
+    Object writeReplace() {
+      return super.writeReplace();
+    }
+
     // No longer used for new writes, but kept so that old data can still be read.
     @GwtIncompatible // serialization
     @J2ktIncompatible
@@ -421,6 +439,15 @@ final class RegularImmutableMap<K, V> extends ImmutableMap<K, V> {
       @J2ktIncompatible // serialization
       private static final long serialVersionUID = 0;
     }
+  }
+
+  // redeclare to help optimizers with b/310253115
+  @SuppressWarnings("RedundantOverride")
+  @Override
+  @J2ktIncompatible // serialization
+  @GwtIncompatible // serialization
+  Object writeReplace() {
+    return super.writeReplace();
   }
 
   // This class is never actually serialized directly, but we have to make the

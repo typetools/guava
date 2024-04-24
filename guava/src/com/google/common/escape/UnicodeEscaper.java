@@ -244,26 +244,26 @@ public abstract class UnicodeEscaper extends Escaper {
    * </ol>
    *
    * @param seq the sequence of characters from which to decode the code point
-   * @param index the index of the first character to decode
+   * @param index_ the index of the first character to decode
    * @param end the index beyond the last valid character to decode
    * @return the Unicode code point for the given index or the negated value of the trailing high
    *     surrogate character at the end of the sequence
    */
-  protected static int codePointAt(CharSequence seq, @IndexFor("#1") int index, @IndexOrHigh("#1") int end) {
+  protected static int codePointAt(CharSequence seq, @IndexFor("#1") int index_, @IndexOrHigh("#1") int end) {
     checkNotNull(seq);
-    @IndexOrHigh("seq") int indexInternal = index;
-    if (indexInternal < end) {
-      char c1 = seq.charAt(indexInternal++);
+    @IndexOrHigh("seq") int index = index_;
+    if (index < end) {
+      char c1 = seq.charAt(index++);
       if (c1 < Character.MIN_HIGH_SURROGATE || c1 > Character.MAX_LOW_SURROGATE) {
         // Fast path (first test is probably all we need to do)
         return c1;
       } else if (c1 <= Character.MAX_HIGH_SURROGATE) {
         // If the high surrogate was the last character, return its inverse
-        if (indexInternal == end) {
+        if (index == end) {
           return -c1;
         }
         // Otherwise look for the low surrogate following it
-        char c2 = seq.charAt(indexInternal);//(1)
+        char c2 = seq.charAt(index);//(1)
         if (Character.isLowSurrogate(c2)) {
           return Character.toCodePoint(c1, c2);
         }
@@ -273,7 +273,7 @@ public abstract class UnicodeEscaper extends Escaper {
                 + "' with value "
                 + (int) c2
                 + " at index "
-                + indexInternal
+                + index
                 + " in '"
                 + seq
                 + "'");
@@ -284,7 +284,7 @@ public abstract class UnicodeEscaper extends Escaper {
                 + "' with value "
                 + (int) c1
                 + " at index "
-                + (indexInternal - 1)
+                + (index - 1)
                 + " in '"
                 + seq
                 + "'");

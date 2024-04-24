@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.google.guava</groupId>
     <artifactId>guava-parent</artifactId>
-    <version>32.1.3-jre</version>
+    <version>33.1.0-jre</version>
   </parent>
   <artifactId>guava</artifactId>
   <packaging>bundle</packaging>
@@ -50,7 +50,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>failureaccess</artifactId>
-      <version>1.0.1</version>
+      <version>1.0.2</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
@@ -70,29 +70,17 @@
       <artifactId>checker-util</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>checker</artifactId>
+      <version>3.41.0</version>
+    </dependency>
+    <dependency>
       <groupId>com.google.errorprone</groupId>
       <artifactId>error_prone_annotations</artifactId>
     </dependency>
     <dependency>
       <groupId>com.google.j2objc</groupId>
       <artifactId>j2objc-annotations</artifactId>
-    </dependency>
-    <!-- TODO(cpovirk): does this comment belong on the <dependency> in <profiles>? -->
-    <!-- TODO(cpovirk): want this only for dependency plugin but seems not to work there? Maven runs without failure, but the resulting Javadoc is missing the hoped-for inherited text -->
-    <!-- Annotations from the Checker Framework: nullness, interning, locking, ... -->
-    <!-- For guava only, to use a locally-built version of the Checker Framework, run with:
-       -P checkerframework-local -->
-    <!-- Not needed; appears above.
-    <dependency>
-      <groupId>org.checkerframework</groupId>
-      <artifactId>checker-qual</artifactId>
-      <version>2.5.5</version>
-    </dependency>
-    -->
-    <dependency>
-      <groupId>org.checkerframework</groupId>
-      <artifactId>checker</artifactId>
-      <version>3.41.0</version>
     </dependency>
   </dependencies>
   <build>
@@ -243,29 +231,6 @@
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
       </plugin>
-      <!-- TODO(cpovirk): include JDK sources when building testlib doc, too -->
-      <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>properties</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>unpack-jdk-sources</id>
-            <phase>generate-sources</phase>
-            <goals><goal>unpack-dependencies</goal></goals>
-            <configuration>
-              <includeArtifactIds>srczip</includeArtifactIds>
-              <outputDirectory>${project.build.directory}/jdk-sources</outputDirectory>
-              <silent>false</silent>
-              <!-- Exclude module-info files (since we're using -source 8 to avoid other modules problems) and FileDescriptor (which uses a language feature not available in Java 8). -->
-              <excludes>**/module-info.java,**/java/io/FileDescriptor.java</excludes>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>animal-sniffer-maven-plugin</artifactId>
@@ -273,11 +238,6 @@
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-          <!-- TODO(cpovirk): Move this to the parent after making jdk-sources available there. -->
-          <!-- TODO(cpovirk): can we use includeDependencySources and a local com.oracle.java:jdk-lib:noversion:sources instead of all this unzipping and manual sourcepath modification? -->
-          <!-- (We need JDK *sources*, not just -link, so that {@inheritDoc} works.) -->
-          <sourcepath>${project.build.sourceDirectory}:${project.build.directory}/jdk-sources</sourcepath>
-
           <!-- Passing `-subpackages com.google.common` breaks things, so we explicitly exclude everything else instead. -->
           <!-- excludePackageNames requires specification of packages separately from "all subpackages".
                https://issues.apache.org/jira/browse/MJAVADOC-584 -->
@@ -342,16 +302,6 @@
           </links>
           <overview>../overview.html</overview>
         </configuration>
-        <executions>
-          <execution>
-            <id>attach-docs</id>
-          </execution>
-          <execution>
-            <id>generate-javadoc-site-report</id>
-            <phase>site</phase>
-            <goals><goal>javadoc</goal></goals>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
@@ -400,24 +350,6 @@
     </plugins>
   </build>
   <profiles>
-    <profile>
-      <id>srczip-parent</id>
-      <activation>
-        <file>
-          <exists>${java.home}/../src.zip</exists>
-        </file>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>jdk</groupId>
-          <artifactId>srczip</artifactId>
-          <version>999</version>
-          <scope>system</scope>
-          <systemPath>${java.home}/../src.zip</systemPath>
-          <optional>true</optional>
-        </dependency>
-      </dependencies>
-    </profile>
     <!-- Profile to use the version of Checker Framework installed locally. -->
     <profile>
       <id>checkerframework-local</id>
@@ -497,35 +429,6 @@
               <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
                 <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${javac.version}/javac-${javac.version}.jar</arg>
               </compilerArgs>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>srczip-lib</id>
-      <activation>
-        <file>
-          <exists>${java.home}/lib/src.zip</exists>
-        </file>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>jdk</groupId>
-          <artifactId>srczip</artifactId>
-          <version>999</version>
-          <scope>system</scope>
-          <systemPath>${java.home}/lib/src.zip</systemPath>
-          <optional>true</optional>
-        </dependency>
-      </dependencies>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <configuration>
-              <!-- We need to point at the java.base subdirectory because Maven appears to assume that package foo.bar is located in foo/bar and not java.base/foo/bar when translating excludePackageNames into filenames to pass to javadoc. (Note that manually passing -exclude to javadoc appears to possibly not work at all for java.* types??) Also, referring only to java.base avoids a lot of other sources. -->
-              <sourcepath>${project.build.sourceDirectory}:${project.build.directory}/jdk-sources/java.base</sourcepath>
             </configuration>
           </plugin>
         </plugins>

@@ -239,7 +239,6 @@ public final class Predicates {
    * @throws IllegalArgumentException if the pattern is invalid
    * @since 3.0
    */
-  @J2ktIncompatible
   @GwtIncompatible // Only used by other GWT-incompatible code.
   public static Predicate<CharSequence> containsPattern(String pattern) {
     return new ContainsPatternFromStringPredicate(pattern);
@@ -252,7 +251,6 @@ public final class Predicates {
    *
    * @since 3.0
    */
-  @J2ktIncompatible
   @GwtIncompatible(value = "java.util.regex.Pattern")
   public static Predicate<CharSequence> contains(Pattern pattern) {
     return new ContainsPatternPredicate(new JdkPattern(pattern));
@@ -673,7 +671,6 @@ public final class Predicates {
   /**
    * @see Predicates#contains(Pattern)
    */
-  @J2ktIncompatible
   @GwtIncompatible // Only used by other GWT-incompatible code.
   private static class ContainsPatternPredicate implements Predicate<CharSequence>, Serializable {
     final CommonPattern pattern;
@@ -724,7 +721,6 @@ public final class Predicates {
   /**
    * @see Predicates#containsPattern(String)
    */
-  @J2ktIncompatible
   @GwtIncompatible // Only used by other GWT-incompatible code.
   private static class ContainsPatternFromStringPredicate extends ContainsPatternPredicate {
 

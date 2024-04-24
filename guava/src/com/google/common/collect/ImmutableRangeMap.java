@@ -186,7 +186,7 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
     int index =
         SortedLists.binarySearch(
             ranges,
-            Range.<K>lowerBoundFn(),
+            Range::lowerBound,
             Cut.belowValue(key),
             KeyPresentBehavior.ANY_PRESENT,
             KeyAbsentBehavior.NEXT_LOWER);
@@ -204,7 +204,7 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
     int index =
         SortedLists.binarySearch(
             ranges,
-            Range.<K>lowerBoundFn(),
+            Range::lowerBound,
             Cut.belowValue(key),
             KeyPresentBehavior.ANY_PRESENT,
             KeyAbsentBehavior.NEXT_LOWER);
@@ -337,14 +337,14 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
     int lowerIndex =
         SortedLists.binarySearch(
             ranges,
-            Range.<K>upperBoundFn(),
+            Range::upperBound,
             range.lowerBound,
             KeyPresentBehavior.FIRST_AFTER,
             KeyAbsentBehavior.NEXT_HIGHER);
     int upperIndex =
         SortedLists.binarySearch(
             ranges,
-            Range.<K>lowerBoundFn(),
+            Range::lowerBound,
             range.upperBound,
             KeyPresentBehavior.ANY_PRESENT,
             KeyAbsentBehavior.NEXT_HIGHER);
@@ -374,6 +374,14 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
           boolean isPartialView() {
             return true;
           }
+
+          // redeclare to help optimizers with b/310253115
+          @SuppressWarnings("RedundantOverride")
+          @Override
+          @J2ktIncompatible // serialization
+          Object writeReplace() {
+            return super.writeReplace();
+          }
         };
     final ImmutableRangeMap<K, V> outer = this;
     return new ImmutableRangeMap<K, V>(subRanges, values.subList(lowerIndex, upperIndex)) {
@@ -384,6 +392,14 @@ public class ImmutableRangeMap<K extends Comparable<?>, V> implements RangeMap<K
         } else {
           return ImmutableRangeMap.of();
         }
+      }
+
+      // redeclare to help optimizers with b/310253115
+      @SuppressWarnings("RedundantOverride")
+      @Override
+      @J2ktIncompatible // serialization
+      Object writeReplace() {
+        return super.writeReplace();
       }
     };
   }

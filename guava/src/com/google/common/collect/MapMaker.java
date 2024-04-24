@@ -88,6 +88,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @since 2.0
  */
 @AnnotatedFor({"nullness"})
+@J2ktIncompatible
 @GwtCompatible(emulated = true)
 @ElementTypesAreNonnullByDefault
 public final class MapMaker {

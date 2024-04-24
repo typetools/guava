@@ -16,13 +16,12 @@ package com.google.common.hash;
 
 import com.google.common.annotations.Beta;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.common.value.qual.MinLen;
-
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 
 /**
  * An object which can receive a stream of primitive values.

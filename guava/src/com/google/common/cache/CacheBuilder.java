@@ -49,10 +49,10 @@ import javax.annotation.CheckForNull;
  *
  * <p>The successor to Guava's caching API is <a
  * href="https://github.com/ben-manes/caffeine/wiki">Caffeine</a>. Its API is designed to make it a
- * nearly drop-in replacement -- though it requires Java 8 APIs, is not available for Android or
- * GWT/j2cl, and may have <a href="https://github.com/ben-manes/caffeine/wiki/Guava">different
- * (usually better) behavior</a> when multiple threads attempt concurrent mutations. Its equivalent
- * to {@code CacheBuilder} is its <a
+ * nearly drop-in replacement. It requires Java 8+, and is not available for Android or GWT/J2CL,
+ * and may have <a href="https://github.com/ben-manes/caffeine/wiki/Guava">different (usually
+ * better) behavior</a> when multiple threads attempt concurrent mutations. Its equivalent to {@code
+ * CacheBuilder} is its <a
  * href="https://www.javadoc.io/doc/com.github.ben-manes.caffeine/caffeine/latest/com.github.benmanes.caffeine/com/github/benmanes/caffeine/cache/Caffeine.html">{@code
  * Caffeine}</a> class. Caffeine offers better performance, more features (including asynchronous
  * loading), and fewer <a
@@ -569,8 +569,8 @@ public final class CacheBuilder<K, V> {
    *
    * @param weigher the weigher to use in calculating the weight of cache entries
    * @return this {@code CacheBuilder} instance (for chaining)
-   * @throws IllegalArgumentException if {@code size} is negative
-   * @throws IllegalStateException if a maximum size was already set
+   * @throws IllegalStateException if a weigher was already set or {@link #maximumSize} was
+   *     previously called
    * @since 11.0
    */
   @GwtIncompatible // To be supported

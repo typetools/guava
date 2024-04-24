@@ -41,7 +41,7 @@ public final class Parameter implements AnnotatedElement {
   private final ImmutableList<Annotation> annotations;
 
   /**
-   * An {@link AnnotatedType} instance, or {@code null} under Android VMs (possible only when using
+   * An {@code AnnotatedType} instance, or {@code null} under Android VMs (possible only when using
    * the Android flavor of Guava). The field is declared with a type of {@code Object} to avoid
    * compatibility problems on Android VMs. The corresponding accessor method, however, can have the
    * more specific return type as long as users are careful to guard calls to it with version checks
@@ -94,7 +94,9 @@ public final class Parameter implements AnnotatedElement {
     return getDeclaredAnnotations();
   }
 
-  /** @since 18.0 */
+  /**
+   * @since 18.0
+   */
   @Override
   public <A extends Annotation> A[] getAnnotationsByType(Class<A> annotationType) {
     return getDeclaredAnnotationsByType(annotationType);
@@ -106,7 +108,9 @@ public final class Parameter implements AnnotatedElement {
     return annotations.toArray(new Annotation[0]);
   }
 
-  /** @since 18.0 */
+  /**
+   * @since 18.0
+   */
   @Override
   @CheckForNull
   public <A extends Annotation> A getDeclaredAnnotation(Class<A> annotationType) {
@@ -114,7 +118,9 @@ public final class Parameter implements AnnotatedElement {
     return FluentIterable.from(annotations).filter(annotationType).first().orNull();
   }
 
-  /** @since 18.0 */
+  /**
+   * @since 18.0
+   */
   @Override
   public <A extends Annotation> A[] getDeclaredAnnotationsByType(Class<A> annotationType) {
     @Nullable
@@ -127,12 +133,9 @@ public final class Parameter implements AnnotatedElement {
   /**
    * Returns the {@link AnnotatedType} of the parameter.
    *
-   * <p>This method will fail if run under an Android VM.
-   *
-   * @since 25.1 for guava-jre (available since 32.0.0 in guava-android)
+   * @since 25.1 for guava-jre
    */
-  @SuppressWarnings({"Java7ApiChecker", "AndroidJdkLibsChecker"})
-  @IgnoreJRERequirement
+  @SuppressWarnings("Java7ApiChecker")
   public AnnotatedType getAnnotatedType() {
     return requireNonNull((AnnotatedType) annotatedType);
   }

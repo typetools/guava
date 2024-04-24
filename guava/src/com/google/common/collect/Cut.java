@@ -32,6 +32,7 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
  *
  * @author Kevin Bourrillion
  */
+@SuppressWarnings("rawtypes") // https://github.com/google/guava/issues/989
 @GwtCompatible
 @ElementTypesAreNonnullByDefault
 abstract class Cut<C extends Comparable> implements Comparable<Cut<C>>, Serializable {

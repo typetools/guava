@@ -203,6 +203,7 @@ public final class Sets {
    * asList}{@code (...))}, or for creating an empty set then calling {@link Collections#addAll}.
    * This method is not actually very useful and will likely be deprecated in the future.
    */
+  @SuppressWarnings("nullness") // TODO: b/316358623 - Remove after checker fix.
   public static <E extends @Nullable Object> HashSet<E> newHashSet(E... elements) {
     HashSet<E> set = newHashSetWithExpectedSize(elements.length);
     Collections.addAll(set, elements);
@@ -374,6 +375,7 @@ public final class Sets {
    *
    * @return a new, empty {@code TreeSet}
    */
+  @SuppressWarnings("rawtypes") // https://github.com/google/guava/issues/989
   public static <E extends @Nullable Comparable> TreeSet<E> newTreeSet() {
     return new TreeSet<E>();
   }
@@ -399,6 +401,7 @@ public final class Sets {
    * @param elements the elements that the set should contain
    * @return a new {@code TreeSet} containing those elements (minus duplicates)
    */
+  @SuppressWarnings("rawtypes") // https://github.com/google/guava/issues/989
   public static <E extends @Nullable Comparable> TreeSet<E> newTreeSet(Iterable<? extends E> elements) {
     TreeSet<E> set = newTreeSet();
     Iterables.addAll(set, elements);
@@ -488,7 +491,7 @@ public final class Sets {
    *     contains no elements
    */
   @J2ktIncompatible
-  @GwtIncompatible
+  @GwtIncompatible // EnumSet.complementOf
   public static <E extends Enum<E>> EnumSet<E> complementOf(Collection<E> collection) {
     if (collection instanceof EnumSet) {
       return EnumSet.complementOf((EnumSet<E>) collection);
@@ -509,7 +512,8 @@ public final class Sets {
    * @return a new, modifiable {@code EnumSet} initially containing all the values of the enum not
    *     present in the given collection
    */
-  @GwtIncompatible
+  @J2ktIncompatible
+  @GwtIncompatible // EnumSet.complementOf
   public static <E extends Enum<E>> EnumSet<E> complementOf(
       Collection<E> collection, Class<E> type) {
     checkNotNull(collection);
@@ -518,6 +522,7 @@ public final class Sets {
         : makeComplementByHand(collection, type);
   }
 
+  @J2ktIncompatible
   @GwtIncompatible
   private static <E extends Enum<E>> EnumSet<E> makeComplementByHand(
       Collection<E> collection, Class<E> type) {
@@ -1048,7 +1053,7 @@ public final class Sets {
    * Predicates.instanceOf(ArrayList.class)}, which is inconsistent with equals. (See {@link
    * Iterables#filter(Iterable, Class)} for related functionality.)
    *
-   * <p><b>Java 8 users:</b> many use cases for this method are better addressed by {@link
+   * <p><b>Java 8+ users:</b> many use cases for this method are better addressed by {@link
    * java.util.stream.Stream#filter}. This method is not being deprecated, but we gently encourage
    * you to migrate to streams.
    */
@@ -1131,7 +1136,6 @@ public final class Sets {
    * @since 14.0
    */
   @GwtIncompatible // NavigableSet
-  @SuppressWarnings("unchecked")
   public static <E extends @Nullable Object> NavigableSet<E> filter(
       NavigableSet<E> unfiltered, Predicate<? super E> predicate) {
     if (unfiltered instanceof FilteredSet) {
@@ -1441,6 +1445,15 @@ public final class Sets {
             boolean isPartialView() {
               return true;
             }
+
+            // redeclare to help optimizers with b/310253115
+            @SuppressWarnings("RedundantOverride")
+            @Override
+            @J2ktIncompatible // serialization
+            @GwtIncompatible // serialization
+            Object writeReplace() {
+              return super.writeReplace();
+            }
           };
       return new CartesianSet<E>(axes, new CartesianList<E>(listAxes));
     }
@@ -1482,7 +1495,11 @@ public final class Sets {
         CartesianSet<?> that = (CartesianSet<?>) object;
         return this.axes.equals(that.axes);
       }
-      return super.equals(object);
+      if (object instanceof Set) {
+        Set<?> that = (Set<?>) object;
+        return this.size() == that.size() && this.containsAll(that);
+      }
+      return false;
     }
 
     @Override
@@ -1807,7 +1824,7 @@ public final class Sets {
    * <p>The returned navigable set will be serializable if the specified navigable set is
    * serializable.
    *
-   * <p><b>Java 8 users and later:</b> Prefer {@link Collections#unmodifiableNavigableSet}.
+   * <p><b>Java 8+ users and later:</b> Prefer {@link Collections#unmodifiableNavigableSet}.
    *
    * @param set the navigable set for which an unmodifiable view is to be returned
    * @return an unmodifiable view of the specified navigable set
@@ -1975,7 +1992,7 @@ public final class Sets {
    * <p>The returned navigable set will be serializable if the specified navigable set is
    * serializable.
    *
-   * <p><b>Java 8 users and later:</b> Prefer {@link Collections#synchronizedNavigableSet}.
+   * <p><b>Java 8+ users and later:</b> Prefer {@link Collections#synchronizedNavigableSet}.
    *
    * @param navigableSet the navigable set to be "wrapped" in a synchronized navigable set.
    * @return a synchronized view of the specified navigable set.

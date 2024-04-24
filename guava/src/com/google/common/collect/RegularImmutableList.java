@@ -17,6 +17,8 @@
 package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import com.google.common.annotations.VisibleForTesting;
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -89,7 +91,7 @@ class RegularImmutableList<E> extends ImmutableList<E> {
   public UnmodifiableListIterator<E> listIterator(int index) {
     // for performance
     // The fake cast to E is safe because the creation methods only allow E's
-    return (UnmodifiableListIterator<E>) Iterators.forArray(array, 0, array.length, index);
+    return (UnmodifiableListIterator<E>) Iterators.forArrayWithPosition(array, index);
   }
 
   @Override
@@ -98,6 +100,16 @@ class RegularImmutableList<E> extends ImmutableList<E> {
   }
 
   // TODO(lowasser): benchmark optimizations for equals() and see if they're worthwhile
+
+
+  // redeclare to help optimizers with b/310253115
+  @SuppressWarnings("RedundantOverride")
+  @Override
+  @J2ktIncompatible // serialization
+  @GwtIncompatible // serialization
+  Object writeReplace() {
+    return super.writeReplace();
+  }
 
 @Override
 public boolean contains(@Nullable @UnknownSignedness Object arg0) { return super.contains(arg0); }

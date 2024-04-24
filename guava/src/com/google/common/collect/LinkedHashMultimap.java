@@ -198,11 +198,11 @@ public final class LinkedHashMultimap<K extends @Nullable Object, V extends @Nul
      * frameworks like Android that define post-construct hooks like Activity.onCreate, etc.
      */
 
-    @CheckForNull ValueSetLink<K, V> predecessorInValueSet;
-    @CheckForNull ValueSetLink<K, V> successorInValueSet;
+    @CheckForNull private ValueSetLink<K, V> predecessorInValueSet;
+    @CheckForNull private ValueSetLink<K, V> successorInValueSet;
 
-    @CheckForNull ValueEntry<K, V> predecessorInMultimap;
-    @CheckForNull ValueEntry<K, V> successorInMultimap;
+    @CheckForNull private ValueEntry<K, V> predecessorInMultimap;
+    @CheckForNull private ValueEntry<K, V> successorInMultimap;
 
     ValueEntry(
         @ParametricNullness K key,
@@ -512,7 +512,8 @@ public final class LinkedHashMultimap<K extends @Nullable Object, V extends @Nul
     private void rehashIfNecessary() {
       if (Hashing.needsResizing(size, hashTable.length, VALUE_SET_LOAD_FACTOR)) {
         @SuppressWarnings("unchecked")
-        ValueEntry<K, V>[] hashTable = new ValueEntry[this.hashTable.length * 2];
+        ValueEntry<K, V>[] hashTable =
+            (ValueEntry<K, V>[]) new ValueEntry<?, ?>[this.hashTable.length * 2];
         this.hashTable = hashTable;
         int mask = hashTable.length - 1;
         for (ValueSetLink<K, V> entry = firstEntry;

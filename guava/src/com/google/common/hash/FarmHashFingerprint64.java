@@ -70,6 +70,7 @@ final class FarmHashFingerprint64 extends AbstractNonStreamingHashFunction {
   }
 
   // End of public functions.
+
   @VisibleForTesting
   static long fingerprint(byte[] bytes, @NonNegative @LTLengthOf(value = "#1", offset = "#3 - 1") int offset, @NonNegative @LTLengthOf(value = "#1", offset = "#2 - 1") int length) {
     if (length <= 32) {

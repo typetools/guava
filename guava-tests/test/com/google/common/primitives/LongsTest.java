@@ -45,7 +45,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  */
 @ElementTypesAreNonnullByDefault
 @GwtCompatible(emulated = true)
-@SuppressWarnings("cast") // redundant casts are intentional and harmless
 public class LongsTest extends TestCase {
   private static final long[] EMPTY = {};
   private static final long[] ARRAY1 = {(long) 1};
@@ -53,7 +52,6 @@ public class LongsTest extends TestCase {
 
   private static final long[] VALUES = {MIN_VALUE, (long) -1, (long) 0, (long) 1, MAX_VALUE};
 
-  @J2ktIncompatible
   @GwtIncompatible // Long.hashCode returns different values in GWT.
   public void testHashCode() {
     for (long value : VALUES) {
@@ -581,7 +579,7 @@ public class LongsTest extends TestCase {
     assertThat(Longs.toArray(doubles)).isEqualTo(array);
   }
 
-  @J2ktIncompatible // b/285319375
+  @J2ktIncompatible // b/239034072: Kotlin varargs copy parameter arrays.
   public void testAsList_isAView() {
     long[] array = {(long) 0, (long) 1};
     List<Long> list = Longs.asList(array);

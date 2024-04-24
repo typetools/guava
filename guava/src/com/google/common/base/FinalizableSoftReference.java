@@ -30,6 +30,7 @@ import org.checkerframework.framework.qual.AnnotatedFor;
  * @since 2.0
  */
 @AnnotatedFor({"nullness"})
+@J2ktIncompatible
 @GwtIncompatible
 @ElementTypesAreNonnullByDefault
 public abstract class FinalizableSoftReference<T> extends SoftReference<T>

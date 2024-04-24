@@ -21,6 +21,7 @@ import static org.junit.Assert.assertThrows;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.J2ktIncompatible;
 import com.google.common.base.Equivalence;
 import com.google.common.collect.ImmutableSet.Builder;
 import com.google.common.collect.testing.ListTestSuiteBuilder;
@@ -56,8 +57,10 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Nick Kralevich
  */
 @GwtCompatible(emulated = true)
+@ElementTypesAreNonnullByDefault
 public class ImmutableSetTest extends AbstractImmutableSetTest {
 
+  @J2ktIncompatible
   @GwtIncompatible // suite
   public static Test suite() {
     TestSuite suite = new TestSuite();
@@ -194,7 +197,6 @@ public class ImmutableSetTest extends AbstractImmutableSetTest {
     return ImmutableSet.of(e1, e2, e3, e4, e5);
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   protected <E extends Comparable<? super E>> Set<E> of(
       E e1, E e2, E e3, E e4, E e5, E e6, E... rest) {
@@ -348,11 +350,6 @@ public class ImmutableSetTest extends AbstractImmutableSetTest {
     TypeWithDuplicates c = new TypeWithDuplicates(3, 1);
     CollectorTester.of(collector, equivalence)
         .expectCollects(ImmutableSet.of(a, b1, c), a, b1, c, b2);
-  }
-
-  @GwtIncompatible // GWT is single threaded
-  public void testCopyOf_threadSafe() {
-    verifyThreadSafe();
   }
 
   @Override

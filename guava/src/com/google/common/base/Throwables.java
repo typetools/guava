@@ -71,7 +71,6 @@ public final class Throwables {
    *
    * @since 20.0
    */
-  @J2ktIncompatible
   @GwtIncompatible // Class.cast, Class.isInstance
   public static <X extends Throwable> void throwIfInstanceOf(
       Throwable throwable, Class<X> declaredType) throws X {
@@ -164,7 +163,10 @@ public final class Throwables {
    *
    * @param throwable the Throwable to possibly propagate
    * @param declaredType the single checked exception type declared by the calling method
+   * @deprecated Use a combination of {@link #throwIfInstanceOf} and {@link #throwIfUnchecked},
+   *     which togther provide the same behavior except that they reject {@code null}.
    */
+  @Deprecated
   @J2ktIncompatible
   @GwtIncompatible // propagateIfInstanceOf
   public static <X extends Throwable> void propagateIfPossible(
@@ -177,13 +179,14 @@ public final class Throwables {
    * Propagates {@code throwable} exactly as-is, if and only if it is an instance of {@link
    * RuntimeException}, {@link Error}, {@code declaredType1}, or {@code declaredType2}.
    *
-   * <p><b>Discouraged</b> in favor of calling {@link #throwIfInstanceOf} and {@link
-   * #throwIfUnchecked}.
-   *
    * @param throwable the Throwable to possibly propagate
    * @param declaredType1 any checked exception type declared by the calling method
    * @param declaredType2 any other checked exception type declared by the calling method
+   * @deprecated Use a combination of two calls to {@link #throwIfInstanceOf} and one call to {@link
+   *     #throwIfUnchecked}, which togther provide the same behavior except that they reject {@code
+   *     null}.
    */
+  @Deprecated
   @J2ktIncompatible
   @GwtIncompatible // propagateIfInstanceOf
   public static <X1 extends Throwable, X2 extends Throwable> void propagateIfPossible(
@@ -318,7 +321,6 @@ public final class Throwables {
    *     ClassCastException}'s cause is {@code throwable}.
    * @since 22.0
    */
-  @J2ktIncompatible
   @GwtIncompatible // Class.cast(Object)
   @CheckForNull
   public static <X extends Throwable> X getCauseAs(
@@ -480,6 +482,7 @@ public final class Throwables {
    * Returns the JavaLangAccess class that is present in all Sun JDKs. It is not allowed in
    * AppEngine, and not present in non-Sun JDKs.
    */
+  @SuppressWarnings("removal") // b/318391980
   @J2ktIncompatible
   @GwtIncompatible // java.lang.reflect
   @CheckForNull
@@ -539,6 +542,7 @@ public final class Throwables {
     }
   }
 
+  @SuppressWarnings("removal") // b/318391980
   @J2ktIncompatible
   @GwtIncompatible // java.lang.reflect
   @CheckForNull

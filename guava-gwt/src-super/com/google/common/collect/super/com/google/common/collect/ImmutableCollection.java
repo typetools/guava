@@ -22,7 +22,6 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.io.Serializable;
 import java.util.AbstractCollection;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.function.Predicate;
@@ -34,12 +33,10 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @author Jesse Wilson
  */
 @SuppressWarnings("serial") // we're overriding default serialization
+@ElementTypesAreNonnullByDefault
 public abstract class ImmutableCollection<E> extends AbstractCollection<E> implements Serializable {
   static final int SPLITERATOR_CHARACTERISTICS =
       Spliterator.IMMUTABLE | Spliterator.NONNULL | Spliterator.ORDERED;
-
-  static final ImmutableCollection<Object> EMPTY_IMMUTABLE_COLLECTION =
-      new ForwardingImmutableCollection<Object>(Collections.emptyList());
 
   ImmutableCollection() {}
 
@@ -53,7 +50,7 @@ public abstract class ImmutableCollection<E> extends AbstractCollection<E> imple
     throw new UnsupportedOperationException();
   }
 
-  public final boolean remove(Object object) {
+  public final boolean remove(@Nullable Object object) {
     throw new UnsupportedOperationException();
   }
 
@@ -77,7 +74,7 @@ public abstract class ImmutableCollection<E> extends AbstractCollection<E> imple
     throw new UnsupportedOperationException();
   }
 
-  private transient ImmutableList<E> asList;
+  private transient @Nullable ImmutableList<E> asList;
 
   public ImmutableList<E> asList() {
     ImmutableList<E> list = asList;

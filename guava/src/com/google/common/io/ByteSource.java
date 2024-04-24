@@ -587,6 +587,7 @@ public abstract class ByteSource {
     final @IndexOrHigh("this.bytes") int offset;
     final @NonNegative @LTLengthOf(value = "this.bytes", offset = "this.offset - 1") int length;
 
+    // NOTE: Preconditions are enforced by slice, the only non-trivial caller.
     ByteArrayByteSource(byte[] bytes) {
       this(bytes, 0, bytes.length);
     }

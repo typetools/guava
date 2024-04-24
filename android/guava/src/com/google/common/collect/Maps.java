@@ -65,6 +65,8 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.BinaryOperator;
+import java.util.stream.Collector;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -149,7 +151,6 @@ public final class Maps {
    * @since 14.0
    */
   @GwtCompatible(serializable = true)
-  @J2ktIncompatible
   public static <K extends Enum<K>, V> ImmutableMap<K, V> immutableEnumMap(
       Map<K, ? extends V> map) {
     if (map instanceof ImmutableEnumMap) {
@@ -175,6 +176,46 @@ public final class Maps {
       enumMap.put(key, value);
     }
     return ImmutableEnumMap.asImmutable(enumMap);
+  }
+
+  /**
+   * Returns a {@link Collector} that accumulates elements into an {@code ImmutableMap} whose keys
+   * and values are the result of applying the provided mapping functions to the input elements. The
+   * resulting implementation is specialized for enum key types. The returned map and its views will
+   * iterate over keys in their enum definition order, not encounter order.
+   *
+   * <p>If the mapped keys contain duplicates, an {@code IllegalArgumentException} is thrown when
+   * the collection operation is performed. (This differs from the {@code Collector} returned by
+   * {@link java.util.stream.Collectors#toMap(java.util.function.Function,
+   * java.util.function.Function) Collectors.toMap(Function, Function)}, which throws an {@code
+   * IllegalStateException}.)
+   */
+  @SuppressWarnings({"AndroidJdkLibsChecker", "Java7ApiChecker"})
+  @IgnoreJRERequirement // Users will use this only if they're already using streams.
+  static <T extends @Nullable Object, K extends Enum<K>, V>
+      Collector<T, ?, ImmutableMap<K, V>> toImmutableEnumMap(
+          java.util.function.Function<? super T, ? extends K> keyFunction,
+          java.util.function.Function<? super T, ? extends V> valueFunction) {
+    return CollectCollectors.toImmutableEnumMap(keyFunction, valueFunction);
+  }
+
+  /**
+   * Returns a {@link Collector} that accumulates elements into an {@code ImmutableMap} whose keys
+   * and values are the result of applying the provided mapping functions to the input elements. The
+   * resulting implementation is specialized for enum key types. The returned map and its views will
+   * iterate over keys in their enum definition order, not encounter order.
+   *
+   * <p>If the mapped keys contain duplicates, the values are merged using the specified merging
+   * function.
+   */
+  @SuppressWarnings({"AndroidJdkLibsChecker", "Java7ApiChecker"})
+  @IgnoreJRERequirement // Users will use this only if they're already using streams.
+  static <T extends @Nullable Object, K extends Enum<K>, V>
+      Collector<T, ?, ImmutableMap<K, V>> toImmutableEnumMap(
+          java.util.function.Function<? super T, ? extends K> keyFunction,
+          java.util.function.Function<? super T, ? extends V> valueFunction,
+          BinaryOperator<V> mergeFunction) {
+    return CollectCollectors.toImmutableEnumMap(keyFunction, valueFunction, mergeFunction);
   }
 
   /**
@@ -329,6 +370,7 @@ public final class Maps {
    *
    * @return a new, empty {@code TreeMap}
    */
+  @SuppressWarnings("rawtypes") // https://github.com/google/guava/issues/989
   public static <K extends Comparable, V extends @Nullable Object> TreeMap<K, V> newTreeMap() {
     return new TreeMap<>();
   }
@@ -1223,7 +1265,7 @@ public final class Maps {
    * <p>If your index may associate multiple values with each key, use {@link
    * Multimaps#index(Iterable, Function) Multimaps.index}.
    *
-   * <p><b>Note:</b> on Java 8 and later, it is usually better to use streams. For example:
+   * <p><b>Note:</b> on Java 8+, it is usually better to use streams. For example:
    *
    * <pre>{@code
    * import static com.google.common.collect.ImmutableMap.toImmutableMap;

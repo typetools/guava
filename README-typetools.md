@@ -118,7 +118,7 @@ a new branch) and pull in the upstream changes:
 ```
 cd $t/libraries
 GUAVA_FORK_TYPETOOLS=guava-fork-typetools
-VER=32.1.3
+VER=33.1.0
 rm -rf ${GUAVA_FORK_TYPETOOLS}-version-${VER}
 cp -pr ${GUAVA_FORK_TYPETOOLS} ${GUAVA_FORK_TYPETOOLS}-version-${VER}
 cd ${GUAVA_FORK_TYPETOOLS}-version-${VER}
@@ -126,7 +126,7 @@ git fetch --tags https://github.com/google/guava
 git pull https://github.com/google/guava v${VER}
 ```
 
-3. Resolve conflicts.  If you use Emacs, create a TAGS table:
+3. Resolve conflicts.  If you use Emacs, create a TAGS table to help:
 ```
 etags $(git ls-files)
 ```
@@ -139,12 +139,14 @@ etags $(git ls-files)
 5. Follow the instructions in section "to compare to upstream".
 
 6. Update the Guava version number
- * multiple places in this file, and
+ * in this file, and
  * in file guava/cfMavenCentral.xml .
 
 If it's not the same as the upstream version, then also edit pom.xml and guava/pom.xml.
 
-7. Run the following commands (after adjusting the value of `PACKAGE`).
+7. Commit and push changes.
+
+8. Run the following commands (after adjusting the value of `PACKAGE`).
 
 JAVA_HOME must be a JDK 8 JDK.
 This step must be done on a machine, such as a CSE machine, that has access to the necessary passwords.
@@ -152,7 +154,7 @@ This step must be done on a machine, such as a CSE machine, that has access to t
 Maybe he needs to export then import instead of copying.)
 
 ```
-PACKAGE=guava-31.1-jre
+PACKAGE=guava-33.1.0-jre
 
 cd guava
 
@@ -181,7 +183,7 @@ mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/stagin
 mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=cfMavenCentral.xml -Dgpg.publicKeyring=$HOSTING_INFO_DIR/pubring.gpg -Dgpg.secretKeyring=$HOSTING_INFO_DIR/secring.gpg -Dgpg.keyname=ADF4D638 -Dgpg.passphrase="`cat $HOSTING_INFO_DIR/release-private.password`" -Dfile=target/site/apidocs/${PACKAGE}-javadoc.jar -Dclassifier=javadoc
 ```
 
-8. Complete the release at https://oss.sonatype.org/#stagingRepositories
+9. Complete the release at https://oss.sonatype.org/#stagingRepositories
 
 
 To compare to upstream
@@ -196,16 +198,15 @@ make sure that you did not make any mistakes when resolving merge conflicts):
  * Run the following commands in each temporary clone
    (preplace is in https://github.com/plume-lib/plume-scripts):
 ```
+   ./mvnw -B clean
    rm -rf .git
-   mvn -B clean
 
    preplace '^import org.checker.*\n' ''
 
    # Annotations that take up an entire line
    preplace '^\@AnnotatedFor.*\n' ''
    preplace '^\@Covariant\([0-9]+\)\n' ''
-   preplace '^ *\@AssertMethod\([^()]+\)\n' ''
-   preplace '^ *\@CFComment\([^()]+\)\n' ''
+   preplace '^ *\@(AssertMethod|CFComment|EnsuresLTLengthOf(If)?|HasSubsequence)\([^()]+\)\n' ''
    preplace '^ *\@FormatMethod\n' ''
    # preplace '^ *\@SuppressWarnings.*\n' ''
    preplace '^ *\@SuppressWarnings\(\{?"(cast\.unsafe|expression\.unparsable|index|lowerbound|nullness|override\.return|samelen|signature|signedness|substringindex|upperbound|value).*\n' ''
@@ -215,12 +216,12 @@ make sure that you did not make any mistakes when resolving merge conflicts):
    preplace '\@(GTENegativeOne|NonNegative|NonNull|Nullable|Poly[A-Za-z0-9_]+|PolySigned|Positive|Signed|SignednessGlb|SignedPositive|Unsigned|UnknownSignedness) ' ''
 
    # Annotations that take an argument
-   preplace '\@(EnsuresLTLengthOf(If)?|Format|HasSubsequence|IndexFor|IndexOr(Low|High)|IntRange|IntVal|KeyFor|LessThan|(|LT|LTEq)LengthOf|SubstringIndexFor)\([^()]+\) ' ''
+   preplace '\@(Format|IndexFor|IndexOr(Low|High)|IntRange|IntVal|KeyFor|LessThan|(|LT|LTEq)LengthOf|SubstringIndexFor)\([^()]+\) ' ''
 
    # Array-related spacing
    preplace '\@(Array|Min|Same)Len\([^()]+\) ?' ''
    preplace ' \[\]' '[]'
-   preplace ' \.\.\.' '...'
+   preplace '[^*] \.\.\.' '...'
 
    preplace '([;{]) *// *\([0-9]+\)$' '\1'
    preplace '([;{]) *// *#[0-9]+$' '\1'

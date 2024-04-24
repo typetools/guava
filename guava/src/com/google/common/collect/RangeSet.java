@@ -49,6 +49,7 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
  * @author Louis Wasserman
  * @since 14.0
  */
+@SuppressWarnings("rawtypes") // https://github.com/google/guava/issues/989
 @DoNotMock("Use ImmutableRangeSet or TreeRangeSet")
 @GwtIncompatible
 @ElementTypesAreNonnullByDefault

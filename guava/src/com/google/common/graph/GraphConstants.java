@@ -16,7 +16,6 @@
 
 package com.google.common.graph;
 
-
 import org.checkerframework.checker.formatter.qual.ConversionCategory;
 import org.checkerframework.checker.formatter.qual.Format;
 
@@ -38,6 +37,12 @@ final class GraphConstants {
   // Error messages
   static final @Format({ConversionCategory.GENERAL}) String NODE_NOT_IN_GRAPH = "Node %s is not an element of this graph.";
   static final @Format({ConversionCategory.GENERAL}) String EDGE_NOT_IN_GRAPH = "Edge %s is not an element of this graph.";
+  static final String NODE_REMOVED_FROM_GRAPH =
+      "Node %s that was used to generate this set is no longer in the graph.";
+  static final String NODE_PAIR_REMOVED_FROM_GRAPH =
+      "Node %s or node %s that were used to generate this set are no longer in the graph.";
+  static final String EDGE_REMOVED_FROM_GRAPH =
+      "Edge %s that was used to generate this set is no longer in the graph.";
   static final String REUSING_EDGE =
       "Edge %s already exists between the following nodes: %s, "
           + "so it cannot be reused to connect the following nodes: %s.";

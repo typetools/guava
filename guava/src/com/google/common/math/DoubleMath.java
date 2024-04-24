@@ -56,7 +56,6 @@ public final class DoubleMath {
    * rounding x according to the specified mode.
    */
   @SuppressWarnings("expression.unparsable.type.invalid")//Link to issue: https://github.com/typetools/checker-framework/issues/2030
-  @J2ktIncompatible
   @GwtIncompatible // #isMathematicalInteger, com.google.common.math.DoubleUtils
   static double roundIntermediate(double x, RoundingMode mode) {
     if (!isFinite(x)) {
@@ -133,7 +132,6 @@ public final class DoubleMath {
    *           RoundingMode#UNNECESSARY}
    *     </ul>
    */
-  @J2ktIncompatible
   @GwtIncompatible // #roundIntermediate
   public static int roundToInt(double x, RoundingMode mode) {
     double z = roundIntermediate(x, mode);
@@ -159,7 +157,6 @@ public final class DoubleMath {
    *           RoundingMode#UNNECESSARY}
    *     </ul>
    */
-  @J2ktIncompatible
   @GwtIncompatible // #roundIntermediate
   public static long roundToLong(double x, RoundingMode mode) {
     double z = roundIntermediate(x, mode);
@@ -187,7 +184,6 @@ public final class DoubleMath {
    *     </ul>
    */
   // #roundIntermediate, java.lang.Math.getExponent, com.google.common.math.DoubleUtils
-  @J2ktIncompatible
   @GwtIncompatible
   public static BigInteger roundToBigInteger(double x, RoundingMode mode) {
     x = roundIntermediate(x, mode);
@@ -204,7 +200,6 @@ public final class DoubleMath {
    * Returns {@code true} if {@code x} is exactly equal to {@code 2^k} for some finite integer
    * {@code k}.
    */
-  @J2ktIncompatible
   @GwtIncompatible // com.google.common.math.DoubleUtils
   public static boolean isPowerOfTwo(double x) {
     if (x > 0.0 && isFinite(x)) {
@@ -243,7 +238,6 @@ public final class DoubleMath {
    * @throws IllegalArgumentException if {@code x <= 0.0}, {@code x} is NaN, or {@code x} is
    *     infinite
    */
-  @J2ktIncompatible
   @GwtIncompatible // java.lang.Math.getExponent, com.google.common.math.DoubleUtils
   @SuppressWarnings("fallthrough")
   public static int log2(double x, RoundingMode mode) {
@@ -414,7 +408,6 @@ public final class DoubleMath {
    */
   @Deprecated
   // com.google.common.math.DoubleUtils
-  @J2ktIncompatible
   @GwtIncompatible
   public static double mean(double @MinLen(1)... values) {
     checkArgument(values.length > 0, "Cannot take mean of 0 values");
@@ -495,7 +488,6 @@ public final class DoubleMath {
    */
   @Deprecated
   // com.google.common.math.DoubleUtils
-  @J2ktIncompatible
   @GwtIncompatible
   public static double mean(Iterable<? extends Number> values) {
     return mean(values.iterator());
@@ -516,7 +508,6 @@ public final class DoubleMath {
    */
   @Deprecated
   // com.google.common.math.DoubleUtils
-  @J2ktIncompatible
   @GwtIncompatible
   public static double mean(Iterator<? extends Number> values) {
     checkArgument(values.hasNext(), "Cannot take mean of 0 values");
@@ -531,7 +522,6 @@ public final class DoubleMath {
     return mean;
   }
 
-  @J2ktIncompatible
   @GwtIncompatible // com.google.common.math.DoubleUtils
   @CanIgnoreReturnValue
   private static double checkFinite(double argument) {

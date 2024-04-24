@@ -54,6 +54,7 @@ import sun.misc.Unsafe;
  * @since 1.0
  */
 @AnnotatedFor({"signedness"})
+@J2ktIncompatible
 @GwtIncompatible
 @ElementTypesAreNonnullByDefault
 public final class UnsignedBytes {
@@ -79,7 +80,7 @@ public final class UnsignedBytes {
    * Returns the value of the given byte as an integer, when treated as unsigned. That is, returns
    * {@code value + 256} if {@code value} is negative; {@code value} itself otherwise.
    *
-   * <p><b>Java 8 users:</b> use {@link Byte#toUnsignedInt(byte)} instead.
+   * <p><b>Java 8+ users:</b> use {@link Byte#toUnsignedInt(byte)} instead.
    *
    * @since 6.0
    */
@@ -344,6 +345,7 @@ public final class UnsignedBytes {
        *
        * @return a sun.misc.Unsafe
        */
+      @SuppressWarnings("removal") // b/318391980
       private static sun.misc.Unsafe getUnsafe() {
         try {
           return sun.misc.Unsafe.getUnsafe();

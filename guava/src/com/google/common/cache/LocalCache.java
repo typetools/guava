@@ -1862,7 +1862,7 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
 
   @SuppressWarnings("unchecked")
   final Segment<K, V>[] newSegmentArray(int ssize) {
-    return new Segment[ssize];
+    return (Segment<K, V>[]) new Segment<?, ?>[ssize];
   }
 
   // Inner Classes
@@ -4284,7 +4284,8 @@ class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> 
   }
 
   @Override
-  public @PolyNull V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends @PolyNull V> function) {
+  public @PolyNull V computeIfPresent(
+      K key, BiFunction<? super K, ? super V, ? extends @PolyNull V> function) {
     checkNotNull(key);
     checkNotNull(function);
     return compute(key, (k, oldValue) -> (oldValue == null) ? null : function.apply(k, oldValue));

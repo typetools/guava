@@ -26,6 +26,7 @@ import static com.google.common.collect.ObjectArrays.checkElementsNotNull;
 import static com.google.common.collect.RegularImmutableList.EMPTY;
 
 import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
 import com.google.common.annotations.J2ktIncompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.DoNotCall;
@@ -40,6 +41,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.RandomAccess;
+import java.util.stream.Collector;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -60,6 +62,17 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 @ElementTypesAreNonnullByDefault
 public abstract class ImmutableList<E> extends ImmutableCollection<E>
     implements List<E>, RandomAccess {
+
+  /**
+   * Returns a {@code Collector} that accumulates the input elements into a new {@code
+   * ImmutableList}, in encounter order.
+   */
+  @SuppressWarnings({"AndroidJdkLibsChecker", "Java7ApiChecker"})
+  @IgnoreJRERequirement // Users will use this only if they're already using streams.
+  static <E> Collector<E, ?, ImmutableList<E>> toImmutableList() {
+    return CollectCollectors.toImmutableList();
+  }
+
   /**
    * Returns the empty immutable list. This list behaves and performs comparably to {@link
    * Collections#emptyList}, and is preferable mainly for consistency and maintainability of your
@@ -288,7 +301,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * ImmutableSortedSet.copyOf(elements)}; if you want a {@code List} you can use its {@code
    * asList()} view.
    *
-   * <p><b>Java 8 users:</b> If you want to convert a {@link java.util.stream.Stream} to a sorted
+   * <p><b>Java 8+ users:</b> If you want to convert a {@link java.util.stream.Stream} to a sorted
    * {@code ImmutableList}, use {@code stream.sorted().collect(toImmutableList())}.
    *
    * @throws NullPointerException if any element in the input is null
@@ -311,7 +324,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * ImmutableSortedSet.copyOf(comparator, elements)}; if you want a {@code List} you can use its
    * {@code asList()} view.
    *
-   * <p><b>Java 8 users:</b> If you want to convert a {@link java.util.stream.Stream} to a sorted
+   * <p><b>Java 8+ users:</b> If you want to convert a {@link java.util.stream.Stream} to a sorted
    * {@code ImmutableList}, use {@code stream.sorted(comparator).collect(toImmutableList())}.
    *
    * @throws NullPointerException if any element in the input is null
@@ -413,6 +426,12 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
    * Returns an immutable list of the elements between the specified {@code fromIndex}, inclusive,
    * and {@code toIndex}, exclusive. (If {@code fromIndex} and {@code toIndex} are equal, the empty
    * immutable list is returned.)
+   *
+   * <p><b>Note:</b> in almost all circumstances, the returned {@link ImmutableList} retains a
+   * strong reference to {@code this}, which may prevent the original list from being garbage
+   * collected. If you want the original list to be eligible for garbage collection, you should
+   * create and use a copy of the sub list (e.g., {@code
+   * ImmutableList.copyOf(originalList.subList(...))}).
    */
   @Override
   public ImmutableList<E> subList(int fromIndex, int toIndex) {
@@ -481,6 +500,15 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
     @Override
     boolean isPartialView() {
       return true;
+    }
+
+    // redeclare to help optimizers with b/310253115
+    @SuppressWarnings("RedundantOverride")
+    @Override
+    @J2ktIncompatible // serialization
+    @GwtIncompatible // serialization
+    Object writeReplace() {
+      return super.writeReplace();
     }
   }
 
@@ -631,6 +659,15 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
     boolean isPartialView() {
       return forwardList.isPartialView();
     }
+
+    // redeclare to help optimizers with b/310253115
+    @SuppressWarnings("RedundantOverride")
+    @Override
+    @J2ktIncompatible // serialization
+    @GwtIncompatible // serialization
+    Object writeReplace() {
+      return super.writeReplace();
+    }
   }
 
   @Override
@@ -677,6 +714,7 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
 
   @Override
   @J2ktIncompatible // serialization
+  @GwtIncompatible // serialization
   Object writeReplace() {
     return new SerializedForm(toArray());
   }
@@ -810,4 +848,6 @@ public abstract class ImmutableList<E> extends ImmutableCollection<E>
       return asImmutableList(contents, size);
     }
   }
+
+  private static final long serialVersionUID = 0xcafebabe;
 }

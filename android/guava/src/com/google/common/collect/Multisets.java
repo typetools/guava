@@ -39,6 +39,10 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.function.ToIntFunction;
+import java.util.stream.Collector;
 import javax.annotation.CheckForNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -58,6 +62,31 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 @ElementTypesAreNonnullByDefault
 public final class Multisets {
   private Multisets() {}
+
+  /**
+   * Returns a {@code Collector} that accumulates elements into a multiset created via the specified
+   * {@code Supplier}, whose elements are the result of applying {@code elementFunction} to the
+   * inputs, with counts equal to the result of applying {@code countFunction} to the inputs.
+   * Elements are added in encounter order.
+   *
+   * <p>If the mapped elements contain duplicates (according to {@link Object#equals}), the element
+   * will be added more than once, with the count summed over all appearances of the element.
+   *
+   * <p>Note that {@code stream.collect(toMultiset(function, e -> 1, supplier))} is equivalent to
+   * {@code stream.map(function).collect(Collectors.toCollection(supplier))}.
+   *
+   * <p>To collect to an {@link ImmutableMultiset}, use {@link
+   * ImmutableMultiset#toImmutableMultiset}.
+   */
+  @SuppressWarnings({"AndroidJdkLibsChecker", "Java7ApiChecker"})
+  @IgnoreJRERequirement // Users will use this only if they're already using streams.
+  static <T extends @Nullable Object, E extends @Nullable Object, M extends Multiset<E>>
+      Collector<T, ?, M> toMultiset(
+          Function<? super T, E> elementFunction,
+          ToIntFunction<? super T> countFunction,
+          Supplier<M> multisetSupplier) {
+    return CollectCollectors.toMultiset(elementFunction, countFunction, multisetSupplier);
+  }
 
   /**
    * Returns an unmodifiable view of the specified multiset. Query operations on the returned
@@ -1015,10 +1044,6 @@ public final class Multisets {
     @Override
     public boolean contains(@CheckForNull Object o) {
       if (o instanceof Entry) {
-        /*
-         * The GWT compiler wrongly issues a warning here.
-         */
-        @SuppressWarnings("cast")
         Entry<?> entry = (Entry<?>) o;
         if (entry.getCount() <= 0) {
           return false;
@@ -1029,8 +1054,6 @@ public final class Multisets {
       return false;
     }
 
-    // GWT compiler warning; see contains().
-    @SuppressWarnings("cast")
     @Override
     public boolean remove(@CheckForNull Object object) {
       if (object instanceof Multiset.Entry) {
@@ -1139,13 +1162,15 @@ public final class Multisets {
    * @since 11.0
    */
   public static <E> ImmutableMultiset<E> copyHighestCountFirst(Multiset<E> multiset) {
-    Entry<E>[] entries = (Entry<E>[]) multiset.entrySet().toArray(new Entry[0]);
+    @SuppressWarnings("unchecked") // generics+arrays
+    // TODO(cpovirk): Consider storing an Entry<?> instead of Entry<E>.
+    Entry<E>[] entries = (Entry<E>[]) multiset.entrySet().toArray((Entry<E>[]) new Entry<?>[0]);
     Arrays.sort(entries, DecreasingCount.INSTANCE);
     return ImmutableMultiset.copyFromEntries(Arrays.asList(entries));
   }
 
   private static final class DecreasingCount implements Comparator<Entry<?>> {
-    static final DecreasingCount INSTANCE = new DecreasingCount();
+    static final Comparator<Entry<?>> INSTANCE = new DecreasingCount();
 
     @Override
     public int compare(Entry<?> entry1, Entry<?> entry2) {

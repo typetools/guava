@@ -197,7 +197,6 @@ public class FloatsTest extends TestCase {
     assertThat(Floats.lastIndexOf(new float[] {NaN, 5f}, NaN)).isEqualTo(-1);
   }
 
-  @J2ktIncompatible
   @GwtIncompatible
   public void testMax_noArgs() {
     try {
@@ -220,7 +219,6 @@ public class FloatsTest extends TestCase {
     assertThat(Float.isNaN(Floats.max(VALUES))).isTrue();
   }
 
-  @J2ktIncompatible
   @GwtIncompatible
   public void testMin_noArgs() {
     try {
@@ -293,7 +291,6 @@ public class FloatsTest extends TestCase {
     }
   }
 
-  @J2ktIncompatible
   @GwtIncompatible // Float.toString returns different value in GWT.
   public void testJoin() {
     assertThat(Floats.join(",", EMPTY)).isEmpty();
@@ -556,7 +553,7 @@ public class FloatsTest extends TestCase {
     assertThat(Floats.toArray(doubles)).isEqualTo(array);
   }
 
-  @J2ktIncompatible // b/285319375
+  @J2ktIncompatible // b/239034072: Kotlin varargs copy parameter arrays.
   public void testAsList_isAView() {
     float[] array = {(float) 0, (float) 1};
     List<Float> list = Floats.asList(array);
@@ -605,19 +602,16 @@ public class FloatsTest extends TestCase {
     }
   }
 
-  @J2ktIncompatible
   @GwtIncompatible // Floats.tryParse
   private static void checkTryParse(String input) {
     assertThat(Floats.tryParse(input)).isEqualTo(referenceTryParse(input));
   }
 
-  @J2ktIncompatible
   @GwtIncompatible // Floats.tryParse
   private static void checkTryParse(float expected, String input) {
     assertThat(Floats.tryParse(input)).isEqualTo(Float.valueOf(expected));
   }
 
-  @J2ktIncompatible
   @GwtIncompatible // Floats.tryParse
   public void testTryParseHex() {
     for (String signChar : ImmutableList.of("", "+", "-")) {
@@ -639,7 +633,6 @@ public class FloatsTest extends TestCase {
   }
 
   @AndroidIncompatible // slow
-  @J2ktIncompatible
   @GwtIncompatible // Floats.tryParse
   public void testTryParseAllCodePoints() {
     // Exercise non-ASCII digit test cases and the like.
@@ -650,7 +643,6 @@ public class FloatsTest extends TestCase {
     }
   }
 
-  @J2ktIncompatible
   @GwtIncompatible // Floats.tryParse
   public void testTryParseOfToStringIsOriginal() {
     for (float f : NUMBERS) {
@@ -658,7 +650,7 @@ public class FloatsTest extends TestCase {
     }
   }
 
-  @J2ktIncompatible
+  @J2ktIncompatible // hexadecimal floats
   @GwtIncompatible // Floats.tryParse
   public void testTryParseOfToHexStringIsOriginal() {
     for (float f : NUMBERS) {
@@ -666,7 +658,6 @@ public class FloatsTest extends TestCase {
     }
   }
 
-  @J2ktIncompatible
   @GwtIncompatible // Floats.tryParse
   public void testTryParseNaN() {
     checkTryParse("NaN");
@@ -674,7 +665,6 @@ public class FloatsTest extends TestCase {
     checkTryParse("-NaN");
   }
 
-  @J2ktIncompatible
   @GwtIncompatible // Floats.tryParse
   public void testTryParseInfinity() {
     checkTryParse(Float.POSITIVE_INFINITY, "Infinity");
@@ -699,7 +689,6 @@ public class FloatsTest extends TestCase {
     "InfinityF"
   };
 
-  @J2ktIncompatible
   @GwtIncompatible // Floats.tryParse
   public void testTryParseFailures() {
     for (String badInput : BAD_TRY_PARSE_INPUTS) {
@@ -714,7 +703,6 @@ public class FloatsTest extends TestCase {
     new NullPointerTester().testAllPublicStaticMethods(Floats.class);
   }
 
-  @J2ktIncompatible
   @GwtIncompatible // Float.toString returns different value in GWT.
   public void testStringConverter_convert() {
     Converter<String, Float> converter = Floats.stringConverter();
@@ -759,7 +747,6 @@ public class FloatsTest extends TestCase {
     tester.testAllPublicInstanceMethods(Floats.stringConverter());
   }
 
-  @J2ktIncompatible
   @GwtIncompatible
   public void testTryParse_withNullNoGwt() {
     assertThat(Floats.tryParse("null")).isNull();

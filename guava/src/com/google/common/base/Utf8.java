@@ -79,6 +79,7 @@ public final class Utf8 {
     }
     return utf8Length;
   }
+
   @SuppressWarnings("lowerbound:compound.assignment") // unsigned right shift on int
   private static @NonNegative int encodedLengthGeneral(CharSequence sequence, @NonNegative/*!IndexFor("#1")*/ int start) {
     int utf16Length = sequence.length();

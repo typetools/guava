@@ -3,6 +3,7 @@ target/
 *.ser
 *.ec
 *.asc
+.mvn/wrapper/maven-wrapper.jar
 
 # IntelliJ Idea
 .idea/
