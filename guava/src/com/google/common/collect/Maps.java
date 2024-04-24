@@ -38,6 +38,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.MapDifference.ValueDifference;
 import com.google.common.primitives.Ints;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.concurrent.LazyInit;
 import com.google.j2objc.annotations.RetainedWith;
 import com.google.j2objc.annotations.Weak;
 import com.google.j2objc.annotations.WeakOuter;
@@ -1713,8 +1714,8 @@ public final class Maps {
       extends ForwardingMap<K, V> implements BiMap<K, V>, Serializable {
     final Map<K, V> unmodifiableMap;
     final BiMap<? extends K, ? extends V> delegate;
-    @RetainedWith @CheckForNull BiMap<V, K> inverse;
-    @CheckForNull transient Set<V> values;
+    @LazyInit @RetainedWith @CheckForNull BiMap<V, K> inverse;
+    @LazyInit @CheckForNull transient Set<V> values;
 
     UnmodifiableBiMap(BiMap<? extends K, ? extends V> delegate, @CheckForNull BiMap<V, K> inverse) {
       unmodifiableMap = Collections.unmodifiableMap(delegate);
@@ -1766,21 +1767,30 @@ public final class Maps {
       throw new UnsupportedOperationException();
     }
 
+    /*
+     * TODO(cpovirk): Uncomment the @NonNull annotations below once our JDK stubs and J2KT
+     * emulations include them.
+     */
     @Override
     public @PolyNull V computeIfPresent(
-        K key, BiFunction<? super K, ? super V, ? extends @PolyNull V> remappingFunction) {
+        K key,
+        BiFunction<? super K, ? super /*@NonNull*/ V, ? extends @PolyNull V> remappingFunction) {
       throw new UnsupportedOperationException();
     }
 
     @Override
     public @PolyNull V compute(
-        K key, BiFunction<? super K, ? super @Nullable V, ? extends @PolyNull V> remappingFunction) {
+        K key,
+        BiFunction<? super K, ? super @Nullable V, ? extends @PolyNull V> remappingFunction) {
       throw new UnsupportedOperationException();
     }
 
     @Override
     public @PolyNull V merge(
-        K key, V value, BiFunction<? super V, ? super V, ? extends @PolyNull V> remappingFunction) {
+        K key,
+        /*@NonNull*/ V value,
+        BiFunction<? super /*@NonNull*/ V, ? super/*@NonNull*/ V, ? extends @PolyNull V>
+            function) {
       throw new UnsupportedOperationException();
     }
 
@@ -3680,6 +3690,10 @@ public final class Maps {
       throw new UnsupportedOperationException();
     }
 
+    /*
+     * TODO(cpovirk): Uncomment the @NonNull annotations below once our JDK stubs and J2KT
+     * emulations include them.
+     */
     @Override
     public @PolyNull V computeIfPresent(
         K key, BiFunction<? super K, ? super V, ? extends @PolyNull V> remappingFunction) {
@@ -3694,11 +3708,13 @@ public final class Maps {
 
     @Override
     public @PolyNull V merge(
-        K key, V value, BiFunction<? super V, ? super V, ? extends @PolyNull V> remappingFunction) {
+        /*@NonNull*/ K key,
+        V value,
+        BiFunction<? super /*@NonNull*/ V, ? super /*@NonNull*/ V, ? extends @PolyNull V> function) {
       throw new UnsupportedOperationException();
     }
 
-    @CheckForNull private transient UnmodifiableNavigableMap<K, V> descendingMap;
+    @LazyInit @CheckForNull private transient UnmodifiableNavigableMap<K, V> descendingMap;
 
     @Override
     public NavigableMap<K, V> descendingMap() {
@@ -3828,7 +3844,7 @@ public final class Maps {
      */
     abstract Set<Entry<K, V>> createEntrySet();
 
-    @CheckForNull private transient Set<Entry<K, V>> entrySet;
+    @LazyInit @CheckForNull private transient Set<Entry<K, V>> entrySet;
 
     @Override
     public Set<Entry<@KeyFor({"this"}) K, V>> entrySet() {
@@ -3836,7 +3852,7 @@ public final class Maps {
       return (result == null) ? entrySet = createEntrySet() : result;
     }
 
-    @CheckForNull private transient Set<K> keySet;
+    @LazyInit @CheckForNull private transient Set<K> keySet;
 
     @Override
     public Set<@KeyFor({"this"}) K> keySet() {
@@ -3848,7 +3864,7 @@ public final class Maps {
       return new KeySet<>(this);
     }
 
-    @CheckForNull private transient Collection<V> values;
+    @LazyInit @CheckForNull private transient Collection<V> values;
 
     @Override
     public Collection<V> values() {
@@ -4411,7 +4427,7 @@ public final class Maps {
       return forward();
     }
 
-    @CheckForNull private transient Comparator<? super K> comparator;
+    @LazyInit @CheckForNull private transient Comparator<? super K> comparator;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -4521,7 +4537,7 @@ public final class Maps {
       return forward();
     }
 
-    @CheckForNull private transient Set<Entry<K, V>> entrySet;
+    @LazyInit @CheckForNull private transient Set<Entry<K, V>> entrySet;
 
     @Override
     public Set<Entry<@KeyFor({"this"}) K, V>> entrySet() {
@@ -4552,7 +4568,7 @@ public final class Maps {
       return navigableKeySet();
     }
 
-    @CheckForNull private transient NavigableSet<K> navigableKeySet;
+    @LazyInit @CheckForNull private transient NavigableSet<K> navigableKeySet;
 
     @Override
     public NavigableSet<@KeyFor({"this"}) K> navigableKeySet() {

@@ -159,8 +159,8 @@ written.)
    instructions above to merge it into master.
 
 2. Pull in the latest Guava version (https://github.com/google/guava/releases).
-Note that this command makes a merge, which must appear in the typetools/guava
-repository.  (Do not squash-and-merge if you are working on a different branch!)
+This will makes a merge, which must appear in the typetools/guava repository.
+(Do not squash-and-merge if you are working on a different branch!)
 
 If your clone of guava is in directory `$t/libraries` and is named
 `guava-fork-typetools`, then these commands will create a copy of the clone (not
@@ -177,20 +177,25 @@ git fetch --tags https://github.com/google/guava
 git pull https://github.com/google/guava v${VER}
 ```
 
-3. Ensure that the project still builds:
+3. Resolve conflicts.  If you use Emacs, create a TAGS table:
+```
+etags $(git ls-files)
+```
+
+4. Ensure that the project still builds:
 ```
 (cd guava && mvn -B package -Dmaven.test.skip=true -Danimal.sniffer.skip=true)
 ```
 
-4. Follow the instructions in section "to compare to upstream".
+5. Follow the instructions in section "to compare to upstream".
 
-5. Update the Guava version number
+6. Update the Guava version number
  * multiple places in this file, and
  * in file guava/cfMavenCentral.xml .
 
 If it's not the same as the upstream version, then also edit pom.xml and guava/pom.xml.
 
-6. Run the following commands.
+7. Run the following commands (after adjusting the value of `PACKAGE`).
 
 JAVA_HOME must be a JDK 8 JDK.
 This step must be done on a machine, such as a CSE machine, that has access to the necessary passwords.
@@ -227,7 +232,7 @@ mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/stagin
 mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=cfMavenCentral.xml -Dgpg.publicKeyring=$HOSTING_INFO_DIR/pubring.gpg -Dgpg.secretKeyring=$HOSTING_INFO_DIR/secring.gpg -Dgpg.keyname=ADF4D638 -Dgpg.passphrase="`cat $HOSTING_INFO_DIR/release-private.password`" -Dfile=target/site/apidocs/${PACKAGE}-javadoc.jar -Dclassifier=javadoc
 ```
 
-7. Complete the release at https://oss.sonatype.org/#stagingRepositories
+8. Complete the release at https://oss.sonatype.org/#stagingRepositories
 
 
 To update to a non-released version of the upstream library

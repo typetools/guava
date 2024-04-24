@@ -31,6 +31,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.primitives.Ints;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.concurrent.LazyInit;
 import com.google.j2objc.annotations.WeakOuter;
 import java.io.IOException;
 import java.io.InvalidObjectException;
@@ -693,7 +694,7 @@ class CompactHashMap<K extends @Nullable Object, V extends @Nullable Object>
     }
   }
 
-  @CheckForNull private transient Set<K> keySetView;
+  @LazyInit @CheckForNull private transient Set<K> keySetView;
 
   @Override
   public Set<@KeyFor({"this"}) K> keySet() {
@@ -803,7 +804,7 @@ class CompactHashMap<K extends @Nullable Object, V extends @Nullable Object>
     }
   }
 
-  @CheckForNull private transient Set<Entry<K, V>> entrySetView;
+  @LazyInit @CheckForNull private transient Set<Entry<K, V>> entrySetView;
 
   @Override
   public Set<Entry<@KeyFor({"this"}) K, V>> entrySet() {
@@ -986,7 +987,7 @@ class CompactHashMap<K extends @Nullable Object, V extends @Nullable Object>
     return false;
   }
 
-  @CheckForNull private transient Collection<V> valuesView;
+  @LazyInit @CheckForNull private transient Collection<V> valuesView;
 
   @Override
   public Collection<V> values() {

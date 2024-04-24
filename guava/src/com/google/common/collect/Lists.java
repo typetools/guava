@@ -563,8 +563,8 @@ public final class Lists {
      * can be overkill. That's why we forward this call directly to the backing list.
      */
     @Override
-    public void clear() {
-      fromList.clear();
+    protected void removeRange(int fromIndex, int toIndex) {
+      fromList.subList(fromIndex, toIndex).clear();
     }
 
     @Pure
@@ -611,9 +611,13 @@ public final class Lists {
       this.function = checkNotNull(function);
     }
 
+    /**
+     * The default implementation inherited is based on iteration and removal of each element which
+     * can be overkill. That's why we forward this call directly to the backing list.
+     */
     @Override
-    public void clear() {
-      fromList.clear();
+    protected void removeRange(int fromIndex, int toIndex) {
+      fromList.subList(fromIndex, toIndex).clear();
     }
 
     @Override
@@ -636,6 +640,8 @@ public final class Lists {
         }
       };
     }
+
+    // TODO: cpovirk - Why override `isEmpty` here but not in TransformingSequentialList?
 
     @Pure
     @Override

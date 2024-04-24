@@ -473,7 +473,7 @@ final class Synchronized {
     }
 
     @Override
-    public void sort(Comparator<? super E> c) {
+    public void sort(@Nullable Comparator<? super E> c) {
       synchronized (mutex) {
         delegate().sort(c);
       }
@@ -1239,9 +1239,13 @@ final class Synchronized {
       }
     }
 
+    /*
+     * TODO(cpovirk): Uncomment the @NonNull annotations below once our JDK stubs and J2KT
+     * emulations include them.
+     */
     @Override
     public @PolyNull V computeIfPresent(
-        K key, BiFunction<? super K, ? super V, ? extends @PolyNull V> remappingFunction) {
+        K key, BiFunction<? super K, ? super /*@NonNull*/ V, ? extends @PolyNull V> remappingFunction) {
       synchronized (mutex) {
         return delegate().computeIfPresent(key, remappingFunction);
       }
@@ -1257,7 +1261,10 @@ final class Synchronized {
 
     @Override
     public @PolyNull V merge(
-        K key, V value, BiFunction<? super V, ? super V, ? extends @PolyNull V> remappingFunction) {
+        K key,
+        /*@NonNull*/ V value,
+        BiFunction<? super /*@NonNull*/ V, ? super /*@NonNull*/ V, ? extends @PolyNull V>
+            remappingFunction) {
       synchronized (mutex) {
         return delegate().merge(key, value, remappingFunction);
       }

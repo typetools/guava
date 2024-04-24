@@ -416,9 +416,8 @@ public final class Files {
    * java.nio.file.Files#createTempDirectory}.
    *
    * @return the newly-created directory
-   * @throws IllegalStateException if the directory could not be created
-   * @throws UnsupportedOperationException if the system does not support creating temporary
-   *     directories securely
+   * @throws IllegalStateException if the directory could not be created, such as if the system does
+   *     not support creating temporary directories securely
    * @deprecated For Android users, see the <a
    *     href="https://developer.android.com/training/data-storage" target="_blank">Data and File
    *     Storage overview</a> to select an appropriate temporary directory (perhaps {@code
