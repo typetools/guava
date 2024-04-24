@@ -150,8 +150,15 @@ If it's not the same as the upstream version, then also edit pom.xml and guava/p
 
 JAVA_HOME must be a JDK 8 JDK.
 This step must be done on a machine, such as a CSE machine, that has access to the necessary passwords.
-(It failed on Mike's home machine, when he copied the hosting-info/ directory.
-Maybe he needs to export then import instead of copying.)
+(Mike should try this on his home machine again.)
+
+**NOTE**: maven-gpg-plugin version 3.2.1 is buggy
+(https://issues.apache.org/jira/browse/MGPG-113) and will fail the upload with
+"Failed to execute goal
+org.apache.maven.plugins:maven-gpg-plugin:3.2.1:sign-and-deploy-file ... reason
+phrase: Unauthorized (401)".  If version 3.2.1 is being used, change
+"gpg:sign-and-deploy-file" to
+"org.apache.maven.plugins:maven-gpg-plugin:3.1.0:sign-and-deploy-file".
 
 ```
 PACKAGE=guava-33.1.0-jre
