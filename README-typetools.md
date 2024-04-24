@@ -160,6 +160,11 @@ phrase: Unauthorized (401)".  If version 3.2.1 is being used, change
 "gpg:sign-and-deploy-file" to
 "org.apache.maven.plugins:maven-gpg-plugin:3.1.0:sign-and-deploy-file".
 
+TODO: Try replacing "-Dgpg.passphrase=..." by
+```
+export MAVEN_GPG_PASSPHRASE="$(cat $HOSTING_INFO_DIR/release-private.password)"
+```
+
 ```
 PACKAGE=guava-33.1.0-jre
 
@@ -182,6 +187,12 @@ else
   exit
 fi
 
+
+## These commands only need be run once ever.
+# gpg --import ${HOSTING_INFO_DIR}/private-key.pgp
+# gpg --import ${HOSTING_INFO_DIR}/public-key.pgp
+
+
 [ ! -z "$PACKAGE" ] && \
 ../mvnw gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=cfMavenCentral.xml -Dgpg.publicKeyring=$HOSTING_INFO_DIR/pubring.gpg -Dgpg.secretKeyring=$HOSTING_INFO_DIR/secring.gpg -Dgpg.keyname=ADF4D638 -Dgpg.passphrase="`cat $HOSTING_INFO_DIR/release-private.password`" -Dfile=target/${PACKAGE}.jar \
 && \
@@ -189,6 +200,8 @@ fi
 && \
 ../mvnw gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=cfMavenCentral.xml -Dgpg.publicKeyring=$HOSTING_INFO_DIR/pubring.gpg -Dgpg.secretKeyring=$HOSTING_INFO_DIR/secring.gpg -Dgpg.keyname=ADF4D638 -Dgpg.passphrase="`cat $HOSTING_INFO_DIR/release-private.password`" -Dfile=target/site/apidocs/${PACKAGE}-javadoc.jar -Dclassifier=javadoc
 ```
+
+`-Dgpg.keyname` is the last 8 characters of the fingerprint printed by `gpg --list-secret-keys`.
 
 9. Complete the release at https://oss.sonatype.org/#stagingRepositories
 
