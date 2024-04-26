@@ -126,6 +126,15 @@ git fetch --tags https://github.com/google/guava
 git pull https://github.com/google/guava v${VER}
 ```
 
+3. Ensure the `<dependencies>` sections are the same as in the upstream version:
+```
+diff -u \
+  <(sed -n '/^  <dependencies>/,/^  <\/dependencies>/p' ../guava-fork-google/guava/pom.xml) \
+  <(sed -n '/^  <dependencies>/,/^  <\/dependencies>/p' guava/cfMavenCentral.xml)
+```
+
+[comment]: # (The above sed commend is from https://stackoverflow.com/questions/38972736)
+
 3. Resolve conflicts.  If you use Emacs, create a TAGS table to help:
 ```
 etags $(git ls-files)
