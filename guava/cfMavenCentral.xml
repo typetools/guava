@@ -1,50 +1,50 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
-    <packaging>jar</packaging>
+  <modelVersion>4.0.0</modelVersion>
+  <packaging>jar</packaging>
 
-    <name>Guava</name>
-    <url>https://github.com/typetools/guava</url>
-    <description>Guava library, with additional type annotations for verification</description>
+  <name>Guava</name>
+  <url>https://github.com/typetools/guava</url>
+  <description>Guava library, with additional type annotations for verification</description>
 
-    <groupId>org.checkerframework.annotatedlib</groupId>
-    <artifactId>guava</artifactId>
+  <groupId>org.checkerframework.annotatedlib</groupId>
+  <artifactId>guava</artifactId>
 
-    <licenses>
-        <license>
-            <name>Apache License 2.0</name>
-            <url>http://www.apache.org/licenses/</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+  <licenses>
+    <license>
+      <name>Apache License 2.0</name>
+      <url>http://www.apache.org/licenses/</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
-    <version>33.1.0-jre</version>
+  <version>33.1.0-jre</version>
 
-    <scm>
-        <url>https://github.com/typetools/guava.git</url>
-        <connection>https://github.com/typetools/guava.git</connection>
-    </scm>
+  <scm>
+    <url>https://github.com/typetools/guava.git</url>
+    <connection>https://github.com/typetools/guava.git</connection>
+  </scm>
 
-    <developers>
+  <developers>
 
-        <developer>
-            <id>Michael Ernst</id>
-            <name>Michael Ernst</name>
-            <email>mernst@cs.washington.edu</email>
-            <url>http://homes.cs.washington.edu/~mernst/</url>
-            <organization>University of Washington</organization>
-            <organizationUrl>https://www.cs.washington.edu/</organizationUrl>
-        </developer>
+    <developer>
+      <id>Michael Ernst</id>
+      <name>Michael Ernst</name>
+      <email>mernst@cs.washington.edu</email>
+      <url>http://homes.cs.washington.edu/~mernst/</url>
+      <organization>University of Washington</organization>
+      <organizationUrl>https://www.cs.washington.edu/</organizationUrl>
+    </developer>
 
-        <developer>
-            <id>Suzanne Millstein</id>
-            <name>Suzanne Millstein</name>
-            <email>smillst@cs.washington.edu</email>
-            <organization>University of Washington</organization>
-            <organizationUrl>https://www.cs.washington.edu/research/plse/</organizationUrl>
-        </developer>
+    <developer>
+      <id>Suzanne Millstein</id>
+      <name>Suzanne Millstein</name>
+      <email>smillst@cs.washington.edu</email>
+      <organization>University of Washington</organization>
+      <organizationUrl>https://www.cs.washington.edu/research/plse/</organizationUrl>
+    </developer>
 
-    </developers>
+  </developers>
 
 </project>
