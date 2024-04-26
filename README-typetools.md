@@ -151,7 +151,8 @@ etags $(git ls-files)
  * in this file, and
  * in file guava/cfMavenCentral.xml .
 
-If it's not the same as the upstream version, then also edit pom.xml and guava/pom.xml.
+If you are doing a re-release (that is, the version number is not the same as
+the upstream version), then edit those files and also pom.xml and guava/pom.xml.
 
 7. Commit and push changes.
 
@@ -159,7 +160,6 @@ If it's not the same as the upstream version, then also edit pom.xml and guava/p
 
 JAVA_HOME must be a JDK 8 JDK.
 This step must be done on a machine, such as a CSE machine, that has access to the necessary passwords.
-(Mike should try this on his home machine again.)
 
 **NOTE**: maven-gpg-plugin version 3.2.1 is buggy
 (https://issues.apache.org/jira/browse/MGPG-113) and will fail the upload with
@@ -175,7 +175,7 @@ export MAVEN_GPG_PASSPHRASE="$(cat $HOSTING_INFO_DIR/release-private.password)"
 ```
 
 ```
-PACKAGE=guava-33.1.0-jre
+PACKAGE=guava-33.1.0.1-jre
 
 cd guava
 
