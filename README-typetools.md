@@ -108,7 +108,7 @@ written.)
  * If a `cf-master` branch exists in this repository, follow the
    instructions above to merge it into master.
 
-2. Pull in the latest Guava version (https://github.com/google/guava/releases).
+2. Pull in the latest Guava tagged version (https://github.com/google/guava/releases).
 This will makes a merge, which must appear in the typetools/guava repository.
 (Do not squash-and-merge if you are working on a different branch!)
 If your clone of guava is in directory `$t/libraries` and is named
@@ -133,7 +133,7 @@ diff -u \
   <(sed -n '/^  <dependencies>/,/^  <\/dependencies>/p' guava/cfMavenCentral.xml)
 ```
 
-[comment]: # (The above sed commend is from https://stackoverflow.com/questions/38972736)
+[comment]: # (The above sed command is from https://stackoverflow.com/questions/38972736)
 
 3. Resolve conflicts.  If you use Emacs, create a TAGS table to help:
 ```

@@ -29,7 +29,7 @@
     <module.status>release</module.status>
     <variant.jvmEnvironment>standard-jvm</variant.jvmEnvironment>
     <variant.jvmEnvironmentVariantName>jre</variant.jvmEnvironmentVariantName>
-    <otherVariant.version>33.1.0-android</otherVariant.version>
+    <otherVariant.version>33.1.0.1-android</otherVariant.version>
     <otherVariant.jvmEnvironment>android</otherVariant.jvmEnvironment>
     <otherVariant.jvmEnvironmentVariantName>android</otherVariant.jvmEnvironmentVariantName>
   </properties>
