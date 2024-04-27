@@ -175,7 +175,7 @@ export MAVEN_GPG_PASSPHRASE="$(cat $HOSTING_INFO_DIR/release-private.password)"
 ```
 
 ```
-PACKAGE=guava-33.1.0.1-jre
+PACKAGE=guava-33.1.0.2-jre
 
 cd guava
 
