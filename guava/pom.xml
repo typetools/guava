@@ -72,7 +72,7 @@
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker</artifactId>
-      <version>3.41.0</version>
+      <version>3.46.0</version>
     </dependency>
     <dependency>
       <groupId>com.google.errorprone</groupId>
