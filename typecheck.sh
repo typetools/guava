@@ -38,6 +38,8 @@ elif [[ "$1" == "nullness" ]]; then
   (cd guava && mvn -B compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.nullness.NullnessChecker)
 elif [[ "$1" == "regex" ]]; then
   (cd guava && mvn -B compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.regex.RegexChecker)
+elif [[ "$1" == "resourceleak" ]]; then
+  (cd guava && mvn -B compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.resourceleak.ResourceLeakChecker)
 elif [[ "$1" == "signature" ]]; then
   (cd guava && mvn -B compile -P checkerframework-local -Dcheckerframework.checkers=org.checkerframework.checker.signature.SignatureChecker)
 elif [[ "$1" == "signedness" ]]; then
