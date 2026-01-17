@@ -6,7 +6,8 @@ The annotations are only in the main Guava project, not in the "Android" variant
 To build this project
 ---------------------
 
-To create file `guava/target/guava-HEAD-jre-SNAPSHOT.jar`:
+To create file `guava/target/guava-HEAD-jre-SNAPSHOT.jar` and/or
+`guava/target/guava-33.1.0.2-jre.jar`:
 (This takes 10+ minutes, because it performs pluggable type-checking.)
 
 ```
@@ -39,7 +40,7 @@ MAVEN_OPTS=-Xmx6g ./mvnw -V -B -U verify -Dcheckerframework.checkers=org.checker
                       -Dcheck.value.phase=skip -Dmaven.javadoc.skip
 
 Running with the single FormatterChecker gets the total time down to about 20-25 minutes,
-almost all of which testing. (Over 850,000 tests are run.)
+almost all of which is testing. (Over 850,000 tests are run.)
 
 
 Typechecking
